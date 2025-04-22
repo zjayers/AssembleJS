@@ -1,3 +1,13 @@
+## <small>0.0.6 (2025-04-22)</small>
+
+* 0.0.6 ([f42a897](https://github.com/zjayers/assemblejs/commit/f42a897))
+* chore: add new index html file for assemblejs.com ([e570b1c](https://github.com/zjayers/assemblejs/commit/e570b1c))
+* chore: add npm check validation ([253f572](https://github.com/zjayers/assemblejs/commit/253f572))
+* chore: add release management to workflow ([7494e51](https://github.com/zjayers/assemblejs/commit/7494e51))
+* chore: version script changes ([61763ec](https://github.com/zjayers/assemblejs/commit/61763ec))
+
+
+
 ## <small>0.0.5 (2025-04-22)</small>
 
 * 0.0.5 ([d7c176b](https://github.com/zjayers/assemblejs/commit/d7c176b))
