@@ -25,10 +25,20 @@ jobs:
           # Use deploy key for git operations to bypass branch protection
           ssh-key: ${{ secrets.DEPLOY_KEY }}
       
-      - name: Set Git identity and configuration
+      - name: Start SSH Agent and Set Git Configuration
         run: |
+          # Start SSH agent
+          eval "$(ssh-agent -s)"
+          # Make sure private key has correct permissions
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          # Verify that the agent is running
+          echo "SSH Agent PID: $SSH_AGENT_PID"
+          
+          # Set Git identity
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          
           # Ensure we use SSH for GitHub authentication
           git remote set-url origin git@github.com:zjayers/assemblejs.git
           # Verify the remote
