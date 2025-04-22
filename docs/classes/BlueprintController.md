@@ -88,8 +88,7 @@ It's where you define all routes, hooks, and handlers for your controller.
 The method is called during server initialization to set up the controller's
 functionality.
 
-**`Returnss`**
-
+**`Returns`**
 **`Example`**
 
 ```typescript
