@@ -40,4 +40,6 @@ jobs:
     # Run if lint passed
     if: ${{ needs.lint.outputs.lint-success == 'true' }}
     uses: ./.github/workflows/test-validation.yml
+    with:
+      build-cache-key: ${{ needs.lint.outputs.build-cache-key }}
   
