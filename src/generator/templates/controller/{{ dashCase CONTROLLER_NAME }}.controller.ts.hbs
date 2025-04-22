@@ -1,0 +1,361 @@
+import { BlueprintController, Assembly, ApiReply, ApiRequest } from "asmbl";
+
+/**
+ * {{ pascalCase CONTROLLER_NAME }} Controller
+ * 
+ * This controller handles routes for the {{ pascalCase CONTROLLER_NAME }} feature.
+ * It provides API endpoints or page routes related to {{ pascalCase CONTROLLER_NAME }}.
+ * 
+ * Key features:
+ * - REST API endpoints with standardized responses
+ * - Comprehensive error handling and user feedback
+ * - Request validation and sanitization
+ * - Performance monitoring and logging
+ * - Service integration with dependency injection
+ * - Internationalization support
+ * 
+ * @author Zachariah Ayers
+ */
+export class {{ pascalCase CONTROLLER_NAME }}Controller extends BlueprintController {
+  /**
+   * Register all routes for this controller
+   * 
+   * This method is called automatically when the server starts
+   * and is where you define all your routes and handlers.
+   * 
+   * @param app - The AssembleJS application instance
+   */
+  public register(app: Assembly): void {
+    // Register all routes for this controller
+    this.registerEndpoints(app);
+    
+    // Add any lifecycle hooks for this controller
+    this.registerHooks(app);
+    
+    // Log successful registration
+    this.log.info(`{{ pascalCase CONTROLLER_NAME }}Controller registered successfully`);
+  }
+  
+  /**
+   * Register all API endpoints for this controller
+   * @param app - The AssembleJS application instance
+   */
+  private registerEndpoints(app: Assembly): void {
+    // GET endpoint example
+    app.get("/{{ dashCase CONTROLLER_NAME }}", {
+      schema: {
+        // Request validation schema
+        querystring: {
+          type: 'object',
+          properties: {
+            limit: { type: 'integer', minimum: 1, maximum: 100 },
+            page: { type: 'integer', minimum: 1 },
+            // Add query parameters as needed
+          }
+        },
+        // Response schema for documentation and validation
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              message: { type: 'string' },
+              timestamp: { type: 'string', format: 'date-time' }
+            }
+          },
+          500: {
+            type: 'object',
+            properties: {
+              error: { type: 'string' },
+              code: { type: 'string' }
+            }
+          }
+        }
+      }
+    }, this.getHandler.bind(this));
+    
+    // POST endpoint example - uncomment to use
+    /* 
+    app.post("/{{ dashCase CONTROLLER_NAME }}", {
+      schema: {
+        body: {
+          type: 'object',
+          required: ['name'],
+          properties: {
+            name: { type: 'string', minLength: 1 },
+            description: { type: 'string' }
+            // Add body parameters as needed
+          }
+        },
+        response: {
+          201: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              success: { type: 'boolean' },
+              message: { type: 'string' }
+            }
+          },
+          400: {
+            type: 'object',
+            properties: {
+              error: { type: 'string' },
+              code: { type: 'string' },
+              validation: { 
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    field: { type: 'string' },
+                    message: { type: 'string' }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }, this.createHandler.bind(this));
+    */
+    
+    // Route with path parameter example - uncomment to use
+    /*
+    app.get("/{{ dashCase CONTROLLER_NAME }}/:id", {
+      schema: {
+        params: {
+          type: 'object',
+          required: ['id'],
+          properties: {
+            id: { type: 'string', pattern: '^[a-zA-Z0-9-]+$' }
+          }
+        }
+      }
+    }, this.getByIdHandler.bind(this));
+    */
+  }
+  
+  /**
+   * Register hooks for request processing
+   * @param app - The AssembleJS application instance
+   */
+  private registerHooks(app: Assembly): void {
+    // Add pre-handler for all routes in this controller
+    app.addHook('preHandler', this.globalPreHandler.bind(this));
+    
+    // Add onError hook for custom error handling
+    app.addHook('onError', this.errorHandler.bind(this));
+  }
+  
+  /**
+   * Global pre-handler for all routes in this controller
+   * Executes before any route handler
+   */
+  private async globalPreHandler(req: ApiRequest, _rep: ApiReply): Promise<void> {
+    // Record start time for performance monitoring
+    req.startTime = Date.now();
+    
+    // Add request logging
+    this.log.debug({
+      route: req.routeOptions.url,
+      method: req.method,
+      ip: req.ip,
+      userAgent: req.headers['user-agent']
+    }, 'Request received');
+    
+    // Parse user language for internationalization
+    const acceptLanguage = req.headers['accept-language'] || 'en-US';
+    req.userLocale = acceptLanguage.split(',')[0].trim();
+    
+    // You can add authentication validation here
+    // if (req.routeOptions.url !== '/{{ dashCase CONTROLLER_NAME }}/public') {
+    //   await this.validateAuthentication(req);
+    // }
+  }
+  
+  /**
+   * Custom error handler for this controller
+   */
+  private async errorHandler(error: Error, req: ApiRequest, rep: ApiReply): Promise<void> {
+    // Log the error with contextual information
+    this.log.error({
+      err: error,
+      route: req.routeOptions.url,
+      method: req.method,
+      stack: error.stack
+    }, `Error in {{ pascalCase CONTROLLER_NAME }}Controller: ${error.message}`);
+    
+    // Calculate response time if available
+    const responseTime = req.startTime ? Date.now() - req.startTime : null;
+    
+    // Determine if this is a validation error
+    const isValidationError = error.name === 'ValidationError';
+    
+    // Return appropriate error response based on error type
+    if (isValidationError) {
+      rep.code(400).send({
+        error: 'Validation failed',
+        code: 'VALIDATION_ERROR',
+        validation: (error as any).validationErrors || [],
+        // Include request ID for troubleshooting
+        requestId: req.id
+      });
+    } else {
+      // Generic error handler
+      rep.code(500).send({
+        error: 'An unexpected error occurred',
+        code: 'SERVER_ERROR',
+        requestId: req.id,
+        // Include response time metric
+        ...(responseTime && { responseTime: `${responseTime}ms` })
+      });
+    }
+    
+    // Record error metrics for monitoring
+    // this.metrics.recordError({
+    //   controller: '{{ pascalCase CONTROLLER_NAME }}',
+    //   route: req.routeOptions.url,
+    //   errorType: error.name,
+    //   statusCode: rep.statusCode
+    // });
+  }
+  
+  /**
+   * Handle GET requests to /{{ dashCase CONTROLLER_NAME }}
+   * 
+   * Returns a basic welcome message with user-friendly information.
+   * Replace with your actual implementation.
+   */
+  private async getHandler(req: ApiRequest, rep: ApiReply): Promise<void> {
+    try {
+      // Get query parameters with defaults
+      const limit = parseInt(req.query.limit as string) || 10;
+      const page = parseInt(req.query.page as string) || 1;
+      
+      // Example of internationalization
+      const greeting = this.getLocalizedMessage(req.userLocale, 'greeting', '{{> randomSalutation }}');
+      
+      // Fetch actual data here
+      // const data = await this.someService.getData(limit, page);
+      
+      // Example of successful response with pagination
+      rep.send({
+        message: `{{ dashCase CONTROLLER_NAME }} API ${greeting}`,
+        timestamp: new Date().toISOString(),
+        // Include pagination metadata for better UX
+        meta: {
+          pagination: {
+            page,
+            limit,
+            // total: data.totalCount,
+            // pages: Math.ceil(data.totalCount / limit)
+          }
+        },
+        // Performance metrics for monitoring
+        _debug: process.env.NODE_ENV !== 'production' ? {
+          responseTime: `${Date.now() - (req.startTime || Date.now())}ms`,
+          server: req.hostname
+        } : undefined
+      });
+      
+      // Log successful request
+      this.log.info({
+        route: '/{{ dashCase CONTROLLER_NAME }}',
+        method: 'GET',
+        responseTime: Date.now() - (req.startTime || Date.now())
+      }, 'Request processed successfully');
+    } catch (error) {
+      // Log error and let the error handler process it
+      this.log.error(`Error in getHandler: ${error}`);
+      throw error;
+    }
+  }
+  
+  /**
+   * Example POST handler with comprehensive validation and error handling
+   */
+  /*
+  private async createHandler(req: ApiRequest, rep: ApiReply): Promise<void> {
+    try {
+      // Request body should be validated by schema already
+      const { name, description } = req.body;
+      
+      // Example of data transformation and sanitization
+      const sanitizedName = this.sanitizeInput(name);
+      
+      // Example of using a service (if registered)
+      if (this.hasService('{{ camelCase CONTROLLER_NAME }}Service')) {
+        const {{ camelCase CONTROLLER_NAME }}Service = this.getService('{{ camelCase CONTROLLER_NAME }}Service');
+        
+        // Check for duplicates before creation
+        const existingItem = await {{ camelCase CONTROLLER_NAME }}Service.findByName(sanitizedName);
+        if (existingItem) {
+          rep.code(409).send({ 
+            error: 'Resource already exists',
+            code: 'RESOURCE_CONFLICT',
+            field: 'name'
+          });
+          return;
+        }
+        
+        // Create the resource
+        const newItem = await {{ camelCase CONTROLLER_NAME }}Service.create({
+          name: sanitizedName,
+          description: description || '',
+          createdAt: new Date().toISOString()
+        });
+        
+        // Example successful response
+        rep.code(201).send({ 
+          id: newItem.id,
+          success: true,
+          message: this.getLocalizedMessage(req.userLocale, 'resource_created', 'Resource created successfully')
+        });
+        
+        // Emit event for other parts of the system
+        this.events.emit('{{ dashCase CONTROLLER_NAME }}.created', { id: newItem.id });
+      } else {
+        throw new Error('{{ camelCase CONTROLLER_NAME }}Service not registered');
+      }
+    } catch (error) {
+      // Let the error handler process it
+      throw error;
+    }
+  }
+  */
+  
+  /**
+   * Helper method to get localized messages
+   * 
+   * @param locale - User's locale string (e.g. 'en-US', 'fr-FR')
+   * @param key - Translation key
+   * @param defaultValue - Default value if translation not found
+   * @returns Localized string
+   */
+  private getLocalizedMessage(locale: string, key: string, defaultValue: string): string {
+    // Simple implementation - replace with actual i18n library in real code
+    const translations: Record<string, Record<string, string>> = {
+      'en-US': {
+        'greeting': 'Welcome',
+        'resource_created': 'Resource created successfully'
+      },
+      'es-ES': {
+        'greeting': 'Bienvenido',
+        'resource_created': 'Recurso creado con éxito'
+      }
+      // Add more languages as needed
+    };
+    
+    // Return translation or default
+    return translations[locale]?.[key] || defaultValue;
+  }
+  
+  /**
+   * Helper method to sanitize user input
+   * 
+   * @param input - Raw user input
+   * @returns Sanitized input string
+   */
+  private sanitizeInput(input: string): string {
+    // Basic sanitization example - replace with more robust solution
+    return input.trim().replace(/[<>]/g, '');
+  }
+}

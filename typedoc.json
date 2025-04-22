@@ -1,0 +1,36 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs",
+  "plugin": ["typedoc-plugin-markdown"],
+  "name": "AssembleJS Framework Documentation",
+  "includeVersion": true,
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "excludeProtected": false,
+  "validation": {
+    "invalidLink": false,
+    "notExported": false
+  },
+  "sort": ["visibility", "alphabetical"],
+  "categorizeByGroup": true,
+  "categoryOrder": [
+    "Core", 
+    "Blueprint", 
+    "Component", 
+    "Rendering", 
+    "Server", 
+    "Client", 
+    "Eventing", 
+    "Configuration",
+    "Utilities", 
+    "*"
+  ],
+  "readme": "DOCUMENTATION.md",
+  "disableSources": false,
+  "theme": "markdown",
+  "hideBreadcrumbs": true,
+  "hideInPageTOC": false,
+  "entryDocument": "index.md",
+  "hideMembersSymbol": true,
+  "allReflectionsHaveOwnDocument": true
+}

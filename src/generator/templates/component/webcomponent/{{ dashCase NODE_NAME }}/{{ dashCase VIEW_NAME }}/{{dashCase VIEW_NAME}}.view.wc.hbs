@@ -1,0 +1,60 @@
+<!-- Template for the Web Component's Shadow DOM -->
+<template id="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}-template">
+  <style>
+    :host {
+      display: block;
+      font-family: sans-serif;
+      border: 1px solid #ccc;
+      padding: 16px;
+      margin: 8px;
+      border-radius: 4px;
+    }
+    
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    
+    .counter {
+      font-weight: bold;
+      color: #007bff;
+    }
+    
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+  
+  <div class="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}-inner">
+    <h1 part="header">{{titleCase VIEW_NAME}} Web Component</h1>
+    
+    <p>Counter: <span class="counter">0</span></p>
+    
+    <button type="button">Increment</button>
+    
+    <slot name="content">
+      <!-- Default content if no slot is provided -->
+      <p>This is a customizable web component built with AssembleJS.</p>
+    </slot>
+    
+    <!-- Named slots for component composition -->
+    <div class="components">
+      <slot name="header"></slot>
+      <slot name="footer"></slot>
+    </div>
+  </div>
+</template>
+
+<!-- Initial content (will be replaced by the Shadow DOM) -->
+<p>Loading {{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}} component...</p>

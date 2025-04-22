@@ -1,0 +1,65 @@
+<!-- 
+  Navigation Main View
+
+  This is the HTML template for your component.
+  
+  - Component root element should have a unique class name
+  - Link your stylesheet with <link>
+  - Include your client script with <script>
+  - Access component data with  context.data.propertyName 
+  - Embed other components with  await context.component.name.view() 
+-->
+<header class="navigation-main">
+  <div class="navigation-container">
+    <div class="logo">
+      <a href="/" aria-label="Home">
+        <h1>AssembleJS Store</h1>
+      </a>
+    </div>
+    
+    <nav class="main-nav" aria-label="Main navigation">
+      <ul class="nav-links">
+        <li><a href="/" class="nav-link">Home</a></li>
+        <li><a href="/products/listing" class="nav-link">Products</a></li>
+        <li><a href="#" class="nav-link">Categories</a></li>
+        <li><a href="#" class="nav-link">Deals</a></li>
+        <li><a href="#" class="nav-link">About</a></li>
+      </ul>
+    </nav>
+    
+    <div class="nav-actions">
+      <div class="search-icon" role="button" aria-label="Search" tabindex="0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <div class="cart-icon" role="button" aria-label="Shopping cart" tabindex="0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="cart-count">0</span>
+      </div>
+      <div class="user-icon" role="button" aria-label="User account" tabindex="0">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+    </div>
+    
+    <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+  
+  <!-- Link your stylesheet -->
+  <link href="main.styles.scss" rel="stylesheet"/>
+  
+  <!-- Include your client-side script -->
+  <script src="main.client.ts"></script>
+</header>

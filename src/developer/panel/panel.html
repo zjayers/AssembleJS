@@ -1,0 +1,207 @@
+<!--
+  AssembleJS Development Panel
+  Enterprise-ready developer tools panel
+  Provides debugging, performance monitoring, and design tools
+  Supports both light and dark themes
+-->
+<!-- Floating button for collapsed panel -->
+<div
+  id="__assemblejs_dev_panel_float_button__"
+  role="button"
+  aria-label="Open development panel"
+  tabindex="0"
+>
+  <div id="__assemblejs_dev_panel_float_logo__">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="12" cy="12" r="3"></circle>
+      <path
+        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+      ></path>
+    </svg>
+  </div>
+</div>
+
+<!-- Main panel with ARIA attributes for accessibility -->
+<div
+  id="__assemblejs_dev_panel__"
+  role="dialog"
+  aria-labelledby="__assemblejs_dev_panel_title__"
+>
+  <div id="__assemblejs_dev_panel_header__">
+    <div id="__assemblejs_dev_panel_title__">
+      <span id="__assemblejs_dev_panel_logo__">AssembleJS</span>
+      <span>Development Panel</span>
+    </div>
+    <div id="__assemblejs_dev_panel_theme_toggle__">
+      <input type="checkbox" id="theme-toggle" class="theme-toggle-input" />
+      <label for="theme-toggle" class="theme-toggle-wrapper">
+        <span class="theme-toggle-track">
+          <span class="theme-toggle-icon moon">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </span>
+          <span class="theme-toggle-icon sun">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </span>
+        </span>
+        <span class="theme-toggle-thumb"></span>
+      </label>
+    </div>
+    <div id="__assemblejs_dev_panel_shortcut__">Alt+D</div>
+    <div id="__assemblejs_dev_panel_close__">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    </div>
+  </div>
+  <div id="__assemblejs_dev_panel_content__">
+    <div id="__assemblejs_dev_panel_primary_actions__">
+      <div class="__assemblejs_dev_panel_section_header__">
+        <span>Primary Actions</span>
+      </div>
+      <div id="__assemblejs_dev_panel_buttons__">
+        <button
+          id="__assemblejs_dev_panel_open_designer__"
+          class="__assemblejs_dev_panel_button__ __assemblejs_dev_panel_button_primary__"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M2 9V5a2 2 0 0 1 2-2h4"></path>
+            <path d="M2 15v4a2 2 0 0 0 2 2h4"></path>
+            <path d="M22 9V5a2 2 0 0 0-2-2h-4"></path>
+            <path d="M22 15v4a2 2 0 0 1-2 2h-4"></path>
+            <circle cx="12" cy="12" r="4"></circle>
+          </svg>
+          Open Designer
+        </button>
+        <button
+          id="__assemblejs_dev_panel_clear_cache__"
+          class="__assemblejs_dev_panel_button__"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 6h18"></path>
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+            <line x1="10" y1="11" x2="10" y2="17"></line>
+            <line x1="14" y1="11" x2="14" y2="17"></line>
+          </svg>
+          Clear Cache
+        </button>
+      </div>
+    </div>
+    <div id="__assemblejs_dev_panel_blueprint_info__">
+      <div class="__assemblejs_dev_panel_section_header__">
+        <span>Component Information</span>
+      </div>
+      <table>
+        <tr>
+          <td>Blueprint ID:</td>
+          <td
+            id="__assemblejs_dev_panel_blueprint_id__"
+            class="__assemblejs_dev_panel_value__"
+          >
+            {{blueprintId}}
+          </td>
+        </tr>
+        <tr>
+          <td>Component:</td>
+          <td
+            id="__assemblejs_dev_panel_component_name__"
+            class="__assemblejs_dev_panel_value__"
+          >
+            {{componentName}}
+          </td>
+        </tr>
+        <tr>
+          <td>View:</td>
+          <td
+            id="__assemblejs_dev_panel_view_name__"
+            class="__assemblejs_dev_panel_value__"
+          >
+            {{viewName}}
+          </td>
+        </tr>
+        <tr>
+          <td>Environment:</td>
+          <td
+            id="__assemblejs_dev_panel_environment__"
+            class="__assemblejs_dev_panel_value__"
+          >
+            {{environment}}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- End AssembleJS Development Panel -->

@@ -1,0 +1,24 @@
+import { Blueprint, BlueprintClient } from "asmbl";
+import type { ComponentContext } from "asmbl";
+
+export class {{pascalCase NODE_NAME}}{{pascalCase VIEW_NAME}} extends Blueprint<{}, {}> {
+  constructor(context: ComponentContext) {
+    super(context);
+    
+    // DOM is ready, component is mounted
+    this.onReady(() => {
+      // Vue component will already be server-rendered
+      const componentRoot = document.querySelector('.{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}');
+      if (componentRoot) {
+        // Handle events, lifecycle, etc.
+        this.events.on('{{dashCase NODE_NAME}}.{{dashCase VIEW_NAME}}.update', (data) => {
+          // Handle update event
+          console.log('Component updated with data:', data);
+        });
+      }
+    });
+  }
+}
+
+// Register the client-side behavior with AssembleJS
+BlueprintClient.registerComponentCodeBehind({{pascalCase NODE_NAME}}{{pascalCase VIEW_NAME}});

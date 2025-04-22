@@ -1,0 +1,42 @@
+<%# 
+  {{ pascalCase VIEW_NAME }} Component View
+  
+  This EJS template defines the HTML structure for your component.
+  Key features:
+  - Automatically includes styles and client-side script
+  - Can use EJS templating syntax (<%= %>, <% %>)
+  - Supports partials and includes
+  
+  Examples:
+  - Display dynamic data: <%= componentData.title %>
+  - Conditional rendering: <% if (componentData.showHeader) { %> ... <% } %>
+  - Loops: <% componentData.items.forEach(item => { %> ... <% }) %>
+-%>
+
+<div class="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}">
+  <%# Main content area - replace with your component structure %>
+  <p>{{> randomSalutation }}</p>
+  
+  <%# Example of conditionally showing content
+  <% if (componentData.showDetails) { %>
+    <div class="details">
+      <h3><%= componentData.detailsHeading %></h3>
+      <p><%= componentData.detailsContent %></p>
+    </div>
+  <% } %>
+  %>
+
+  <%# Example of iterating through items 
+  <ul class="items-list">
+    <% componentData.items.forEach(item => { %>
+      <li class="item" data-id="<%= item.id %>">
+        <%= item.name %>
+      </li>
+    <% }) %>
+  </ul>
+  %>
+  
+  <%# These includes automatically link your styles and client-side scripts %>
+  <link href="{{ dashCase VIEW_NAME }}.styles.scss" rel="stylesheet"/>
+  <script src="{{ dashCase VIEW_NAME }}.client.ts"></script>
+</div>

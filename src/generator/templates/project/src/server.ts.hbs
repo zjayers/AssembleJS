@@ -1,0 +1,51 @@
+import viteDevServer from 'vavite/vite-dev-server';
+import vaviteHttpServer from 'vavite/http-dev-server';
+import { createBlueprintServer } from "asmbl";
+
+/**
+ * AssembleJS Server Configuration
+ * 
+ * This is the main entry point for your AssembleJS application.
+ * It creates a server with your components, blueprints, controllers, and services.
+ * 
+ * Documentation: https://assemblejs.com/docs/getting-started
+ * 
+ * Configuration options:
+ * - serverRoot: The base URL for all server resources
+ * - httpServer: The HTTP server instance
+ * - devServer: The development server for hot reloading
+ * - manifest: Registration of components, controllers, and services
+ * 
+ * @author Zachariah Ayers
+ */
+void createBlueprintServer({
+  // Server root URL (using import.meta.url for ESM compatibility)
+  serverRoot: import.meta.url,
+  
+  // HTTP and development server configuration
+  httpServer: vaviteHttpServer,
+  devServer: viteDevServer,
+  
+  // Application manifest - register all your components here
+  manifest: {
+    // Components are registered here
+    // Format: { name: 'component-name', path: 'path/to/component', views: [...] }
+    components: [],
+    
+    // Controllers are registered here (automatically added by generator)
+    // controllers: [],
+    
+    // Services are registered here (automatically added by generator)
+    // services: []
+  },
+  
+  // Optional configuration
+  // hooks: {
+  //   onReady: async (server) => {
+  //     console.log('Server is ready at', server.address);
+  //   },
+  //   onError: (error) => {
+  //     console.error('Server error:', error);
+  //   }
+  // }
+});

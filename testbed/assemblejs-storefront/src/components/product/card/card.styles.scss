@@ -1,0 +1,382 @@
+/**
+ * Styles for Product Card Component
+ * 
+ * This stylesheet includes:
+ * - Responsive design with media queries
+ * - Accessibility enhancements
+ * - Mobile-first approach
+ * - Dark mode support
+ * - Error state styling
+ */
+
+// Base variables
+$primary-color: #2563eb;
+$secondary-color: #4f46e5;
+$accent-color: #f97316;
+$text-color: #333;
+$light-text: #6b7280;
+$error-color: #ef4444;
+$success-color: #10b981;
+$background-color: #ffffff;
+$card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+$border-radius: 8px;
+$transition-speed: 0.3s;
+
+// Breakpoints for responsive design
+$breakpoint-xs: 576px;
+$breakpoint-sm: 768px;
+$breakpoint-md: 992px;
+$breakpoint-lg: 1200px;
+
+// Helper mixins for accessibility
+@mixin focus-outline {
+  outline: 3px solid rgba($primary-color, 0.5);
+  outline-offset: 2px;
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Base component styles (mobile-first approach)
+.product-card {
+  display: flex;
+  flex-direction: column;
+  background-color: $background-color;
+  border-radius: $border-radius;
+  box-shadow: $card-shadow;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  color: $text-color;
+  position: relative;
+  transition: all $transition-speed ease;
+  max-width: 100%;
+  overflow: hidden;
+  height: 100%;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  // Product image container
+  .product-image {
+    position: relative;
+    overflow: hidden;
+    
+    img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      transition: transform $transition-speed ease;
+      
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+    
+    // Out of stock overlay
+    .out-of-stock-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.25rem;
+      text-transform: uppercase;
+    }
+  }
+  
+  // Product details
+  .product-details {
+    padding: 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    
+    .product-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem;
+      color: $text-color;
+    }
+    
+    .product-rating {
+      margin-bottom: 0.75rem;
+      
+      .rating {
+        display: flex;
+        align-items: center;
+        
+        .star {
+          color: #fbbf24;
+          font-size: 1.125rem;
+          margin-right: 1px;
+          
+          &.empty {
+            color: #d1d5db;
+          }
+          
+          &.half {
+            position: relative;
+            &:after {
+              content: '☆';
+              position: absolute;
+              left: 0;
+              top: 0;
+              color: #d1d5db;
+              width: 50%;
+              overflow: hidden;
+            }
+          }
+        }
+        
+        .review-count {
+          margin-left: 0.5rem;
+          font-size: 0.875rem;
+          color: $light-text;
+        }
+      }
+    }
+    
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $accent-color;
+      margin: 0.5rem 0;
+    }
+    
+    .product-description {
+      font-size: 0.875rem;
+      color: $light-text;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      flex-grow: 1;
+    }
+  }
+  
+  // Product actions
+  .product-actions {
+    padding: 0 1rem 1rem;
+    
+    .add-to-cart-button {
+      width: 100%;
+      background-color: $accent-color;
+      color: white;
+      border: none;
+      border-radius: $border-radius;
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color $transition-speed ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      
+      &:hover:not(:disabled) {
+        background-color: darken($accent-color, 10%);
+      }
+      
+      &:disabled {
+        background-color: #d1d5db;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      
+      &.loading {
+        position: relative;
+        cursor: wait;
+        
+        .loading-text {
+          opacity: 0.7;
+          
+          &:after {
+            content: "";
+            width: 0.75rem;
+            height: 0.75rem;
+            margin-left: 0.5rem;
+            display: inline-block;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+            vertical-align: middle;
+          }
+        }
+      }
+      
+      &.added {
+        background-color: $success-color;
+        
+        .added-text {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+  
+  // Interactive elements should have visible focus styles
+  button, a, [tabindex="0"] {
+    &:focus {
+      @include focus-outline;
+    }
+    
+    // Remove outline when using mouse (better UX)
+    &:focus:not(:focus-visible) {
+      outline: none;
+    }
+  }
+  
+  // Dark mode support using prefers-color-scheme
+  @media (prefers-color-scheme: dark) {
+    background-color: #1f2937;
+    color: #f3f4f6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+    
+    .product-details {
+      .product-title {
+        color: #f3f4f6;
+      }
+      
+      .product-rating .review-count {
+        color: #9ca3af;
+      }
+      
+      .product-description {
+        color: #9ca3af;
+      }
+    }
+  }
+  
+  // Accessible hiding for elements that should be available to screen readers
+  .sr-only {
+    @include visually-hidden;
+  }
+  
+  // Styling for error states
+  &.error {
+    border-color: $error-color;
+    padding: 1rem;
+    
+    h2, h3 {
+      color: $error-color;
+    }
+    
+    .retry-button {
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: $border-radius;
+      cursor: pointer;
+      margin-top: 1rem;
+      
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+  }
+  
+  // Basic responsive adjustments for mobile devices
+  &.mobile-device {
+    // Increase touch targets for mobile
+    button, a, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+  
+  // Responsive breakpoints - from mobile to larger screens
+  // Extra Small Devices
+  &.viewport-xs {
+    .product-details {
+      .product-title {
+        font-size: 1.125rem;
+      }
+      
+      .product-price {
+        font-size: 1.25rem;
+      }
+    }
+  }
+  
+  // Small Devices
+  @media (min-width: $breakpoint-xs) {
+    .product-details {
+      .product-title {
+        font-size: 1.25rem;
+      }
+      
+      .product-price {
+        font-size: 1.5rem;
+      }
+    }
+  }
+  
+  // Medium Devices
+  @media (min-width: $breakpoint-sm) {
+    .product-details {
+      padding: 1.25rem;
+      
+      .product-title {
+        font-size: 1.375rem;
+      }
+    }
+    
+    .product-actions {
+      padding: 0 1.25rem 1.25rem;
+    }
+  }
+  
+  // Large Devices
+  @media (min-width: $breakpoint-md) {
+    .product-details {
+      padding: 1.5rem;
+    }
+    
+    .product-actions {
+      padding: 0 1.5rem 1.5rem;
+    }
+  }
+  
+  // Print styles for better printing experience
+  @media print {
+    box-shadow: none;
+    break-inside: avoid;
+    
+    .product-image img {
+      max-height: 2in;
+    }
+    
+    // Hide non-essential elements when printing
+    .add-to-cart-button {
+      display: none;
+    }
+    
+    .product-price {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+// Animation for loading spinner
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

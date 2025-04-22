@@ -1,0 +1,32 @@
+{{!-- Handlebars component template for {{titleCase NODE_NAME}} {{titleCase VIEW_NAME}} --}}
+<div class="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}">
+  <h1>{{"{{"}} params.title {{"}}"}} {{"{{"}} else }}{{titleCase VIEW_NAME}}{{"{{"}} /if }}</h1>
+  
+  <div class="content">
+    <p>This is a Handlebars template for {{titleCase NODE_NAME}} {{titleCase VIEW_NAME}}.</p>
+    
+    {{!-- Example of conditional rendering --}}
+    {{"{{"}} #if params.showDetails }}
+      <div class="details">
+        <h2>Details</h2>
+        <p>{{"{{"}} params.details {{"}}"}} {{"{{"}} else }}No details available{{"{{"}} /if }}</p>
+      </div>
+    {{"{{"}} /if }}
+    
+    {{!-- Example of iterating through items --}}
+    {{"{{"}} #if params.items }}
+      <ul class="items-list">
+        {{"{{"}} #each params.items }}
+          <li>{{"{{"}} this }}</li>
+        {{"{{"}} /each }}
+      </ul>
+    {{"{{"}} /if }}
+    
+    {{!-- Example of including a component --}}
+    {{!-- {{"{{"}} #if components.someComponent }}
+      <div class="sub-component">
+        {{{"{{"}} components.someComponent }}}
+      </div>
+    {{"{{"}} /if }} --}}
+  </div>
+</div>

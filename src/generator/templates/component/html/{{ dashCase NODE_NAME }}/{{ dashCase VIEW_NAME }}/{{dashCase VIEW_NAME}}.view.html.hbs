@@ -1,0 +1,35 @@
+<!-- 
+  {{ pascalCase NODE_NAME }} {{ pascalCase VIEW_NAME }} View
+
+  This is the HTML template for your component.
+  
+  - Component root element should have a unique class name
+  - Link your stylesheet with <link>
+  - Include your client script with <script>
+  - Access component data with {{ "{{" }} context.data.propertyName {{ "}}" }}
+  - Embed other components with {{ "{{" }} await context.component.name.view() {{ "}}" }}
+-->
+<div class="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}">
+  <h2>{{ pascalCase NODE_NAME }} - {{ pascalCase VIEW_NAME }}</h2>
+  <p>{{> randomSalutation }}</p>
+  
+  <!-- 
+    Example of how to use component data (if provided by a factory):
+    <div class="welcome-message">
+      {{ "{{" }} context.data.message {{ "}}" }}
+    </div>
+  -->
+  
+  <!-- 
+    Example of how to embed another component:
+    <div class="child-component">
+      {{ "{{" }} await context.component.greeting.main() {{ "}}" }}
+    </div>
+  -->
+  
+  <!-- Link your stylesheet -->
+  <link href="{{ dashCase VIEW_NAME }}.styles.scss" rel="stylesheet"/>
+  
+  <!-- Include your client-side script -->
+  <script src="{{ dashCase VIEW_NAME }}.client.ts"></script>
+</div>

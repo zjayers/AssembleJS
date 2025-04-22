@@ -1,0 +1,2932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to AssembleJS</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+    
+    :root {
+      /* Mega Blocks inspired colors */
+      --primary-color: #ff5a00;
+      --secondary-color: #2b67f8;
+      --tertiary-color: #62b245;
+      --accent-color-1: #fee440;
+      --accent-color-2: #9b5de5;
+      --accent-color-3: #00bbf9;
+      --accent-color-4: #f15bb5;
+      
+      /* Dark theme colors */
+      --dark-bg: #0f172a;
+      --dark-surface: #1e293b;
+      --dark-surface-2: #334155;
+      --dark-text: #f8fafc;
+      --dark-text-secondary: #cbd5e1;
+      --dark-border: #475569;
+      
+      /* Light theme colors */
+      --light-bg: #f8fafc;
+      --light-surface: #ffffff;
+      --light-surface-2: #f1f5f9;
+      --light-text: #0f172a;
+      --light-text-secondary: #475569;
+      --light-border: #e2e8f0;
+      
+      /* Code highlighting - no pink */
+      --code-bg: #1e1e2e;
+      --code-text: #f8f8f2;
+      --code-keyword: #2b67f8;
+      --code-string: #f1fa8c;
+      --code-comment: #6272a4;
+      --code-operator: #62b245;
+      --code-function: #50fa7b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Abstract parallax background */
+    @keyframes float-bg {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(5px, 5px); }
+    }
+    
+    @keyframes float-bg-opposite {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-5px, -5px); }
+    }
+    
+    body {
+      font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: var(--dark-text);
+      background-color: var(--dark-bg);
+      position: relative;
+      overflow: hidden; /* Prevent body scrolling */
+      height: 100vh; /* Fixed height */
+      margin: 0;
+    }
+    
+    body::before, 
+    body::after {
+      content: '';
+      position: fixed;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      z-index: -1;
+      background-attachment: fixed;
+      pointer-events: none;
+    }
+    
+    /* CSS Variables for parallax effect */
+    :root {
+      --parallax-x: 0px;
+      --parallax-y: 0px;
+      --parallax-reverse-x: 0px;
+      --parallax-reverse-y: 0px;
+    }
+    
+    /* First parallax layer - slow */
+    body::before {
+      background-image: 
+        radial-gradient(circle at 100px 100px, rgba(255, 90, 0, 0.03) 30px, transparent 30px),
+        radial-gradient(circle at 200px 300px, rgba(43, 103, 248, 0.03) 60px, transparent 60px),
+        radial-gradient(circle at 600px 500px, rgba(98, 178, 69, 0.02) 100px, transparent 100px),
+        radial-gradient(circle at 300px 200px, rgba(254, 228, 64, 0.02) 80px, transparent 80px),
+        radial-gradient(circle at 800px 100px, rgba(155, 93, 229, 0.02) 50px, transparent 50px),
+        radial-gradient(circle at 400px 600px, rgba(0, 187, 249, 0.03) 70px, transparent 70px);
+      animation: float-bg 20s ease-in-out infinite alternate;
+      transform: translate(calc(var(--parallax-x) * 1), calc(var(--parallax-y) * 1));
+      transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    
+    /* Second parallax layer - faster */
+    body::after {
+      background-image: 
+        radial-gradient(circle at 200px 200px, rgba(255, 90, 0, 0.02) 50px, transparent 50px),
+        radial-gradient(circle at 400px 500px, rgba(43, 103, 248, 0.02) 30px, transparent 30px),
+        radial-gradient(circle at 700px 300px, rgba(98, 178, 69, 0.01) 70px, transparent 70px),
+        radial-gradient(circle at 150px 400px, rgba(254, 228, 64, 0.01) 40px, transparent 40px),
+        radial-gradient(circle at 600px 200px, rgba(155, 93, 229, 0.01) 60px, transparent 60px),
+        radial-gradient(circle at 300px 700px, rgba(0, 187, 249, 0.02) 90px, transparent 90px);
+      animation: float-bg-opposite 25s ease-in-out infinite alternate;
+      transform: translate(calc(var(--parallax-reverse-x) * 1), calc(var(--parallax-reverse-y) * 1));
+      transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    
+    /* Add some unique geometric shapes to background */
+    body::before {
+      background-image: 
+        radial-gradient(circle at 100px 100px, rgba(255, 90, 0, 0.03) 30px, transparent 30px),
+        radial-gradient(circle at 200px 300px, rgba(43, 103, 248, 0.03) 60px, transparent 60px),
+        radial-gradient(circle at 600px 500px, rgba(98, 178, 69, 0.02) 100px, transparent 100px),
+        radial-gradient(circle at 300px 200px, rgba(254, 228, 64, 0.02) 80px, transparent 80px),
+        radial-gradient(circle at 800px 100px, rgba(155, 93, 229, 0.02) 50px, transparent 50px),
+        radial-gradient(circle at 400px 600px, rgba(0, 187, 249, 0.03) 70px, transparent 70px),
+        /* Add triangles and other shapes */
+        linear-gradient(45deg, rgba(255, 90, 0, 0.01) 25%, transparent 25%),
+        linear-gradient(135deg, rgba(43, 103, 248, 0.01) 25%, transparent 25%);
+      background-size: auto, auto, auto, auto, auto, auto, 100px 100px, 120px 120px;
+      background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, var(--parallax-x) var(--parallax-y), var(--parallax-reverse-x) var(--parallax-reverse-y);
+    }
+    
+    /* Light theme variations */
+    body.light-theme {
+      color: var(--light-text);
+      background-color: var(--light-bg);
+    }
+    
+    /* Force background color change immediately */
+    body.light-theme::before,
+    body.light-theme::after {
+      background-color: var(--light-bg);
+    }
+    
+    /* Abstract floating shapes */
+    .abstract-shapes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    
+    .shape {
+      position: absolute;
+      opacity: 0.05;
+      will-change: transform;
+      transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    
+    /* Adjust shape visibility in light mode */
+    body.light-theme .shape {
+      opacity: 0.08;
+    }
+    
+    /* Different shape styles */
+    .shape-1 {
+      top: 15%;
+      left: 10%;
+      width: 80px;
+      height: 80px;
+      clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); /* Pentagon */
+      background-color: var(--primary-color);
+      animation: float-shape 18s ease-in-out infinite alternate;
+    }
+    
+    .shape-2 {
+      top: 25%;
+      right: 15%;
+      width: 60px;
+      height: 60px;
+      clip-path: polygon(50% 0%, 80% 30%, 100% 50%, 80% 70%, 50% 100%, 20% 70%, 0% 50%, 20% 30%); /* 8-point star */
+      background-color: var(--secondary-color);
+      animation: float-shape 13s ease-in-out infinite alternate-reverse;
+    }
+    
+    .shape-3 {
+      bottom: 15%;
+      left: 20%;
+      width: 70px;
+      height: 70px;
+      clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%); /* Octagon */
+      background-color: var(--tertiary-color);
+      animation: float-shape 15s ease-in-out infinite alternate;
+    }
+    
+    .shape-4 {
+      top: 50%;
+      left: 80%;
+      width: 50px;
+      height: 50px;
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Diamond */
+      background-color: var(--accent-color-1);
+      animation: float-shape 14s ease-in-out infinite alternate-reverse;
+    }
+    
+    .shape-5 {
+      top: 75%;
+      left: 40%;
+      width: 65px;
+      height: 65px;
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* Triangle */
+      background-color: var(--accent-color-2);
+      animation: float-shape 17s ease-in-out infinite alternate;
+    }
+    
+    .shape-6 {
+      top: 30%;
+      left: 50%;
+      width: 55px;
+      height: 55px;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); /* Hexagon */
+      background-color: var(--accent-color-3);
+      animation: float-shape 20s ease-in-out infinite alternate-reverse;
+    }
+    
+    .shape-7 {
+      top: 10%;
+      right: 30%;
+      width: 70px;
+      height: 70px;
+      clip-path: circle(50% at 50% 50%); /* Circle */
+      background-color: var(--primary-color);
+      animation: float-shape 16s ease-in-out infinite alternate;
+    }
+    
+    .shape-8 {
+      bottom: 20%;
+      right: 20%;
+      width: 75px;
+      height: 75px;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Hexagon */
+      background-color: var(--secondary-color);
+      animation: float-shape 19s ease-in-out infinite alternate-reverse;
+    }
+    
+    /* Floating animation for shapes */
+    @keyframes float-shape {
+      0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+      }
+      25% {
+        transform: translate(10px, 15px) rotate(3deg) scale(1.02);
+      }
+      50% {
+        transform: translate(-5px, 10px) rotate(6deg) scale(1);
+      }
+      75% {
+        transform: translate(-15px, -10px) rotate(3deg) scale(0.98);
+      }
+      100% {
+        transform: translate(5px, -15px) rotate(0deg) scale(1);
+      }
+    }
+
+    /* Block animation container */
+    .blocks-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    /* Container for the main content */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      height: 100vh; /* Fixed height to contain header, scrollable content, and footer */
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden; /* Prevent container from scrolling */
+    }
+
+    /* Header styling */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--dark-border);
+    }
+
+    body.light-theme header {
+      border-bottom-color: var(--light-border);
+    }
+    
+    .header-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      position: relative;
+    }
+
+    .logo-icon {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      perspective: 200px; /* Add perspective for 3D effect */
+      transform-style: preserve-3d;
+      perspective-origin: center center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s ease-out; /* Smooth transition for mouse follow */
+      will-change: transform;
+    }
+
+    .orbit-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      animation: rotate-container 20s linear infinite;
+      animation-play-state: running;
+      will-change: transform;
+      transform: rotateY(0deg) rotateX(10deg);
+    }
+    
+    /* Paused state for when hexagons are animating */
+    .orbit-container.paused {
+      animation-play-state: paused;
+    }
+
+    .logo-block {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      /* Make blocks slightly transparent */
+      opacity: 0.85;
+      backface-visibility: visible;
+      transform-style: preserve-3d;
+      /* Center all blocks initially */
+      top: 50%;
+      left: 50%;
+      /* Add two-tone effect with box shadows for depth */
+      box-shadow: 
+        inset 0 -4px 4px rgba(0, 0, 0, 0.2),
+        inset 0 4px 4px rgba(255, 255, 255, 0.2),
+        0 0 15px rgba(0, 0, 0, 0.3);
+      will-change: transform, opacity;
+      cursor: pointer;
+      /* Create hexagon shape with clip-path */
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    }
+    
+    /* Explosion animation for logo blocks */
+    @keyframes explode {
+      0% { 
+        transform: translate(0, 0) scale(1) rotate(0deg);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      }
+      50% { 
+        transform: var(--explosion-transform, translate(var(--explode-x, 50px), var(--explode-y, 50px)) scale(1.5) rotate(var(--explode-rotate, 360deg)));
+        box-shadow: 0 0 25px var(--block-color, rgba(255, 90, 0, 0.8));
+      }
+      100% { 
+        transform: translate(0, 0) scale(1) rotate(0deg); 
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      }
+    }
+    
+    /* Animation class for exploding blocks */
+    .logo-block.exploding {
+      animation: explode 2s cubic-bezier(0.22, 1, 0.36, 1);
+      animation-fill-mode: forwards;
+      z-index: 10;
+    }
+
+    /* Six differently colored blocks with two-tone gradient effect */
+    .block-1 {
+      background: linear-gradient(135deg, #ff7e33 0%, var(--primary-color) 100%);
+      box-shadow: 0 0 15px rgba(255, 90, 0, 0.4);
+    }
+
+    .block-2 {
+      background: linear-gradient(135deg, #5f8bfa 0%, var(--secondary-color) 100%);
+      box-shadow: 0 0 15px rgba(43, 103, 248, 0.4);
+    }
+
+    .block-3 {
+      background: linear-gradient(135deg, #84d569 0%, var(--tertiary-color) 100%);
+      box-shadow: 0 0 15px rgba(98, 178, 69, 0.4);
+    }
+
+    .block-4 {
+      background: linear-gradient(135deg, #fef066 0%, var(--accent-color-1) 100%);
+      box-shadow: 0 0 15px rgba(254, 228, 64, 0.4);
+    }
+    
+    .block-5 {
+      background: linear-gradient(135deg, #b77eeb 0%, var(--accent-color-2) 100%);
+      box-shadow: 0 0 15px rgba(155, 93, 229, 0.4);
+    }
+    
+    .block-6 {
+      background: linear-gradient(135deg, #4dcfff 0%, var(--accent-color-3) 100%);
+      box-shadow: 0 0 15px rgba(0, 187, 249, 0.4);
+    }
+
+    /* Container rotation */
+    @keyframes rotate-container {
+      0% { transform: rotateY(0deg) rotateX(10deg); }
+      100% { transform: rotateY(360deg) rotateX(10deg); }
+    }
+
+    /* Individual 3D orbits with different axes of rotation */
+    @keyframes orbit-1 {
+      0% { transform: rotateZ(0deg) translateX(26px) perspective(500px) rotateX(15deg) rotateY(10deg); }
+      100% { transform: rotateZ(360deg) translateX(26px) perspective(500px) rotateX(15deg) rotateY(10deg); }
+    }
+
+    @keyframes orbit-2 {
+      0% { transform: rotateY(60deg) rotateX(30deg) translateX(28px) perspective(500px) rotateX(-10deg) rotateY(15deg); }
+      100% { transform: rotateY(420deg) rotateX(30deg) translateX(28px) perspective(500px) rotateX(-10deg) rotateY(15deg); }
+    }
+
+    @keyframes orbit-3 {
+      0% { transform: rotateY(120deg) rotateZ(45deg) translateX(24px) perspective(500px) rotateX(5deg) rotateZ(15deg); }
+      100% { transform: rotateY(480deg) rotateZ(45deg) translateX(24px) perspective(500px) rotateX(5deg) rotateZ(15deg); }
+    }
+
+    @keyframes orbit-4 {
+      0% { transform: rotateX(60deg) rotateZ(70deg) translateX(30px) perspective(500px) rotateY(20deg) rotateZ(-5deg); }
+      100% { transform: rotateX(420deg) rotateZ(70deg) translateX(30px) perspective(500px) rotateY(20deg) rotateZ(-5deg); }
+    }
+    
+    @keyframes orbit-5 {
+      0% { transform: rotateX(120deg) rotateY(30deg) translateX(27px) perspective(500px) rotateZ(10deg) rotateX(-15deg); }
+      100% { transform: rotateX(480deg) rotateY(30deg) translateX(27px) perspective(500px) rotateZ(10deg) rotateX(-15deg); }
+    }
+    
+    @keyframes orbit-6 {
+      0% { transform: rotateZ(135deg) rotateY(45deg) translateX(29px) perspective(500px) rotateX(12deg) rotateY(-18deg); }
+      100% { transform: rotateZ(495deg) rotateY(45deg) translateX(29px) perspective(500px) rotateX(12deg) rotateY(-18deg); }
+    }
+
+    /* Animate logo blocks on page load and hover */
+    /* Default state for blocks */
+    .block-1 {
+      animation: orbit-1 12s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .block-2 {
+      animation: orbit-2 11s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .block-3 {
+      animation: orbit-3 14s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .block-4 {
+      animation: orbit-4 10s linear infinite;
+      animation-play-state: paused;
+    }
+    
+    .block-5 {
+      animation: orbit-5 13s linear infinite;
+      animation-play-state: paused;
+    }
+    
+    .block-6 {
+      animation: orbit-6 15s linear infinite;
+      animation-play-state: paused;
+    }
+
+    /* Play animations when logo is animated or hovered */
+    .logo-icon.animated .logo-block,
+    .logo:hover .logo-block {
+      animation-play-state: running;
+    }
+
+    .logo h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--tertiary-color), var(--accent-color-1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 300% 100%;
+      animation: gradient-shift 8s ease infinite;
+      margin-top: 14px; /* Midpoint between original 16px and adjusted 12px */
+    }
+
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      background-color: var(--dark-surface);
+      color: var(--dark-text);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    body.light-theme .theme-toggle {
+      background-color: var(--light-surface);
+      color: var(--light-text);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    /* Main content styling */
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    /* Hero section */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 1rem 0;
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-size: 2.75rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--tertiary-color), var(--accent-color-1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 300% 100%;
+      animation: gradient-shift 8s ease infinite;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      max-width: 800px;
+      margin-bottom: 1.5rem;
+      color: var(--dark-text-secondary);
+    }
+
+    body.light-theme .hero-subtitle {
+      color: var(--light-text-secondary);
+    }
+
+    .hero-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--primary-color);
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero-action:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Main content layout */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-height: calc(100vh - 170px); /* Set max-height instead of fixed height */
+      overflow-y: auto; /* Allow content to scroll vertically */
+      overflow-x: hidden; /* Hide horizontal scrollbar */
+      padding-right: 4px; /* Add slight padding for scrollbar */
+    }
+    
+    /* Feature cards section */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 1fr; /* Equal height rows */
+      gap: 1rem;
+      margin-bottom: 24px; /* Add 24px space before footer */
+      flex: 1;
+      min-height: 0; /* Allow proper sizing in flex layout */
+      align-items: stretch; /* Stretch items to fill rows */
+    }
+
+    /* Feature cards */
+    .feature-card {
+      background-color: var(--dark-surface);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      z-index: 1;
+      text-decoration: none; /* Remove underline since cards are links */
+      color: inherit; /* Inherit text color */
+      height: 120px; /* Fixed height for all cards */
+      padding: 1.5rem;
+      justify-content: flex-start; /* Top-align content vertically */
+      align-items: flex-start; /* Left-align content horizontally */
+      text-align: left; /* Left-align text */
+    }
+
+    body.light-theme .feature-card {
+      background-color: var(--light-surface);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+
+    .feature-card:nth-child(2)::before {
+      background: linear-gradient(90deg, var(--secondary-color), var(--tertiary-color));
+    }
+
+    .feature-card:nth-child(3)::before {
+      background: linear-gradient(90deg, var(--tertiary-color), var(--accent-color-1));
+    }
+
+    .feature-card:nth-child(4)::before {
+      background: linear-gradient(90deg, var(--accent-color-1), var(--accent-color-2));
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    body.light-theme .feature-card:hover {
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+    }
+    
+    /* Language tags */
+    .supported-languages {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .lang-tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background-color: var(--dark-surface-2);
+      color: var(--dark-text);
+    }
+    
+    body.light-theme .lang-tag {
+      background-color: var(--light-surface-2);
+      color: var(--light-text);
+    }
+    
+    .lang-tag:nth-child(1) {
+      background-color: rgba(255, 90, 0, 0.15);
+      color: var(--primary-color);
+    }
+    
+    .lang-tag:nth-child(2) {
+      background-color: rgba(43, 103, 248, 0.15);
+      color: var(--secondary-color);
+    }
+    
+    .lang-tag:nth-child(3) {
+      background-color: rgba(98, 178, 69, 0.15);
+      color: var(--tertiary-color);
+    }
+    
+    .lang-tag:nth-child(4) {
+      background-color: rgba(254, 228, 64, 0.15);
+      color: var(--accent-color-1);
+    }
+
+    .feature-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+      white-space: nowrap; /* Prevent wrapping */
+      overflow: hidden; /* Hide overflow */
+      text-overflow: ellipsis; /* Add ellipsis if needed */
+      width: 100%; /* Full width */
+      line-height: 1.2;
+    }
+
+    .feature-icon {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .feature-icon.examples {
+      color: var(--tertiary-color);
+    }
+
+    .feature-icon.config {
+      color: var(--accent-color-1);
+    }
+    
+    .feature-icon.cli {
+      color: var(--accent-color-2);
+    }
+    
+    .feature-icon.docs {
+      color: var(--primary-color);
+    }
+
+    .feature-description {
+      margin-top: 0.75rem;
+      margin-bottom: 0;
+      color: var(--dark-text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.2;
+      max-width: 100%;
+    }
+
+    body.light-theme .feature-description {
+      color: var(--light-text-secondary);
+    }
+
+    /* VS Code style code blocks with light/dark mode support */
+    pre {
+      background-color: var(--dark-surface-2);
+      border-radius: 6px;
+      padding: 0.75rem;
+      overflow-x: auto;
+      margin: 0.5rem 0 0.75rem 0;
+      font-family: 'Consolas', 'Menlo', 'Monaco', monospace;
+      font-size: 0.85rem;
+      line-height: 1.4;
+      flex-shrink: 0;
+      max-height: 80px;
+    }
+
+    body.light-theme pre {
+      background-color: #f5f5f5;
+    }
+
+    code {
+      color: #d4d4d4;
+      font-family: 'Consolas', 'Menlo', 'Monaco', monospace;
+    }
+
+    body.light-theme code {
+      color: #333;
+    }
+
+    /* VS Code themes */
+    .keyword {
+      color: #569cd6; /* blue in dark mode */
+    }
+
+    body.light-theme .keyword {
+      color: #0000ff; /* blue in light mode */
+    }
+
+    .string {
+      color: #ce9178; /* orange-brown in dark mode */
+    }
+
+    body.light-theme .string {
+      color: #a31515; /* red in light mode */
+    }
+
+    .function {
+      color: #dcdcaa; /* yellow in dark mode */
+    }
+
+    body.light-theme .function {
+      color: #795e26; /* brown in light mode */
+    }
+
+    /* Button styling */
+    .feature-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--dark-surface-2);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      margin-top: auto; /* Push to bottom of card */
+      align-self: flex-start;
+      font-size: 0.9rem;
+    }
+
+    body.light-theme .feature-button {
+      background-color: var(--light-surface-2);
+      color: var(--light-text);
+    }
+
+    .feature-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    body.light-theme .feature-button:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Primary button */
+    /* Make all buttons the same blue color */
+    .feature-button, .hero-action {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    /* Footer styling */
+    footer {
+      padding: 0.75rem 0;
+      border-top: 1px solid var(--dark-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--dark-text-secondary);
+      font-size: 0.85rem;
+      flex-shrink: 0; /* Prevent footer from shrinking */
+    }
+
+    body.light-theme footer {
+      border-top-color: var(--light-border);
+      color: var(--light-text-secondary);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-link {
+      color: var(--dark-text-secondary);
+      transition: color 0.3s ease;
+    }
+
+    body.light-theme .social-link {
+      color: var(--light-text-secondary);
+    }
+
+    .social-link:hover {
+      color: var(--primary-color);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.2rem;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+
+      .theme-toggle {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      
+      .header-controls {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+      }
+    }
+    
+    /* Tetris Modal Styles - Enterprise Edition */
+    .tetris-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 100;
+      backdrop-filter: blur(8px);
+      animation: fadeIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .tetris-modal-content {
+      background-color: var(--dark-surface);
+      color: var(--dark-text);
+      margin: 2% auto;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+      width: 850px;
+      max-width: 92%;
+      position: relative;
+      border-top: 6px solid;
+      border-image: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--tertiary-color), var(--accent-color-1)) 1;
+      animation: slideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    /* Add subtle hexagon pattern to modal background */
+    .tetris-modal-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: radial-gradient(var(--dark-surface-2) 10%, transparent 10%);
+      background-position: 0 0;
+      background-size: 20px 20px;
+      opacity: 0.07;
+      z-index: -1;
+      pointer-events: none;
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    body.light-theme .tetris-modal-content {
+      background-color: var(--light-surface);
+      color: var(--light-text);
+      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .tetris-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--dark-border);
+      padding-bottom: 12px;
+      width: 100%;
+    }
+    
+    body.light-theme .tetris-header {
+      border-bottom-color: var(--light-border);
+    }
+    
+    .tetris-title {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .tetris-header h2 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--tertiary-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 300% 100%;
+      animation: gradient-shift 8s ease infinite;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.1;
+    }
+    
+    .tetris-subtitle {
+      font-size: 0.85rem;
+      color: var(--accent-color-1);
+      margin-top: 4px;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+    
+    .tetris-header h2::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232b67f8' stroke-width='2'%3E%3Crect x='2' y='2' width='5' height='5' /%3E%3Crect x='2' y='7' width='5' height='5' /%3E%3Crect x='7' y='7' width='5' height='5' /%3E%3Crect x='7' y='12' width='5' height='5' /%3E%3Crect x='12' y='12' width='5' height='5' /%3E%3Crect x='12' y='17' width='5' height='5' /%3E%3Crect x='17' y='17' width='5' height='5' /%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      transition: transform 0.3s ease;
+    }
+    
+    .tetris-header h2:hover::before {
+      transform: rotate(90deg);
+    }
+    
+    .tetris-close {
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--dark-text-secondary);
+      transition: all 0.3s;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255, 255, 255, 0.1);
+      line-height: 0.85; /* Fix vertical alignment of × */
+      margin-top: 2px;
+      padding-bottom: 2px; /* Nudge the × up slightly */
+    }
+    
+    body.light-theme .tetris-close {
+      color: var(--light-text-secondary);
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    
+    .tetris-close:hover {
+      transform: scale(1.1);
+      color: var(--primary-color);
+    }
+    
+    .tetris-game-container {
+      display: flex;
+      gap: 24px;
+      align-items: stretch;
+      justify-content: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    /* Left section styling - game canvas and next piece */
+    .tetris-game-section {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      width: 300px; /* Fixed width for game section */
+      flex-shrink: 0;
+      height: 100%; /* Ensure full height */
+      justify-content: center;
+    }
+    
+    .tetris-canvas-container {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      max-width: 300px;
+    }
+    
+    #tetris-canvas {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      box-shadow: 
+        inset 0 0 15px rgba(0, 0, 0, 0.6),
+        0 5px 15px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      height: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    body.light-theme #tetris-canvas {
+      background-color: rgba(0, 0, 0, 0.05);
+      box-shadow: 
+        inset 0 0 10px rgba(0, 0, 0, 0.1),
+        0 5px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Add a subtle grid pattern to the canvas */
+    .tetris-canvas-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+      z-index: 1;
+      border-radius: 12px;
+    }
+    
+    body.light-theme .tetris-canvas-container::after {
+      background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+    }
+    
+    .tetris-canvas-start-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      opacity: 0.9;
+      z-index: 10;
+    }
+    
+    .tetris-canvas-start-button:hover {
+      transform: translate(-50%, -50%) scale(1.05);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+      opacity: 1;
+    }
+    
+    .tetris-canvas-start-button.hidden {
+      display: none;
+    }
+    
+    /* Right pane styling - info section */
+    .tetris-info {
+      width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding-left: 25px;
+      flex-shrink: 0;
+      height: 100%; /* Match height with left column */
+      justify-content: center; /* Center content vertically */
+    }
+    
+    /* Top row with next piece and score */
+    .tetris-top-row {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+    }
+    
+    .tetris-score-container {
+      background-color: rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      flex: 1;
+    }
+    
+    body.light-theme .tetris-score-container {
+      background-color: rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Score display redesign */
+    .score-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .main-score {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 5px;
+    }
+    
+    .main-score span {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .score-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+    
+    .detail-item {
+      background-color: rgba(0, 0, 0, 0.1);
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+    }
+    
+    body.light-theme .detail-item {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+    
+    .detail-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--dark-text-secondary);
+      margin-bottom: 3px;
+    }
+    
+    .detail-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--accent-color-1);
+    }
+    
+    body.light-theme .detail-label {
+      color: var(--light-text-secondary);
+    }
+    
+    /* Already updated in the next-piece section */
+    
+    /* Next piece box - redesigned */
+    .tetris-next-piece {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.15);
+      padding: 12px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+    
+    .tetris-next-piece h3 {
+      margin: 0 0 10px 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--secondary-color);
+      text-align: center;
+      border-bottom: 2px solid rgba(43, 103, 248, 0.3);
+      padding-bottom: 6px;
+      width: 100%;
+    }
+    
+    #tetris-next-canvas {
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      width: 80px;
+      height: 80px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+    }
+    
+    body.light-theme #tetris-next-canvas {
+      background-color: rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    body.light-theme .tetris-next-piece {
+      background-color: rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Removing old controls section as it's now part of the instruction panel */
+    
+    /* Instructions panel - matched to score and next piece */
+    .tetris-instructions-panel {
+      background-color: rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+    }
+    
+    body.light-theme .tetris-instructions-panel {
+      background-color: rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .tetris-instructions-panel h3 {
+      margin: 0 0 10px 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--secondary-color);
+      text-align: center;
+      border-bottom: 2px solid rgba(43, 103, 248, 0.3);
+      padding-bottom: 6px;
+      width: 100%;
+    }
+    
+    .instructions-content {
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Horizontal layout for instructions */
+    .instructions-row {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+    }
+    
+    .compact-controls, .compact-scoring {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background-color: rgba(0, 0, 0, 0.1);
+      border-radius: 6px;
+      padding: 10px;
+      flex: 1;
+    }
+    
+    body.light-theme .compact-controls,
+    body.light-theme .compact-scoring {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+    
+    .key-combo {
+      background-color: var(--dark-surface);
+      color: var(--accent-color-1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      text-align: center;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: inline-block;
+      margin-right: 4px;
+    }
+    
+    body.light-theme .key-combo {
+      background-color: var(--light-surface);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .scoring-item {
+      color: var(--dark-text-secondary);
+      margin-right: 8px;
+    }
+    
+    body.light-theme .scoring-item {
+      color: var(--light-text-secondary);
+    }
+    
+    .multiplier-note {
+      color: var(--tertiary-color);
+      font-style: italic;
+      font-size: 0.8rem;
+    }
+    
+    .tetris-start-button {
+      background-color: var(--secondary-color);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .tetris-start-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      background-color: var(--secondary-color);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 900px) {
+      .tetris-game-container {
+        flex-direction: column;
+        margin: 0 auto;
+      }
+      
+      /* Make the info section full width on mobile */
+      .tetris-info {
+        width: 100%;
+        order: 2; /* Move below the game on mobile */
+        padding-left: 0;
+        gap: 15px;
+      }
+      
+      /* Adjust game section for mobile */
+      .tetris-game-section {
+        width: 100%;
+        order: 1; /* Keep game at top on mobile */
+      }
+      
+      /* On mobile, maintain the layout but stack vertically */
+      .tetris-info {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      /* Keep next piece and score in a row on tablets */
+      .tetris-top-row {
+        display: flex;
+        gap: 15px;
+      }
+      
+      .tetris-next-piece {
+        flex: 1;
+      }
+      
+      .tetris-score-container {
+        flex: 1;
+      }
+      
+      .tetris-instructions-panel {
+        grid-area: instructions;
+      }
+      
+      .tetris-start-button {
+        grid-area: play;
+      }
+      
+      .tetris-canvas-container {
+        width: 100%;
+        max-width: none;
+        height: auto;
+        aspect-ratio: 1/2; /* Maintain aspect ratio */
+      }
+      
+      #tetris-canvas {
+        width: 100%;
+        height: 100%;
+      }
+      
+      /* For very small screens (<600px) */
+      @media (max-width: 600px) {
+        .tetris-top-row {
+          flex-direction: column;
+        }
+        
+        .instructions-row {
+          flex-direction: column;
+          gap: 10px;
+        }
+        
+        .compact-controls, .compact-scoring {
+          padding: 8px;
+        }
+      }
+    }
+
+
+    /* Extra spacing for the hero section */
+    .hero {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+    
+    /* Blueprint viewer styles removed */
+
+  </style>
+</head>
+<body class="dark-theme">
+  <!-- Abstract floating shapes background -->
+  <div class="abstract-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+    <div class="shape shape-4"></div>
+    <div class="shape shape-5"></div>
+    <div class="shape shape-6"></div>
+    <div class="shape shape-7"></div>
+    <div class="shape shape-8"></div>
+  </div>
+  
+  <!-- No modal overlay needed since cards are now direct links -->
+
+  <!-- Tetris Game Modal -->
+  <div id="tetris-modal" class="tetris-modal">
+    <div class="tetris-modal-content">
+      <div class="tetris-header">
+        <div class="tetris-title">
+          <h2>Assemble It</h2>
+          <div class="tetris-subtitle">Stack blocks, clear rows, have fun!</div>
+        </div>
+        <button id="tetris-close" class="tetris-close">&times;</button>
+      </div>
+      
+      <div class="tetris-game-container">
+        <!-- Left pane: Game canvas only -->
+        <div class="tetris-game-section">
+          <div class="tetris-canvas-container">
+            <canvas id="tetris-canvas" width="300" height="600"></canvas>
+            <button id="tetris-canvas-start" class="tetris-canvas-start-button">Start Game</button>
+          </div>
+        </div>
+        
+        <!-- Right pane layout -->
+        <div class="tetris-info">
+          <!-- Next Piece and Score in horizontal row -->
+          <div class="tetris-top-row">
+            <!-- Next piece section -->
+            <div class="tetris-next-piece">
+              <h3>Next Piece</h3>
+              <canvas id="tetris-next-canvas" width="80" height="80"></canvas>
+            </div>
+            
+            <!-- Score section - styled like next piece -->
+            <div class="tetris-score-container">
+              <h3>Score</h3>
+              <div class="score-content">
+                <div class="main-score">
+                  <span id="tetris-score">0</span>
+                </div>
+                <div class="score-details">
+                  <div class="detail-item">
+                    <div class="detail-label">Level</div>
+                    <div class="detail-value" id="tetris-level">1</div>
+                  </div>
+                  <div class="detail-item">
+                    <div class="detail-label">Lines</div>
+                    <div class="detail-value" id="tetris-lines">0</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Instructions section -->
+          <div class="tetris-instructions-panel">
+            <h3>Instructions</h3>
+            <div class="instructions-content">
+              <div class="instructions-row">
+                <div class="compact-controls">
+                  <div><span class="key-combo">←→</span> Move</div>
+                  <div><span class="key-combo">↑</span> Rotate</div>
+                  <div><span class="key-combo">↓</span> Soft Drop</div>
+                  <div><span class="key-combo">Space</span> Hard Drop</div>
+                  <div><span class="key-combo">P</span> Pause</div>
+                </div>
+                
+                <div class="compact-scoring">
+                  <div>1 Row: 100 pts</div>
+                  <div>2 Rows: 300 pts</div>
+                  <div>3 Rows: 500 pts</div>
+                  <div>4 Rows: 800 pts</div>
+                  <div class="multiplier-note">(Scores × level)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Play button -->
+          <button id="tetris-start" class="tetris-start-button">Play</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="logo">
+        <div class="logo-icon">
+          <div class="orbit-container">
+            <div class="logo-block block-1"></div>
+            <div class="logo-block block-2"></div>
+            <div class="logo-block block-3"></div>
+            <div class="logo-block block-4"></div>
+            <div class="logo-block block-5"></div>
+            <div class="logo-block block-6"></div>
+          </div>
+        </div>
+        <h1>AssembleJS</h1>
+      </div>
+      <div class="header-controls">
+        <button id="tetris-button" class="theme-toggle" aria-label="Play Assemble It" title="Play Assemble It" style="margin-right: 10px;">
+          <!-- Tetris blocks icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="5" height="5" />
+            <rect x="2" y="7" width="5" height="5" />
+            <rect x="7" y="7" width="5" height="5" />
+            <rect x="7" y="12" width="5" height="5" />
+            <rect x="12" y="12" width="5" height="5" />
+            <rect x="12" y="17" width="5" height="5" />
+            <rect x="17" y="17" width="5" height="5" />
+          </svg>
+        </button>
+        
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme" style="margin-right: 10px;">
+          <!-- Moon icon (shown in light mode) -->
+          <svg id="dark-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <!-- Sun icon (shown in dark mode) -->
+          <svg id="light-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+        
+    </header>
+
+    <main>
+      <section class="hero">
+        <h2 class="hero-title">Build Amazing UIs<br>With Reusable Components</h2>
+        <p class="hero-subtitle">
+          AssembleJS helps you create modular, reusable UI components that can be composed 
+          together to build complex applications. It supports multiple templating languages 
+          and provides server-side rendering with client-side hydration.
+        </p>
+
+        
+        <button id="start-button" class="hero-action">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          Create First Component
+        </button>
+      </section>
+
+      <section class="features">
+        <a href="https://assemblejs.com/developer/examples" class="feature-card">
+          <h3 class="feature-title">
+            <svg class="feature-icon examples" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            Examples
+          </h3>
+          <p class="feature-description">View demo components & project templates</p>
+        </a>
+
+        <a href="https://assemblejs.com/developer/configuration" class="feature-card">
+          <h3 class="feature-title">
+            <svg class="feature-icon config" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+            </svg>
+            Configuration
+          </h3>
+          <p class="feature-description">Setup & customize your project settings</p>
+        </a>
+
+        <a href="https://assemblejs.com/developer/cli" class="feature-card">
+          <h3 class="feature-title">
+            <svg class="feature-icon cli" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 13V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v8"></path>
+              <path d="M22 13H2"></path>
+              <path d="M11 16H6a2 2 0 0 0-2 2v3h9v-3a2 2 0 0 0-2-2Z"></path>
+              <path d="M20 16h-5a2 2 0 0 0-2 2v3h9v-3a2 2 0 0 0-2-2Z"></path>
+            </svg>
+            CLI
+          </h3>
+          <p class="feature-description">Command-line tools & code generators</p>
+        </a>
+
+        <a href="https://assemblejs.com/developer/docs" class="feature-card">
+          <h3 class="feature-title">
+            <svg class="feature-icon docs" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            Documentation
+          </h3>
+          <p class="feature-description">Complete guides & API reference docs</p>
+        </a>
+      </section>
+    </main>
+
+    <footer>
+      <p>Created with AssembleJS v1.0.0</p>
+      <div class="social-links">
+        <a href="https://github.com/zjayers/assemblejs" class="social-link" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+        </a>
+        <a href="https://twitter.com/assemblejs" class="social-link" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+          </svg>
+        </a>
+        <a href="https://assemblejs.com/docs" class="social-link" target="_blank">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+        </a>
+      </div>
+      <p>© 2023-2025 Zachariah Ayers</p>
+    </footer>
+  </div>
+
+  <script>
+    // Initialize everything immediately without waiting for DOMContentLoaded
+    (function() {
+      // Theme toggle functionality
+      const themeToggle = document.getElementById('theme-toggle');
+      const darkIcon = document.getElementById('dark-icon');
+      const lightIcon = document.getElementById('light-icon');
+      const startButton = document.getElementById('start-button');
+      const logoIcon = document.querySelector('.logo-icon');
+      
+      // Tetris game elements
+      const tetrisButton = document.getElementById('tetris-button');
+      const tetrisModal = document.getElementById('tetris-modal');
+      const tetrisClose = document.getElementById('tetris-close');
+      const tetrisStart = document.getElementById('tetris-start');
+      const tetrisCanvasStart = document.getElementById('tetris-canvas-start');
+      
+      // Theme handling - improved implementation
+      const updateThemeDisplay = (isLight) => {
+        // This shows/hides the appropriate icon based on current theme
+        if (isLight) {
+          // In light mode, show the moon (switch to dark)
+          darkIcon.style.display = 'block';
+          lightIcon.style.display = 'none';
+        } else {
+          // In dark mode, show the sun (switch to light)
+          darkIcon.style.display = 'none';
+          lightIcon.style.display = 'block';
+        }
+      };
+      
+      // Function to properly set theme
+      const setTheme = (theme) => {
+        if (theme === 'light') {
+          document.body.classList.add('light-theme');
+          document.body.style.backgroundColor = 'var(--light-bg)';
+          document.body.style.color = 'var(--light-text)';
+          localStorage.setItem('assemblejs-theme', 'light');
+          updateThemeDisplay(true);
+        } else {
+          document.body.classList.remove('light-theme');
+          document.body.style.backgroundColor = 'var(--dark-bg)';
+          document.body.style.color = 'var(--dark-text)';
+          localStorage.setItem('assemblejs-theme', 'dark');
+          updateThemeDisplay(false);
+        }
+        
+        // Force redraw of background elements
+        document.body.style.transition = 'background-color 0.3s ease';
+      };
+      
+      // Check for saved theme preference or use system preference
+      const savedTheme = localStorage.getItem('assemblejs-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      
+      // Set initial theme
+      if (savedTheme) {
+        // Use saved preference if available
+        setTheme(savedTheme);
+      } else {
+        // Otherwise use system preference
+        setTheme(prefersDark ? 'dark' : 'light');
+      }
+      
+      // Toggle theme when button is clicked
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = document.body.classList.contains('light-theme') ? 'light' : 'dark';
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        setTheme(newTheme);
+      });
+
+      // Start button action - redirect to /developer/create-first-component
+      startButton.addEventListener('click', () => {
+        window.location.href = 'https://assemblejs.com/developer/create-first-component';
+      });
+      
+      // Set up logo animation
+      const orbitContainer = document.querySelector('.orbit-container');
+      const logoBlocks = document.querySelectorAll('.logo-block');
+      
+      // Ensure logo animation starts after a short delay
+      setTimeout(() => {
+        // Add animated class to start animations
+        logoIcon.classList.add('animated');
+        console.log('Logo animation started');
+      }, 800);
+      
+      // Add click handlers to logo blocks
+      logoBlocks.forEach((block, index) => {
+        // Add click handler for explosion effect
+        block.addEventListener('click', (e) => {
+          e.stopPropagation(); // Prevent parent click
+          
+          // Don't do anything if already exploding
+          if (block.classList.contains('exploding')) return;
+          
+          // Pause the orbit container animation
+          orbitContainer.classList.add('paused');
+          
+          // Create explosion direction - each block explodes in a different direction
+          const angle = (index * 60) * (Math.PI / 180); // Convert to radians
+          const distance = 100; // How far to explode
+          const explodeX = Math.cos(angle) * distance;
+          const explodeY = Math.sin(angle) * distance;
+          
+          // Set custom properties for the explosion animation
+          block.style.setProperty('--explode-x', `${explodeX}px`);
+          block.style.setProperty('--explode-y', `${explodeY}px`);
+          block.style.setProperty('--explode-rotate', `${Math.random() * 720 - 360}deg`);
+          block.style.setProperty('--block-color', window.getComputedStyle(block).backgroundColor);
+          
+          // Add exploding class to trigger animation
+          block.classList.add('exploding');
+          console.log('Block exploding', index);
+          
+          // After animation completes, remove class and resume orbit
+          setTimeout(() => {
+            block.classList.remove('exploding');
+            
+            // Resume the orbit container animation
+            orbitContainer.classList.remove('paused');
+          }, 2000); // Match the animation duration
+        });
+      });
+      
+      // Function to handle logo explosion animation for all blocks  
+      function explodeLogoBlocks() {
+        // Only continue if we have blocks and orbit container
+        if (!logoBlocks.length || !orbitContainer) return;
+        
+        // Prevent firing if blocks are already exploding
+        if (orbitContainer.classList.contains('paused')) return;
+        
+        // Pause the orbit container animation
+        orbitContainer.classList.add('paused');
+        console.log('Group explosion started');
+        
+        // Trigger explosion on each block with slight delays
+        logoBlocks.forEach((block, index) => {
+          setTimeout(() => {
+            // Create explosion direction relative to center
+            const angle = (index * 60) * (Math.PI / 180); // Convert to radians
+            const distance = 120; // Further distance for group explosion
+            const explodeX = Math.cos(angle) * distance;
+            const explodeY = Math.sin(angle) * distance;
+            
+            // Set custom properties for the explosion animation
+            block.style.setProperty('--explode-x', `${explodeX}px`);
+            block.style.setProperty('--explode-y', `${explodeY}px`);
+            block.style.setProperty('--explode-rotate', `${angle * 30}deg`);
+            block.style.setProperty('--block-color', window.getComputedStyle(block).backgroundColor);
+            
+            // Add exploding class to trigger animation
+            block.classList.add('exploding');
+            
+            // After animation completes, remove class
+            setTimeout(() => {
+              block.classList.remove('exploding');
+              
+              // Resume the orbit container animation when the last block is done
+              if (index === logoBlocks.length - 1) {
+                setTimeout(() => {
+                  orbitContainer.classList.remove('paused');
+                }, 300); // Small additional delay for smoother return
+              }
+            }, 2000); // Animation duration
+          }, index * 120); // Staggered start for each block
+        });
+      }
+      
+      // Add click handler to logo icon
+      logoIcon.addEventListener('click', explodeLogoBlocks);
+      
+      // Also add click handler to the orbit container for better clickability
+      orbitContainer.addEventListener('click', function(e) {
+        // Prevent event from bubbling to individual blocks
+        e.stopPropagation();
+        // Trigger the explosion
+        explodeLogoBlocks();
+      });
+      
+      // Extremely minimal logo movement
+      document.addEventListener('mousemove', (e) => {
+        // Calculate position in viewport (0-1)
+        const posX = e.clientX / window.innerWidth;
+        const posY = e.clientY / window.innerHeight;
+        
+        // Extremely small movement (max 5px in any direction)
+        const moveX = (posX - 0.5) * 5;
+        const moveY = (posY - 0.5) * 5;
+        
+        // Apply very subtle transform
+        logoIcon.style.transform = `translate(${moveX}px, ${moveY}px)`;
+      });
+      
+      // Make the feature-button clickable but prevent it from bubbling
+      document.querySelectorAll('.feature-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+          // Get the parent link card
+          const card = button.closest('.feature-card');
+          if (card) {
+            // Get the href from the parent card
+            const href = card.getAttribute('href');
+            // Navigate to the href
+            window.location.href = href;
+            // Prevent the parent link from also triggering
+            e.stopPropagation();
+          }
+        });
+      });
+      
+      // Add gravitational parallax effect to background and shapes
+      const shapes = document.querySelectorAll('.shape');
+      
+      // Track mouse position and target positions
+      let mouseX = 0.5, mouseY = 0.5;
+      let targetParallaxX = 0, targetParallaxY = 0;
+      let targetReverseX = 0, targetReverseY = 0;
+      let shapesTargetPos = Array(shapes.length).fill().map(() => ({ x: 0, y: 0 }));
+      
+      // Constants for gravitational effect
+      const parallaxIntensity = 15; // Base intensity (increased for more noticeable movement)
+      const gravitationalEasing = 0.03; // How quickly elements move toward target (higher = more responsive)
+      const maxDistanceInfluence = 1.0; // Maximum influence distance (increased to affect elements further away)
+      const gravityMultiplier = 1.2; // How strong the gravitational pull is (increased for stronger effect)
+      
+      // Function to calculate the gravitational influence based on distance
+      function calculateGravitationalInfluence(distance, maxDistance) {
+        // If too far, no influence
+        if (distance > maxDistance) return 0;
+        
+        // Inverse square law - mimics real gravity
+        // (1 / distance²) but clamped to avoid extreme values
+        const distanceSquared = Math.max(0.1, distance * distance); // Avoid division by zero
+        const inverseSquare = 1 / distanceSquared;
+        
+        // Scale and clamp the result
+        return Math.min(inverseSquare * gravityMultiplier, 3);
+      }
+      
+      // Update mouse position on move
+      document.addEventListener('mousemove', (e) => {
+        // Calculate mouse position as percentage of viewport
+        mouseX = e.clientX / window.innerWidth;
+        mouseY = e.clientY / window.innerHeight;
+      });
+      
+      // Also track mouseover to ensure we start with the right position 
+      document.addEventListener('mouseover', (e) => {
+        if (!mouseX || !mouseY) {
+          mouseX = e.clientX / window.innerWidth;
+          mouseY = e.clientY / window.innerHeight;
+        }
+      }, { once: true });
+      
+      // Handle mouse leaving the window
+      document.addEventListener('mouseleave', () => {
+        // When mouse leaves, slowly return elements to center
+        const returnToCenter = () => {
+          mouseX = 0.5;
+          mouseY = 0.5;
+        };
+        // Add slight delay for smoother transition
+        setTimeout(returnToCenter, 500);
+      });
+      
+      // Animation loop for smooth, physics-based movement
+      function animateParallax() {
+        // Calculate offset based on mouse position with gravitational influence
+        const offsetX = (mouseX - 0.5) * parallaxIntensity;
+        const offsetY = (mouseY - 0.5) * parallaxIntensity;
+        
+        // Gradually move current position toward target position for background layers
+        targetParallaxX += (offsetX - targetParallaxX) * gravitationalEasing;
+        targetParallaxY += (offsetY - targetParallaxY) * gravitationalEasing;
+        targetReverseX += (-offsetX * 0.7 - targetReverseX) * gravitationalEasing;
+        targetReverseY += (-offsetY * 0.7 - targetReverseY) * gravitationalEasing;
+        
+        // Apply smooth, gradual movement to background layers
+        document.body.style.setProperty('--parallax-x', `${targetParallaxX}px`);
+        document.body.style.setProperty('--parallax-y', `${targetParallaxY}px`);
+        document.body.style.setProperty('--parallax-reverse-x', `${targetReverseX}px`);
+        document.body.style.setProperty('--parallax-reverse-y', `${targetReverseY}px`);
+        
+        // Update and apply movement to each shape with varying gravitational influences
+        shapes.forEach((shape, index) => {
+          // Get shape position relative to viewport
+          const rect = shape.getBoundingClientRect();
+          const shapeX = (rect.left + rect.width / 2) / window.innerWidth;
+          const shapeY = (rect.top + rect.height / 2) / window.innerHeight;
+          
+          // Calculate distance from mouse to shape (normalized 0-1)
+          const dx = mouseX - shapeX;
+          const dy = mouseY - shapeY;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          // Calculate gravitational influence based on distance
+          const influence = calculateGravitationalInfluence(distance, maxDistanceInfluence);
+          
+          // Different shapes have different mass (resistance to movement)
+          const mass = 0.7 + (index * 0.08);
+          const easingFactor = gravitationalEasing / mass;
+          
+          // Direction is toward the mouse for gravitational pull
+          // Multiply by shape-specific factors for variety
+          const directionX = dx * influence * parallaxIntensity * (1 + (index % 3) * 0.5);
+          const directionY = dy * influence * parallaxIntensity * (1 + (index % 2) * 0.6);
+          
+          // Add some randomness to make movement more organic
+          const jitterX = Math.sin(Date.now() * 0.001 + index) * 0.2;
+          const jitterY = Math.cos(Date.now() * 0.001 + index) * 0.2;
+          
+          // Set maximum range to prevent bunching
+          const maxRange = 40; // Maximum pixel distance from original position
+          
+          // Limit the range to prevent bunching up
+          const limitedX = Math.max(-maxRange, Math.min(maxRange, directionX));
+          const limitedY = Math.max(-maxRange, Math.min(maxRange, directionY)); 
+          
+          // Add spring-back effect when away from mouse too long
+          const distanceFromOrigin = Math.sqrt(
+            shapesTargetPos[index].x * shapesTargetPos[index].x + 
+            shapesTargetPos[index].y * shapesTargetPos[index].y
+          );
+          
+          // Stronger spring force the further the shape gets from origin
+          const springForce = Math.max(0, (distanceFromOrigin - 20) / 100);
+          
+          // Update target position with gravitational pull, limits and spring-back
+          shapesTargetPos[index].x += (limitedX - shapesTargetPos[index].x) * easingFactor - shapesTargetPos[index].x * springForce;
+          shapesTargetPos[index].y += (limitedY - shapesTargetPos[index].y) * easingFactor - shapesTargetPos[index].y * springForce;
+          
+          // Final position includes slight jitter
+          const finalX = shapesTargetPos[index].x + jitterX;
+          const finalY = shapesTargetPos[index].y + jitterY;
+          
+          // Apply transform with eased values and add rotation proportional to movement
+          const rotation = Math.max(2, Math.min(20, Math.abs(finalX * 0.1)));
+          shape.style.transform = `translate(${finalX}px, ${finalY}px) 
+                                  rotate(${rotation * Math.sign(finalX)}deg) 
+                                  scale(${1 + Math.abs(influence) * 0.05})`;
+        });
+        
+        // Continue the animation loop
+        requestAnimationFrame(animateParallax);
+      }
+      
+      // Start the animation loop
+      animateParallax();
+      
+      // =============== TETRIS GAME IMPLEMENTATION ===============
+      
+      // Get canvas contexts
+      const canvas = document.getElementById('tetris-canvas');
+      const ctx = canvas.getContext('2d');
+      const nextCanvas = document.getElementById('tetris-next-canvas');
+      const nextCtx = nextCanvas.getContext('2d');
+      
+      // Score elements
+      const scoreElement = document.getElementById('tetris-score');
+      const levelElement = document.getElementById('tetris-level');
+      const linesElement = document.getElementById('tetris-lines');
+      
+      // Game constants
+      const COLS = 10;
+      const ROWS = 20;
+      const BLOCK_SIZE = 30;
+      const COLORS = [
+        null,
+        'rgba(255, 90, 0, 1)',    // primary-color
+        'rgba(43, 103, 248, 1)',  // secondary-color
+        'rgba(98, 178, 69, 1)',   // tertiary-color
+        'rgba(254, 228, 64, 1)',  // accent-color-1
+        'rgba(155, 93, 229, 1)',  // accent-color-2
+        'rgba(0, 187, 249, 1)',   // accent-color-3
+        'rgba(241, 91, 181, 1)'   // accent-color-4
+      ];
+      
+      // Game state
+      let board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+      let score = 0;
+      let level = 1;
+      let lines = 0;
+      let nextPiece = null;
+      let piece = null;
+      let dropCounter = 0;
+      let dropInterval = 1000;
+      let lastTime = 0;
+      let gameRunning = false;
+      let gamePaused = false;
+      
+      // Draw a two-tone hexagonal block to match logo style
+      function drawHexBlock(ctx, x, y, color) {
+        const blockSize = BLOCK_SIZE;
+        
+        // Parse the color to create two-tone effect
+        const baseColor = color.replace('rgba(', '').replace(')', '').split(',');
+        const r = parseInt(baseColor[0].trim());
+        const g = parseInt(baseColor[1].trim());
+        const b = parseInt(baseColor[2].trim());
+        
+        // Create gradient colors - semi-transparent
+        const mainColor = `rgba(${r}, ${g}, ${b}, 0.85)`;
+        const lighterColor = `rgba(${Math.min(r + 40, 255)}, ${Math.min(g + 40, 255)}, ${Math.min(b + 40, 255)}, 0.7)`;
+        
+        // Create the hexagon path
+        ctx.beginPath();
+        ctx.moveTo(x + blockSize * 0.25, y);
+        ctx.lineTo(x + blockSize * 0.75, y);
+        ctx.lineTo(x + blockSize, y + blockSize * 0.5);
+        ctx.lineTo(x + blockSize * 0.75, y + blockSize);
+        ctx.lineTo(x + blockSize * 0.25, y + blockSize);
+        ctx.lineTo(x, y + blockSize * 0.5);
+        ctx.closePath();
+        
+        // Create and apply gradient
+        const gradient = ctx.createLinearGradient(
+          x, y, 
+          x + blockSize, y + blockSize
+        );
+        gradient.addColorStop(0.2, lighterColor);
+        gradient.addColorStop(0.8, mainColor);
+        
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        
+        // Add highlight at the top (more subtle)
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.beginPath();
+        ctx.moveTo(x + blockSize * 0.25, y);
+        ctx.lineTo(x + blockSize * 0.75, y);
+        ctx.lineTo(x + blockSize * 0.65, y + blockSize * 0.25);
+        ctx.lineTo(x + blockSize * 0.35, y + blockSize * 0.25);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Add subtle border
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      
+      // Tetris pieces with colors corresponding to the AssembleJS color scheme
+      const PIECES = [
+        // I piece (color 1)
+        [
+          [0, 0, 0, 0],
+          [1, 1, 1, 1],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0]
+        ],
+        // J piece (color 2)
+        [
+          [2, 0, 0],
+          [2, 2, 2],
+          [0, 0, 0]
+        ],
+        // L piece (color 3)
+        [
+          [0, 0, 3],
+          [3, 3, 3],
+          [0, 0, 0]
+        ],
+        // O piece (color 4)
+        [
+          [4, 4],
+          [4, 4]
+        ],
+        // S piece (color 5)
+        [
+          [0, 5, 5],
+          [5, 5, 0],
+          [0, 0, 0]
+        ],
+        // T piece (color 6)
+        [
+          [0, 6, 0],
+          [6, 6, 6],
+          [0, 0, 0]
+        ],
+        // Z piece (color 7)
+        [
+          [7, 7, 0],
+          [0, 7, 7],
+          [0, 0, 0]
+        ]
+      ];
+      
+      // Generate a random piece
+      function randomPiece() {
+        const pieceIndex = Math.floor(Math.random() * PIECES.length);
+        const matrix = PIECES[pieceIndex];
+        return {
+          matrix,
+          position: { 
+            x: Math.floor(COLS / 2) - Math.floor(matrix[0].length / 2),
+            y: 0
+          }
+        };
+      }
+      
+      // Draw the game board
+      function drawBoard() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = document.body.classList.contains('light-theme') ? 
+          'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.3)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw grid lines
+        ctx.strokeStyle = document.body.classList.contains('light-theme') ? 
+          'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.05)';
+        ctx.lineWidth = 1;
+        
+        // Draw horizontal grid lines
+        for (let row = 1; row < ROWS; row++) {
+          ctx.beginPath();
+          ctx.moveTo(0, row * BLOCK_SIZE);
+          ctx.lineTo(COLS * BLOCK_SIZE, row * BLOCK_SIZE);
+          ctx.stroke();
+        }
+        
+        // Draw vertical grid lines
+        for (let col = 1; col < COLS; col++) {
+          ctx.beginPath();
+          ctx.moveTo(col * BLOCK_SIZE, 0);
+          ctx.lineTo(col * BLOCK_SIZE, ROWS * BLOCK_SIZE);
+          ctx.stroke();
+        }
+        
+        // Draw blocks
+        board.forEach((row, y) => {
+          row.forEach((value, x) => {
+            if (value !== 0) {
+              drawHexBlock(
+                ctx,
+                x * BLOCK_SIZE,
+                y * BLOCK_SIZE,
+                COLORS[value]
+              );
+            }
+          });
+        });
+        
+        // Draw current piece
+        if (piece) {
+          piece.matrix.forEach((row, y) => {
+            row.forEach((value, x) => {
+              if (value !== 0) {
+                drawHexBlock(
+                  ctx,
+                  (piece.position.x + x) * BLOCK_SIZE,
+                  (piece.position.y + y) * BLOCK_SIZE,
+                  COLORS[value]
+                );
+              }
+            });
+          });
+        }
+      }
+      
+      // Draw next piece preview optimized for the horizontal layout
+      function drawNextPiece() {
+        // Clear the canvas
+        nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
+        
+        // Draw background
+        nextCtx.fillStyle = document.body.classList.contains('light-theme') ? 
+          'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.2)';
+        nextCtx.fillRect(0, 0, nextCanvas.width, nextCanvas.height);
+        
+        if (nextPiece) {
+          const matrix = nextPiece.matrix;
+          
+          // For smaller canvas, we want blocks to be more compact
+          // Aim for 80% of the canvas width to be used
+          const maxDimension = Math.max(matrix.length, matrix[0].length);
+          const previewBlockSize = Math.min(
+            Math.floor(nextCanvas.width * 0.8 / maxDimension),
+            Math.floor(nextCanvas.height * 0.8 / maxDimension)
+          );
+          
+          // Ensure a reasonable size for visibility (smaller than main game)
+          const blockSize = Math.max(Math.min(previewBlockSize, 20), 12);
+          
+          // Calculate centering offsets
+          const totalWidth = matrix[0].length * blockSize;
+          const totalHeight = matrix.length * blockSize;
+          const offsetX = (nextCanvas.width - totalWidth) / 2;
+          const offsetY = (nextCanvas.height - totalHeight) / 2;
+          
+          // Draw each block of the piece
+          matrix.forEach((row, y) => {
+            row.forEach((value, x) => {
+              if (value !== 0) {
+                // Use the same drawHexBlock function but with preview-specific blockSize
+                const blockX = offsetX + x * blockSize;
+                const blockY = offsetY + y * blockSize;
+                
+                // Draw a simpler version of the hexagon for the preview
+                drawSimplePreviewBlock(
+                  nextCtx,
+                  blockX,
+                  blockY,
+                  COLORS[value],
+                  blockSize
+                );
+              }
+            });
+          });
+        }
+      }
+      
+      // Simplified block drawing for the preview (faster rendering)
+      function drawSimplePreviewBlock(ctx, x, y, color, blockSize) {
+        // Parse the color to create two-tone effect
+        const baseColor = color.replace('rgba(', '').replace(')', '').split(',');
+        const r = parseInt(baseColor[0].trim());
+        const g = parseInt(baseColor[1].trim());
+        const b = parseInt(baseColor[2].trim());
+        
+        // Simpler, more transparent colors for the preview
+        const mainColor = `rgba(${r}, ${g}, ${b}, 0.8)`;
+        
+        // Create the hexagon path
+        ctx.beginPath();
+        ctx.moveTo(x + blockSize * 0.25, y);
+        ctx.lineTo(x + blockSize * 0.75, y);
+        ctx.lineTo(x + blockSize, y + blockSize * 0.5);
+        ctx.lineTo(x + blockSize * 0.75, y + blockSize);
+        ctx.lineTo(x + blockSize * 0.25, y + blockSize);
+        ctx.lineTo(x, y + blockSize * 0.5);
+        ctx.closePath();
+        
+        // Fill with solid color for better visibility in small size
+        ctx.fillStyle = mainColor;
+        ctx.fill();
+        
+        // Simpler border for better definition
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+      
+      // Draw a hexagon for the preview (scaled version of drawHexBlock)
+      function drawPreviewHexBlock(ctx, x, y, color, blockSize) {
+        // Parse the color to create two-tone effect
+        const baseColor = color.replace('rgba(', '').replace(')', '').split(',');
+        const r = parseInt(baseColor[0].trim());
+        const g = parseInt(baseColor[1].trim());
+        const b = parseInt(baseColor[2].trim());
+        
+        // Create gradient colors - semi-transparent
+        const mainColor = `rgba(${r}, ${g}, ${b}, 0.85)`;
+        const lighterColor = `rgba(${Math.min(r + 40, 255)}, ${Math.min(g + 40, 255)}, ${Math.min(b + 40, 255)}, 0.7)`;
+        
+        // Create the hexagon path
+        ctx.beginPath();
+        ctx.moveTo(x + blockSize * 0.25, y);
+        ctx.lineTo(x + blockSize * 0.75, y);
+        ctx.lineTo(x + blockSize, y + blockSize * 0.5);
+        ctx.lineTo(x + blockSize * 0.75, y + blockSize);
+        ctx.lineTo(x + blockSize * 0.25, y + blockSize);
+        ctx.lineTo(x, y + blockSize * 0.5);
+        ctx.closePath();
+        
+        // Create and apply gradient
+        const gradient = ctx.createLinearGradient(
+          x, y, 
+          x + blockSize, y + blockSize
+        );
+        gradient.addColorStop(0.2, lighterColor);
+        gradient.addColorStop(0.8, mainColor);
+        
+        ctx.fillStyle = gradient;
+        ctx.fill();
+        
+        // Add highlight at the top (more subtle)
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.beginPath();
+        ctx.moveTo(x + blockSize * 0.25, y);
+        ctx.lineTo(x + blockSize * 0.75, y);
+        ctx.lineTo(x + blockSize * 0.65, y + blockSize * 0.25);
+        ctx.lineTo(x + blockSize * 0.35, y + blockSize * 0.25);
+        ctx.closePath();
+        ctx.fill();
+        
+        // Add subtle border
+        ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      
+      // Check for collision
+      function checkCollision(piece, board, offsetX = 0, offsetY = 0) {
+        return piece.matrix.some((row, y) => {
+          return row.some((value, x) => {
+            return value !== 0 && (
+              board[y + piece.position.y + offsetY] === undefined ||
+              board[y + piece.position.y + offsetY][x + piece.position.x + offsetX] === undefined ||
+              board[y + piece.position.y + offsetY][x + piece.position.x + offsetX] !== 0
+            );
+          });
+        });
+      }
+      
+      // Rotate a piece matrix
+      function rotatePiece(matrix) {
+        const N = matrix.length;
+        const result = Array.from({ length: N }, () => Array(N).fill(0));
+        
+        for (let y = 0; y < N; y++) {
+          for (let x = 0; x < N; x++) {
+            result[x][N - 1 - y] = matrix[y][x];
+          }
+        }
+        
+        return result;
+      }
+      
+      // Merge piece with board
+      function mergePiece() {
+        piece.matrix.forEach((row, y) => {
+          row.forEach((value, x) => {
+            if (value !== 0) {
+              board[y + piece.position.y][x + piece.position.x] = value;
+            }
+          });
+        });
+      }
+      
+      // Clear completed rows - with direct score update and debugging
+      function clearRows() {
+        let linesCleared = 0;
+        let rowsToClear = [];
+        
+        // First, find all complete rows
+        for (let y = 0; y < ROWS; y++) {
+          let rowComplete = true;
+          
+          for (let x = 0; x < COLS; x++) {
+            if (board[y][x] === 0) {
+              rowComplete = false;
+              break;
+            }
+          }
+          
+          if (rowComplete) {
+            rowsToClear.push(y);
+          }
+        }
+        
+        // Now clear the rows (from bottom to top to avoid shifting issues)
+        if (rowsToClear.length > 0) {
+          // Sort rows in descending order (bottom to top)
+          rowsToClear.sort((a, b) => b - a);
+          
+          // Clear each complete row
+          rowsToClear.forEach(rowY => {
+            // Flash the row before clearing (visual feedback)
+            for (let x = 0; x < COLS; x++) {
+              // Set the color to white temporarily for visual feedback
+              board[rowY][x] = 0;
+            }
+            
+            // Shift all rows above downward
+            for (let y = rowY; y > 0; y--) {
+              for (let x = 0; x < COLS; x++) {
+                board[y][x] = board[y - 1][x];
+              }
+            }
+            
+            // Clear the top row
+            for (let x = 0; x < COLS; x++) {
+              board[0][x] = 0;
+            }
+          });
+          
+          linesCleared = rowsToClear.length;
+          
+          // Update score and level
+          const scoreMap = [0, 100, 300, 500, 800];
+          const index = Math.min(linesCleared, 4);
+          const points = scoreMap[index] * level;
+          
+          // Update game state
+          score += points;
+          lines += linesCleared;
+          
+          // Every 10 lines, increase level
+          level = Math.floor(lines / 10) + 1;
+          
+          // Update dropInterval based on level (gets faster with higher levels)
+          dropInterval = Math.max(100, 1000 - (level - 1) * 100);
+          
+          // Force update UI with toString() to ensure it's treated as text
+          scoreElement.textContent = score.toString();
+          levelElement.textContent = level.toString();
+          linesElement.textContent = lines.toString();
+          
+          console.log(`Cleared ${linesCleared} lines, added ${points} points, score now: ${score}`);
+          
+          // Force redraw
+          drawBoard();
+        }
+        
+        return linesCleared > 0; // Return true if rows were cleared
+      }
+      
+      // Reset game state
+      function resetGame() {
+        // Clear the board
+        board = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+        
+        // Reset game stats
+        score = 0;
+        level = 1;
+        lines = 0;
+        dropCounter = 0;
+        dropInterval = 1000;
+        
+        // Update UI
+        scoreElement.textContent = score;
+        levelElement.textContent = level;
+        linesElement.textContent = lines;
+        
+        // Generate first pieces - set both to ensure we have pieces to play with
+        nextPiece = randomPiece();
+        piece = randomPiece();
+        
+        // Draw next piece
+        drawNextPiece();
+      }
+      
+      // Get next piece
+      function getNewPiece() {
+        piece = nextPiece;
+        nextPiece = randomPiece();
+        drawNextPiece();
+        
+        // Check if game over
+        if (checkCollision(piece, board)) {
+          gameRunning = false;
+          
+          // Update both buttons for game over state
+          const gameOverText = 'Game Over - Play Again';
+          tetrisStart.textContent = gameOverText;
+          tetrisCanvasStart.textContent = gameOverText;
+          
+          // Show both buttons
+          tetrisStart.style.display = 'block';
+          tetrisCanvasStart.classList.remove('hidden');
+        }
+      }
+      
+      // Move piece down - updated to handle cleared rows
+      function dropPiece() {
+        piece.position.y++;
+        if (checkCollision(piece, board)) {
+          piece.position.y--;
+          mergePiece();
+          
+          // Clear rows and get new piece after a brief delay
+          // This allows for a visual pause to see line clears
+          const rowsCleared = clearRows();
+          
+          if (rowsCleared) {
+            // Small delay before getting the next piece to see rows clear
+            setTimeout(() => {
+              getNewPiece();
+            }, 100);
+          } else {
+            getNewPiece();
+          }
+        }
+        dropCounter = 0;
+      }
+      
+      // Do hard drop (drop as far as possible) - updated to match dropPiece behavior
+      function hardDrop() {
+        // Drop piece down until collision
+        while (!checkCollision(piece, board, 0, 1)) {
+          piece.position.y++;
+        }
+        
+        // Flash effect for hard drop
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+        piece.matrix.forEach((row, y) => {
+          row.forEach((value, x) => {
+            if (value !== 0) {
+              ctx.fillRect(
+                (piece.position.x + x) * BLOCK_SIZE,
+                (piece.position.y + y) * BLOCK_SIZE,
+                BLOCK_SIZE, BLOCK_SIZE
+              );
+            }
+          });
+        });
+        
+        // Small delay for visual effect
+        setTimeout(() => {
+          // Lock the piece
+          dropPiece();
+        }, 50);
+      }
+      
+      // Handle key presses
+      function handleKeyPress(e) {
+        if (!gameRunning || gamePaused) return;
+        
+        switch (e.keyCode) {
+          // Arrow left - move left
+          case 37:
+            if (!checkCollision(piece, board, -1, 0)) {
+              piece.position.x--;
+            }
+            break;
+          
+          // Arrow up - rotate
+          case 38:
+            const rotated = rotatePiece(piece.matrix);
+            // Save current position
+            const pos = piece.position.x;
+            
+            // Wall kick logic - try to rotate even if it would collide with wall
+            let offset = 1;
+            piece.matrix = rotated;
+            
+            // If collision after rotation, try shifting left/right
+            while (checkCollision(piece, board)) {
+              piece.position.x += offset;
+              offset = -(offset + (offset > 0 ? 1 : -1));
+              
+              // If we've tried shifting too far, restore original position and matrix
+              if (offset > 5) {
+                piece.position.x = pos;
+                piece.matrix = rotatePiece(rotatePiece(rotatePiece(rotated))); // Rotate back
+                break;
+              }
+            }
+            break;
+            
+          // Arrow right - move right
+          case 39:
+            if (!checkCollision(piece, board, 1, 0)) {
+              piece.position.x++;
+            }
+            break;
+            
+          // Arrow down - soft drop
+          case 40:
+            dropPiece();
+            break;
+            
+          // Spacebar - hard drop
+          case 32:
+            hardDrop();
+            break;
+            
+          // P key - pause
+          case 80:
+            togglePause();
+            break;
+        }
+      }
+      
+      // Toggle game pause
+      function togglePause() {
+        gamePaused = !gamePaused;
+        
+        // Update buttons based on game state
+        const buttonText = gamePaused ? 'Resume Game' : 'Pause Game';
+        tetrisStart.textContent = buttonText;
+        
+        // Show or hide the canvas button
+        if (gamePaused) {
+          tetrisCanvasStart.classList.remove('hidden');
+          tetrisCanvasStart.textContent = 'Resume Game';
+        } else {
+          tetrisCanvasStart.classList.add('hidden');
+        }
+        
+        // Force update the score display to ensure it's accurate
+        scoreElement.textContent = score.toString();
+        levelElement.textContent = level.toString();
+        linesElement.textContent = lines.toString();
+      }
+      
+      // Main game loop - simplified and more robust
+      function update(time = 0) {
+        // If not running, just keep the animation frame going but don't do game logic
+        if (!gameRunning) {
+          requestAnimationFrame(update);
+          return;
+        }
+        
+        // If paused, just draw the current state and continue the loop
+        if (gamePaused) {
+          drawBoard();
+          requestAnimationFrame(update);
+          return;
+        }
+        
+        // Calculate time since last frame
+        const deltaTime = time - lastTime;
+        lastTime = time;
+        
+        // Increment drop counter and drop piece if needed
+        dropCounter += deltaTime;
+        if (dropCounter > dropInterval) {
+          dropPiece();
+        }
+        
+        // Always draw the board
+        drawBoard();
+        
+        // Continue the game loop
+        requestAnimationFrame(update);
+      }
+      
+      // Start the game with proper initialization
+      function startGame() {
+        // Reset the game state
+        score = 0;
+        level = 1;
+        lines = 0;
+        
+        // Reset the board and pieces
+        resetGame();
+        
+        // Set game running state
+        gameRunning = true;
+        gamePaused = false;
+        
+        // Update both start buttons to show "Pause Game"
+        tetrisStart.textContent = 'Pause Game';
+        tetrisCanvasStart.textContent = 'Pause Game';
+        
+        // Hide the canvas start button
+        tetrisCanvasStart.classList.add('hidden');
+        
+        // Make sure we have a piece to play with
+        if (!piece) {
+          getNewPiece();
+        }
+        
+        // Draw the initial state
+        drawBoard();
+        drawNextPiece();
+        
+        // Force update score display
+        scoreElement.textContent = '0';
+        levelElement.textContent = '1';
+        linesElement.textContent = '0';
+        
+        // Reset game timers
+        lastTime = performance.now();
+        dropCounter = 0;
+        dropInterval = 1000;
+        
+        console.log("Game started with score:", score);
+      }
+      
+      // Open Tetris modal
+      tetrisButton.addEventListener('click', () => {
+        // Make sure the modal is visible and properly styled
+        tetrisModal.style.display = 'block';
+        tetrisModal.style.zIndex = '100';
+        
+        // Ensure the proper button state
+        tetrisStart.style.display = 'block';
+        
+        // Reset game if not running
+        if (!gameRunning) {
+          resetGame();
+          drawBoard();
+          
+          // Make sure start buttons show correct text
+          tetrisStart.textContent = 'Start Game';
+          tetrisCanvasStart.textContent = 'Start Game';
+          tetrisCanvasStart.classList.remove('hidden');
+        } else if (gamePaused) {
+          // If game was paused, show resume button
+          tetrisStart.textContent = 'Resume Game';
+          tetrisCanvasStart.textContent = 'Resume Game';
+          tetrisCanvasStart.classList.remove('hidden');
+        } else {
+          // If game is running, show pause button
+          tetrisStart.textContent = 'Pause Game';
+          tetrisCanvasStart.classList.add('hidden');
+        }
+      });
+      
+      // Canvas start button handler
+      tetrisCanvasStart.addEventListener('click', () => {
+        if (!gameRunning) {
+          startGame();
+        } else if (gamePaused) {
+          togglePause(); // Resume the game
+        }
+      });
+      
+      // Close Tetris modal
+      tetrisClose.addEventListener('click', () => {
+        tetrisModal.style.display = 'none';
+        
+        // Pause game when closing
+        if (gameRunning && !gamePaused) {
+          togglePause();
+        }
+      });
+      
+      // Start/pause game button
+      tetrisStart.addEventListener('click', () => {
+        if (!gameRunning) {
+          startGame();
+        } else {
+          togglePause();
+        }
+      });
+      
+      // Add keyboard listeners
+      document.addEventListener('keydown', handleKeyPress);
+      
+      // Close modal when clicking outside
+      window.addEventListener('click', (e) => {
+        if (e.target === tetrisModal) {
+          tetrisModal.style.display = 'none';
+          
+          // Pause game when closing
+          if (gameRunning && !gamePaused) {
+            togglePause();
+          }
+        }
+      });
+      
+      // Initialize game
+      update(); // Start animation loop
+      
+      // Blueprint viewer code removed
+    })();
+  </script>
+</body>
+</html>

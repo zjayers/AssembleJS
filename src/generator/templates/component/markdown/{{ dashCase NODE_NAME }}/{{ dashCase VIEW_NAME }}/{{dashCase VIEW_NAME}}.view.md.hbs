@@ -1,0 +1,53 @@
+<div class="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}">
+
+<!--
+  {{ pascalCase VIEW_NAME }} Component (Markdown View)
+  
+  This is a Markdown view component that renders as HTML.
+  You can use standard Markdown syntax and embed HTML when needed.
+  
+  Tips:
+  - Use Markdown for content-heavy components
+  - Mix HTML and Markdown for more complex layouts
+  - Access component data with special syntax (ask docs for details)
+-->
+
+# {{> randomSalutation }}
+
+## Markdown Features
+
+You can use all standard Markdown features:
+
+- **Bold text** and *italic text*
+- [Links](#) and ![Images](image-url.jpg)
+- Lists, tables, and code blocks
+
+### Code Example
+
+```javascript
+// Example code
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+```
+
+### Data Example
+
+<!-- 
+  You can access component data with special syntax.
+  Example (uncomment to use):
+
+  # {{ componentData.title }}
+  
+  {{ componentData.content }}
+  
+  {% if componentData.showDetails %}
+    ## Additional Details
+    {{ componentData.details }}
+  {% endif %}
+-->
+
+<!-- These includes link your styles and client-side scripts -->
+<link href="{{ dashCase VIEW_NAME }}.styles.scss" rel="stylesheet"/>
+<script src="{{ dashCase VIEW_NAME }}.client.ts"></script>
+</div>

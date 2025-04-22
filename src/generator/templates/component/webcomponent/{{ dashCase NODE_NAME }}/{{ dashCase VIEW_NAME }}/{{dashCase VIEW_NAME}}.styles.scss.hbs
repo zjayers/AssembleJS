@@ -1,0 +1,20 @@
+// Global styles for the component container
+// Note: Styles for the component itself are defined in the template
+// and will be part of the Shadow DOM
+
+{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}} {
+  display: block;
+  margin: 16px 0;
+  
+  // These styles apply to the custom element itself, not its shadow DOM
+  &::part(header) {
+    // Styles for ::part selectors allow styling into the shadow DOM
+    font-weight: bold;
+  }
+}
+
+// Example of styling the light DOM (outside the component)
+.{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}-container {
+  padding: 16px;
+  border: 1px dashed #ccc;
+}

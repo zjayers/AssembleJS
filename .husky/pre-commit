@@ -1,0 +1,28 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "> Checking Compile..."
+npm run check
+
+echo "> Examining Module Graph..."
+npm run lint:modules
+
+echo "> Running Tests..."
+npm run test
+
+echo "> Linting Files.."
+npm run lint:staged
+npm run lint:sort
+
+echo "> Generating Changelog..."
+npm run changelog
+
+echo "> Generating Docs..."
+npm run docs
+git add docs
+
+# Re-add the package.json file to the commit
+echo "> Committing Files..."
+git add package.json
+git add CHANGELOG.md
+

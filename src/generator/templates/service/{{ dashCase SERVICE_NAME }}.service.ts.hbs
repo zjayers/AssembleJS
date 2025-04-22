@@ -1,0 +1,110 @@
+import { http, Service } from 'asmbl';
+
+/**
+ * {{ pascalCase SERVICE_NAME}} Service
+ * 
+ * Services in AssembleJS handle business logic, external API calls, and data operations.
+ * They are singleton instances that can be injected into controllers and other services.
+ * 
+ * @example
+ * ```typescript
+ * // Using the service in a controller
+ * import { {{ pascalCase SERVICE_NAME}}Service } from '../services/{{ dashCase SERVICE_NAME }}.service';
+ * 
+ * // In your controller constructor:
+ * constructor(private {{ camelCase SERVICE_NAME}}Service: {{ pascalCase SERVICE_NAME}}Service) {
+ *   super();
+ * }
+ * 
+ * // Then use it in your methods:
+ * async handleRequest() {
+ *   const data = await this.{{ camelCase SERVICE_NAME}}Service.getData();
+ *   // Process data...
+ * }
+ * ```
+ * 
+ * @author Zachariah Ayers
+ */
+export class {{ pascalCase SERVICE_NAME}}Service extends Service {
+  /**
+   * Create a new service instance
+   * 
+   * The HTTP client is injected by default for API requests.
+   * You can add other services or dependencies as constructor parameters.
+   * 
+   * @param _http HTTP client for making API requests
+   */
+  constructor(
+    private readonly _http = http
+    // Add other dependencies here
+    // private otherService: OtherService,
+  ) {
+    super();
+  }
+
+  /**
+   * Access HTTP client for API operations
+   * 
+   * @example
+   * ```typescript
+   * // Making an HTTP request to an external API
+   * async fetchData(id: string): Promise<any> {
+   *   try {
+   *     const response = await this.http.get(`https://api.example.com/data/${id}`);
+   *     return response.data;
+   *   } catch (error) {
+   *     this.logger.error('Failed to fetch data', error);
+   *     throw error;
+   *   }
+   * }
+   * ```
+   */
+  public get http() {
+    return this._http;
+  }
+  
+  /**
+   * Initialize the service
+   * 
+   * This method is called automatically when the service is registered.
+   * Override this method to perform initialization tasks like:
+   * - Connecting to databases
+   * - Setting up event listeners
+   * - Initializing external services
+   * - Loading configuration
+   * 
+   * @example
+   * ```typescript
+   * public async initialize(): Promise<void> {
+   *   // Initialize database connection
+   *   await this.connectToDatabase();
+   *   
+   *   // Set up event listeners
+   *   this.setupEventListeners();
+   *   
+   *   this.logger.info(`${this.constructor.name} initialized`);
+   * }
+   * ```
+   */
+  public async initialize(): Promise<void> {
+    // Add initialization logic here
+    this.logger.debug(`${this.constructor.name} initialized`);
+  }
+  
+  /**
+   * Example method - replace with your actual business logic
+   * 
+   * @param id - Unique identifier for the resource
+   * @returns The requested data
+   */
+  // public async getData(id: string): Promise<any> {
+  //   try {
+  //     // Example implementation
+  //     const response = await this.http.get(`/api/data/${id}`);
+  //     return response.data;
+  //   } catch (error) {
+  //     this.logger.error(`Failed to get data for id: ${id}`, error);
+  //     throw error;
+  //   }
+  // }
+};

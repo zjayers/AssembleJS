@@ -1,0 +1,121 @@
+import { ModelFilter } from 'asmbl';
+
+/**
+ * {{ pascalCase MODEL_NAME }} Data Transfer Object
+ * 
+ * This interface defines the shape of the data for {{ pascalCase MODEL_NAME }}.
+ * DTOs are used to transfer data between systems, typically serializing/deserializing 
+ * data sent to or received from external APIs.
+ * 
+ * @example
+ * ```typescript
+ * // Example {{ pascalCase MODEL_NAME }} DTO with typical fields
+ * export interface {{ pascalCase MODEL_NAME }}Dto {
+ *   id: string;
+ *   name: string;
+ *   createdAt: string;
+ *   updatedAt: string;
+ *   // Add other properties specific to your domain
+ * }
+ * ```
+ */
+export interface {{ pascalCase MODEL_NAME}}Dto {
+  // Define your data properties here
+  id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+/**
+ * {{ pascalCase MODEL_NAME }} Model
+ * 
+ * Models in AssembleJS handle data transformation, validation, and business logic
+ * related to a specific domain entity. They help maintain data integrity and
+ * encapsulate domain-specific operations.
+ * 
+ * @example
+ * ```typescript
+ * // Using the model in a service
+ * import { {{ pascalCase MODEL_NAME }}Model, {{ pascalCase MODEL_NAME }}Dto } from '../models/{{ dashCase MODEL_NAME }}.model';
+ * 
+ * class SomeService {
+ *   private {{ camelCase MODEL_NAME }}Model = new {{ pascalCase MODEL_NAME }}Model();
+ *   
+ *   async process(data: any): Promise<{{ pascalCase MODEL_NAME }}Dto> {
+ *     // Filter and validate incoming data
+ *     const valid{{ pascalCase MODEL_NAME }} = this.{{ camelCase MODEL_NAME }}Model.validate(data);
+ *     
+ *     // Perform business logic operations
+ *     return this.{{ camelCase MODEL_NAME }}Model.transform(valid{{ pascalCase MODEL_NAME }});
+ *   }
+ * }
+ * ```
+ * 
+ * @author Zachariah Ayers
+ */
+export class {{ pascalCase MODEL_NAME}}Model {
+  /**
+   * Create a new model instance with a data mapper
+   * 
+   * The ModelFilter provides utilities for filtering, validating, 
+   * and transforming data according to the DTO interface.
+   */
+  constructor(private readonly _mapper = new ModelFilter<{{ pascalCase MODEL_NAME }}Dto>()) {}
+
+  /**
+   * Access the model's data mapper
+   * 
+   * The mapper provides methods for filtering and validating data.
+   * 
+   * @example
+   * ```typescript
+   * // Filtering incoming data to match the DTO
+   * validate(data: any): {{ pascalCase MODEL_NAME }}Dto {
+   *   return this.mapper.filter(data, {
+   *     // Define validation rules
+   *     required: ['id', 'name'],
+   *     // Define type checking
+   *     types: {
+   *       id: 'string',
+   *       name: 'string',
+   *       createdAt: 'string',
+   *     }
+   *   });
+   * }
+   * ```
+   */
+  public get mapper() {
+    return this._mapper;
+  }
+
+  /**
+   * Example validation method
+   * 
+   * @param data - Data to validate
+   * @returns Validated data conforming to {{ pascalCase MODEL_NAME }}Dto
+   */
+  // public validate(data: unknown): {{ pascalCase MODEL_NAME }}Dto {
+  //   return this.mapper.filter(data, {
+  //     required: ['id'],
+  //     types: {
+  //       id: 'string',
+  //       createdAt: 'string',
+  //       updatedAt: 'string'
+  //     }
+  //   });
+  // }
+  
+  /**
+   * Example transformation method
+   * 
+   * @param dto - Data to transform
+   * @returns Transformed data
+   */
+  // public transform(dto: {{ pascalCase MODEL_NAME }}Dto): {{ pascalCase MODEL_NAME }}Dto {
+  //   // Add business logic transformations here
+  //   return {
+  //     ...dto,
+  //     updatedAt: new Date().toISOString()
+  //   };
+  // }
+};

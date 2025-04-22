@@ -1,0 +1,155 @@
+// Global styles for the Svelte component
+// Most styles are defined inside the .svelte file using Svelte's scoped styles feature
+
+// Variables
+$primary-color: #3498db;
+$accent-color: #f39c12;
+$success-color: #27ae60;
+$error-color: #e74c3c;
+$text-color: #333;
+$light-text: #666;
+$border-color: #e0e0e0;
+$background-color: #f9f9f9;
+$card-background: #fff;
+$card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+$border-radius: 4px;
+$transition-duration: 0.3s;
+
+// Global styles for the checkout form
+:global(.checkout-form) {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  color: $text-color;
+  background-color: $background-color;
+  
+  // Ensure form inputs have consistent styling
+  input, select, textarea, button {
+    font-family: inherit;
+  }
+  
+  // Links styling
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    transition: color $transition-duration;
+    
+    &:hover {
+      color: darken($primary-color, 15%);
+      text-decoration: underline;
+    }
+  }
+  
+  // Animation for tab transitions
+  .tab-pane {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  // Custom scrollbars for order items
+  .order-items::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .order-items::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  .order-items::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+    
+    &:hover {
+      background: #aaa;
+    }
+  }
+  
+  // Focus styles for accessibility
+  input:focus, 
+  select:focus, 
+  textarea:focus, 
+  button:focus {
+    outline: 2px solid rgba($primary-color, 0.5);
+    outline-offset: 2px;
+  }
+  
+  // Dark mode support (if system preference is dark)
+  @media (prefers-color-scheme: dark) {
+    background-color: #121212;
+    color: #f1f1f1;
+    
+    .form-section, 
+    .order-summary,
+    .checkout-success {
+      background-color: #1e1e1e;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    input, select, textarea {
+      background-color: #2d2d2d;
+      border-color: #444;
+      color: #f1f1f1;
+      
+      &::placeholder {
+        color: #888;
+      }
+    }
+    
+    .payment-method {
+      background-color: #2d2d2d;
+      border-color: #444;
+      
+      &.selected {
+        background-color: rgba($primary-color, 0.2);
+      }
+    }
+    
+    .secure-checkout,
+    .step-number {
+      background-color: #2d2d2d;
+    }
+    
+    a {
+      color: lighten($primary-color, 15%);
+      
+      &:hover {
+        color: lighten($primary-color, 25%);
+      }
+    }
+  }
+  
+  // Print styles for order confirmation
+  @media print {
+    background-color: white;
+    
+    .checkout-steps,
+    .form-actions,
+    .secure-checkout,
+    button {
+      display: none !important;
+    }
+    
+    .checkout-main {
+      display: block !important;
+    }
+    
+    .checkout-success,
+    .order-summary {
+      box-shadow: none !important;
+      border: 1px solid #eee !important;
+      break-inside: avoid;
+    }
+  }
+}

@@ -1,0 +1,115 @@
+// Register the client-side behavior with AssembleJS
+BlueprintClient.registerComponentCodeBehind({{ pascalCase VIEW_NAME }}Client);
+
+/**
+ * {{ pascalCase NODE_NAME }} {{ pascalCase VIEW_NAME }} Component
+ *
+ * This is a Preact component for rendering {{ pascalCase VIEW_NAME }} in {{ pascalCase NODE_NAME }}.
+ *
+ * Features:
+ * - Uses Preact for efficient rendering
+ * - Receives data via the context parameter
+ * - Can use hooks and other Preact features
+ * - Implements accessibility best practices
+ * - Includes error handling
+ *
+ * @param context - Contains component data and helper functions
+ */
+export function {{pascalCase VIEW_NAME}}(context: PreactViewContext) {
+  // Error handling with Error Boundary pattern
+  const [hasError, setHasError] = preact.useState(false);
+  const [errorDetails, setErrorDetails] = preact.useState<string | null>(null);
+
+  // You can use Preact hooks here
+  // const [count, setCount] = preact.useState(0);
+  // const [isLoading, setIsLoading] = preact.useState(false);
+  
+  // Example of error handling in effects
+  preact.useEffect(() => {
+    try {
+      // Initialize component
+      // setIsLoading(true);
+      // Fetch data or perform side effects
+      
+      // Successfully completed
+      // setIsLoading(false);
+    } catch (error) {
+      // Handle errors gracefully
+      console.error('Error initializing component:', error);
+      setHasError(true);
+      setErrorDetails(error instanceof Error ? error.message : 'Unknown error');
+      // setIsLoading(false);
+    }
+    
+    // Clean up on unmount
+    return () => {
+      // Perform cleanup (e.g., remove event listeners, cancel subscriptions)
+    };
+  }, []);
+
+  // Access component data passed from the server
+  // const { title, items } = context.data;
+  
+  // Handle loading states
+  // if (isLoading) {
+  //   return (
+  //     <div className="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}} loading" aria-busy="true">
+  //       <div className="loading-indicator" aria-label="Loading content">Loading...</div>
+  //     </div>
+  //   );
+  // }
+  
+  // Handle error states
+  if (hasError) {
+    return (
+      <div className="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}} error" role="alert" aria-live="assertive">
+        <h2>Something went wrong</h2>
+        <p>We're having trouble displaying this content. Please try refreshing the page.</p>
+        {errorDetails && <details><summary>Technical Details</summary><pre>{errorDetails}</pre></details>}
+      </div>
+    );
+  }
+
+  return (
+    <div className="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}" role="region" aria-label="{{ pascalCase VIEW_NAME }} section">
+      <h2 id="{{dashCase VIEW_NAME}}-title">{{ pascalCase NODE_NAME }} - {{ pascalCase VIEW_NAME }}</h2>
+      <p aria-labelledby="{{dashCase VIEW_NAME}}-title">{{> randomSalutation }}</p>
+
+      {/* Example of conditional rendering with accessibility */}
+      {/* {context.data.items?.length > 0 ? (
+        <ul className="items-list" aria-label="List of items">
+          {context.data.items.map(item => (
+            <li key={item.id} tabIndex={0}>{item.name}</li>
+          ))}
+        </ul>
+      ) : (
+        <p aria-live="polite">No items found</p>
+      )} */}
+
+      {/* Example of embedding another component */}
+      {/*
+      <context.component.greeting.main 
+        message="Hello from Preact!" 
+        aria-label="Greeting message" 
+      /> */}
+      
+      {/* Example of a responsive mobile-friendly button with keyboard support */}
+      {/* <button 
+        className="action-button"
+        onClick={() => handleAction()}
+        onKeyDown={(e) => e.key === 'Enter' && handleAction()}
+        aria-label="Perform action"
+        tabIndex={0}
+      >
+        Click me
+      </button> */}
+
+      {/* Example of internationalization */}
+      {/* <p>{context.i18n.t('welcome_message', { name: userData.name })}</p> */}
+
+      {/* Include stylesheet and client script */}
+      <link href="{{ dashCase VIEW_NAME }}.styles.scss" rel="stylesheet" />
+      <script src="{{ dashCase VIEW_NAME }}.client.ts"></script>
+    </div>
+  );
+}

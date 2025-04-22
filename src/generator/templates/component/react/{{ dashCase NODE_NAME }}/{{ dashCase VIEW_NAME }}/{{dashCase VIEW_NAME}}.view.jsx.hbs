@@ -1,0 +1,15 @@
+import React from 'react';
+import { react } from 'asmbl';
+
+export default function {{pascalCase VIEW_NAME}}({params, publicData, components, id}) {
+  return (
+    <div className="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}">
+      <h1>{{titleCase VIEW_NAME}}</h1>
+      <div className="content">
+        {/* Example of rendering a sub-component */}
+        {/* {react.component('some-component', {params, publicData, components, id})} */}
+        <p>Component content goes here</p>
+      </div>
+    </div>
+  );
+}

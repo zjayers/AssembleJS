@@ -1,0 +1,78 @@
+import { Blueprint, BlueprintClient, webcomponent } from "asmbl";
+import type { ComponentContext } from "asmbl";
+
+export class {{pascalCase NODE_NAME}}{{pascalCase VIEW_NAME}} extends Blueprint<{}, {}> {
+  // Custom element name (must include hyphen for Web Components spec)
+  private elementName = "{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}";
+  
+  constructor(context: ComponentContext) {
+    super(context);
+    
+    // Add custom methods to the Web Component
+    const methods = {
+      connectedCallback() {
+        console.log('Component connected to the DOM');
+        
+        // Initialize any DOM interactions here
+        const button = this.shadow.querySelector('button');
+        if (button) {
+          button.addEventListener('click', this.handleClick.bind(this));
+        }
+      },
+      
+      disconnectedCallback() {
+        // Clean up any event listeners, etc.
+        const button = this.shadow.querySelector('button');
+        if (button) {
+          button.removeEventListener('click', this.handleClick.bind(this));
+        }
+      },
+      
+      handleClick() {
+        // Update component state
+        this.setState({ counter: (this.state.counter || 0) + 1 });
+        
+        // Emit AssembleJS event
+        const event = new CustomEvent('{{dashCase NODE_NAME}}.{{dashCase VIEW_NAME}}.clicked', {
+          detail: { counter: this.state.counter }
+        });
+        document.dispatchEvent(event);
+      },
+      
+      render() {
+        // Update any dynamic parts of the DOM
+        const counter = this.shadow.querySelector('.counter');
+        if (counter) {
+          counter.textContent = String(this.state.counter || 0);
+        }
+      }
+    };
+    
+    // DOM is ready, define the custom element
+    this.onReady(() => {
+      // Get the template HTML
+      const templateElement = document.getElementById(`${this.elementName}-template`);
+      
+      if (!templateElement) {
+        console.error(`Template element not found: ${this.elementName}-template`);
+        return;
+      }
+      
+      const templateHTML = templateElement.innerHTML;
+      
+      // Define the custom element
+      webcomponent.define(this.elementName, templateHTML, methods);
+      
+      // Connect to AssembleJS events
+      this.events.on('{{dashCase NODE_NAME}}.{{dashCase VIEW_NAME}}.update', (data) => {
+        const element = document.querySelector(this.elementName);
+        if (element && 'setState' in element) {
+          (element as any).setState(data);
+        }
+      });
+    });
+  }
+}
+
+// Register the client-side behavior with AssembleJS
+BlueprintClient.registerComponentCodeBehind({{pascalCase NODE_NAME}}{{pascalCase VIEW_NAME}});

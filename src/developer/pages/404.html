@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Not Found - AssembleJS</title>
+    <style>
+      :root {
+        --primary: #0095c5;
+        --primary-dark: #007ea8;
+        --accent: #2d3748;
+        --light-bg: #f8f9fa;
+        --dark-text: #2d3748;
+        --light-text: #718096;
+        --white: #ffffff;
+        --light-border: #e2e8f0;
+        --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+        background: var(--light-bg);
+        color: var(--dark-text);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 700px;
+        width: 90%;
+        padding: 3rem;
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: var(--primary);
+      }
+
+      .status-code {
+        font-size: 9rem;
+        font-weight: 800;
+        margin: 0;
+        line-height: 1;
+        color: var(--primary);
+        text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.1);
+        letter-spacing: -5px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        margin: 0.5rem 0 1.5rem;
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      p {
+        font-size: 1.2rem;
+        margin: 1rem 0;
+        color: var(--light-text);
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .suggestion-list {
+        margin: 2rem 0;
+        padding: 0;
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: flex-start;
+        width: 100%;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
+      }
+
+      .suggestion-list li {
+        position: relative;
+        padding-left: 1.5rem;
+        color: var(--light-text);
+      }
+
+      .suggestion-list li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: var(--primary);
+        font-weight: bold;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        font-size: 1rem;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: var(--white);
+        box-shadow: 0 4px 6px rgba(0, 149, 197, 0.2);
+      }
+
+      .btn-primary:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 8px rgba(0, 149, 197, 0.3);
+      }
+
+      .btn-secondary {
+        background: var(--white);
+        color: var(--primary);
+        border: 1px solid var(--primary);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(0, 149, 197, 0.05);
+        transform: translateY(-2px);
+      }
+
+      footer {
+        margin-top: 3rem;
+        font-size: 0.9rem;
+        color: var(--light-text);
+        border-top: 1px solid var(--light-border);
+        padding-top: 1.5rem;
+      }
+
+      .framework-logo {
+        margin-top: 0.5rem;
+        font-weight: 600;
+        color: var(--accent);
+      }
+
+      .logo-highlight {
+        color: var(--primary);
+      }
+
+      /* Development-specific content */
+      .dev-only {
+        display: none; /* Will be replaced dynamically */
+      }
+
+      .request-url {
+        font-family: monospace;
+        background: #f0f4f8;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        margin: 1rem 0;
+        word-break: break-all;
+        display: inline-block;
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          padding: 2rem 1.5rem;
+        }
+
+        .status-code {
+          font-size: 7rem;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="status-code">404</div>
+      <h1>Page Not Found</h1>
+      <p>The page you are looking for doesn't exist or has been moved.</p>
+
+      <div class="dev-only">
+        <p>You've requested:</p>
+        <div class="request-url">
+          <!-- Request URL will be injected here -->
+        </div>
+        <p>Check your route configuration or component paths.</p>
+      </div>
+
+      <div class="suggestion-list">
+        <li>Make sure the URL is correct</li>
+        <li>Check for typos in the address</li>
+        <li>The page might have been moved or deleted</li>
+        <li>You might not have permission to view this page</li>
+      </div>
+
+      <div class="buttons">
+        <a href="/" class="btn btn-primary">Go Home</a>
+        <a href="javascript:history.back()" class="btn btn-secondary"
+          >Go Back</a
+        >
+      </div>
+
+      <footer>
+        <div class="framework-logo">
+          <span class="logo-highlight">Assemble</span>JS Framework
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

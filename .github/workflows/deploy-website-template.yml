@@ -1,0 +1,139 @@
+# Template for website deployment workflow
+# To use this template:
+# 1. Make a copy named deploy-website-WEBSITENAME.yml
+# 2. Replace all instances of WEBSITE_NAME with actual website name
+# 3. Adjust any website-specific build or deployment logic as needed
+
+name: Deploy WEBSITE_NAME Website
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: 'Deployment Environment'
+        required: true
+        default: 'staging'
+        options:
+          - staging
+          - production
+      version:
+        type: string
+        description: 'Package version to deploy'
+        required: true
+
+permissions:
+  contents: read
+  id-token: write # Needed for AWS authentication
+
+jobs:
+  deploy-website:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Process version for deployment path
+        id: process-version
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          # For production, remove any prerelease suffix
+          if [ "${{ github.event.inputs.environment }}" = "production" ]; then
+            CLEAN_VERSION=$(echo $VERSION | sed 's/-next\.[0-9]\+//')
+          else
+            CLEAN_VERSION=$VERSION
+          fi
+          echo "clean_version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
+      
+      - name: Install main package dependencies
+        run: npm ci
+      
+      - name: Build main package
+        run: npm run build
+      
+      - name: Build website
+        run: |
+          cd websites/WEBSITE_NAME
+          npm ci
+          npm run build
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+      
+      - name: Deploy to S3
+        run: |
+          # Get the bucket name based on website folder name format: www.<name>.<tld>
+          WEBSITE_FOLDER="WEBSITE_NAME"
+          
+          # For website folders in format www.<name>.<tld>, use folder name as bucket name
+          if [[ "$WEBSITE_FOLDER" =~ ^www\..+\..+ ]]; then
+            S3_BUCKET="$WEBSITE_FOLDER"
+          else
+            # For other folders, prefix with www. and add .com
+            S3_BUCKET="www.$WEBSITE_FOLDER.com"
+          fi
+          
+          echo "Using S3 bucket: $S3_BUCKET"
+          
+          if [ -z "$S3_BUCKET" ]; then
+            echo "Error: S3 bucket name could not be determined"
+            exit 1
+          fi
+          
+          # Set deployment path based on environment
+          if [ "${{ github.event.inputs.environment }}" = "production" ]; then
+            # For production, deploy to the version path and to the root
+            DEPLOY_PATH="v${{ steps.process-version.outputs.clean_version }}"
+            ROOT_DEPLOY=true
+          else
+            # For staging, use 'next' prefix for @next versions
+            if [[ "${{ github.event.inputs.version }}" == *"-next"* ]]; then
+              DEPLOY_PATH="next"
+            else
+              DEPLOY_PATH="${{ github.event.inputs.environment }}"
+            fi
+            ROOT_DEPLOY=false
+          fi
+          
+          # Deploy to version-specific path
+          echo "Deploying website to s3://$S3_BUCKET/$DEPLOY_PATH/WEBSITE_NAME/"
+          aws s3 sync "websites/WEBSITE_NAME/dist/" "s3://$S3_BUCKET/$DEPLOY_PATH/WEBSITE_NAME/" --delete
+          
+          # Deploy to root if this is production
+          if [ "$ROOT_DEPLOY" = "true" ]; then
+            echo "Deploying website to root path s3://$S3_BUCKET/WEBSITE_NAME/"
+            aws s3 sync "websites/WEBSITE_NAME/dist/" "s3://$S3_BUCKET/WEBSITE_NAME/" --delete
+          fi
+          
+          echo "🚀 WEBSITE_NAME website successfully deployed to ${{ github.event.inputs.environment }} environment"
+      
+      - name: Create CloudFront invalidation if configured
+        if: vars.ASSEMBLEJS_CLOUDFRONT_DISTRIBUTION_ID != ''
+        run: |
+          # Create invalidation paths based on deployment
+          if [ "${{ github.event.inputs.environment }}" = "production" ]; then
+            INVALIDATION_PATHS="/v${{ steps.process-version.outputs.clean_version }}/WEBSITE_NAME/* /WEBSITE_NAME/*"
+          else
+            if [[ "${{ github.event.inputs.version }}" == *"-next"* ]]; then
+              INVALIDATION_PATHS="/next/WEBSITE_NAME/*"
+            else
+              INVALIDATION_PATHS="/${{ github.event.inputs.environment }}/WEBSITE_NAME/*"
+            fi
+          fi
+          
+          # Create the invalidation
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ vars.ASSEMBLEJS_CLOUDFRONT_DISTRIBUTION_ID }} \
+            --paths $INVALIDATION_PATHS

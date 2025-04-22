@@ -1,0 +1,37 @@
+<script>
+  // Props are passed via context
+  export let params = {};
+  export let publicData = {};
+  export let components = {};
+  export let id;
+  
+  import { svelte } from 'asmbl';
+  
+  // Function to render a sub-component
+  function renderComponent(node, componentName) {
+    if (componentName && components) {
+      svelte.component(componentName, node, {params, publicData, components, id});
+    }
+  }
+</script>
+
+<div class="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}">
+  <h1>{{titleCase VIEW_NAME}}</h1>
+  <div class="content">
+    <!-- Example of rendering a sub-component -->
+    <!-- <div use:renderComponent={'some-component'}></div> -->
+    <p>Component content goes here</p>
+  </div>
+</div>
+
+<style>
+  /* Component-specific styles */
+  .content {
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+</style>

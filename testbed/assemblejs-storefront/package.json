@@ -1,0 +1,34 @@
+{
+  "name": "assemblejs-storefront",
+  "version": "1.0.0",
+  "description": "An AssembleJS application",
+  "main": "dist/server.js",
+  "author": "Zachariah Ayers",
+  "license": "MIT",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "asm-serve",
+    "build": "asm-build",
+    "assemble": "asm-generate",
+    "asm": "asm-generate",
+    "insights": "specsheet",
+    "lint": "redline",
+    "lint:fix": "redline --fix",
+    "format": "redline --prettier-only --fix",
+    "check": "redline --eslint-only",
+    "test": "jest",
+    "test:coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "asmbl": "file:../../asmbl-0.0.1-4.tgz",
+    "vavite": "^1.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "typescript": "^5.1.3",
+    "vite": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

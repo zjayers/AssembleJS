@@ -1,0 +1,52 @@
+<template>
+  <div class="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}">
+    <h1>{{titleCase VIEW_NAME}}</h1>
+    <div class="content">
+      <!-- Example of rendering a sub-component using v-html -->
+      <!-- <div v-html="componentHtml('some-component')"></div> -->
+      <p>Component content goes here</p>
+    </div>
+  </div>
+</template>
+
+<script>
+import { vue } from 'asmbl';
+
+export default {
+  name: '{{pascalCase VIEW_NAME}}',
+  props: {
+    params: {
+      type: Object,
+      default: () => ({})
+    },
+    publicData: {
+      type: Object,
+      default: () => ({})
+    },
+    components: {
+      type: Object,
+      default: () => ({})
+    },
+    id: String
+  },
+  methods: {
+    componentHtml(name) {
+      const vnode = vue.component(name, {
+        params: this.params,
+        publicData: this.publicData,
+        components: this.components,
+        id: this.id
+      });
+      
+      // In a real implementation, we'd render the VNode to HTML
+      // For simplicity, we're just creating a placeholder
+      return `<!-- Component: ${name} -->`;
+    }
+  }
+}
+</script>
+
+<style scoped>
+/* Component-specific styles can also be defined here */
+/* These will be automatically scoped to the component */
+</style>

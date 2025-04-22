@@ -1,0 +1,1043 @@
+:root {
+  /* Visual Studio theme colors */
+  --vs-blue: #007acc;
+  --vs-light-blue: #3d9bda;
+  --vs-dark-blue: #005b96;
+  --vs-purple: #68217a;
+  --vs-green: #388a34;
+  --vs-orange: #ce9178;
+  --vs-red: #e51400;
+  --vs-yellow: #ffd700;
+
+  /* Light theme colors - not applied by default */
+  --light-bg-primary: #ffffff;
+  --light-bg-secondary: #f3f3f3;
+  --light-bg-tertiary: #e6e6e6;
+  --light-bg-panel: #f5f5f5;
+  --light-bg-active: #d6ebff;
+  --light-bg-hover: #e8e8e8;
+  --light-text-primary: #1e1e1e;
+  --light-text-secondary: #6e6e6e;
+  --light-text-header: #444444;
+  --light-border-color: #c9c9c9;
+  --light-accent-color: #007acc;
+  --light-accent-hover: #3d9bda;
+  --light-component-outline: #c9c9c9;
+  --light-component-select: #007acc;
+  --light-component-header: #f3f3f3;
+  --light-grid-color: #d4d4d4;
+
+  /* Dark theme - applied by default */
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #252526;
+  --bg-tertiary: #333333;
+  --bg-panel: #2d2d30;
+  --bg-active: #3f3f46;
+  --bg-hover: #2a2d2e;
+  --text-primary: #d4d4d4;
+  --text-secondary: #858585;
+  --text-header: #cccccc;
+  --border-color: #454545;
+  --accent-color: var(--vs-blue);
+  --accent-hover: var(--vs-light-blue);
+  --component-outline: #4e4e4e;
+  --component-select: var(--vs-blue);
+  --component-header: #2d2d30;
+  --grid-color: #333333;
+}
+
+body.light-theme {
+  --bg-primary: var(--light-bg-primary);
+  --bg-secondary: var(--light-bg-secondary);
+  --bg-tertiary: var(--light-bg-tertiary);
+  --bg-panel: var(--light-bg-panel);
+  --bg-active: var(--light-bg-active);
+  --bg-hover: var(--light-bg-hover);
+  --text-primary: var(--light-text-primary);
+  --text-secondary: var(--light-text-secondary);
+  --text-header: var(--light-text-header);
+  --border-color: var(--light-border-color);
+  --accent-color: var(--light-accent-color);
+  --accent-hover: var(--light-accent-hover);
+  --component-outline: var(--light-component-outline);
+  --component-select: var(--light-component-select);
+  --component-header: var(--light-component-header);
+  --grid-color: var(--light-grid-color);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+}
+
+/* Designer header (menu and toolbar) */
+.designer-header {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  height: 30px;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo-text {
+  font-weight: bold;
+  color: var(--text-header);
+  font-size: 14px;
+}
+
+.simple-toolbar {
+  display: flex;
+  height: 36px;
+  padding: 0 10px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  align-items: center;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+}
+
+.toolbar-button {
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: var(--text-primary);
+  cursor: pointer;
+  margin: 0 2px;
+  padding: 0 6px;
+}
+
+.button-label {
+  margin-left: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.toolbar-button:hover {
+  background-color: var(--bg-hover);
+}
+
+.toolbar-button:active {
+  background-color: var(--bg-active);
+}
+
+.toolbar-button svg {
+  stroke: var(--text-header);
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--border-color);
+  margin: 0 8px;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+.toolbar-text {
+  font-size: 12px;
+  color: var(--text-primary);
+  margin: 0 4px;
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+}
+
+/* Theme toggle styling */
+.theme-toggle-wrapper {
+  position: relative;
+  margin: 0 8px;
+}
+
+.theme-toggle-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-toggle {
+  display: inline-block;
+  position: relative;
+  width: 42px;
+  height: 22px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.theme-toggle-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-tertiary);
+  border-radius: 34px;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.theme-toggle-track:hover {
+  border-color: var(--accent-color);
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background-color: var(--text-primary);
+  transition: transform 0.3s;
+}
+
+.theme-toggle-input:checked + .theme-toggle .theme-toggle-thumb {
+  transform: translateX(20px);
+}
+
+.theme-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  z-index: 1;
+}
+
+.theme-toggle-icon.moon {
+  color: var(--text-header);
+}
+
+.theme-toggle-icon.sun {
+  color: var(--vs-yellow);
+}
+
+/* Light theme specific toggle styling */
+body.light-theme .theme-toggle-track {
+  background-color: var(--light-bg-tertiary);
+}
+
+body.light-theme .theme-toggle-thumb {
+  background-color: var(--vs-blue);
+}
+
+.toolbar {
+  display: flex;
+  padding: 4px 10px;
+  gap: 5px;
+}
+
+.toolbar-button {
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  border: none;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.toolbar-button:hover {
+  background-color: var(--bg-active);
+}
+
+/* Main container with panels */
+/* Command Bar (moved above status bar) */
+.command-bar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  padding: 0;
+  position: relative;
+}
+
+.command-button-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.command-button {
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 12px;
+  width: 120px;
+  box-sizing: border-box;
+  text-align: center;
+  letter-spacing: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Make wider buttons for Explorer and Properties to accommodate their longer text */
+#toggle-assembly-explorer {
+  width: 135px;
+}
+
+#toggle-properties {
+  width: 135px;
+}
+
+.command-button:hover {
+  background-color: var(--bg-hover);
+}
+
+.command-button.active {
+  background-color: var(--bg-active);
+  border-color: var(--accent-color);
+}
+
+/* Refresh button animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.command-button.refreshing svg {
+  animation: spin 1s linear infinite;
+}
+
+/* Theme toggle styling - square version */
+.theme-toggle-wrapper {
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-toggle {
+  display: inline-block;
+  position: relative;
+  width: 140px;
+  height: 32px;
+  background-color: transparent;
+  cursor: pointer;
+  top: 0;
+}
+
+.theme-toggle-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-tertiary);
+  border-radius: 3px;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;
+}
+
+.theme-toggle-track:hover {
+  border-color: var(--accent-color);
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  top: 6px;
+  left: 4px;
+  height: 20px;
+  width: 66px;
+  border-radius: 4px;
+  background-color: #3f3f46; /* Dark mode control color */
+  transition: transform 0.3s;
+  z-index: 2;
+}
+
+.theme-toggle-input:checked + .theme-toggle .theme-toggle-thumb {
+  transform: translateX(66px);
+}
+
+.theme-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.theme-toggle-icon.moon {
+  left: 28px;
+  color: var(--text-header);
+}
+
+.theme-toggle-icon.sun {
+  right: 28px;
+  color: var(--vs-yellow);
+}
+
+/* Theme styling */
+body.light-theme .theme-toggle-track {
+  background-color: var(--bg-active);
+  border-color: var(--accent-color);
+}
+
+body.light-theme .theme-toggle-thumb {
+  background-color: var(--vs-blue);
+}
+
+/* Dark theme has the standard dark mode control color already set in the main definition */
+
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(
+    100vh - 44px - 28px
+  ); /* Subtract command bar and status bar heights */
+}
+
+/* Base panel styles */
+.panel {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-panel);
+  overflow: hidden;
+  transition: width 0.3s ease, flex 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* Hidden panels */
+.panel.hidden {
+  width: 0 !important;
+  flex: 0 !important;
+  border: 0 !important;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  min-width: 0 !important;
+}
+
+/* When panels are hidden, expand the designer container */
+.assembly-explorer.hidden ~ .designer-container {
+  flex: 1;
+}
+
+/* Right panels container */
+.right-panels {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  border-left: 1px solid var(--border-color);
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Only collapse right panels container when both toolbox and properties are hidden */
+.right-panels:has(.toolbox.hidden):has(.properties.hidden) {
+  width: 0;
+  border-left: none;
+}
+
+/* Resize handle between toolbox and properties */
+.panel-resize-handle {
+  height: 5px;
+  background-color: var(--border-color);
+  cursor: row-resize;
+  position: relative;
+  z-index: 10;
+}
+
+/* Hide resize handle when either panel is hidden */
+.right-panels:has(.toolbox.hidden) .panel-resize-handle,
+.right-panels:has(.properties.hidden) .panel-resize-handle {
+  display: none;
+}
+
+/* Panel headers - main panel titles */
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  height: 30px;
+  font-size: 13px;
+  font-weight: 600;
+  background-color: var(--bg-secondary);
+  color: var(--text-header);
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+  letter-spacing: 0.2px;
+}
+
+.panel-actions {
+  display: flex;
+  gap: 2px;
+}
+
+.panel-action-button {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel-action-button:hover {
+  color: var(--accent-color);
+}
+
+.panel-content {
+  flex: 1;
+  overflow: auto;
+}
+
+/* Solution Explorer Panel (left side) */
+.assembly-explorer {
+  width: 280px;
+  border-right: 1px solid var(--border-color);
+  box-sizing: border-box;
+}
+
+/* Tree View */
+.tree-view {
+  font-size: 13px;
+  padding: 5px;
+}
+
+.tree-item {
+  margin-bottom: 2px;
+}
+
+.tree-item-header {
+  display: flex;
+  align-items: center;
+  padding: 4px 2px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.tree-item-header:hover {
+  background-color: var(--bg-hover);
+}
+
+.tree-item.active > .tree-item-header {
+  background-color: var(--vs-blue);
+  color: white;
+}
+
+.tree-toggle {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: var(--text-secondary);
+}
+
+.tree-toggle.invisible {
+  visibility: hidden;
+}
+
+.tree-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+}
+
+.tree-icon.folder {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='%23d7ba7d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.tree-icon.component {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='%239cdcfe' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2v6m0 12v2M4.93 4.93l4.24 4.24m5.66 5.66l4.24 4.24M2 12h6m12 0h2M4.93 19.07l4.24-4.24m5.66-5.66l4.24-4.24'/%3E%3C/svg%3E");
+}
+
+.tree-icon.blueprint {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='%23007acc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z'%3E%3C/path%3E%3Cpath d='M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.tree-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tree-children {
+  padding-left: 16px;
+  margin-top: 2px;
+}
+
+.tree-item:not(.expanded) > .tree-children {
+  display: none;
+}
+
+/* Designer Container (middle) */
+.designer-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+}
+
+.tab-bar {
+  display: flex;
+  height: 30px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.tab-bar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.tab-bar::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+}
+
+.tab {
+  padding: 0 15px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  cursor: pointer;
+  border-right: 1px solid var(--border-color);
+  user-select: none;
+  background-color: var(--bg-secondary);
+}
+
+.tab:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.tab.active {
+  background-color: var(--bg-primary);
+  border-bottom: 2px solid var(--accent-color);
+}
+
+.design-surface {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.design-surface-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+}
+
+.view-mode-selector {
+  display: flex;
+  gap: 2px;
+}
+
+.view-mode-button {
+  background-color: var(--bg-tertiary);
+  border: none;
+  padding: 3px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--text-primary);
+  border-radius: 2px;
+}
+
+.view-mode-button.active {
+  background-color: var(--accent-color);
+  color: var(--bg-primary);
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.zoom-button {
+  width: 20px;
+  height: 20px;
+  background-color: var(--bg-tertiary);
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.zoom-button:hover {
+  background-color: var(--bg-active);
+}
+
+.canvas {
+  flex: 1;
+  padding: 20px;
+  overflow: auto;
+  background-color: var(--bg-primary);
+  background-image: linear-gradient(rgba(75, 75, 75, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(75, 75, 75, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.canvas-content {
+  min-height: 600px;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Component outlines in designer - Visual Studio style */
+.component-outline {
+  border: 1px solid var(--component-outline);
+  border-radius: 2px;
+  margin-bottom: 10px;
+  background-color: var(--bg-secondary);
+  transition: opacity 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  opacity: 1; /* Components are opaque by default */
+}
+
+.component-outline.root-component {
+  border: 2px solid var(--vs-blue);
+  min-height: 400px;
+}
+
+/* Styles for component focus mode */
+.component-focus-mode .component-outline:not(.focused) {
+  opacity: 0.3;
+  border-color: rgba(78, 78, 78, 0.7);
+}
+
+.component-focus-mode .component-outline.focused {
+  opacity: 1;
+  border-color: var(--vs-blue);
+  box-shadow: 0 0 10px rgba(0, 122, 204, 0.3);
+}
+
+.component-header {
+  padding: 5px 10px;
+  background-color: var(--component-header);
+  font-size: 12px;
+  cursor: move;
+  user-select: none;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.component-focus-mode .component-outline.focused > .component-header {
+  background-color: var(--vs-blue);
+  color: white;
+  border-bottom: 1px solid var(--vs-blue);
+}
+
+.component-type {
+  font-weight: 500;
+}
+
+.component-content {
+  padding: 10px;
+  min-height: 50px;
+}
+
+/* Right panels (Toolbox and Properties) */
+.right-panels {
+  width: 280px;
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Toolbox Panel */
+.toolbox {
+  border-bottom: 1px solid var(--border-color);
+  flex: 1;
+}
+
+.toolbox-category {
+  margin-bottom: 10px;
+}
+
+/* Subheadings within panels */
+.toolbox-category-header {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+  text-transform: uppercase;
+}
+
+.toolbox-items {
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.toolbox-item {
+  width: calc(50% - 1px);
+  padding: 6px 5px;
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  cursor: grab;
+  border-radius: 3px;
+}
+
+.toolbox-item:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.tool-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+}
+
+.tool-icon.component {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='%230095c5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2v6m0 12v2M4.93 4.93l4.24 4.24m5.66 5.66l4.24 4.24M2 12h6m12 0h2M4.93 19.07l4.24-4.24m5.66-5.66l4.24-4.24'/%3E%3C/svg%3E");
+}
+
+.tool-icon.layout {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='%2301abab' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='3' y1='9' x2='21' y2='9'%3E%3C/line%3E%3Cline x1='9' y1='21' x2='9' y2='9'%3E%3C/line%3E%3C/svg%3E");
+}
+
+.tool-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Properties Panel */
+.properties {
+  flex: 1;
+}
+
+/* When both panels are visible, distribute space */
+.right-panels:has(.toolbox:not(.hidden), .properties:not(.hidden)) .toolbox {
+  flex: 0.4;
+}
+
+.right-panels:has(.toolbox:not(.hidden), .properties:not(.hidden)) .properties {
+  flex: 0.6;
+}
+
+.property-grid {
+  padding: 5px;
+}
+
+.property-group {
+  margin-bottom: 10px;
+}
+
+/* Property group headers - subheadings */
+.property-group-header {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background-color: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.property-row {
+  display: flex;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.property-name {
+  width: 100px;
+  padding: 5px 8px;
+  color: var(--text-secondary);
+  background-color: var(--bg-tertiary);
+  border-radius: 2px 0 0 2px;
+}
+
+.property-value {
+  flex: 1;
+}
+
+.property-value input,
+.property-value select {
+  width: 100%;
+  padding: 5px 8px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 0 2px 2px 0;
+  font-size: 12px;
+}
+
+.property-value input:focus,
+.property-value select:focus {
+  outline: 1px solid var(--accent-color);
+}
+
+/* Status Bar - moved to top */
+.status-bar {
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 0 16px;
+}
+
+.status-item.version {
+  flex: 1;
+  text-align: center;
+  font-weight: 500;
+  color: var(--text-header);
+}
+
+/* Context Menu */
+.context-menu {
+  position: absolute;
+  width: 180px;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  font-size: 13px;
+  display: none;
+  z-index: 1000;
+}
+
+.context-menu.visible {
+  display: block;
+}
+
+.context-menu-item {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.context-menu-item:hover {
+  background-color: var(--bg-active);
+}
+
+.context-menu-separator {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 5px 0;
+}
+
+/* Panel resizing styles */
+.right-panels.resizing {
+  cursor: row-resize;
+  user-select: none;
+}
+
+.right-panels.resizing .panel-content {
+  pointer-events: none;
+}
+
+.panel-resize-handle:hover {
+  background-color: var(--accent-color);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}

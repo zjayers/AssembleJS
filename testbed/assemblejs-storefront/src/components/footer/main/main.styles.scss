@@ -1,0 +1,306 @@
+/**
+ * Styles for the Main component
+ *
+ * This SCSS file provides styling for the Main component.
+ * AssembleJS automatically scopes these styles to the component.
+ *
+ * Best practices:
+ * - Use BEM naming convention for nested elements (Block__Element--Modifier)
+ * - Use variables for colors, fonts, and spacing
+ * - Organize styles from general to specific
+ * - Consider responsive design with media queries
+ */
+
+// Component-specific variables
+// $primary-color: #3366ff;
+// $font-size-base: 1rem;
+// $spacing-unit: 8px;
+
+.footer-main {
+  // Base component styles
+  background-color: #1f2937;
+  color: #f3f4f6;
+  padding: 3rem 0 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  
+  // Container
+  .footer-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  // Footer Grid Layout
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    
+    @media (min-width: 640px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  
+  // Footer Sections
+  .footer-section {
+    .footer-heading {
+      color: #ffffff;
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin: 0 0 1rem;
+    }
+    
+    .footer-description {
+      margin: 0 0 1.5rem;
+      line-height: 1.5;
+      color: #d1d5db;
+    }
+  }
+  
+  // Social Links
+  .social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: #374151;
+      color: #d1d5db;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: #2563eb;
+        color: #ffffff;
+      }
+    }
+    
+    .social-icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-style: normal;
+      
+      &.facebook::before {
+        content: "F";
+      }
+      
+      &.twitter::before {
+        content: "T";
+      }
+      
+      &.instagram::before {
+        content: "I";
+      }
+      
+      &.pinterest::before {
+        content: "P";
+      }
+    }
+  }
+  
+  // Footer Links
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      margin-bottom: 0.75rem;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    
+    a {
+      color: #d1d5db;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      
+      &:hover {
+        color: #ffffff;
+        text-decoration: underline;
+      }
+    }
+  }
+  
+  // Newsletter Form
+  .newsletter-form {
+    margin-top: 1rem;
+    
+    .form-group {
+      display: flex;
+      
+      input[type="email"] {
+        flex: 1;
+        background-color: #374151;
+        border: none;
+        padding: 0.75rem 1rem;
+        color: #f3f4f6;
+        font-size: 0.875rem;
+        border-radius: 0.25rem 0 0 0.25rem;
+        
+        &::placeholder {
+          color: rgba(#d1d5db, 0.7);
+        }
+        
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px rgba(#2563eb, 0.5);
+        }
+      }
+      
+      button {
+        background-color: #2563eb;
+        color: #ffffff;
+        border: none;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border-radius: 0 0.25rem 0.25rem 0;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        
+        &:hover {
+          background-color: #1d4ed8;
+        }
+      }
+    }
+    
+    .subscription-message {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      
+      &.success {
+        color: #10b981;
+      }
+      
+      &.error {
+        color: #ef4444;
+      }
+    }
+  }
+  
+  // Payment Methods
+  .payment-methods {
+    border-top: 1px solid #374151;
+    border-bottom: 1px solid #374151;
+    padding: 1.5rem 0;
+    margin-bottom: 1.5rem;
+    
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    
+    .payment-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      justify-content: center;
+    }
+    
+    .payment-item {
+      .payment-icon {
+        display: inline-block;
+        width: 40px;
+        height: 24px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+        
+        // In a real implementation, these would be actual images
+        &.visa::before {
+          content: "Visa";
+          font-size: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+        }
+        
+        &.mastercard::before {
+          content: "MC";
+          font-size: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+        }
+        
+        &.amex::before {
+          content: "Amex";
+          font-size: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+        }
+        
+        &.paypal::before {
+          content: "PayPal";
+          font-size: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+        }
+        
+        &.apple-pay::before {
+          content: "Apple";
+          font-size: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+        }
+      }
+    }
+  }
+  
+  // Copyright Section
+  .copyright {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #d1d5db;
+    
+    p {
+      margin: 0.5rem 0;
+    }
+    
+    a {
+      color: #d1d5db;
+      text-decoration: underline;
+      
+      &:hover {
+        color: #ffffff;
+      }
+    }
+  }
+}

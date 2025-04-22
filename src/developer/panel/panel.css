@@ -1,0 +1,368 @@
+/**
+ * AssembleJS Development Panel Styles
+ * Provides styling for the development panel and its components
+ * Supports both light and dark themes
+ * Enterprise-ready with accessibility features
+ */
+
+/* Default variables for dark theme */
+:root {
+  /* Visual Studio theme colors - pulled from designer */
+  --vs-blue: #007acc;
+  --vs-light-blue: #3d9bda;
+  --vs-dark-blue: #005b96;
+  --vs-purple: #68217a;
+  --vs-green: #388a34;
+  --vs-orange: #ce9178;
+  --vs-red: #e51400;
+  --vs-yellow: #ffd700;
+
+  /* Dark theme */
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #252526;
+  --bg-tertiary: #333333;
+  --bg-panel: #2d2d30;
+  --bg-active: #3f3f46;
+  --bg-hover: #2a2d2e;
+  --text-primary: #d4d4d4;
+  --text-secondary: #858585;
+  --text-header: #cccccc;
+  --border-color: #454545;
+  --accent-color: var(--vs-blue);
+  --accent-hover: var(--vs-light-blue);
+  --component-outline: #4e4e4e;
+  --component-select: var(--vs-blue);
+  --component-header: #2d2d30;
+  --grid-color: #333333;
+}
+
+/* Light theme variables */
+.light-theme {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f3f3;
+  --bg-tertiary: #e6e6e6;
+  --bg-panel: #f5f5f5;
+  --bg-active: #d6ebff;
+  --bg-hover: #e8e8e8;
+  --text-primary: #1e1e1e;
+  --text-secondary: #6e6e6e;
+  --text-header: #444444;
+  --border-color: #c9c9c9;
+  --accent-color: #007acc;
+  --accent-hover: #3d9bda;
+  --component-outline: #c9c9c9;
+  --component-select: #007acc;
+  --component-header: #f3f3f3;
+  --grid-color: #d4d4d4;
+}
+
+/* Main panel container - ensures high z-index and proper layering */
+#__assemblejs_dev_panel__ {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  z-index: 2147483647; /* Maximum valid z-index value - ensures panel is always on top */
+  border-top: 3px solid var(--accent-color);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+  max-height: 80vh; /* Prevent panel from taking up too much space */
+  text-align: left; /* Ensure text alignment is consistent */
+  font-size: 14px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#__assemblejs_dev_panel__.open #__assemblejs_dev_panel_content__ {
+  display: block;
+  max-height: 300px;
+}
+
+#__assemblejs_dev_panel__:not(.open) #__assemblejs_dev_panel_content__ {
+  display: none;
+}
+
+/* Floating button - always hidden since we're using header-only collapse */
+/* Floating button - enterprise-ready with accessibility features */
+#__assemblejs_dev_panel_float_button__ {
+  display: none; /* Always hidden */
+  position: fixed;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #ff7b00;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2147483646; /* One less than panel to ensure proper stacking */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease-in-out;
+  user-select: none;
+  bottom: 20px;
+  right: 20px;
+  /* Accessibility improvements */
+  outline: none;
+  /* Add focus styles for keyboard navigation */
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.5));
+  /* Ensure minimum touch target size for mobile */
+  touch-action: manipulation;
+}
+
+/* Logo displayed in floating button */
+#__assemblejs_dev_panel_float_logo__ {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* When panel is being dragged */
+#__assemblejs_dev_panel_float_button__.dragging {
+  opacity: 0.8;
+  cursor: grabbing;
+}
+
+#__assemblejs_dev_panel_header__ {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 15px;
+  cursor: pointer;
+  height: 30px;
+  background-color: var(--bg-secondary);
+}
+
+#__assemblejs_dev_panel_header__:hover {
+  background-color: var(--bg-hover);
+}
+
+#__assemblejs_dev_panel_title__ {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+#__assemblejs_dev_panel_logo__ {
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+#__assemblejs_dev_panel_content__ {
+  padding: 15px;
+  border-top: 1px solid var(--border-color);
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: var(--bg-primary);
+}
+
+#__assemblejs_dev_panel_buttons__ {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.__assemblejs_dev_panel_section__ {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.__assemblejs_dev_panel_section_header__ {
+  width: 100%;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  user-select: none;
+}
+
+/* Button styling - enterprise-ready with accessibility and touch support */
+.__assemblejs_dev_panel_button__ {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  /* Accessibility improvements */
+  min-height: 36px; /* Ensure buttons are large enough for touch */
+  outline: none;
+  position: relative;
+  user-select: none;
+  white-space: nowrap;
+  touch-action: manipulation;
+  /* Better touch feedback */
+  -webkit-tap-highlight-color: transparent;
+}
+
+.__assemblejs_dev_panel_button__:hover {
+  background-color: var(--bg-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.__assemblejs_dev_panel_button__:focus {
+  box-shadow: 0 0 0 2px var(--accent-color);
+  outline: none;
+}
+
+.__assemblejs_dev_panel_button__:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.__assemblejs_dev_panel_button_primary__ {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+}
+
+.__assemblejs_dev_panel_button_primary__:hover {
+  background-color: var(--accent-hover);
+}
+
+#__assemblejs_dev_panel_blueprint_info__ {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 13px;
+  margin-bottom: 15px;
+}
+
+#__assemblejs_dev_panel_blueprint_info__ table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#__assemblejs_dev_panel_blueprint_info__ table td {
+  padding: 4px 0;
+}
+
+#__assemblejs_dev_panel_blueprint_info__ table td:first-child {
+  font-weight: 500;
+  width: 120px;
+  color: var(--text-secondary);
+}
+
+.__assemblejs_dev_panel_value__ {
+  color: var(--text-primary) !important;
+}
+
+#__assemblejs_dev_panel_shortcut__ {
+  margin-left: auto;
+  font-size: 11px;
+  opacity: 0.7;
+  background-color: var(--bg-tertiary);
+  padding: 3px 6px;
+  border-radius: 3px;
+}
+
+#__assemblejs_dev_panel_close__ {
+  cursor: pointer;
+  margin-left: 10px;
+  padding: 5px;
+  color: var(--text-secondary);
+  transition: color 0.2s ease;
+}
+
+#__assemblejs_dev_panel_close__:hover {
+  color: var(--text-primary);
+}
+
+/* Theme toggle styling */
+#__assemblejs_dev_panel_theme_toggle__ {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 22px;
+}
+
+.theme-toggle-input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-toggle-track {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  transition: 0.4s;
+  border-radius: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px;
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--text-primary);
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.theme-toggle-input:checked + .theme-toggle-wrapper .theme-toggle-thumb {
+  transform: translateX(20px);
+}
+
+.theme-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  z-index: 1;
+}
+
+.theme-toggle-icon.moon {
+  color: var(--text-header);
+}
+
+.theme-toggle-icon.sun {
+  color: var(--vs-yellow);
+}
+
+@media (max-width: 600px) {
+  #__assemblejs_dev_panel_shortcut__ {
+    display: none;
+  }
+}

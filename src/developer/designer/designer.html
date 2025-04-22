@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AssembleJS Designer</title>
+  </head>
+  <body>
+    <!-- Status Bar - moved to top -->
+    <div class="status-bar">
+      <div class="status-item version">AssembleJS v1.0.0</div>
+    </div>
+
+    <div class="main-container">
+      <!-- Assembly Explorer Panel -->
+      <div class="panel assembly-explorer">
+        <div class="panel-header">
+          <span>Assembly Explorer</span>
+        </div>
+        <div class="panel-content">
+          <div class="tree-view" id="project-tree">
+            <div class="tree-item expanded">
+              <div class="tree-item-header">
+                <span class="tree-toggle">▼</span>
+                <span class="tree-icon folder"></span>
+                <span class="tree-label">src</span>
+              </div>
+              <div class="tree-children">
+                <div class="tree-item expanded">
+                  <div class="tree-item-header">
+                    <span class="tree-toggle">▼</span>
+                    <span class="tree-icon folder"></span>
+                    <span class="tree-label">components</span>
+                  </div>
+                  <div class="tree-children">
+                    <div class="tree-item">
+                      <div class="tree-item-header">
+                        <span class="tree-toggle invisible">▶</span>
+                        <span class="tree-icon component"></span>
+                        <span class="tree-label">header</span>
+                      </div>
+                    </div>
+                    <div class="tree-item">
+                      <div class="tree-item-header">
+                        <span class="tree-toggle invisible">▶</span>
+                        <span class="tree-icon component"></span>
+                        <span class="tree-label">footer</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tree-item expanded">
+                  <div class="tree-item-header">
+                    <span class="tree-toggle">▼</span>
+                    <span class="tree-icon folder"></span>
+                    <span class="tree-label">blueprints</span>
+                  </div>
+                  <div class="tree-children">
+                    <div class="tree-item active">
+                      <div class="tree-item-header">
+                        <span class="tree-toggle invisible">▶</span>
+                        <span class="tree-icon blueprint"></span>
+                        <span class="tree-label">home</span>
+                      </div>
+                    </div>
+                    <div class="tree-item">
+                      <div class="tree-item-header">
+                        <span class="tree-toggle invisible">▶</span>
+                        <span class="tree-icon blueprint"></span>
+                        <span class="tree-label">about</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Design Surface -->
+      <div class="designer-container">
+        <div class="design-surface">
+          <div class="canvas">
+            <div class="canvas-content" id="designer-canvas">
+              <!-- Sample blueprint layout with outline and grid -->
+              <div class="component-outline root-component">
+                <div class="component-header">
+                  <span class="component-type">Blueprint: home</span>
+                </div>
+                <div class="component-content">
+                  <div class="component-outline">
+                    <div class="component-header">
+                      <span class="component-type">Header</span>
+                    </div>
+                  </div>
+                  <div class="component-outline focused">
+                    <div class="component-header">
+                      <span class="component-type">MainContent</span>
+                    </div>
+                    <div class="component-content">
+                      <div class="component-outline">
+                        <div class="component-header">
+                          <span class="component-type">HeroSection</span>
+                        </div>
+                      </div>
+                      <div class="component-outline">
+                        <div class="component-header">
+                          <span class="component-type">FeaturesList</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="component-outline">
+                    <div class="component-header">
+                      <span class="component-type">Footer</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toolbox & Properties Panel -->
+      <div class="right-panels">
+        <!-- Toolbox Panel -->
+        <div class="panel toolbox">
+          <div class="panel-header">
+            <span>Toolbox</span>
+          </div>
+          <div class="panel-content">
+            <div class="toolbox-category">
+              <div class="toolbox-category-header">Components</div>
+              <div class="toolbox-items">
+                <div class="toolbox-item" draggable="true">
+                  <span class="tool-icon component"></span>
+                  <span class="tool-label">Container</span>
+                </div>
+                <div class="toolbox-item" draggable="true">
+                  <span class="tool-icon component"></span>
+                  <span class="tool-label">Button</span>
+                </div>
+                <div class="toolbox-item" draggable="true">
+                  <span class="tool-icon component"></span>
+                  <span class="tool-label">Text</span>
+                </div>
+                <div class="toolbox-item" draggable="true">
+                  <span class="tool-icon component"></span>
+                  <span class="tool-label">Image</span>
+                </div>
+              </div>
+            </div>
+            <div class="toolbox-category">
+              <div class="toolbox-category-header">Layouts</div>
+              <div class="toolbox-items">
+                <div class="toolbox-item" draggable="true">
+                  <span class="tool-icon layout"></span>
+                  <span class="tool-label">Grid</span>
+                </div>
+                <div class="toolbox-item" draggable="true">
+                  <span class="tool-icon layout"></span>
+                  <span class="tool-label">Flex</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resize handle for adjustable panels -->
+        <div class="panel-resize-handle"></div>
+
+        <!-- Properties Panel -->
+        <div class="panel properties">
+          <div class="panel-header">
+            <span>Properties</span>
+          </div>
+          <div class="panel-content">
+            <div class="property-grid">
+              <div class="property-group">
+                <div class="property-group-header">Appearance</div>
+                <div class="property-row">
+                  <div class="property-name">id</div>
+                  <div class="property-value">
+                    <input type="text" value="hero-section" />
+                  </div>
+                </div>
+                <div class="property-row">
+                  <div class="property-name">className</div>
+                  <div class="property-value">
+                    <input type="text" value="hero-section main-hero" />
+                  </div>
+                </div>
+                <div class="property-row">
+                  <div class="property-name">visibility</div>
+                  <div class="property-value">
+                    <select>
+                      <option selected>Visible</option>
+                      <option>Hidden</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="property-group">
+                <div class="property-group-header">Layout</div>
+                <div class="property-row">
+                  <div class="property-name">width</div>
+                  <div class="property-value">
+                    <input type="text" value="100%" />
+                  </div>
+                </div>
+                <div class="property-row">
+                  <div class="property-name">height</div>
+                  <div class="property-value">
+                    <input type="text" value="auto" />
+                  </div>
+                </div>
+                <div class="property-row">
+                  <div class="property-name">margin</div>
+                  <div class="property-value">
+                    <input type="text" value="0 0 20px 0" />
+                  </div>
+                </div>
+                <div class="property-row">
+                  <div class="property-name">padding</div>
+                  <div class="property-value">
+                    <input type="text" value="20px" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Command Bar - positioned above context menu -->
+    <div class="command-bar">
+      <div class="command-button-group">
+        <button id="toggle-assembly-explorer" class="command-button active">
+          Explorer Enabled
+        </button>
+        <button id="toggle-toolbox" class="command-button active">
+          Toolbox Enabled
+        </button>
+        <button id="toggle-properties" class="command-button active">
+          Properties Enabled
+        </button>
+      </div>
+
+      <div class="theme-toggle-wrapper">
+        <input
+          type="checkbox"
+          id="toggle-theme-button"
+          class="theme-toggle-input"
+        />
+        <label for="toggle-theme-button" class="theme-toggle">
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-icon moon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+                ></path>
+              </svg>
+            </span>
+            <span class="theme-toggle-icon sun">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            </span>
+          </span>
+          <span class="theme-toggle-thumb"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div class="context-menu" id="context-menu">
+      <div class="context-menu-item">Add Component</div>
+      <div class="context-menu-item">Edit</div>
+      <div class="context-menu-item">Copy</div>
+      <div class="context-menu-item">Paste</div>
+      <div class="context-menu-item">Delete</div>
+      <div class="context-menu-separator"></div>
+      <div class="context-menu-item">Properties</div>
+    </div>
+
+    <script>
+      // Theme switching functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const themeToggleButton = document.getElementById(
+          "toggle-theme-button"
+        );
+        const body = document.body;
+        const designerCanvas = document.getElementById("designer-canvas");
+
+        // Check for saved theme preference in localStorage
+        const savedTheme = localStorage.getItem("assemblejs-designer-theme");
+        if (savedTheme === "light") {
+          body.classList.add("light-theme");
+          themeToggleButton.checked = true;
+        } else {
+          themeToggleButton.checked = false;
+        }
+
+        // Theme toggle handler
+        themeToggleButton.addEventListener("change", function () {
+          body.classList.toggle("light-theme");
+
+          if (body.classList.contains("light-theme")) {
+            localStorage.setItem("assemblejs-designer-theme", "light");
+            this.checked = true;
+          } else {
+            localStorage.setItem("assemblejs-designer-theme", "dark");
+            this.checked = false;
+          }
+        });
+
+        // Since we removed the focus mode button, we'll set up a keyboard shortcut
+        // for toggling component focus mode (Alt+F)
+        document.addEventListener("keydown", function (event) {
+          if (event.altKey && event.key === "f") {
+            designerCanvas.classList.toggle("component-focus-mode");
+          }
+        });
+
+        // Panel toggle functionality
+        const toggleExplorerButton = document.getElementById(
+          "toggle-assembly-explorer"
+        );
+        const toggleToolboxButton = document.getElementById("toggle-toolbox");
+        const togglePropertiesButton =
+          document.getElementById("toggle-properties");
+
+        const explorerPanel = document.querySelector(".assembly-explorer");
+        const toolboxPanel = document.querySelector(".toolbox");
+        const propertiesPanel = document.querySelector(".properties");
+        const resizeHandle = document.querySelector(".panel-resize-handle");
+
+        // Toggle Assembly Explorer panel
+        toggleExplorerButton.addEventListener("click", function () {
+          this.classList.toggle("active");
+          explorerPanel.classList.toggle("hidden");
+
+          // Update button text
+          if (explorerPanel.classList.contains("hidden")) {
+            this.textContent = "Explorer Disabled";
+          } else {
+            this.textContent = "Explorer Enabled";
+          }
+
+          saveLayoutState();
+        });
+
+        // Toggle Toolbox panel
+        toggleToolboxButton.addEventListener("click", function () {
+          const wasHidden = toolboxPanel.classList.contains("hidden");
+          this.classList.toggle("active");
+          toolboxPanel.classList.toggle("hidden");
+
+          // Update button text
+          if (toolboxPanel.classList.contains("hidden")) {
+            this.textContent = "Toolbox Disabled";
+          } else {
+            this.textContent = "Toolbox Enabled";
+          }
+
+          // If we're showing toolbox and properties is already visible,
+          // we need to reset heights for proper resizing
+          if (wasHidden && !propertiesPanel.classList.contains("hidden")) {
+            // Reset fixed heights and go back to flex proportions
+            toolboxPanel.style.height = "";
+            propertiesPanel.style.height = "";
+            toolboxPanel.style.flex = "0.4";
+            propertiesPanel.style.flex = "0.6";
+          } else if (
+            !wasHidden &&
+            !propertiesPanel.classList.contains("hidden")
+          ) {
+            // If we're hiding the toolbox, let properties take full height
+            propertiesPanel.style.height = "";
+            propertiesPanel.style.flex = "1";
+          }
+
+          saveLayoutState();
+        });
+
+        // Toggle Properties panel
+        togglePropertiesButton.addEventListener("click", function () {
+          const wasHidden = propertiesPanel.classList.contains("hidden");
+          this.classList.toggle("active");
+          propertiesPanel.classList.toggle("hidden");
+
+          // Update button text
+          if (propertiesPanel.classList.contains("hidden")) {
+            this.textContent = "Properties Disabled";
+          } else {
+            this.textContent = "Properties Enabled";
+          }
+
+          // If we're showing properties and toolbox is already visible,
+          // we need to reset heights for proper resizing
+          if (wasHidden && !toolboxPanel.classList.contains("hidden")) {
+            // Reset fixed heights and go back to flex proportions
+            toolboxPanel.style.height = "";
+            propertiesPanel.style.height = "";
+            toolboxPanel.style.flex = "0.4";
+            propertiesPanel.style.flex = "0.6";
+          } else if (!wasHidden && !toolboxPanel.classList.contains("hidden")) {
+            // If we're hiding properties, let toolbox take full height
+            toolboxPanel.style.height = "";
+            toolboxPanel.style.flex = "1";
+          }
+
+          saveLayoutState();
+        });
+
+        // Initialize panel resize functionality
+        if (resizeHandle) {
+          let startY = 0;
+          let startToolboxHeight = 0;
+          let startPropertiesHeight = 0;
+
+          // Mouse down event for starting resize
+          resizeHandle.addEventListener("mousedown", function (e) {
+            // Only handle if both panels are visible
+            if (
+              toolboxPanel.classList.contains("hidden") ||
+              propertiesPanel.classList.contains("hidden")
+            ) {
+              return;
+            }
+
+            e.preventDefault();
+
+            // Get starting positions
+            startY = e.clientY;
+            startToolboxHeight = toolboxPanel.offsetHeight;
+            startPropertiesHeight = propertiesPanel.offsetHeight;
+
+            // Add temporary mousemove and mouseup event listeners
+            document.addEventListener("mousemove", handleMouseMove);
+            document.addEventListener("mouseup", handleMouseUp);
+
+            // Add a class to indicate we're resizing
+            document.querySelector(".right-panels").classList.add("resizing");
+          });
+
+          // Handle mouse movement during resize
+          function handleMouseMove(e) {
+            const deltaY = e.clientY - startY;
+            const rightPanels = document.querySelector(".right-panels");
+            const totalHeight =
+              rightPanels.offsetHeight - resizeHandle.offsetHeight;
+
+            // Calculate new heights ensuring they stay within reasonable bounds
+            let newToolboxHeight = Math.max(
+              100,
+              Math.min(totalHeight - 100, startToolboxHeight + deltaY)
+            );
+            let newPropertiesHeight = totalHeight - newToolboxHeight;
+
+            // Instead of flex, use direct height to ensure better layout control
+            toolboxPanel.style.height = newToolboxHeight + "px";
+            propertiesPanel.style.height = newPropertiesHeight + "px";
+
+            // Store heights as data attributes for restoring
+            toolboxPanel.dataset.height = newToolboxHeight;
+            propertiesPanel.dataset.height = newPropertiesHeight;
+          }
+
+          // Handle mouse up to stop resizing
+          function handleMouseUp() {
+            document.removeEventListener("mousemove", handleMouseMove);
+            document.removeEventListener("mouseup", handleMouseUp);
+
+            // Remove resizing class
+            document
+              .querySelector(".right-panels")
+              .classList.remove("resizing");
+
+            // Save panel state including sizes
+            saveLayoutState();
+          }
+        }
+
+        // Save panel visibility state to localStorage
+        function saveLayoutState() {
+          const layoutState = {
+            explorerVisible: !explorerPanel.classList.contains("hidden"),
+            toolboxVisible: !toolboxPanel.classList.contains("hidden"),
+            propertiesVisible: !propertiesPanel.classList.contains("hidden"),
+            toolboxHeight:
+              parseInt(toolboxPanel.dataset.height) ||
+              parseInt(toolboxPanel.offsetHeight) ||
+              0,
+            propertiesHeight:
+              parseInt(propertiesPanel.dataset.height) ||
+              parseInt(propertiesPanel.offsetHeight) ||
+              0,
+          };
+          localStorage.setItem(
+            "assemblejs-designer-layout",
+            JSON.stringify(layoutState)
+          );
+        }
+
+        // Load panel visibility state from localStorage
+        function loadLayoutState() {
+          const savedState = localStorage.getItem("assemblejs-designer-layout");
+          if (savedState) {
+            const layoutState = JSON.parse(savedState);
+
+            if (!layoutState.explorerVisible) {
+              toggleExplorerButton.classList.remove("active");
+              explorerPanel.classList.add("hidden");
+              toggleExplorerButton.textContent = "Explorer Disabled";
+            } else {
+              toggleExplorerButton.textContent = "Explorer Enabled";
+            }
+
+            if (!layoutState.toolboxVisible) {
+              toggleToolboxButton.classList.remove("active");
+              toolboxPanel.classList.add("hidden");
+              toggleToolboxButton.textContent = "Toolbox Disabled";
+            } else {
+              toggleToolboxButton.textContent = "Toolbox Enabled";
+            }
+
+            if (!layoutState.propertiesVisible) {
+              togglePropertiesButton.classList.remove("active");
+              propertiesPanel.classList.add("hidden");
+              togglePropertiesButton.textContent = "Properties Disabled";
+            } else {
+              togglePropertiesButton.textContent = "Properties Enabled";
+            }
+
+            // Restore panel sizes if both panels are visible
+            if (layoutState.toolboxVisible && layoutState.propertiesVisible) {
+              // Apply only if we have valid heights
+              if (layoutState.toolboxHeight && layoutState.toolboxHeight > 0) {
+                toolboxPanel.style.height = layoutState.toolboxHeight + "px";
+                toolboxPanel.dataset.height = layoutState.toolboxHeight;
+              }
+
+              if (
+                layoutState.propertiesHeight &&
+                layoutState.propertiesHeight > 0
+              ) {
+                propertiesPanel.style.height =
+                  layoutState.propertiesHeight + "px";
+                propertiesPanel.dataset.height = layoutState.propertiesHeight;
+              }
+            } else {
+              // If only one panel is visible, it should take full height
+              if (
+                layoutState.toolboxVisible &&
+                !layoutState.propertiesVisible
+              ) {
+                toolboxPanel.style.height = "";
+                toolboxPanel.style.flex = "1";
+              }
+
+              if (
+                !layoutState.toolboxVisible &&
+                layoutState.propertiesVisible
+              ) {
+                propertiesPanel.style.height = "";
+                propertiesPanel.style.flex = "1";
+              }
+            }
+          }
+        }
+
+        // Apply saved layout state when page loads
+        loadLayoutState();
+      });
+    </script>
+  </body>
+</html>

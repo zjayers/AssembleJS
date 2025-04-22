@@ -1,0 +1,220 @@
+// Navigation Variables
+$nav-bg: #ffffff;
+$nav-text: #333333;
+$nav-hover: #2563eb;
+$nav-accent: #f97316;
+$nav-border: #e5e7eb;
+$nav-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+$breakpoint-md: 992px;
+$breakpoint-sm: 768px;
+$container-max-width: 1280px;
+
+// Navigation Main Component
+.navigation-main {
+  background-color: $nav-bg;
+  box-shadow: $nav-shadow;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  
+  .navigation-container {
+    max-width: $container-max-width;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    
+    @media (max-width: $breakpoint-md) {
+      padding: 0 1.5rem;
+    }
+  }
+  
+  // Logo
+  .logo {
+    flex-shrink: 0;
+    
+    a {
+      text-decoration: none;
+      color: $nav-text;
+      
+      h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin: 0;
+      }
+    }
+  }
+  
+  // Main Navigation
+  .main-nav {
+    display: flex;
+    align-items: center;
+    
+    @media (max-width: $breakpoint-md) {
+      display: none;
+      width: 100%;
+      order: 3;
+      margin-top: 1rem;
+      
+      &.open {
+        display: block;
+      }
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      
+      @media (max-width: $breakpoint-md) {
+        flex-direction: column;
+      }
+      
+      li {
+        margin: 0 0.75rem;
+        
+        @media (max-width: $breakpoint-md) {
+          margin: 0;
+          width: 100%;
+          text-align: center;
+          border-bottom: 1px solid $nav-border;
+          
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+        
+        .nav-link {
+          display: block;
+          padding: 0.5rem;
+          color: $nav-text;
+          text-decoration: none;
+          font-weight: 500;
+          transition: color 0.2s ease;
+          
+          &:hover {
+            color: $nav-hover;
+          }
+          
+          @media (max-width: $breakpoint-md) {
+            padding: 1rem;
+          }
+        }
+      }
+    }
+  }
+  
+  // Navigation Actions (Search, Cart, User)
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    
+    .search-icon,
+    .cart-icon,
+    .user-icon {
+      cursor: pointer;
+      color: $nav-text;
+      position: relative;
+      
+      &:hover {
+        color: $nav-hover;
+      }
+    }
+    
+    .cart-icon {
+      .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: $nav-accent;
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+  
+  // Mobile Menu Toggle
+  .mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    
+    @media (max-width: $breakpoint-md) {
+      display: flex;
+    }
+    
+    .bar {
+      width: 2rem;
+      height: 3px;
+      background-color: $nav-text;
+      border-radius: 2px;
+      transition: all 0.3s linear;
+    }
+    
+    &.open {
+      .bar:nth-child(1) {
+        transform: translateY(10px) rotate(45deg);
+      }
+      
+      .bar:nth-child(2) {
+        opacity: 0;
+      }
+      
+      .bar:nth-child(3) {
+        transform: translateY(-10px) rotate(-45deg);
+      }
+    }
+  }
+  
+  // Dark mode support
+  @media (prefers-color-scheme: dark) {
+    background-color: #1f2937;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    
+    .logo a {
+      color: #f3f4f6;
+    }
+    
+    .main-nav .nav-links li .nav-link {
+      color: #e5e7eb;
+      
+      &:hover {
+        color: #60a5fa;
+      }
+    }
+    
+    .nav-actions .search-icon,
+    .nav-actions .cart-icon,
+    .nav-actions .user-icon {
+      color: #e5e7eb;
+      
+      &:hover {
+        color: #60a5fa;
+      }
+    }
+    
+    .mobile-menu-toggle .bar {
+      background-color: #e5e7eb;
+    }
+  }
+}

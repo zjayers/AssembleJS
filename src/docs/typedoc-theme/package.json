@@ -1,0 +1,13 @@
+{
+  "name": "typedoc-assemblejs-theme",
+  "version": "1.0.0",
+  "description": "AssembleJS theme for TypeDoc documentation",
+  "main": "theme.js",
+  "author": "Zachariah Ayers",
+  "license": "MIT",
+  "keywords": [
+    "typedoc",
+    "theme",
+    "assemblejs"
+  ]
+}

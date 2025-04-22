@@ -1,0 +1,57 @@
+/**
+ * Styles for the {{ pascalCase VIEW_NAME }} component
+ *
+ * This SCSS file provides styling for the {{ pascalCase VIEW_NAME }} component.
+ * AssembleJS automatically scopes these styles to the component.
+ *
+ * Best practices:
+ * - Use BEM naming convention for nested elements (Block__Element--Modifier)
+ * - Use variables for colors, fonts, and spacing
+ * - Organize styles from general to specific
+ * - Consider responsive design with media queries
+ */
+
+// Component-specific variables
+// $primary-color: #3366ff;
+// $font-size-base: 1rem;
+// $spacing-unit: 8px;
+
+.{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}} {
+  // Base component styles
+  border: 2px dashed {{> randomColor }};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  
+  // Example of element styling using BEM convention
+  // &__header {
+  //   font-weight: bold;
+  //   margin-bottom: $spacing-unit * 2;
+  // }
+  
+  // Example of child element styling
+  // &__list {
+  //   list-style: none;
+  //   padding: 0;
+  //   
+  //   &-item {
+  //     margin-bottom: $spacing-unit;
+  //     padding: $spacing-unit;
+  //     
+  //     &--active {
+  //       background-color: rgba($primary-color, 0.1);
+  //     }
+  //   }
+  // }
+  
+  // Example of responsive design
+  // @media (max-width: 768px) {
+  //   flex-direction: column;
+  //   
+  //   &__header {
+  //     margin-bottom: $spacing-unit;
+  //   }
+  // }
+}
