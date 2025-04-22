@@ -16,15 +16,17 @@ const rendererCache: Record<string, ComponentRenderer> = {
   HTML: STRING,
   STRING,
   PREACT,
-  MARKDOWN
+  MARKDOWN,
 };
 
 /**
  * Lazily load a renderer by name to avoid initializing unused renderers
  * @param {string} rendererName - The name of the renderer to load
- * @returns {Promise<ComponentRenderer>} The loaded renderer
+ * @return {Promise<ComponentRenderer>} The loaded renderer
  */
-async function lazyLoadRenderer(rendererName: string): Promise<ComponentRenderer> {
+async function lazyLoadRenderer(
+  rendererName: string
+): Promise<ComponentRenderer> {
   if (rendererCache[rendererName]) {
     return rendererCache[rendererName];
   }
@@ -64,11 +66,15 @@ async function lazyLoadRenderer(rendererName: string): Promise<ComponentRenderer
       default:
         throw new Error(`Unknown renderer: ${rendererName}`);
     }
-    
+
     return rendererCache[rendererName];
   } catch (error) {
     console.error(`Error loading renderer ${rendererName}:`, error);
-    throw new Error(`Failed to load renderer ${rendererName}: ${error instanceof Error ? error.message : String(error)}`);
+    throw new Error(
+      `Failed to load renderer ${rendererName}: ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
   }
 }
 
@@ -76,7 +82,7 @@ async function lazyLoadRenderer(rendererName: string): Promise<ComponentRenderer
  * Get the required renderer based on the 'template' or 'templatePath' variables.
  * Here we can make assumptions about the file-type and set the renderer accordingly.
  * Uses lazy loading to only load renderers when needed.
- * 
+ *
  * @param {Partial<Pick<ComponentContext<AnyObject, ComponentParams>, "template" | "templateFile" | "renderer">>} context
  * @return {Promise<ComponentRenderer>} The appropriate renderer for the given template
  * @author Zach Ayers

@@ -44,7 +44,9 @@ describe("renderTemplate", () => {
     };
 
     // Mock getRenderer to return our mock renderer
-    (getRendererModule.getRenderer as jest.Mock).mockResolvedValue(mockRenderer);
+    (getRendererModule.getRenderer as jest.Mock).mockResolvedValue(
+      mockRenderer
+    );
 
     // Mock mutateBlueprint to return a modified template
     (componentUtils.mutateBlueprint as jest.Mock).mockReturnValue(

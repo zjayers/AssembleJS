@@ -119,7 +119,7 @@ export default function (plop: NodePlopAPI) {
           },
         },
         // 3. REGISTRATION - Not applicable for blueprints
-        
+
         // 4. LANGUAGE - Template language selection
         {
           type: "list",
@@ -131,7 +131,6 @@ export default function (plop: NodePlopAPI) {
       ];
     })(),
     actions: function (answers: Answers = {}) {
-
       const actions = [
         {
           type: "addMany",
@@ -185,7 +184,7 @@ export default function (plop: NodePlopAPI) {
             const renderType = answers.RENDER_TYPE;
 
             // Get the appropriate file extension based on the render type
-            let fileExtension = getFileExtensionForRenderType(renderType);
+            const fileExtension = getFileExtensionForRenderType(renderType);
 
             // Check if a component with this path already exists
             const pathRegex = new RegExp(`path:\\s*["']${nodeName}["']`);

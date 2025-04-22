@@ -46,7 +46,6 @@ export default function (plop: NodePlopAPI) {
       ];
     })(),
     actions: function (answers: Answers = {}) {
-
       return [
         {
           type: "addMany",

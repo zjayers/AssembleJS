@@ -5,6 +5,8 @@
 
 /**
  * Creates a Vue application instance
+ * @param {any} component - The root component
+ * @returnss {Object} The Vue application instance
  */
 // Vue 3 signature
 export function createApp(component: any): any {
@@ -18,6 +20,10 @@ export function createApp(component: any): any {
 
 /**
  * Creates a virtual node
+ * @param {any} type - Element type or component
+ * @param {any} props - Component properties
+ * @param {any} children - Child elements
+ * @returnss {Object} Virtual node object
  */
 export function h(type: any, props?: any, children?: any): any {
   return {};

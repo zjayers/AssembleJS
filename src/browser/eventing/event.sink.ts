@@ -21,7 +21,7 @@ export interface IEventSink {
    * Get the EventQueue associated with a channel:topic combination.
    * If an EventQueue is not found - create one and set it to a key of channel:topic in the eventMap.
    * @param {EventAddress} address The channel:topic combination.
-   * @returns {IEventQueue<AnyObject>} An event queue of the most recent payloads.
+   * @returnss {IEventQueue<AnyObject>} An event queue of the most recent payloads.
    * @internal
    * @example
    * ```typescript
@@ -37,7 +37,7 @@ export interface IEventSink {
   /**
    * View the next (newest) item in a channel:topic associated queue
    * @description Peeking will view the first item in the queue.
-   * @returns { P | undefined } - The generic member at the first position in the queue.
+   * @returnss { P | undefined } - The generic member at the first position in the queue.
    * @example
    * ```typescript
    * // Create a new event sink that intakes a generic type of string.
@@ -58,7 +58,7 @@ export interface IEventSink {
   /**
    * Add a new item to the channel:topic associated queue
    * @description New event payloads will be added to the end of the queue.
-   * @returns {void}
+   * @returnss {void}
    * @example
    * ```typescript
    * // Create a new event sink that intakes a generic type of string.

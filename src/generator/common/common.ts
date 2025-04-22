@@ -42,8 +42,8 @@ export const getRandomColor = () =>
 
 /**
  * Scans directories to find available blueprints and components
- * @param cwd - Current working directory
- * @returns Object containing available blueprints and components
+ * @param {string} cwd - Current working directory
+ * @return {object} Object containing available blueprints and components
  */
 export function scanForAvailableParents(cwd = process.cwd()) {
   const blueprintsDir = path.join(cwd, "src", "blueprints");
@@ -77,8 +77,8 @@ export function scanForAvailableParents(cwd = process.cwd()) {
 
 /**
  * Gets file extension for the selected render type
- * @param renderType - The template language to use
- * @returns The file extension for the template
+ * @param {string} renderType - The template language to use
+ * @return {string} The file extension for the template
  */
 export function getFileExtensionForRenderType(renderType: string): string {
   switch (renderType.toLowerCase()) {
@@ -112,8 +112,8 @@ export function getFileExtensionForRenderType(renderType: string): string {
 
 /**
  * Converts a dash-case string to camelCase
- * @param str - The string to convert
- * @returns The camelCase version of the string
+ * @param {string} str - The string to convert
+ * @return {string} The camelCase version of the string
  */
 export function dashToCamelCase(str: string): string {
   return str.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());

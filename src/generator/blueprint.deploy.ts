@@ -20,7 +20,6 @@
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import chalk from "chalk";
-import ora from "ora";
 import { Plop, run } from "plop";
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
@@ -48,6 +47,7 @@ v1.0.0
 
 /**
  * Load deployment plopfile and run specified generator
+ * @param {string[]} args - Command line arguments
  */
 const runDeployGenerator = async (args: string[] = []) => {
   try {
@@ -71,8 +71,6 @@ const runDeployGenerator = async (args: string[] = []) => {
       })
       .help().argv;
 
-    const spinner = ora("Preparing deployment configuration...").start();
-
     // Path to our deployment plopfile
     const plopfilePath = path.join(
       __dirname,
@@ -87,11 +85,9 @@ const runDeployGenerator = async (args: string[] = []) => {
         cicd: argv.ci || "none",
         useDefaults: true,
       });
-      spinner.succeed("Running in non-interactive mode");
     } else {
       process.env.ASMGEN_NON_INTERACTIVE = "false";
       process.env.ASMGEN_ARGS = "";
-      spinner.succeed("Ready to configure deployment");
     }
 
     // Prepare the plop runner

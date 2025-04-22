@@ -130,7 +130,7 @@ export interface NodeContextMutations<
    * Set a new key and value on the public data - Public data is exposed to the client
    * @param {string} key Key to set the data on.
    * @param {T} value The value of the new key.
-   * @return {Partial<Public>}
+   * @returns {Partial<Public>}
    * @example
    * ```
    * // Add a new piece of public data to the Component context
@@ -142,7 +142,7 @@ export interface NodeContextMutations<
   /**
    * Set a new series of keys and values on the public data - Public data is exposed to the client
    * @param {T} data Data object to merge in to the current Public data.
-   * @return {Partial<Public>}
+   * @returns {Partial<Public>}
    * @example
    * ```typescript
    * // Add a set of public data to the Component context
@@ -156,7 +156,7 @@ export interface NodeContextMutations<
    * @param {keyof ComponentParams} type The type of param to set.
    * @param {string} key Key to set the parameter on.
    * @param {T} value Value of the new parameter key.
-   * @return {Partial<Params>}
+   * @returns {Partial<Params>}
    * @example
    * ```typescript
    * // Add a new piece of data to the 'headers' param set
@@ -173,7 +173,7 @@ export interface NodeContextMutations<
    * Add a set of new key:value parameters to the header, path, query, or body parameters.
    * @param {keyof ComponentParams} type The type of parameter to set.
    * @param {T} obj Object to merge in to the current params.
-   * @return {Partial<Params>}
+   * @returns {Partial<Params>}
    * @example
    * ```typescript
    * // Add a new set of data to the 'headers' param set
@@ -190,7 +190,7 @@ export interface NodeContextMutations<
    * @param {keyof ComponentParams} type The type of parameter to set.
    * @param {RegExp | string} regex Regex matcher used in key replacement.
    * @param {T} value New value to use for matched keys.
-   * @return {Partial<Params>}
+   * @returns {Partial<Params>}
    * @example
    * ```typescript
    * // Replace the value of any 'query' params matching the regex pattern
@@ -207,7 +207,7 @@ export interface NodeContextMutations<
    * Remove a key from a parameter type.
    * @param {keyof ComponentParams} type The type of parameter to set.
    * @param {string} key The key to remove.
-   * @return {Partial<Params>}
+   * @returns {Partial<Params>}
    * @example
    * ```typescript
    * // Remove the username key from the 'body' param set
@@ -220,7 +220,7 @@ export interface NodeContextMutations<
    * Remove a set of keys from a parameter type.
    * @param {keyof ComponentParams} type The type of parameter to set.
    * @param {string} keys The keys to remove.
-   * @return {Partial<Params>}
+   * @returns {Partial<Params>}
    * @example
    * ```typescript
    * // Remove the username and password keys from the 'body' param set
@@ -233,7 +233,7 @@ export interface NodeContextMutations<
    * Remove a set of keys from a parameter type that match a regex pattern.
    * @param {keyof ComponentParams} type The type of parameter to set.
    * @param {RegExp} regex The regex matcher to use when testing object keys.
-   * @return {Partial<Params>}
+   * @returns {Partial<Params>}
    * @example
    * ```typescript
    * // Remove any params from the 'body' param set that matches a regex pattern
@@ -249,7 +249,7 @@ export interface NodeContextMutations<
    * Remove a set of keys from a parameter type that match a regex pattern.
    * @param {keyof ComponentParams} type The type of parameter to set.
    * @param {(key: string, value: T) => boolean} filter The filter function to use when testing object keys.
-   * @return {Partial<Params>}
+   * @returns {Partial<Params>}
    * @example
    * ```typescript
    * // Remove any keys from the 'body' param set whose values do not equal "Hello World"

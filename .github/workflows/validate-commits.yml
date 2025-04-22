@@ -4,10 +4,22 @@ on:
   pull_request:
     branches:
       - '*'
+  
+  # Allow workflow to be called by other workflows
+  workflow_call:
+    outputs:
+      validation-success:
+        description: "Indicates if commit validation passed"
+        value: ${{ jobs.validate-commits.outputs.validation-success }}
+
+permissions:
+  contents: read
 
 jobs:
   validate-commits:
     runs-on: ubuntu-latest
+    outputs:
+      validation-success: ${{ steps.commit-validation.outputs.success }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,6 +34,32 @@ jobs:
           
       # Use existing commitlint config from repo
       - name: Validate PR commits with commitlint
+        id: commit-validation
+        continue-on-error: true
         run: |
           npm ci --ignore-scripts
-          npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+          
+          # Print SHA info for debugging
+          echo "Base SHA: ${{ github.event.pull_request.base.sha }}"
+          echo "Head SHA: ${{ github.event.pull_request.head.sha }}"
+          
+          # List commits for debugging
+          echo "Commits to validate:"
+          git log --oneline ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
+          
+          # Run commit validation
+          if npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose; then
+            echo "Commit validation passed!"
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "Commit validation failed!"
+            echo "success=false" >> $GITHUB_OUTPUT
+            exit 1  # This will make the step fail but the job continues due to continue-on-error
+          fi
+          
+      - name: Check commit validation result
+        if: steps.commit-validation.outputs.success != 'true'
+        run: |
+          echo "::error::Commit validation failed! Please ensure all commits follow the conventional commit format."
+          echo "See: https://www.conventionalcommits.org/"
+          exit 1  # This will fail the job, preventing dependent workflows from running

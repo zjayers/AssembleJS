@@ -18,11 +18,14 @@ export class HandlebarsRenderer extends Loggable implements ComponentRenderer {
   public vendorAssets: Array<NodeAsset> = [];
   private handlebars: typeof Handlebars;
 
+  /**
+   * Initialize the Handlebars renderer with custom helpers
+   */
   constructor() {
     super();
-    
+
     // Check if create() is available, otherwise use the instance directly
-    if (typeof Handlebars.create === 'function') {
+    if (typeof Handlebars.create === "function") {
       this.handlebars = Handlebars.create();
     } else {
       // For newer versions of Handlebars that don't have create()

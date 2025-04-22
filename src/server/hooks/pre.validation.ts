@@ -4,7 +4,7 @@ import type { ApiReply, ApiRequest } from "../../types/blueprint.simple.types";
  * If you are using the preValidation hook, you can change the payload before it is validated.
  *
  * @param {BlueprintInstance} app - The Assemble app instance.
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @category (Hooks)
  * @author Zach Ayers

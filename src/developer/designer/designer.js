@@ -107,18 +107,21 @@ document.addEventListener("DOMContentLoaded", () => {
       rightPanels.classList.add("resizing");
     });
 
-    // Handle mouse movement during resize
+    /**
+     * Handle mouse movement during panel resize
+     * @param {MouseEvent} e - The mouse move event
+     */
     function handleMouseMove(e) {
       const deltaY = e.clientY - startY;
       const totalHeight =
         rightPanels.offsetHeight - designer.resizeHandle.offsetHeight;
 
       // Calculate new heights ensuring they stay within reasonable bounds
-      let newToolboxHeight = Math.max(
+      const newToolboxHeight = Math.max(
         100,
         Math.min(totalHeight - 100, startToolboxHeight + deltaY)
       );
-      let newPropertiesHeight = totalHeight - newToolboxHeight;
+      const newPropertiesHeight = totalHeight - newToolboxHeight;
 
       // Calculate flex values based on the total height
       const toolboxFlex = newToolboxHeight / totalHeight;
@@ -129,7 +132,9 @@ document.addEventListener("DOMContentLoaded", () => {
       designer.propertiesPanel.style.flex = propertiesFlex;
     }
 
-    // Handle mouse up to stop resizing
+    /**
+     * Handle mouse up to stop resizing
+     */
     function handleMouseUp() {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
@@ -839,7 +844,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /**
    * Find the component that is the drop target
    * @param {HTMLElement} element - The element under the cursor
-   * @returns {HTMLElement|null} - The component outline element or null
+   * @return {HTMLElement|null} - The component outline element or null
    */
   function findDropTarget(element) {
     // Traverse up to find component outline
@@ -901,7 +906,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /**
    * Create a new component outline element
    * @param {string} componentType - The type of component to create
-   * @returns {HTMLElement} - The new component outline element
+   * @return {HTMLElement} - The new component outline element
    */
   function createComponentOutline(componentType) {
     const outline = document.createElement("div");

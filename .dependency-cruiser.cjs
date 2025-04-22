@@ -5,7 +5,10 @@ module.exports = {
       "name": "no-non-browser-dependencies",
       "comment": "don't allow dependencies from outside the browser folder to test",
       "severity": "error",
-      "from": { "path": ["^src/browser"] },
+      "from": { 
+        "path": ["^src/browser"],
+        "pathNot": ["^src/browser/client/blueprint\\.vue\\.ts$", "^src/browser/client/blueprint\\.react\\.ts$"]
+      },
       "to": { "pathNot": ["^src/browser", "events", "^src/constants", "node_modules/axios/index.js", "node_modules/preact/*"] }
     },
     /* rules from the 'recommended' preset: */
@@ -96,7 +99,9 @@ module.exports = {
         "That's problematic as the package either (1) won't be available on live (2 - worse) will be " +
         "available on live with an non-guaranteed version. Fix it by adding the package to the dependencies " +
         "in your package.json.",
-      from: {},
+      from: {
+        pathNot: ['__tests__/', '__mocks__/']
+      },
       to: {
         dependencyTypes: [
           'npm-no-pkg',
@@ -156,7 +161,10 @@ module.exports = {
         'from.pathNot re of the not-to-dev-dep rule in the dependency-cruiser configuration',
       from: {
         path: '^(src)',
-        pathNot: '\\.(spec|test)\\.(js|mjs|cjs|ts|ls|coffee|litcoffee|coffee\\.md)$'
+        pathNot: [
+          '\\.(spec|test)\\.(js|mjs|cjs|ts|ls|coffee|litcoffee|coffee\\.md)$',
+          'config/eslint.config.js'
+        ]
       },
       to: {
         dependencyTypes: [

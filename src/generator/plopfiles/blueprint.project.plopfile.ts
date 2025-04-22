@@ -33,14 +33,13 @@ export default function (plop: NodePlopAPI) {
             return "Project name should only contain lowercase letters, numbers, and hyphens";
           }
           return true;
-        }
-      }
+        },
+      },
       // 2. VIEW - Not applicable for projects
       // 3. REGISTRATION - Not applicable for projects
       // 4. LANGUAGE - Not applicable for projects
     ],
     actions: function (answers: Answers = {}) {
-
       return [
         // Project Files
         {
@@ -89,23 +88,21 @@ export default function (plop: NodePlopAPI) {
           // Get the current package version
           let version = "latest";
           let npmTag = "latest";
-          
+
           try {
             version = getPackageJsonKey<string>("version");
-            
+
             // Determine if this is a prerelease version (contains a hyphen)
             const isPrerelease = version.includes("-");
-            
+
             // Use the appropriate tag based on version
             npmTag = isPrerelease ? "next" : "latest";
-            
+
             console.log(
               `Installing AssembleJS ${version} with tag @${npmTag}...`
             );
           } catch (error) {
-            console.log(
-              `Installing AssembleJS with tag @${npmTag}...`
-            );
+            console.log(`Installing AssembleJS with tag @${npmTag}...`);
           }
 
           spawnCommand(

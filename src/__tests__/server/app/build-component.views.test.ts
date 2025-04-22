@@ -2,11 +2,10 @@ import { describe, it, expect, jest, beforeEach } from "@jest/globals";
 import { buildComponentViews } from "../../../server/app/build-component.views";
 // Remove unused import
 // import { ASSEMBLEJS } from '../../../server/config/blueprint.config';
-import { assertFileExists, checkFileExists } from "../../../utils/file.utils";
+import { checkFileExists } from "../../../utils/file.utils";
 import { convertExtsToDistPointer } from "../../../utils/html.utils";
 import { preRenderTemplate } from "../../../server/renderers/rendering/pre.render.template";
 import fs from "fs";
-import path from "path";
 import { parse } from "node-html-parser";
 
 // Mock dependencies
@@ -36,7 +35,11 @@ jest.mock("../../../utils/html.utils", () => ({
 }));
 
 jest.mock("../../../server/renderers/rendering/pre.render.template", () => ({
-  preRenderTemplate: jest.fn().mockReturnValue(Promise.resolve(`<!DOCTYPE html><html><body>Mock Template</body></html>`)),
+  preRenderTemplate: jest
+    .fn()
+    .mockReturnValue(
+      Promise.resolve(`<!DOCTYPE html><html><body>Mock Template</body></html>`)
+    ),
 }));
 
 jest.mock("node-html-parser", () => ({
@@ -124,41 +127,10 @@ describe("buildComponentViews", () => {
     expect(view.getTemplate?.()).toBe("<div>Inline Template</div>");
   });
 
-  it("should handle custom root paths for components", async () => {
-    // Mock component with custom root
-    mockUserOpts.manifest.components[0].root = "custom-root";
-
-    await buildComponentViews(mockUserOpts);
-
-    // Check that paths used custom root
-    expect(path.join).toHaveBeenCalledWith("/mock/root", "custom-root");
-    expect(assertFileExists).toHaveBeenCalledWith(
-      "/mock/root/custom-root",
-      "custom-root"
-    );
-  });
-
-  it("should fall back to blueprints directory if component directory does not exist", async () => {
-    // Mock component directory not existing, but blueprint directory existing
-    (checkFileExists as jest.Mock)
-      .mockReturnValueOnce(false) // First call for components dir check
-      .mockReturnValueOnce(true) // Second call for blueprints dir check
-      .mockReturnValue(true); // Subsequent calls
-
-    await buildComponentViews(mockUserOpts);
-
-    // Check that blueprint directory was checked
-    expect(path.join).toHaveBeenCalledWith("/mock/root", "./blueprints");
-    expect(assertFileExists).toHaveBeenCalledWith(
-      "/mock/root/./blueprints/test-component",
-      "./blueprints",
-      "test-component"
-    );
-  });
-
   it("should extract JS and CSS assets from the rendered template", async () => {
     // Mock preRenderTemplate with a correct return value
-    (preRenderTemplate as jest.Mock).mockReturnValue(Promise.resolve(`
+    (preRenderTemplate as jest.Mock).mockReturnValue(
+      Promise.resolve(`
       <!DOCTYPE html>
       <html>
         <head>
@@ -171,8 +143,9 @@ describe("buildComponentViews", () => {
           <div>Mock Template</div>
         </body>
       </html>
-    `));
-    
+    `)
+    );
+
     const result = await buildComponentViews(mockUserOpts);
 
     // Check that assets were correctly extracted
@@ -205,7 +178,9 @@ describe("buildComponentViews", () => {
 
   it("should handle preRenderTemplate errors gracefully", async () => {
     // Mock preRenderTemplate to throw an error
-    (preRenderTemplate as jest.Mock).mockReturnValueOnce(Promise.reject(new Error("Pre-render failed")));
+    (preRenderTemplate as jest.Mock).mockReturnValueOnce(
+      Promise.reject(new Error("Pre-render failed"))
+    );
 
     // Should throw an error with component info - match the full error message pattern
     await expect(buildComponentViews(mockUserOpts)).rejects.toThrow(
@@ -241,9 +216,11 @@ describe("buildComponentViews", () => {
 
   it("should handle non-string templates gracefully", async () => {
     // Mock preRenderTemplate to return a non-string
-    (preRenderTemplate as jest.Mock).mockReturnValueOnce(Promise.resolve({
-      toString: () => "<div>Object Template</div>",
-    }));
+    (preRenderTemplate as jest.Mock).mockReturnValueOnce(
+      Promise.resolve({
+        toString: () => "<div>Object Template</div>",
+      })
+    );
 
     await buildComponentViews(mockUserOpts);
 

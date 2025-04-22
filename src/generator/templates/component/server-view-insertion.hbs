@@ -1,5 +1,5 @@
-$1{
-          exposeAsBlueprint: true,
-          viewName: '{{VIEW_NAME}}',
-          templateFile: '{{VIEW_NAME}}.view{{#if (eq (lowerCase RENDER_TYPE) 'html')}}.html{{else}}{{#if (eq (lowerCase RENDER_TYPE) 'preact')}}.tsx{{else}}{{#if (eq (lowerCase RENDER_TYPE) 'markdown')}}.md{{else}}.ejs{{/if}}{{/if}}{{/if}}',
-        }, $2
+$1{ exposeAsBlueprint: true, viewName: '{{VIEW_NAME}}', templateFile: '{{VIEW_NAME}}.view{{#if
+  (eq (lowerCase RENDER_TYPE) "html")
+}}.html{{else if (eq (lowerCase RENDER_TYPE) "preact")}}.tsx{{else if (eq
+  (lowerCase RENDER_TYPE) "markdown"
+)}}.md{{else}}.ejs{{/if}}', }, $2

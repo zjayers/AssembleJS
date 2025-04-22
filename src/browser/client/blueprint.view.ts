@@ -312,9 +312,9 @@ export abstract class Blueprint<
 
   /**
    * Renders an error message in the specified container
-   * @param container - The HTML element to render the error message in
-   * @param message - The error message to display
-   * @param title - The title of the error message
+   * @param {HTMLElement} container - The HTML element to render the error message in
+   * @param {string} message - The error message to display
+   * @param {string} title - The title of the error message
    * @private
    */
   private renderErrorMessage(

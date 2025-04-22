@@ -68,6 +68,7 @@ enum ConfigFormat {
 
 /**
  * Handle deployment configuration
+ * @param {NodePlopAPI} plop - The Plop API instance
  */
 export default function deployPlopfile(plop: NodePlopAPI) {
   // Add custom helper functions

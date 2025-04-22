@@ -1,0 +1,28 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+permissions:
+  contents: read
+  pull-requests: write  # Required for commenting on pull requests
+
+jobs:
+  # First step: validate commit messages
+  validate-commits:
+    uses: ./.github/workflows/validate-commits.yml
+  
+  # Second step: run linting checks only if commits pass validation
+  lint:
+    needs: validate-commits
+    if: ${{ needs.validate-commits.outputs.validation-success == 'true' }}
+    uses: ./.github/workflows/lint-validation.yml
+  
+  # Third step: run tests only if linting passes
+  test:
+    needs: lint
+    if: ${{ needs.lint.outputs.lint-success == 'true' }}
+    uses: ./.github/workflows/test-validation.yml
+  

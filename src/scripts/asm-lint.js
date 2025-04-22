@@ -37,7 +37,7 @@ const colors = {
   blue: "\x1b[34m",
   magenta: "\x1b[35m",
   cyan: "\x1b[36m",
-  white: "\x1b[37m"
+  white: "\x1b[37m",
 };
 
 // Terminal graphics
@@ -105,18 +105,27 @@ async function main() {
   }
 
   // Default paths for linting files
-  let pathsToLint = args.filter(arg => !arg.startsWith("--")).length > 0
-    ? args.filter(arg => !arg.startsWith("--")).join(" ")
-    : "src/**/*.{js,jsx,ts,tsx}";
+  const pathsToLint =
+    args.filter((arg) => !arg.startsWith("--")).length > 0
+      ? args.filter((arg) => !arg.startsWith("--")).join(" ")
+      : "src/**/*.{js,jsx,ts,tsx}";
 
   // Add a separator line for visual clarity
-  console.log(`\n${colors.reset}${colors.cyan}${"═".repeat(70)}${colors.reset}`);
+  console.log(
+    `\n${colors.reset}${colors.cyan}${"═".repeat(70)}${colors.reset}`
+  );
 
   printHeader("Looking for configurations...");
 
   // Find the configuration files
-  const eslintConfigPath = path.resolve(__dirname, "../config/eslint.config.js");
-  const prettierConfigPath = path.resolve(__dirname, "../config/prettier.config.js");
+  const eslintConfigPath = path.resolve(
+    __dirname,
+    "../config/eslint.config.js"
+  );
+  const prettierConfigPath = path.resolve(
+    __dirname,
+    "../config/prettier.config.js"
+  );
 
   // Check if configs exist
   const hasEslintConfig = fs.existsSync(eslintConfigPath);
@@ -153,8 +162,8 @@ async function main() {
         // Try to resolve through NPX
         try {
           execSync(`npx ${dep} --version`, {
-            stdio: 'pipe',
-            cwd: process.cwd()
+            stdio: "pipe",
+            cwd: process.cwd(),
           });
           printSuccess(`Found ${dep} (global)`);
         } catch (npxError) {
@@ -181,7 +190,9 @@ async function main() {
   // Run ESLint if not prettier-only
   if (!isPrettierOnly) {
     // Add a separator line for visual clarity
-    console.log(`\n${colors.reset}${colors.cyan}${"═".repeat(70)}${colors.reset}`);
+    console.log(
+      `\n${colors.reset}${colors.cyan}${"═".repeat(70)}${colors.reset}`
+    );
 
     printHeader("Running ESLint...");
 
@@ -189,7 +200,9 @@ async function main() {
       // Check if src directory exists
       const srcDirExists = fs.existsSync(path.join(process.cwd(), "src"));
       if (!srcDirExists) {
-        throw new Error("src directory not found in the current working directory");
+        throw new Error(
+          "src directory not found in the current working directory"
+        );
       }
 
       // Get a list of files to check
@@ -217,19 +230,29 @@ async function main() {
         console.log("\n" + "─".repeat(60));
 
         // Check if eslint is installed locally
-        const useLocal = fs.existsSync(path.join(process.cwd(), "node_modules", ".bin", "eslint"));
-        const eslintBin = useLocal ? path.join(process.cwd(), "node_modules", ".bin", "eslint") : "npx eslint";
+        const useLocal = fs.existsSync(
+          path.join(process.cwd(), "node_modules", ".bin", "eslint")
+        );
+        const eslintBin = useLocal
+          ? path.join(process.cwd(), "node_modules", ".bin", "eslint")
+          : "npx eslint";
         const filesList = filesToLint.join(" ");
 
         // Create ESLint command
         let eslintCommand;
         if (hasEslintConfig && !skipCustomConfig) {
-          eslintCommand = `${eslintBin} --config ${eslintConfigPath} ${isFixMode ? "--fix" : ""} ${filesList}`;
+          eslintCommand = `${eslintBin} --config ${eslintConfigPath} ${
+            isFixMode ? "--fix" : ""
+          } ${filesList}`;
           printInfo("Using AssembleJS ESLint configuration");
         } else {
-          eslintCommand = `${eslintBin} ${isFixMode ? "--fix" : ""} ${filesList}`;
+          eslintCommand = `${eslintBin} ${
+            isFixMode ? "--fix" : ""
+          } ${filesList}`;
           if (skipCustomConfig) {
-            printInfo("Using default ESLint configuration (--no-custom-config flag used)");
+            printInfo(
+              "Using default ESLint configuration (--no-custom-config flag used)"
+            );
           }
         }
 
@@ -238,38 +261,49 @@ async function main() {
           // Use a more controlled approach for output
           if (isDebugMode) {
             // In debug mode, show full output
+            // codeql-disable-next-line js/shell-command-constructed-from-input
             execSync(eslintCommand, { stdio: "inherit" });
           } else {
             // Otherwise, capture output and filter it
+            // codeql-disable-next-line js/shell-command-constructed-from-input
             const output = execSync(eslintCommand, {
-              stdio: ['pipe', 'pipe', 'pipe'],
-              encoding: 'utf-8'
+              stdio: ["pipe", "pipe", "pipe"],
+              encoding: "utf-8",
             });
 
             // Only show summary of issues in a pretty format
-            console.log(`\n${colors.reset}${colors.bright}${colors.cyan}ESLint Results:${colors.reset}\n`);
+            console.log(
+              `\n${colors.reset}${colors.bright}${colors.cyan}ESLint Results:${colors.reset}\n`
+            );
 
-            const lines = output.split('\n');
-            const relevantLines = lines.filter(line =>
-              !line.includes('schema') &&
-              !line.includes('validateConfigSchema') &&
-              !line.match(/^\s*at\s+/) && // Skip stack traces
-              line.trim() !== '' // Skip empty lines
+            const lines = output.split("\n");
+            const relevantLines = lines.filter(
+              (line) =>
+                !line.includes("schema") &&
+                !line.includes("validateConfigSchema") &&
+                !line.match(/^\s*at\s+/) && // Skip stack traces
+                line.trim() !== "" // Skip empty lines
             );
 
             if (relevantLines.length > 0) {
               // Format each line to match REDLINE style
-              relevantLines.forEach(line => {
-                if (line.includes('error')) {
+              relevantLines.forEach((line) => {
+                if (line.includes("error")) {
                   console.log(`  ${colors.red}✖${colors.reset} ${line.trim()}`);
-                } else if (line.includes('warning')) {
-                  console.log(`  ${colors.yellow}⚠${colors.reset} ${line.trim()}`);
+                } else if (line.includes("warning")) {
+                  console.log(
+                    `  ${colors.yellow}⚠${colors.reset} ${line.trim()}`
+                  );
                 } else {
-                  console.log(`  ${colors.blue}ℹ${colors.reset} ${line.trim()}`);
+                  console.log(
+                    `  ${colors.blue}ℹ${colors.reset} ${line.trim()}`
+                  );
                 }
               });
             } else {
-              console.log(`  ${colors.green}✓${colors.reset} ${colors.green}No issues found${colors.reset}`);
+              console.log(
+                `  ${colors.green}✓${colors.reset} ${colors.green}No issues found${colors.reset}`
+              );
             }
           }
 
@@ -282,8 +316,12 @@ async function main() {
           // Check if this is a configuration error
           if (err.message && err.message.includes("schema")) {
             printError("ESLint configuration error detected");
-            printInfo("This might be due to an invalid or incompatible ESLint config");
-            printTip("Try running with --no-custom-config flag to use default ESLint settings");
+            printInfo(
+              "This might be due to an invalid or incompatible ESLint config"
+            );
+            printTip(
+              "Try running with --no-custom-config flag to use default ESLint settings"
+            );
 
             if (isDebugMode) {
               // In debug mode, show the full error
@@ -293,34 +331,47 @@ async function main() {
             printError("ESLint found issues in your code");
 
             // Show a cleaned up version of the error in REDLINE style
-            console.log(`\n${colors.reset}${colors.bright}${colors.cyan}ESLint Results:${colors.reset}\n`);
+            console.log(
+              `\n${colors.reset}${colors.bright}${colors.cyan}ESLint Results:${colors.reset}\n`
+            );
 
             if (!isDebugMode && err.stdout) {
               // Extract just the error summaries, not the giant schema dumps
-              const lines = err.stdout.toString().split('\n');
-              const relevantLines = lines.filter(line =>
-                !line.includes('schema') &&
-                !line.includes('validateConfigSchema') &&
-                !line.match(/^\s*at\s+/) && // Skip stack traces
-                line.trim() !== '' // Skip empty lines
+              const lines = err.stdout.toString().split("\n");
+              const relevantLines = lines.filter(
+                (line) =>
+                  !line.includes("schema") &&
+                  !line.includes("validateConfigSchema") &&
+                  !line.match(/^\s*at\s+/) && // Skip stack traces
+                  line.trim() !== "" // Skip empty lines
               );
 
               if (relevantLines.length > 0) {
                 // Format each line to match REDLINE style
-                relevantLines.forEach(line => {
-                  if (line.includes('error')) {
-                    console.log(`  ${colors.red}✖${colors.reset} ${line.trim()}`);
-                  } else if (line.includes('warning')) {
-                    console.log(`  ${colors.yellow}⚠${colors.reset} ${line.trim()}`);
+                relevantLines.forEach((line) => {
+                  if (line.includes("error")) {
+                    console.log(
+                      `  ${colors.red}✖${colors.reset} ${line.trim()}`
+                    );
+                  } else if (line.includes("warning")) {
+                    console.log(
+                      `  ${colors.yellow}⚠${colors.reset} ${line.trim()}`
+                    );
                   } else {
-                    console.log(`  ${colors.blue}ℹ${colors.reset} ${line.trim()}`);
+                    console.log(
+                      `  ${colors.blue}ℹ${colors.reset} ${line.trim()}`
+                    );
                   }
                 });
               } else {
-                console.log(`  ${colors.red}✖${colors.reset} ${colors.red}Issues found but detailed output suppressed${colors.reset}`);
+                console.log(
+                  `  ${colors.red}✖${colors.reset} ${colors.red}Issues found but detailed output suppressed${colors.reset}`
+                );
               }
             } else {
-              console.log(`  ${colors.red}✖${colors.reset} ${colors.red}Issues found in your code${colors.reset}`);
+              console.log(
+                `  ${colors.red}✖${colors.reset} ${colors.red}Issues found in your code${colors.reset}`
+              );
             }
 
             if (isFixMode) {
@@ -341,7 +392,9 @@ async function main() {
   // Run Prettier if not eslint-only
   if (!isEslintOnly) {
     // Add a separator line for visual clarity
-    console.log(`\n${colors.reset}${colors.magenta}${"═".repeat(70)}${colors.reset}`);
+    console.log(
+      `\n${colors.reset}${colors.magenta}${"═".repeat(70)}${colors.reset}`
+    );
 
     printHeader("Running Prettier...");
 
@@ -349,7 +402,9 @@ async function main() {
       // Check for src directory
       const srcDirExists = fs.existsSync(path.join(process.cwd(), "src"));
       if (!srcDirExists) {
-        throw new Error("src directory not found in the current working directory");
+        throw new Error(
+          "src directory not found in the current working directory"
+        );
       }
 
       // Get files to check
@@ -377,19 +432,29 @@ async function main() {
         console.log("\n" + "─".repeat(60));
 
         // Check if prettier is installed locally
-        const useLocal = fs.existsSync(path.join(process.cwd(), "node_modules", ".bin", "prettier"));
-        const prettierBin = useLocal ? path.join(process.cwd(), "node_modules", ".bin", "prettier") : "npx prettier";
+        const useLocal = fs.existsSync(
+          path.join(process.cwd(), "node_modules", ".bin", "prettier")
+        );
+        const prettierBin = useLocal
+          ? path.join(process.cwd(), "node_modules", ".bin", "prettier")
+          : "npx prettier";
         const filesList = filesToCheck.join(" ");
 
         // Create Prettier command
         let prettierCommand;
         if (hasPrettierConfig && !skipCustomConfig) {
-          prettierCommand = `${prettierBin} --config ${prettierConfigPath} ${isFixMode ? "--write" : "--check"} ${filesList}`;
+          prettierCommand = `${prettierBin} --config ${prettierConfigPath} ${
+            isFixMode ? "--write" : "--check"
+          } ${filesList}`;
           printInfo("Using AssembleJS Prettier configuration");
         } else {
-          prettierCommand = `${prettierBin} ${isFixMode ? "--write" : "--check"} ${filesList}`;
+          prettierCommand = `${prettierBin} ${
+            isFixMode ? "--write" : "--check"
+          } ${filesList}`;
           if (skipCustomConfig) {
-            printInfo("Using default Prettier configuration (--no-custom-config flag used)");
+            printInfo(
+              "Using default Prettier configuration (--no-custom-config flag used)"
+            );
           }
         }
 
@@ -398,37 +463,54 @@ async function main() {
           // Use a more controlled approach for output
           if (isDebugMode) {
             // In debug mode, show full output
+            // codeql-disable-next-line js/shell-command-constructed-from-input
             execSync(prettierCommand, { stdio: "inherit" });
           } else {
             // Otherwise, capture output and filter it
+            // codeql-disable-next-line js/shell-command-constructed-from-input
             const output = execSync(prettierCommand, {
-              stdio: ['pipe', 'pipe', 'pipe'],
-              encoding: 'utf-8'
+              stdio: ["pipe", "pipe", "pipe"],
+              encoding: "utf-8",
             });
 
             // Only show summary of issues in a pretty format
-            console.log(`\n${colors.reset}${colors.bright}${colors.magenta}Prettier Results:${colors.reset}\n`);
+            console.log(
+              `\n${colors.reset}${colors.bright}${colors.magenta}Prettier Results:${colors.reset}\n`
+            );
 
-            const lines = output.split('\n');
-            const relevantLines = lines.filter(line =>
-              !line.includes('schema') &&
-              !line.match(/^\s*at\s+/) && // Skip stack traces
-              line.trim() !== '' // Skip empty lines
+            const lines = output.split("\n");
+            const relevantLines = lines.filter(
+              (line) =>
+                !line.includes("schema") &&
+                !line.match(/^\s*at\s+/) && // Skip stack traces
+                line.trim() !== "" // Skip empty lines
             );
 
             if (relevantLines.length > 0) {
               // Format each line to match REDLINE style
-              relevantLines.forEach(line => {
-                if (line.includes('All matched files use Prettier code style!')) {
-                  console.log(`  ${colors.green}✓${colors.reset} ${colors.green}${line.trim()}${colors.reset}`);
-                } else if (line.includes('warning') || line.includes('Warn')) {
-                  console.log(`  ${colors.yellow}⚠${colors.reset} ${line.trim()}`);
+              relevantLines.forEach((line) => {
+                if (
+                  line.includes("All matched files use Prettier code style!")
+                ) {
+                  console.log(
+                    `  ${colors.green}✓${colors.reset} ${
+                      colors.green
+                    }${line.trim()}${colors.reset}`
+                  );
+                } else if (line.includes("warning") || line.includes("Warn")) {
+                  console.log(
+                    `  ${colors.yellow}⚠${colors.reset} ${line.trim()}`
+                  );
                 } else {
-                  console.log(`  ${colors.blue}ℹ${colors.reset} ${line.trim()}`);
+                  console.log(
+                    `  ${colors.blue}ℹ${colors.reset} ${line.trim()}`
+                  );
                 }
               });
             } else {
-              console.log(`  ${colors.green}✓${colors.reset} ${colors.green}No formatting issues found${colors.reset}`);
+              console.log(
+                `  ${colors.green}✓${colors.reset} ${colors.green}No formatting issues found${colors.reset}`
+              );
             }
           }
 
@@ -444,25 +526,30 @@ async function main() {
           printError("Prettier found formatting inconsistencies");
 
           // Show a cleaned up version of the error in REDLINE style
-          console.log(`\n${colors.reset}${colors.bright}${colors.magenta}Prettier Results:${colors.reset}\n`);
+          console.log(
+            `\n${colors.reset}${colors.bright}${colors.magenta}Prettier Results:${colors.reset}\n`
+          );
 
           if (!isDebugMode && err.stdout) {
             // Extract just the error summaries, not the giant schema dumps
-            const lines = err.stdout.toString().split('\n');
-            const relevantLines = lines.filter(line =>
-              !line.includes('schema') &&
-              !line.match(/^\s*at\s+/) && // Skip stack traces
-              line.trim() !== '' // Skip empty lines
+            const lines = err.stdout.toString().split("\n");
+            const relevantLines = lines.filter(
+              (line) =>
+                !line.includes("schema") &&
+                !line.match(/^\s*at\s+/) && // Skip stack traces
+                line.trim() !== "" // Skip empty lines
             );
 
             if (relevantLines.length > 0) {
               // Format each line to match REDLINE style
-              let fileWithIssues = [];
+              const fileWithIssues = [];
 
               // First, collect files with issues
-              relevantLines.forEach(line => {
-                if (line.includes('[warn]') || line.includes('[error]')) {
-                  const match = line.match(/\[(?:warn|error)\] (.+?) \(/) || line.match(/Check formatting of (.+)/);
+              relevantLines.forEach((line) => {
+                if (line.includes("[warn]") || line.includes("[error]")) {
+                  const match =
+                    line.match(/\[(?:warn|error)\] (.+?) \(/) ||
+                    line.match(/Check formatting of (.+)/);
                   if (match && match[1]) {
                     fileWithIssues.push(match[1]);
                   }
@@ -471,27 +558,45 @@ async function main() {
 
               // Display files with formatting issues
               if (fileWithIssues.length > 0) {
-                console.log(`  ${colors.yellow}⚠${colors.reset} ${colors.yellow}Formatting issues in:${colors.reset}`);
-                fileWithIssues.forEach(file => {
+                console.log(
+                  `  ${colors.yellow}⚠${colors.reset} ${colors.yellow}Formatting issues in:${colors.reset}`
+                );
+                fileWithIssues.forEach((file) => {
                   console.log(`    ${colors.red}→${colors.reset} ${file}`);
                 });
               } else {
                 // Display generic formatting issues
-                relevantLines.forEach(line => {
-                  if (line.includes('error') || line.includes('Code style issues')) {
-                    console.log(`  ${colors.red}✖${colors.reset} ${line.trim()}`);
-                  } else if (line.includes('warning') || line.includes('Warn')) {
-                    console.log(`  ${colors.yellow}⚠${colors.reset} ${line.trim()}`);
+                relevantLines.forEach((line) => {
+                  if (
+                    line.includes("error") ||
+                    line.includes("Code style issues")
+                  ) {
+                    console.log(
+                      `  ${colors.red}✖${colors.reset} ${line.trim()}`
+                    );
+                  } else if (
+                    line.includes("warning") ||
+                    line.includes("Warn")
+                  ) {
+                    console.log(
+                      `  ${colors.yellow}⚠${colors.reset} ${line.trim()}`
+                    );
                   } else {
-                    console.log(`  ${colors.blue}ℹ${colors.reset} ${line.trim()}`);
+                    console.log(
+                      `  ${colors.blue}ℹ${colors.reset} ${line.trim()}`
+                    );
                   }
                 });
               }
             } else {
-              console.log(`  ${colors.red}✖${colors.reset} ${colors.red}Formatting issues found but detailed output suppressed${colors.reset}`);
+              console.log(
+                `  ${colors.red}✖${colors.reset} ${colors.red}Formatting issues found but detailed output suppressed${colors.reset}`
+              );
             }
           } else {
-            console.log(`  ${colors.red}✖${colors.reset} ${colors.red}Formatting issues found in your code${colors.reset}`);
+            console.log(
+              `  ${colors.red}✖${colors.reset} ${colors.red}Formatting issues found in your code${colors.reset}`
+            );
           }
 
           if (isFixMode) {
@@ -540,16 +645,24 @@ async function main() {
 
   // Overall result
   if (eslintSuccess && prettierSuccess) {
-    console.log(`\n${colors.green}${colors.bright}✨ SUCCESS: All checks passed!${colors.reset}`);
+    console.log(
+      `\n${colors.green}${colors.bright}✨ SUCCESS: All checks passed!${colors.reset}`
+    );
     if (isFixMode) {
       printInfo("Code has been formatted and linted successfully!");
     }
   } else {
-    console.log(`\n${colors.red}${colors.bright}⚠️ ATTENTION: Issues were found${colors.reset}`);
+    console.log(
+      `\n${colors.red}${colors.bright}⚠️ ATTENTION: Issues were found${colors.reset}`
+    );
     if (!isFixMode) {
-      printTip(`Run with --fix flag to attempt automatic fixes: npm run lint -- --fix`);
+      printTip(
+        `Run with --fix flag to attempt automatic fixes: npm run lint -- --fix`
+      );
     } else {
-      printInfo("Some issues were fixed automatically, but manual fixes are still needed");
+      printInfo(
+        "Some issues were fixed automatically, but manual fixes are still needed"
+      );
     }
   }
 
@@ -557,8 +670,8 @@ async function main() {
 }
 
 // Handle errors
-process.on('unhandledRejection', (reason) => {
-  console.error('Error:', reason.message);
+process.on("unhandledRejection", (reason) => {
+  console.error("Error:", reason.message);
   process.exit(1);
 });
 
@@ -566,7 +679,7 @@ process.on('unhandledRejection', (reason) => {
 const startTime = new Date();
 
 // Execute main function
-main().catch(err => {
+main().catch((err) => {
   console.error("Fatal error:", err.message);
   process.exit(1);
 });

@@ -53,13 +53,15 @@ export default function (plop: NodePlopAPI) {
       const viewName = answers.VIEW_NAME;
       const renderType = answers.RENDER_TYPE;
       let parents = answers.PARENT_COMPONENTS || [];
-      
+
       // If adding view to an existing component, find all places where it's already used
       if (answers.COMPONENT_ACTION === "existing") {
         // We'll scan the server file to find all references to this component
         const existingParents = findComponentUsages(serverContent, nodeName);
         if (existingParents.length > 0) {
-          console.log(`Found ${existingParents.length} existing references to ${nodeName}`);
+          console.log(
+            `Found ${existingParents.length} existing references to ${nodeName}`
+          );
           // Use these instead of asking the user
           parents = existingParents;
         }
@@ -440,7 +442,7 @@ export default function (plop: NodePlopAPI) {
           message:
             "Which components/blueprints should include this component? (Optional)",
           choices: parentChoices,
-          when: (answers) => 
+          when: (answers) =>
             // Only ask this question when creating a new component, not when adding a view
             answers.COMPONENT_ACTION === "new" && parentChoices.length > 0,
         },
@@ -455,7 +457,6 @@ export default function (plop: NodePlopAPI) {
       ];
     })(),
     actions: function (answers: Answers = {}) {
-
       return [
         {
           type: "addMany",
@@ -600,11 +601,21 @@ export default function (plop: NodePlopAPI) {
   });
 }
 
-// Helper functions for server.ts modifications
+/**
+ * Capitalize the first letter of a string
+ * @param {string} str - The string to capitalize
+ * @return {string} The capitalized string
+ */
 function capitalizeFirst(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+/**
+ * Find the start of an object in a string
+ * @param {string} content - The content to search in
+ * @param {number} index - The index to start searching from
+ * @return {number} The index of the opening brace
+ */
 function findObjectStart(content: string, index: number): number {
   // Find the opening brace of the object containing the index
   while (index >= 0 && content[index] !== "{") {
@@ -613,6 +624,11 @@ function findObjectStart(content: string, index: number): number {
   return index;
 }
 
+/**
+ * Find the closing brace that matches the opening brace at the start of the content
+ * @param {string} content - The content to search in (should start with an opening brace)
+ * @return {number} The index of the matching closing brace
+ */
 function findClosingBrace(content: string): number {
   // Find the matching closing brace
   let braceCount = 1;
@@ -629,57 +645,67 @@ function findClosingBrace(content: string): number {
 
 /**
  * Find all places where a component is used in blueprints or other components
- * @param serverContent The content of the server.ts file
- * @param componentName The name of the component to find usages of
- * @returns An array of parent objects with type, name, and path properties
+ * @param {string} serverContent The content of the server.ts file
+ * @param {string} componentName The name of the component to find usages of
+ * @return {Array<{ type: string, name: string, path: string }>} An array of parent objects with type, name, and path properties
  */
-function findComponentUsages(serverContent: string, componentName: string): Array<{ type: string, name: string, path: string }> {
+function findComponentUsages(
+  serverContent: string,
+  componentName: string
+): Array<{ type: string; name: string; path: string }> {
   const parents = [];
-  
+
   // Find contentUrl references to this component in the server file
-  const contentUrlPattern = new RegExp(`contentUrl:\\s*["']/+${componentName}/[^"']+["']`, 'g');
+  const contentUrlPattern = new RegExp(
+    `contentUrl:\\s*["']/+${componentName}/[^"']+["']`,
+    "g"
+  );
   let match;
-  
+
   while ((match = contentUrlPattern.exec(serverContent)) !== null) {
     // For each match, try to find the parent component/blueprint
     const matchPos = match.index;
-    
+
     // Find the nearest path property before this match, which defines the parent component
     const pathRegex = /path:\s*["']([^"']+)["']/g;
     let pathMatch;
     let lastPathBeforeMatch = null;
-    
+
     while ((pathMatch = pathRegex.exec(serverContent)) !== null) {
       if (pathMatch.index < matchPos) {
         lastPathBeforeMatch = {
           index: pathMatch.index,
-          name: pathMatch[1]
+          name: pathMatch[1],
         };
       } else {
         // Stop once we've gone past the match position
         break;
       }
     }
-    
+
     if (lastPathBeforeMatch) {
       // Determine if this is a blueprint or component based on the directory structure
-      const isBlueprint = serverContent.substring(
-        Math.max(0, lastPathBeforeMatch.index - 100), 
-        lastPathBeforeMatch.index
-      ).includes('blueprints');
-      
+      const isBlueprint = serverContent
+        .substring(
+          Math.max(0, lastPathBeforeMatch.index - 100),
+          lastPathBeforeMatch.index
+        )
+        .includes("blueprints");
+
       parents.push({
-        type: isBlueprint ? 'blueprint' : 'component',
+        type: isBlueprint ? "blueprint" : "component",
         name: lastPathBeforeMatch.name,
-        path: isBlueprint ? `blueprints/${lastPathBeforeMatch.name}` : `components/${lastPathBeforeMatch.name}`
+        path: isBlueprint
+          ? `blueprints/${lastPathBeforeMatch.name}`
+          : `components/${lastPathBeforeMatch.name}`,
       });
     }
   }
-  
+
   // Remove duplicates (a component might be referenced multiple times in the same parent)
   const uniqueParents = [];
   const seen = new Set();
-  
+
   for (const parent of parents) {
     const key = `${parent.type}:${parent.name}`;
     if (!seen.has(key)) {
@@ -687,6 +713,6 @@ function findComponentUsages(serverContent: string, componentName: string): Arra
       uniqueParents.push(parent);
     }
   }
-  
+
   return uniqueParents;
 }

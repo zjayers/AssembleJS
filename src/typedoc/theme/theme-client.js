@@ -130,7 +130,9 @@
       });
     });
 
-    // Function to handle logo explosion animation
+    /**
+     * Handle the logo explosion animation when clicked
+     */
     function explodeLogoBlocks() {
       // Only continue if we have blocks and orbit container
       if (!logoBlocks.length || !orbitContainer) return;
@@ -206,13 +208,13 @@
 
   if (shapes.length) {
     // Track mouse position and target positions
-    let mouseX = 0.5,
-      mouseY = 0.5;
-    let targetParallaxX = 0,
-      targetParallaxY = 0;
-    let targetReverseX = 0,
-      targetReverseY = 0;
-    let shapesTargetPos = Array(shapes.length)
+    let mouseX = 0.5;
+    let mouseY = 0.5;
+    let targetParallaxX = 0;
+    let targetParallaxY = 0;
+    let targetReverseX = 0;
+    let targetReverseY = 0;
+    const shapesTargetPos = Array(shapes.length)
       .fill()
       .map(() => ({ x: 0, y: 0 }));
 
@@ -222,7 +224,12 @@
     const maxDistanceInfluence = 1.0; // Maximum influence distance
     const gravityMultiplier = 1.2; // How strong the gravitational pull is
 
-    // Function to calculate the gravitational influence based on distance
+    /**
+     * Calculate the gravitational influence based on distance
+     * @param {number} distance - The distance to calculate influence for
+     * @param {number} maxDistance - The maximum distance that should have influence
+     * @returns {number} The calculated gravitational influence value
+     */
     function calculateGravitationalInfluence(distance, maxDistance) {
       // If too far, no influence
       if (distance > maxDistance) return 0;
@@ -265,7 +272,9 @@
       setTimeout(returnToCenter, 500);
     });
 
-    // Animation loop for smooth, physics-based movement
+    /**
+     * Animation loop for smooth, physics-based parallax movement
+     */
     function animateParallax() {
       // Calculate offset based on mouse position with gravitational influence
       const offsetX = (mouseX - 0.5) * parallaxIntensity;

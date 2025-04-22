@@ -141,8 +141,10 @@
    */
   function openPanel() {
     const panel = document.getElementById("__assemblejs_dev_panel__");
-    const closeButton = document.getElementById("__assemblejs_dev_panel_close__");
-    
+    const closeButton = document.getElementById(
+      "__assemblejs_dev_panel_close__"
+    );
+
     panel.classList.add("open");
     // Update arrow direction to point down
     closeButton.innerHTML = `
@@ -169,8 +171,10 @@
    */
   function closePanel() {
     const panel = document.getElementById("__assemblejs_dev_panel__");
-    const closeButton = document.getElementById("__assemblejs_dev_panel_close__");
-    
+    const closeButton = document.getElementById(
+      "__assemblejs_dev_panel_close__"
+    );
+
     panel.classList.remove("open");
     // Update arrow direction to point up
     closeButton.innerHTML = `
@@ -311,15 +315,19 @@
    * @private
    */
   function makeDraggable(element) {
-    let pos1 = 0,
-      pos2 = 0,
-      pos3 = 0,
-      pos4 = 0;
+    let pos1 = 0;
+    let pos2 = 0;
+    let pos3 = 0;
+    let pos4 = 0;
 
     // Support both mouse and touch events for better mobile experience
     element.addEventListener("mousedown", dragMouseDown);
     element.addEventListener("touchstart", dragTouchStart, { passive: false });
 
+    /**
+     * Handle mouse down for dragging
+     * @param {MouseEvent} e - The mouse down event
+     */
     function dragMouseDown(e) {
       e.preventDefault();
       // Get the mouse cursor position at startup
@@ -333,6 +341,10 @@
       document.addEventListener("mouseup", closeDragElement);
     }
 
+    /**
+     * Handle touch start for dragging
+     * @param {TouchEvent} e - The touch start event
+     */
     function dragTouchStart(e) {
       e.preventDefault();
       // Get the touch position at startup
@@ -350,6 +362,11 @@
       }
     }
 
+    /**
+     * Update the element position during dragging
+     * @param {number} clientX - The current X coordinate
+     * @param {number} clientY - The current Y coordinate
+     */
     function updateElementPosition(clientX, clientY) {
       // Calculate the new cursor position
       pos1 = pos3 - clientX;
@@ -389,11 +406,19 @@
       }
     }
 
+    /**
+     * Handle element dragging
+     * @param {MouseEvent|TouchEvent} e - The drag event
+     */
     function elementDrag(e) {
       e.preventDefault();
       updateElementPosition(e.clientX, e.clientY);
     }
 
+    /**
+     * Handle element touch dragging
+     * @param {TouchEvent} e - The touch move event
+     */
     function elementTouchDrag(e) {
       e.preventDefault();
       if (e.touches && e.touches.length === 1) {
@@ -401,6 +426,9 @@
       }
     }
 
+    /**
+     * Clean up after dragging ends
+     */
     function closeDragElement() {
       // Stop moving when mouse button is released
       element.classList.remove("dragging");
@@ -408,6 +436,9 @@
       document.removeEventListener("mouseup", closeDragElement);
     }
 
+    /**
+     * Clean up after touch dragging ends
+     */
     function closeTouchDragElement() {
       // Stop moving when touch ends
       element.classList.remove("dragging");

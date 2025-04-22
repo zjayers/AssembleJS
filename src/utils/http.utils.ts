@@ -1,3 +1,4 @@
+/* eslint-disable valid-jsdoc */
 /**
  * Return 'true' to if the given string is a valid HTTP url.
  * @param {string} url - The url to check.

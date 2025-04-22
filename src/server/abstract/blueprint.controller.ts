@@ -44,7 +44,7 @@ export abstract class BlueprintController extends Loggable {
    *
    * @template T The service type that extends the Service base class
    * @param {string} token - The service identifier used during registration
-   * @returns {T} The service instance of the requested type
+   * @return {T} The service instance of the requested type
    * @throws {Error} When the requested service is not found in the container
    * @example
    * ```typescript
@@ -64,7 +64,7 @@ export abstract class BlueprintController extends Loggable {
    * services are not available.
    *
    * @param {string} token - The service identifier to check
-   * @returns {boolean} True if the service is registered, false otherwise
+   * @return {boolean} True if the service is registered, false otherwise
    * @example
    * ```typescript
    * // Check if the optional caching service is available
@@ -89,7 +89,7 @@ export abstract class BlueprintController extends Loggable {
    * functionality.
    *
    * @param {Assembly} app - The server instance to register the controller with
-   * @returns {void}
+   * @returnss {void}
    * @example
    * ```typescript
    * // Sample implementation in a concrete controller

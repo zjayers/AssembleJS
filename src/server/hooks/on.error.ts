@@ -13,7 +13,7 @@ import type {
  *
  * Notice: unlike the other hooks, pass an error to the done function is not supported.
  *
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @category (Hooks)
  * @author Zach Ayers

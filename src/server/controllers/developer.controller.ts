@@ -14,11 +14,13 @@ const getPackagePath = () => {
     if (fs.existsSync(localPath)) {
       return localPath;
     }
-    
+
     // Try to find the package in node_modules
     // This handles the case when running from the installed package
     const modulePath = require.resolve("asmbl");
-    const packageRoot = modulePath.substring(0, modulePath.indexOf("node_modules") + 12) + "/asmbl";
+    const packageRoot =
+      modulePath.substring(0, modulePath.indexOf("node_modules") + 12) +
+      "/asmbl";
     return path.join(packageRoot, "lib/server/controllers");
   } catch (error) {
     // Last resort, use process.cwd()
@@ -30,7 +32,8 @@ const __dirname = getPackagePath();
 
 // Cache the welcome page and designer page content to avoid reading from disk on every request
 let cachedWelcomeHtml: string | null = null;
-let cachedDesignerContent: { html: string; css: string; js: string } | null = null;
+let cachedDesignerContent: { html: string; css: string; js: string } | null =
+  null;
 
 /**
  * Developer Controller - Handles developer tools such as the visual designer.
@@ -57,6 +60,7 @@ export class DeveloperController extends BlueprintController {
   /**
    * Load the welcome page HTML from disk and cache it
    * @private
+   * @return {string|null} The welcome page HTML content or null if it cannot be loaded
    */
   private loadWelcomePageHtml(): string | null {
     // If we already have the welcome page cached, return it
@@ -73,11 +77,20 @@ export class DeveloperController extends BlueprintController {
       // Path when running from node_modules but from different directory structure
       path.join(__dirname, "../../../../src/developer/welcome/welcome.html"),
       // Additional paths to try from node_modules
-      path.join(process.cwd(), "node_modules/asmbl/lib/developer/welcome/welcome.html"),
-      path.join(process.cwd(), "storefront/node_modules/asmbl/lib/developer/welcome/welcome.html"),
-      path.join(process.cwd(), "../node_modules/asmbl/lib/developer/welcome/welcome.html")
+      path.join(
+        process.cwd(),
+        "node_modules/asmbl/lib/developer/welcome/welcome.html"
+      ),
+      path.join(
+        process.cwd(),
+        "storefront/node_modules/asmbl/lib/developer/welcome/welcome.html"
+      ),
+      path.join(
+        process.cwd(),
+        "../node_modules/asmbl/lib/developer/welcome/welcome.html"
+      ),
     ];
-    
+
     // Try each path until we find one that exists
     for (const tryPath of possibleWelcomePaths) {
       try {
@@ -89,7 +102,7 @@ export class DeveloperController extends BlueprintController {
         // Continue to next path
       }
     }
-    
+
     console.error("Welcome page not found. Tried paths:", possibleWelcomePaths);
     return null;
   }
@@ -134,7 +147,7 @@ export class DeveloperController extends BlueprintController {
 
         // Get the cached welcome page HTML (will load and cache if needed)
         const welcomeHtml = this.loadWelcomePageHtml();
-        
+
         // If no welcome page HTML is available, return 404
         if (!welcomeHtml) {
           return reply.code(404).send({ error: "Welcome page not found" });
@@ -335,8 +348,13 @@ export class DeveloperController extends BlueprintController {
   /**
    * Load the designer UI files from disk and cache them
    * @private
+   * @return {Object|null} The designer UI files (with html, css, js properties) or null if they cannot be loaded
    */
-  private loadDesignerContent(): { html: string; css: string; js: string } | null {
+  private loadDesignerContent(): {
+    html: string;
+    css: string;
+    js: string;
+  } | null {
     // If we already have the designer content cached, return it
     if (cachedDesignerContent) {
       return cachedDesignerContent;
@@ -352,22 +370,29 @@ export class DeveloperController extends BlueprintController {
       path.join(__dirname, "../../../../src/developer/designer"),
       // Additional paths to try from node_modules
       path.join(process.cwd(), "node_modules/asmbl/lib/developer/designer"),
-      path.join(process.cwd(), "storefront/node_modules/asmbl/lib/developer/designer"),
-      path.join(process.cwd(), "../node_modules/asmbl/lib/developer/designer")
+      path.join(
+        process.cwd(),
+        "storefront/node_modules/asmbl/lib/developer/designer"
+      ),
+      path.join(process.cwd(), "../node_modules/asmbl/lib/developer/designer"),
     ];
-    
+
     // Try each path until we find one that exists
     for (const designerDir of possibleDesignerPaths) {
       try {
         const htmlPath = path.join(designerDir, "designer.html");
         const cssPath = path.join(designerDir, "designer.css");
         const jsPath = path.join(designerDir, "designer.js");
-        
-        if (fs.existsSync(htmlPath) && fs.existsSync(cssPath) && fs.existsSync(jsPath)) {
+
+        if (
+          fs.existsSync(htmlPath) &&
+          fs.existsSync(cssPath) &&
+          fs.existsSync(jsPath)
+        ) {
           const html = fs.readFileSync(htmlPath, "utf8");
           const css = fs.readFileSync(cssPath, "utf8");
           const js = fs.readFileSync(jsPath, "utf8");
-          
+
           // Cache the content
           cachedDesignerContent = { html, css, js };
           return cachedDesignerContent;
@@ -376,8 +401,11 @@ export class DeveloperController extends BlueprintController {
         // Continue to the next path
       }
     }
-    
-    console.error("Designer files not found. Tried paths:", possibleDesignerPaths);
+
+    console.error(
+      "Designer files not found. Tried paths:",
+      possibleDesignerPaths
+    );
     return null;
   }
 
@@ -389,22 +417,22 @@ export class DeveloperController extends BlueprintController {
   private registerDesignerRoutes(app: FastifyInstance): void {
     // Attempt to load and cache the designer content at registration time
     this.loadDesignerContent();
-    
+
     // Serve the designer UI at the main designer path
     app.get(ASSEMBLEJS.designerPath, async (request, reply) => {
       try {
         // Get the cached designer content (will load and cache if needed)
         const content = this.loadDesignerContent();
-        
+
         if (!content) {
           return reply.code(404).send({ error: "Designer files not found" });
         }
-        
+
         // Inject CSS and JS into HTML
         const fullHtml = content.html
           .replace("</head>", `<style>${content.css}</style></head>`)
           .replace("</body>", `<script>${content.js}</script></body>`);
-        
+
         return reply
           .code(200)
           .header("Content-Type", "text/html")
@@ -829,8 +857,7 @@ export class DeveloperController extends BlueprintController {
             path: path.join("controllers", file),
           }));
       }
-    } catch (error) {
-    }
+    } catch (error) {}
 
     // Scan factories (flat list)
     try {
@@ -847,8 +874,7 @@ export class DeveloperController extends BlueprintController {
             path: path.join("factories", file),
           }));
       }
-    } catch (error) {
-    }
+    } catch (error) {}
 
     return structure;
   }

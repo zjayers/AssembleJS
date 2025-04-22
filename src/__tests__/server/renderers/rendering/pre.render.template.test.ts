@@ -48,7 +48,9 @@ describe("preRenderTemplate", () => {
     };
 
     // Mock getRenderer to return our mock renderer
-    (getRendererModule.getRenderer as jest.Mock).mockResolvedValue(mockRenderer);
+    (getRendererModule.getRenderer as jest.Mock).mockResolvedValue(
+      mockRenderer
+    );
 
     // Create mock options, component, and view with proper type structure
     mockUserOpts = {

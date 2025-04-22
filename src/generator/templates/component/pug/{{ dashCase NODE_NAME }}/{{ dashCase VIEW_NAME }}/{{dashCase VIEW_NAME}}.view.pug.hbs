@@ -1,23 +1,13 @@
-//- Pug component template for {{titleCase NODE_NAME}} {{titleCase VIEW_NAME}}
-div(class="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}")
-  h1= params.title || '{{titleCase VIEW_NAME}}'
-  
-  div.content
-    p This is a Pug template for {{titleCase NODE_NAME}} {{titleCase VIEW_NAME}}.
-    
-    //- Example of conditional rendering
-    if params.showDetails
-      div.details
-        h2 Details
-        p= params.details || 'No details available'
-    
-    //- Example of iterating through items
-    if params.items && params.items.length > 0
-      ul.items-list
-        each item in params.items
-          li= item
-    
-    //- Example of including a component
-    //- if components.someComponent
-    //-   div.sub-component
-    //-     != components.someComponent
+//- Pug component template for
+{{titleCase NODE_NAME}}
+{{titleCase VIEW_NAME}}
+div(class="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}") h1= params.title || '{{titleCase
+  VIEW_NAME
+}}' div.content p This is a Pug template for
+{{titleCase NODE_NAME}}
+{{titleCase VIEW_NAME}}. //- Example of conditional rendering if
+params.showDetails div.details h2 Details p= params.details || 'No details
+available' //- Example of iterating through items if params.items &&
+params.items.length > 0 ul.items-list each item in params.items li= item //-
+Example of including a component //- if components.someComponent //-
+div.sub-component //- != components.someComponent

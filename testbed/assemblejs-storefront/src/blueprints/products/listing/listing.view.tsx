@@ -372,4 +372,3 @@ export function Listing(context: PreactViewContext) {
     </div>
   );
 }
-}

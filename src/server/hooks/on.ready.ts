@@ -11,7 +11,7 @@
  *
  * Hook functions are invoked with this bound to the associated Fastify instance.
  *
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @author Zach Ayers
  * @category (Hooks)

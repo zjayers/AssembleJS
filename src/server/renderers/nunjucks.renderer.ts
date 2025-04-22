@@ -18,6 +18,9 @@ export class NunjucksRenderer extends Loggable implements ComponentRenderer {
   public vendorAssets: Array<NodeAsset> = [];
   private env: nunjucks.Environment;
 
+  /**
+   * Initialize the Nunjucks renderer with configuration
+   */
   constructor() {
     super();
     // Create a new Nunjucks environment with proper configuration

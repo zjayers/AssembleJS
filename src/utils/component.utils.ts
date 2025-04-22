@@ -1,3 +1,4 @@
+/* eslint-disable valid-jsdoc */
 import type { ComponentParams } from "../types/component.params";
 import type { AnyObject } from "../types/object.any";
 import type { ComponentContext } from "../types/component.context";
@@ -54,7 +55,7 @@ function getEnclosingComponentInfo(element: unknown) {
  * @todo Zach Ayers - This is where the magic happens. Here we take in the HTML template before it is sent to the browser.
  * @todo Currently this ONLY OCCURS at the BLUEPRINT level to avoid unnecessary DOM processing.
  * @todo I would like to refactor and optimize this section to perform all 'mutation' tasks before a user receives our HTML.
- * @return {string} - The HTML template with all necessary DOM mutations.
+ * @returns {string} - The HTML template with all necessary DOM mutations.
  * @author Zach Ayers
  */
 /**
@@ -191,6 +192,9 @@ export async function safeRender<T>(
   }
 }
 
+/**
+ * Mutate the blueprint to add required information.
+ */
 export function mutateBlueprint(
   template: string | Buffer,
   context: ComponentContext<AnyObject, ComponentParams>

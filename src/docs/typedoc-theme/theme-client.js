@@ -206,13 +206,13 @@
 
   if (shapes.length) {
     // Track mouse position and target positions
-    let mouseX = 0.5,
-      mouseY = 0.5;
-    let targetParallaxX = 0,
-      targetParallaxY = 0;
-    let targetReverseX = 0,
-      targetReverseY = 0;
-    let shapesTargetPos = Array(shapes.length)
+    let mouseX = 0.5;
+    let mouseY = 0.5;
+    let targetParallaxX = 0;
+    let targetParallaxY = 0;
+    let targetReverseX = 0;
+    let targetReverseY = 0;
+    const shapesTargetPos = Array(shapes.length)
       .fill()
       .map(() => ({ x: 0, y: 0 }));
 
