@@ -1,70 +1,133 @@
 name: PR Target Branch Check
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, edited, synchronize, reopened]
-    branches:
-      - main
 
 jobs:
   check_target_branch:
     runs-on: ubuntu-latest
+    # Only run for PRs that target main
+    if: github.base_ref == 'main'
     permissions:
       pull-requests: write
       contents: read
       issues: write
-    outputs:
-      valid_target: ${{ steps.check_target.outputs.valid }}
     steps:
-      - name: Check PR target branch
-        id: check_target
-        run: |
-          if [[ "${{ github.head_ref }}" == "next" ]]; then
-            echo "PR is correctly targeting main from next branch"
-            echo "valid=true" >> $GITHUB_OUTPUT
-          else
-            echo "PR is incorrectly targeting main from a branch other than next"
-            echo "valid=false" >> $GITHUB_OUTPUT
-          fi
-      
-      - name: Auto-close invalid PR
-        if: steps.check_target.outputs.valid == 'false'
+      - name: Check PR target branch and update labels/comments
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const issueNumber = context.issue.number;
+            const { owner, repo } = context.repo;
+            const prNumber = context.issue.number;
+            const headRef = context.payload.pull_request.head.ref;
             
-            // Add comment explaining why PR is being closed
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issueNumber,
-              body: `⛔️ **This PR has been automatically closed.**
+            // PR is OK if it comes from 'next'
+            const isValid = headRef === 'next';
             
-            PR is targeting the \`main\` branch from \`${context.payload.pull_request.head.ref}\` which is not allowed.
+            console.log(`PR #${prNumber} is targeting main from ${headRef}, valid: ${isValid}`);
             
-            According to our workflow:
-            - PRs must target the \`next\` branch for feature/bugfix development
-            - Only PRs from the \`next\` branch can target \`main\`
-            - Promotion from \`next\` to \`main\` is handled by our promotion workflow
-            
-            Please close this PR and create a new one targeting the \`next\` branch instead.`
+            // Get existing comments to check if we already posted a warning
+            const comments = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: prNumber
             });
             
-            // Close the PR
-            await github.rest.pulls.update({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: issueNumber,
-              state: 'closed'
+            // Look for our warning comment
+            const warningCommentId = comments.data.find(comment => 
+              comment.body.includes('WARNING: Incorrect Target Branch')
+            )?.id;
+            
+            // Look for existing labels
+            const prData = await github.rest.issues.get({
+              owner,
+              repo,
+              issue_number: prNumber
             });
             
-            console.log(`PR #${issueNumber} closed automatically because it incorrectly targeted main branch`);
-      
-      - name: Fail workflow for invalid target
-        if: steps.check_target.outputs.valid == 'false'
-        run: |
-          echo "::error::PRs must target the 'next' branch unless they originate from the 'next' branch."
-          echo "::error::This PR will be automatically closed."
-          exit 1
+            const hasInvalidLabel = prData.data.labels.some(label => 
+              label.name === 'invalid-target'
+            );
+            
+            if (isValid) {
+              // PR is valid, remove warning comment and label if they exist
+              if (warningCommentId) {
+                await github.rest.issues.deleteComment({
+                  owner,
+                  repo,
+                  comment_id: warningCommentId
+                });
+                console.log(`Removed warning comment from PR #${prNumber}`);
+              }
+              
+              if (hasInvalidLabel) {
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  name: 'invalid-target'
+                });
+                console.log(`Removed invalid-target label from PR #${prNumber}`);
+              }
+              
+              // Add a confirmation comment if the PR was previously invalid
+              if (warningCommentId || hasInvalidLabel) {
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  body: `✅ **Target Branch Verified**
+                  
+                  This PR is now correctly targeting \`main\` from the \`next\` branch.`
+                });
+              }
+            } else {
+              // PR is invalid, add warning comment and label
+              const warningBody = `⚠️ **WARNING: Incorrect Target Branch**
+              
+              This PR is targeting the \`main\` branch from \`${headRef}\` which is not allowed.
+              
+              According to our workflow:
+              - PRs must target the \`next\` branch for feature/bugfix development
+              - Only PRs from the \`next\` branch can target \`main\`
+              - Promotion from \`next\` to \`main\` is handled by our promotion workflow
+              
+              Please close this PR and create a new one targeting the \`next\` branch instead.
+              
+              Alternatively, you can edit this PR to change its base branch to \`next\`.`;
+              
+              if (warningCommentId) {
+                // Update existing comment
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: warningCommentId,
+                  body: warningBody
+                });
+              } else {
+                // Add new comment
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  body: warningBody
+                });
+              }
+              
+              if (!hasInvalidLabel) {
+                // Add label if not present
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  labels: ['invalid-target']
+                });
+              }
+              
+              console.log(`Warning added to PR #${prNumber} about incorrect target branch`);
+              
+              // Exit with error to fail the workflow
+              core.setFailed("PRs must target the 'next' branch unless they originate from the 'next' branch.");
+            }

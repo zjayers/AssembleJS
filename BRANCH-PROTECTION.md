@@ -95,3 +95,15 @@ With these protections in place:
 5. PRs targeting `main` directly (except from `next`) will be rejected
 
 This ensures the release process remains controlled and reliable.
+
+## Manual PR Handling
+
+PRs targeting `main` from branches other than `next` will be:
+
+1. Automatically labeled with `invalid-target`
+2. Receive a warning comment about the incorrect target branch
+3. The CI workflow will fail with an error message
+
+These PRs should be manually closed by maintainers, and the submitter should be redirected to create a new PR targeting the `next` branch instead.
+
+This ensures that only PRs from `next` to `main` can be merged, maintaining the integrity of the release process.

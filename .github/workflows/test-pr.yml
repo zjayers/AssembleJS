@@ -7,25 +7,10 @@ on:
       - next
 
 jobs:
-  # First check if PR is correctly targeted
-  validate_pr_target:
-    if: github.base_ref == 'main'
-    runs-on: ubuntu-latest
-    outputs:
-      valid_target: ${{ steps.check_target.outputs.valid }}
-    steps:
-      - id: check_target
-        run: |
-          if [[ "${{ github.head_ref }}" == "next" ]]; then
-            echo "valid=true" >> $GITHUB_OUTPUT
-          else
-            echo "valid=false" >> $GITHUB_OUTPUT
-          fi
-
-  # Only run tests if PR is correctly targeted (or not targeting main)
+  # Run tests for all PRs
   test:
-    needs: [validate_pr_target]
-    if: always() && (needs.validate_pr_target.outputs.valid == 'true' || github.base_ref != 'main')
+    # Skip testing for PRs where target branch check will happen
+    # The pr-target-check workflow will handle validity checking
     runs-on: ubuntu-latest
     permissions:
       contents: read
