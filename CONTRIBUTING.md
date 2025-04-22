@@ -63,6 +63,7 @@ chore: update dependencies
    - PRs to `main` will be automatically flagged with a warning
    - Our CI system will mark PRs that incorrectly target `main` with the `invalid-target` label
    - If you change a PR's target branch from `main` to `next`, the warning is automatically removed
+   - If checks don't update after changing the target branch, a maintainer can manually re-run them
    - Create your feature branch from `next`: `git checkout -b feature/your-feature next`
 
 2. Update your fork to include the latest changes from the repository

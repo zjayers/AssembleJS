@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - '*'
+    types: [opened, reopened, synchronize, edited]
 
 permissions:
   contents: read
@@ -14,6 +15,8 @@ jobs:
   check-target:
     if: github.base_ref == 'main'
     uses: ./.github/workflows/pr-target-check.yml
+    with:
+      force-new-run: ${{ github.event_name == 'pull_request' && github.event.action == 'edited' }}
   
   # First step: validate commit messages
   validate-commits:

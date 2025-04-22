@@ -1,13 +1,20 @@
 name: PR Target Branch Check
 
 on:
-  # Run directly on PRs to main
+  # Run directly on PRs to main, including when the PR is edited (which happens when target branch changes)
   pull_request:
     branches:
       - main
+    types: [opened, reopened, synchronize, edited]
   
   # Also callable from other workflows
   workflow_call:
+    inputs:
+      force-new-run:
+        description: "Force a new run of the check, useful for edited PRs"
+        type: boolean
+        default: false
+        required: false
     outputs:
       target-valid:
         description: "Indicates if the PR target branch is valid"
