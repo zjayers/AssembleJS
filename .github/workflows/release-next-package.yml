@@ -52,6 +52,10 @@ jobs:
             echo "type=prerelease" >> $GITHUB_OUTPUT
           fi
       
+      # Disable husky hooks for the release to prevent linting issues
+      - name: Disable Husky for release
+        run: npm pkg set scripts.postinstall="echo 'Skipping husky install for release'"
+
       - name: Release
         env:
           # Use GH_TOKEN for GitHub operations (both Git and API)
@@ -62,4 +66,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           # Pass release type information
           RELEASE_TYPE: ${{ steps.release-type.outputs.type }}
-        run: npx semantic-release
+          # Skip git hooks during semantic-release
+          HUSKY: 0
+        run: npx semantic-release --no-ci-skip
