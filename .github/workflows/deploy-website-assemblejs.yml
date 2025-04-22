@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'websites/assemblejs/**'
+      - 'websites/www.assemblejs.com/**'
       - 'docs/**'
   
   # Manual trigger
@@ -79,11 +79,11 @@ jobs:
           # Deploy to version-specific path
           DEPLOY_PATH="v$CLEAN_VERSION"
           echo "Deploying to s3://$S3_BUCKET/$DEPLOY_PATH/"
-          aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/$DEPLOY_PATH/" --delete
+          aws s3 sync "websites/www.assemblejs.com/" "s3://$S3_BUCKET/$DEPLOY_PATH/" --delete
           
           # Deploy to root of bucket
           echo "Deploying to s3://$S3_BUCKET/"
-          aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/" --delete
+          aws s3 sync "websites/www.assemblejs.com/" "s3://$S3_BUCKET/" --delete
           
           echo "🚀 AssembleJS website successfully deployed to production environment"
       

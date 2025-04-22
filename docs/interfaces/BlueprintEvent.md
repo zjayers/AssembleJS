@@ -37,7 +37,7 @@ The channel to publish the event on. Channels may have many topics.
 
 #### Defined in
 
-[src/browser/eventing/blueprint.event.ts:16](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/eventing/blueprint.event.ts#L16)
+[src/browser/eventing/blueprint.event.ts:16](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/browser/eventing/blueprint.event.ts#L16)
 
 ___
 
@@ -49,7 +49,7 @@ The payload to publish on the corresponding channel & topic.
 
 #### Defined in
 
-[src/browser/eventing/blueprint.event.ts:27](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/eventing/blueprint.event.ts#L27)
+[src/browser/eventing/blueprint.event.ts:27](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/browser/eventing/blueprint.event.ts#L27)
 
 ___
 
@@ -62,4 +62,4 @@ New payloads are added to the end of the matching event queue if one is found.
 
 #### Defined in
 
-[src/browser/eventing/blueprint.event.ts:22](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/eventing/blueprint.event.ts#L22)
+[src/browser/eventing/blueprint.event.ts:22](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/browser/eventing/blueprint.event.ts#L22)

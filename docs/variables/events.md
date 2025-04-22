@@ -14,4 +14,4 @@ Zach Ayers
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:302](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/eventing/event.bus.ts#L302)
+[src/browser/eventing/event.bus.ts:302](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/browser/eventing/event.bus.ts#L302)

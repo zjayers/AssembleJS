@@ -66,7 +66,7 @@ from another Component, apply these development options tools
 
 #### Defined in
 
-[src/types/component.ts:53](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/types/component.ts#L53)
+[src/types/component.ts:53](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/types/component.ts#L53)
 
 ___
 
@@ -78,7 +78,7 @@ The name of this component
 
 #### Defined in
 
-[src/types/component.ts:42](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/types/component.ts#L42)
+[src/types/component.ts:42](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/types/component.ts#L42)
 
 ___
 
@@ -90,7 +90,7 @@ The base directory to search for this component set in.
 
 #### Defined in
 
-[src/types/component.ts:47](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/types/component.ts#L47)
+[src/types/component.ts:47](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/types/component.ts#L47)
 
 ___
 
@@ -112,7 +112,7 @@ Collection of common Component options that will be passed to ALL Component view
 
 #### Defined in
 
-[src/types/component.ts:61](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/types/component.ts#L61)
+[src/types/component.ts:61](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/types/component.ts#L61)
 
 ___
 
@@ -124,4 +124,4 @@ Array of views for this Component
 
 #### Defined in
 
-[src/types/component.ts:79](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/types/component.ts#L79)
+[src/types/component.ts:79](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/types/component.ts#L79)
