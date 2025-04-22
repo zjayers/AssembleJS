@@ -68,6 +68,6 @@ export async function preRenderTemplate(
       },
     })
   );
-  
+
   return renderResult.toString();
 }

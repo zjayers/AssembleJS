@@ -89,7 +89,7 @@ export abstract class BlueprintController extends Loggable {
    * functionality.
    *
    * @param {Assembly} app - The server instance to register the controller with
-   * @returns {void}
+   * @returnss {void}
    * @example
    * ```typescript
    * // Sample implementation in a concrete controller

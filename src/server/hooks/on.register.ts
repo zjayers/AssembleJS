@@ -11,7 +11,7 @@ import type { BlueprintInstance } from "../../types/blueprint.simple.types";
  * Note: This hook will not be called if a plugin is wrapped inside fastify-plugin.
  *
  * @param {BlueprintInstance} app - The AssembleJS instance.
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @author Zach Ayers
  * @category (Hooks)

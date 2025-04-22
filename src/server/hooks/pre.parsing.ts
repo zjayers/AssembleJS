@@ -25,7 +25,7 @@ import type {
  * The old syntaxes function(request, reply, done) and async function(request, reply)
  * for the parser are still supported but they are deprecated.
  *
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @category (Hooks)
  * @author Zach Ayers

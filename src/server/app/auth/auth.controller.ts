@@ -3,12 +3,12 @@
  * @description Provides authentication endpoints
  * @author Zach Ayers
  */
-import {
-  BlueprintController,
-  Assembly,
+import { BlueprintController } from "../../../server/abstract/blueprint.controller";
+import type { Assembly } from "../../../types/blueprint.simple.types";
+import type {
   ApiRequest,
   ApiReply,
-} from "../../../index";
+} from "../../../types/blueprint.simple.types";
 import { HttpError, HttpStatusCode } from "../../../utils/http.utils";
 import { ASSEMBLEJS } from "../../config/blueprint.config";
 import type { JwtPayload } from "./auth.utils";

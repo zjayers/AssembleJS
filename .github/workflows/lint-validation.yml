@@ -36,6 +36,20 @@ jobs:
       
       - name: Run linting
         id: lint-validation
+        continue-on-error: true
         run: |
-          npm run lint:dry
-          echo "success=true" >> $GITHUB_OUTPUT
+          # Run linting with detailed output
+          if npm run lint:dry; then
+            echo "Linting passed!"
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "Linting failed!"
+            echo "success=false" >> $GITHUB_OUTPUT
+            exit 1  # This will make the step fail but the job continues due to continue-on-error
+          fi
+          
+      - name: Check linting result
+        if: steps.lint-validation.outputs.success != 'true'
+        run: |
+          echo "::error::Linting failed! Please fix the errors before merging."
+          exit 1  # This will fail the job

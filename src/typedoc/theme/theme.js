@@ -4,7 +4,10 @@
 const fs = require("fs");
 const path = require("path");
 
-// Function to copy the CSS and JS files to the output directory
+/**
+ * Copy the CSS and JS files to the output directory
+ * @param {string} outDir - The output directory path
+ */
 function copyAssets(outDir) {
   // Create assets directory if it doesn't exist
   const assetsDir = path.join(outDir, "assets");
@@ -32,7 +35,10 @@ function copyAssets(outDir) {
   }
 }
 
-// Function to inject our custom CSS and JS into all HTML files
+/**
+ * Inject our custom CSS and JS into all HTML files
+ * @param {string} outDir - The output directory path
+ */
 function injectCustomAssets(outDir) {
   // Get all HTML files in the output directory (recursive)
   const htmlFiles = getAllFiles(outDir).filter((file) =>
@@ -118,7 +124,12 @@ function injectCustomAssets(outDir) {
   }
 }
 
-// Helper function to get all files in a directory recursively
+/**
+ * Helper function to get all files in a directory recursively
+ * @param {string} dir - The directory to scan
+ * @param {string[]} files - Accumulated array of file paths
+ * @returns {string[]} Array of all file paths
+ */
 function getAllFiles(dir, files = []) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
 

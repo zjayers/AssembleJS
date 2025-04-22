@@ -15,7 +15,7 @@ export interface ViewEventAdapter {
    * @description - Only the top level Blueprint will receive this message.
    * @param {Payload} payload - The payload to send with the event.
    * @param {string} topic - The topic to send the event to.
-   * @return {BlueprintEvent<Response>} - The event that was sent.
+   * @returns {BlueprintEvent<Response>} - The event that was sent.
    * @author Zach Ayers
    */
   toComponents<Payload, Response>(
@@ -28,7 +28,7 @@ export interface ViewEventAdapter {
    * @description - Only the top level Blueprint will receive this message.
    * @param {Payload} payload - The payload to send with the event.
    * @param {string} topic - The topic to send the event to.
-   * @return {BlueprintEvent<Response>} - The event that was sent.
+   * @returns {BlueprintEvent<Response>} - The event that was sent.
    * @author Zach Ayers
    */
   toBlueprint<Payload, Response>(
@@ -41,7 +41,7 @@ export interface ViewEventAdapter {
    * @description - ALL Blueprints and Components will receive this message.
    * @param {Payload} payload - The payload to send.
    * @param {string} topic - The topic to send the payload to.
-   * @return {BlueprintEvent<Response>} - The event that was sent. Responses should be handled through callbacks or additional events.
+   * @returns {BlueprintEvent<Response>} - The event that was sent. Responses should be handled through callbacks or additional events.
    * @author Zach Ayers
    */
   toAll<Payload, Response>(
@@ -123,7 +123,7 @@ export interface IEventBus extends ViewEventAdapter {
    * Add a new item to the channel:topic associated queue
    * @description New event payloads will be added to the end of the queue.
    * @author Zach Ayers
-   * @returns {Event} The published event.
+   * @returnss {Event} The published event.
    * @example
    *
    * ```typescript
@@ -143,7 +143,7 @@ export interface IEventBus extends ViewEventAdapter {
    * Subscribe to an EventAddress
    * and perform an action when a payload is received on that channel:topic.
    * @author Zach Ayers
-   * @returns {void}
+   * @returnss {void}
    * @example
    *
    * ```typescript
@@ -168,7 +168,7 @@ export interface IEventBus extends ViewEventAdapter {
   /**
    * Unsubscribe from an EventAddress
    * @author Zach Ayers
-   * @returns {void}
+   * @returnss {void}
    * @example
    *
    * ```typescript

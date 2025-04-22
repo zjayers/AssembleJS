@@ -3,8 +3,9 @@
  * This function uses a Fisher-Yates shuffle algorithm to efficiently select a random subset
  * of elements without duplicates from the provided array.
  *
- * @param {T[]} arr - Array to get random elements from.
- * @return {T[]} - Array of 1-5 random elements from the input array.
+ * @template T - Type of array elements
+ * @param {T[]} arr - Array to get random elements from
+ * @return {T[]} Array of 1-5 random elements from the input array
  * @example
  * ```typescript
  * // Get random user IDs for a featured users section
@@ -35,11 +36,10 @@ export const getRandomElementSubset = <T>(arr: T[]): T[] => {
  * This function groups array elements by a specified key and collects values from another key
  * into arrays. Useful for creating categorized data structures from flat arrays.
  *
- * @template T The type of objects in the input array
- * @param {T[]} arr - Array to reduce.
- * @param {keyof T} mainKey - Key to use as the grouping key.
- * @param {keyof T} mergeKey - Key to extract values from for each group.
- * @return {Record<string, unknown[]>} - Object where keys are values from mainKey and values are arrays of mergeKey values.
+ * @param {any} arr - Array to reduce
+ * @param {any} mainKey - Key to use as the grouping key
+ * @param {any} mergeKey - Key to extract values from for each group
+ * @return {Record<string, unknown[]>} Object where keys are values from mainKey and values are arrays of mergeKey values
  * @example
  * ```typescript
  * // Group products by category and collect their names
@@ -72,11 +72,11 @@ export const reduceAndMergeKeys = <T>(
  * This function implements pagination for arrays, allowing you to split large arrays
  * into smaller chunks for display or processing. Page numbering starts at 0.
  *
- * @template T The type of elements in the array
- * @param {T[]} array - Array to get page from.
- * @param {number} pageSize - Number of elements per page.
- * @param {number} pageNumber - Zero-based page index to retrieve.
- * @return {T[]} - Subset of the array containing the specified page.
+ * @template T - Type of elements in the array
+ * @param {T[]} array - Array to get page from
+ * @param {number} pageSize - Number of elements per page
+ * @param {number} pageNumber - Zero-based page index to retrieve
+ * @return {T[]} Subset of the array containing the specified page
  * @example
  * ```typescript
  * // Get the second page (items 10-19) from a large array with 10 items per page
@@ -98,10 +98,10 @@ export const paginate = <T>(
  * This function extracts values for a given property from all objects in an array
  * and returns an array of unique values, removing duplicates.
  *
- * @template T The type of objects in the array
- * @param {T[]} arr - Array of objects to extract distinct key values from.
- * @param {keyof T} key - Property name to extract unique values for.
- * @return {T[keyof T][]} - Array of distinct values for the specified key.
+ * @template T - Type of objects in the array
+ * @param {any} arr - Array of objects to extract distinct key values from
+ * @param {any} key - Property name to extract unique values for
+ * @return {any} Array of distinct values for the specified key
  * @example
  * ```typescript
  * // Get all unique categories from a product list

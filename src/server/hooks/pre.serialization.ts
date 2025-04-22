@@ -5,7 +5,7 @@ import type { ApiReply, ApiRequest } from "../../types/blueprint.simple.types";
  *
  * Note: the hook is NOT called if the payload is a string, a Buffer, a stream, or null.
  *
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @category (Hooks)
  * @author Zach Ayers

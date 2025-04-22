@@ -161,7 +161,7 @@ export default function (plop: NodePlopAPI) {
           },
         },
         // 2. VIEW - Not applicable for services
-        
+
         // 3. REGISTRATION - Server registration options
         {
           type: "confirm",
@@ -189,7 +189,6 @@ export default function (plop: NodePlopAPI) {
       ];
     })(),
     actions: (function (answers: Answers = {}) {
-
       const actions = [
         {
           type: "addMany",

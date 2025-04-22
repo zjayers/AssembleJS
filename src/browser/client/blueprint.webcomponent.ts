@@ -18,6 +18,9 @@ export const webcomponent = {
     methods: Record<string, Function> = {}
   ) => {
     if (!customElements.get(name)) {
+      /**
+       * Custom element class for AssembleJS components
+       */
       class AssembleJSElement extends HTMLElement {
         // Shadow DOM for style encapsulation
         shadow: ShadowRoot;
@@ -25,12 +28,18 @@ export const webcomponent = {
         // Component state
         state: Record<string, any> = {};
 
-        // Required for attributeChangedCallback to work
+        /**
+         * Returns an array of attributes to observe for changes
+         * @return {string[]} The attributes to observe
+         */
         static get observedAttributes() {
           // Return all attributes - the attributeChangedCallback will filter data-* attributes
           return [];
         }
 
+        /**
+         * Constructor for the component
+         */
         constructor() {
           super();
           this.shadow = this.attachShadow({ mode: "open" });
@@ -75,19 +84,30 @@ export const webcomponent = {
           }
         }
 
-        // Lifecycle methods
+        /**
+         * Invoked when the custom element is connected to the DOM
+         */
         connectedCallback() {
           if (methods.connectedCallback) {
             methods.connectedCallback.call(this);
           }
         }
 
+        /**
+         * Invoked when the custom element is disconnected from the DOM
+         */
         disconnectedCallback() {
           if (methods.disconnectedCallback) {
             methods.disconnectedCallback.call(this);
           }
         }
 
+        /**
+         * Invoked when one of the custom element's attributes is changed
+         * @param {string} name - Name of the attribute that changed
+         * @param {string} oldValue - Previous value of the attribute
+         * @param {string} newValue - New value of the attribute
+         */
         attributeChangedCallback(
           name: string,
           oldValue: string,
@@ -118,13 +138,18 @@ export const webcomponent = {
           }
         }
 
-        // State management helper
+        /**
+         * Updates the component's state and triggers a re-render
+         * @param {Record<string, any>} updates - Object containing state updates
+         */
         setState(updates: Record<string, any>) {
           this.state = { ...this.state, ...updates };
           this.render();
         }
 
-        // Render method
+        /**
+         * Renders the component based on its current state
+         */
         render() {
           if (methods.render) {
             methods.render.call(this);

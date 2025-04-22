@@ -37,7 +37,7 @@ export abstract class ComponentController extends BlueprintController {
    * @param {Component} component - The component to serve.
    * @param {ComponentView} view - The view to serve.
    * @param devServer - The development server.
-   * @returns {Promise<void>} - The promise to wait for.
+   * @returnss {Promise<void>} - The promise to wait for.
    * @author Zach Ayers
    */
   abstract override register(

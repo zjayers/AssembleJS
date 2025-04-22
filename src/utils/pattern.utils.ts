@@ -20,9 +20,9 @@ export const PATTERN_MULTIPLE_SPACES = /\s{2,}/g;
  * Checks if a string matches a wildcard pattern
  * Supports * for any characters and ? for a single character
  *
- * @param str - The string to check
- * @param pattern - The pattern to match against (with wildcards)
- * @return True if the string matches the pattern
+ * @param {string} str - The string to check
+ * @param {string} pattern - The pattern to match against (with wildcards)
+ * @return {boolean} True if the string matches the pattern
  *
  * @example
  * isWildcardMatch('/api/users/123', '/api/users/*') // true

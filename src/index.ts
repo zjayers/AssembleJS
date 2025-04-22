@@ -82,9 +82,17 @@ export type ComponentFactory = GenericComponentFactory<
   ComponentPublicData,
   ComponentParams
 >;
-export type ServerContext = ComponentContext<ComponentPublicData, ComponentParams>;
+export type ServerContext = ComponentContext<
+  ComponentPublicData,
+  ComponentParams
+>;
 
 // Types Interface
 export { BlueprintServerManifest } from "./types/blueprint.server.manifest";
 export { Component };
-export { Assembly, BlueprintInstance, ApiRequest, ApiReply } from "./types/blueprint.simple.types";
+export {
+  Assembly,
+  BlueprintInstance,
+  ApiRequest,
+  ApiReply,
+} from "./types/blueprint.simple.types";

@@ -5,7 +5,7 @@ import type { ApiReply, ApiRequest } from "../../types/blueprint.simple.types";
  * (if the connectionTimeout property is set on the Fastify instance).
  * The onTimeout hook is executed when a request is timed out and the HTTP socket has been hanged up.
  * Therefore, you will not be able to send data to the client.
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @category (Hooks)
  * @author Zach Ayers

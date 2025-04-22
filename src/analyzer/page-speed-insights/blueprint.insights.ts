@@ -251,7 +251,7 @@ type HTTPSchema = Static<typeof HTTP_SCHEMA>;
  * @param {string | undefined} projectIdentifier Project identifier for enterprise reporting
  * @param {boolean | undefined} quietMode Run with minimal console output
  * @param {string | undefined} budgetFile Path to performance budget JSON file
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @category (Analyzer) [PageSpeed Insights]
  */
 export async function runPageSpeedAnalysis(

@@ -1,32 +1,34 @@
-{# Nunjucks component template for {{titleCase NODE_NAME}} {{titleCase VIEW_NAME}} #}
+{# Nunjucks component template for
+{{titleCase NODE_NAME}}
+{{titleCase VIEW_NAME}}
+#}
 <div class="{{dashCase NODE_NAME}}-{{dashCase VIEW_NAME}}">
   <h1>{{"{{"}} params.title | default('{{titleCase VIEW_NAME}}') {{"}}"}}</h1>
-  
+
   <div class="content">
-    <p>This is a Nunjucks template for {{titleCase NODE_NAME}} {{titleCase VIEW_NAME}}.</p>
-    
-    {# Example of conditional rendering #}
-    {% if params.showDetails %}
-      <div class="details">
-        <h2>Details</h2>
-        <p>{{"{{"}} params.details | default('No details available') {{"}}"}}</p>
-      </div>
-    {% endif %}
-    
-    {# Example of iterating through items #}
-    {% if params.items and params.items.length > 0 %}
-      <ul class="items-list">
-        {% for item in params.items %}
-          <li>{{"{{"}} item {{"}}"}}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-    
-    {# Example of including a component #}
-    {# {% if components.someComponent %}
-      <div class="sub-component">
-        {{"{{"}} components.someComponent | safe {{"}}"}}
-      </div>
+    <p>This is a Nunjucks template for
+      {{titleCase NODE_NAME}}
+      {{titleCase VIEW_NAME}}.</p>
+
+    {# Example of conditional rendering #} {% if params.showDetails %}
+    <div class="details">
+      <h2>Details</h2>
+      <p>{{"{{"}} params.details | default('No details available') {{"}}"}}</p>
+    </div>
+    {% endif %} {# Example of iterating through items #} {% if params.items and
+    params.items.length > 0 %}
+    <ul class="items-list">
+      {% for item in params.items %}
+      <li>{{"{{"}} item {{"}}"}}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {# Example of including a component #} {# {% if
+    components.someComponent %}
+    <div class="sub-component">
+      {{"{{"}}
+      components.someComponent | safe
+      {{"}}"}}
+    </div>
     {% endif %} #}
   </div>
 </div>

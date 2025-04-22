@@ -5,6 +5,8 @@
 
 /**
  * Renders a Vue application to a string
+ * @param {any} app - The Vue application to render
+ * @returnss {Promise<string>} Promise that resolves to the rendered HTML
  */
 export function renderToString(app: any): Promise<string> {
   return Promise.resolve("");

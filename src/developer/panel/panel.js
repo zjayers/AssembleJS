@@ -141,8 +141,10 @@
    */
   function openPanel() {
     const panel = document.getElementById("__assemblejs_dev_panel__");
-    const closeButton = document.getElementById("__assemblejs_dev_panel_close__");
-    
+    const closeButton = document.getElementById(
+      "__assemblejs_dev_panel_close__"
+    );
+
     panel.classList.add("open");
     // Update arrow direction to point down
     closeButton.innerHTML = `
@@ -169,8 +171,10 @@
    */
   function closePanel() {
     const panel = document.getElementById("__assemblejs_dev_panel__");
-    const closeButton = document.getElementById("__assemblejs_dev_panel_close__");
-    
+    const closeButton = document.getElementById(
+      "__assemblejs_dev_panel_close__"
+    );
+
     panel.classList.remove("open");
     // Update arrow direction to point up
     closeButton.innerHTML = `

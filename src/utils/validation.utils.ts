@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 // import { logger } from "./logger.utils"; // Removed unused import
 // import { CONSTANTS } from "../constants/blueprint.constants"; // Removed unused import
 import { verifyBoolean, verifyDate, verifyText } from "./verify.utils";
@@ -661,6 +662,10 @@ export class ConditionalRule<T = any> implements ValidationRule<T> {
 
 /**
  * Helper for validating objects against a schema
+ * @param {T} obj - The object to validate
+ * @param {ValidationSchema<T>} schema - The validation schema to use
+ * @param {string} basePath - Optional base path for nested error reporting
+ * @return {ValidationResult} Validation result with errors if any
  */
 export function validateSchema<T extends Record<string, any>>(
   obj: T,
@@ -730,6 +735,8 @@ export function validateSchema<T extends Record<string, any>>(
 
 /**
  * Create and validate a schema in one step
+ * @param {ValidationSchema<T>} schema - The validation schema to use
+ * @return {Function} A validation function that takes an object and returns validation results
  */
 export function createValidator<T extends Record<string, any>>(
   schema: ValidationSchema<T>
@@ -750,6 +757,8 @@ const URL_REGEX =
 
 /**
  * Validates an email address
+ * @param {string} email - The email address to validate
+ * @return {boolean} True if the email is valid
  */
 export function isValidEmail(email: string): boolean {
   return EMAIL_REGEX.test(email);
@@ -757,6 +766,8 @@ export function isValidEmail(email: string): boolean {
 
 /**
  * Validates a URL
+ * @param {string} url - The URL to validate
+ * @return {boolean} True if the URL is valid
  */
 export function isValidUrl(url: string): boolean {
   return URL_REGEX.test(url);
@@ -764,6 +775,8 @@ export function isValidUrl(url: string): boolean {
 
 /**
  * Type guard for checking if a value is a string
+ * @param {unknown} value - The value to check
+ * @return {boolean} True if the value is a string
  */
 export function isString(value: unknown): value is string {
   return typeof value === "string";
@@ -771,6 +784,8 @@ export function isString(value: unknown): value is string {
 
 /**
  * Type guard for checking if a value is a number
+ * @param {unknown} value - The value to check
+ * @return {boolean} True if the value is a number and not NaN
  */
 export function isNumber(value: unknown): value is number {
   return typeof value === "number" && !isNaN(value);
@@ -778,6 +793,8 @@ export function isNumber(value: unknown): value is number {
 
 /**
  * Type guard for checking if a value is a boolean
+ * @param {unknown} value - The value to check
+ * @return {boolean} True if the value is a boolean
  */
 export function isBoolean(value: unknown): value is boolean {
   return typeof value === "boolean";
@@ -785,6 +802,8 @@ export function isBoolean(value: unknown): value is boolean {
 
 /**
  * Type guard for checking if a value is an object
+ * @param {unknown} value - The value to check
+ * @return {boolean} True if the value is an object (not null and not an array)
  */
 export function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -792,6 +811,8 @@ export function isObject(value: unknown): value is Record<string, unknown> {
 
 /**
  * Type guard for checking if a value is an array
+ * @param {unknown} value - The value to check
+ * @return {boolean} True if the value is an array
  */
 export function isArray<T = unknown>(value: unknown): value is T[] {
   return Array.isArray(value);
@@ -799,6 +820,8 @@ export function isArray<T = unknown>(value: unknown): value is T[] {
 
 /**
  * Type guard for checking if a value is a Date
+ * @param {unknown} value - The value to check
+ * @return {boolean} True if the value is a valid Date object
  */
 export function isDate(value: unknown): value is Date {
   return value instanceof Date && !isNaN(value.getTime());
@@ -902,6 +925,10 @@ export const Validation = {
 
 /**
  * Validate function that throws an error if validation fails
+ * @param {T} value - The value to validate
+ * @param {ValidationSchema<T>} schema - Schema to validate against
+ * @param {string} errorPrefix - Optional prefix for error messages
+ * @return {T} The original value if validation passes
  */
 export function validate<T extends Record<string, any>>(
   value: T,

@@ -6,7 +6,7 @@ import type { ApiReply, ApiRequest } from "../../types/blueprint.simple.types";
  * Notice: in the onRequest hook, request.body will always be null,
  * because the body parsing happens before the preValidation hook.
  *
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @category (Hooks)
  * @author Zach Ayers

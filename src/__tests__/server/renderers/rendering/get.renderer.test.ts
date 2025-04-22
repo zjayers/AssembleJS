@@ -9,22 +9,26 @@ import type { ComponentParams } from "../../../../types/component.params";
 
 // Mock the renderers that will be imported
 jest.mock("../../../../server/renderers/ejs.renderer", () => ({
-  EJS: { render: jest.fn(), vendorAssets: [] }
+  EJS: { render: jest.fn(), vendorAssets: [] },
 }));
 jest.mock("../../../../server/renderers/string.renderer", () => ({
-  STRING: { render: jest.fn(), vendorAssets: [] }
+  STRING: { render: jest.fn(), vendorAssets: [] },
 }));
 jest.mock("../../../../server/renderers/preact.renderer", () => ({
-  PREACT: { render: jest.fn(), vendorAssets: [] }
+  PREACT: { render: jest.fn(), vendorAssets: [] },
 }));
 jest.mock("../../../../server/renderers/markdown.renderer", () => ({
-  MARKDOWN: { render: jest.fn(), vendorAssets: [] }
+  MARKDOWN: { render: jest.fn(), vendorAssets: [] },
 }));
 
 // Mock dynamic imports
-jest.mock("../../../../server/renderers/handlebars.renderer", () => ({
-  HANDLEBARS: { render: jest.fn(), vendorAssets: [] }
-}), { virtual: true });
+jest.mock(
+  "../../../../server/renderers/handlebars.renderer",
+  () => ({
+    HANDLEBARS: { render: jest.fn(), vendorAssets: [] },
+  }),
+  { virtual: true }
+);
 
 // Mock logger.utils.ts
 jest.mock("../../../../utils/logger.utils", () => {
@@ -208,8 +212,14 @@ describe("getRenderer", () => {
     };
 
     // Setup mock for dynamic import
-    const mockHandlebarsRenderer = { HANDLEBARS: { render: jest.fn(), vendorAssets: [] } };
-    jest.mock("../../../../server/renderers/handlebars.renderer", () => mockHandlebarsRenderer, { virtual: true });
+    const mockHandlebarsRenderer = {
+      HANDLEBARS: { render: jest.fn(), vendorAssets: [] },
+    };
+    jest.mock(
+      "../../../../server/renderers/handlebars.renderer",
+      () => mockHandlebarsRenderer,
+      { virtual: true }
+    );
 
     // Act
     await getRenderer(context);

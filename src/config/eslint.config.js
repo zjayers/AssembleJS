@@ -58,7 +58,14 @@ module.exports = {
     },
     {
       // Relax rules for test files
-      files: ["**/__tests__/**/*", "**/*.test.ts", "**/*.test.tsx", "**/*.test.js", "**/*.test.jsx", "**/__mocks__/**/*"],
+      files: [
+        "**/__tests__/**/*",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.test.js",
+        "**/*.test.jsx",
+        "**/__mocks__/**/*",
+      ],
       rules: {
         "require-jsdoc": "off",
         "valid-jsdoc": "off",

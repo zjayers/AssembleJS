@@ -5,7 +5,7 @@ import type { ApiRouteOptions } from "../../types/blueprint.simple.types";
  * Listeners are passed a routeOptions object as the sole parameter.
  * The interface is synchronous, and, as such, the listeners are not passed a callback.
  * This hook is encapsulated.
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @category (Hooks)
  * @author Zach Ayers

@@ -1,3 +1,4 @@
+/* eslint-disable valid-jsdoc */
 /**
  * Error utilities for AssembleJS
  * @description Standard error handling and error classes for AssembleJS

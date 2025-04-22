@@ -7,7 +7,7 @@ import type { BlueprintInstance } from "../../types/blueprint.simple.types";
  * for example, to close an open connection to a database.
  *
  * @param {BlueprintInstance} app - The Assemble instance.
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @category (Hooks)
  * @author Zach Ayers

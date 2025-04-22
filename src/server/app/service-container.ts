@@ -9,10 +9,14 @@ export class ServiceContainer {
   private static instance: ServiceContainer;
   private services: Map<string, Service> = new Map();
 
+  /**
+   * Private constructor to enforce singleton pattern
+   */
   private constructor() {}
 
   /**
    * Get the singleton instance of the service container
+   * @return {ServiceContainer} The singleton service container instance
    */
   public static getInstance(): ServiceContainer {
     if (!ServiceContainer.instance) {
@@ -23,8 +27,9 @@ export class ServiceContainer {
 
   /**
    * Register a service with the container
-   * @param token - The identifier for the service
-   * @param service - The service instance (must extend Service base class)
+   * @param {string} token - The identifier for the service
+   * @param {T} service - The service instance (must extend Service base class)
+   * @return {void}
    */
   public register<T extends Service>(token: string, service: T): void {
     this.services.set(token, service);
@@ -32,8 +37,8 @@ export class ServiceContainer {
 
   /**
    * Get a service from the container
-   * @param token - The identifier for the service
-   * @returns The service instance
+   * @param {string} token - The identifier for the service
+   * @return {T} The service instance
    * @throws Error if the service is not registered
    */
   public get<T extends Service>(token: string): T {
@@ -45,8 +50,8 @@ export class ServiceContainer {
 
   /**
    * Check if a service is registered
-   * @param token - The identifier for the service
-   * @returns True if the service is registered, false otherwise
+   * @param {string} token - The identifier for the service
+   * @return {boolean} True if the service is registered, false otherwise
    */
   public has(token: string): boolean {
     return this.services.has(token);

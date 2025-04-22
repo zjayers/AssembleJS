@@ -6,7 +6,7 @@ import type { ApiReply, ApiRequest } from "../../types/blueprint.simple.types";
  * It can, however, be useful for sending data to external services, for example,
  * to gather statistics.
  *
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @category (Hooks)
  * @author Zach Ayers

@@ -3,11 +3,28 @@
 .gitkeep
 src/generator/templates
 src/analyzer/page-speed-insights
+src/stubs/**
+src/docs/typedoc-theme/**
+src/typedoc/theme/**
 examples
 testbed
 **/__tests__/**
 **/__mocks__/**
 **/*.test.*
+
+# Exclude asset files from prettier
+src/assets/**/*.png
+src/assets/**/*.jpg
+src/assets/**/*.jpeg
+src/assets/**/*.ico
+src/assets/**/*.svg
+src/assets/**/*.gif
+src/assets/android-chrome-192x192.png
+src/assets/android-chrome-512x512.png 
+src/assets/apple-touch-icon.png
+src/assets/favicon-16x16.png
+src/assets/favicon-32x32.png
+src/assets/favicon.ico
 
 # Logs
 logs

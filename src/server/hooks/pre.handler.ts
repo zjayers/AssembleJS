@@ -1,7 +1,7 @@
 import type { ApiReply, ApiRequest } from "../../types/blueprint.simple.types";
 
 /**
- * @return {Promise<void>}
+ * @returns {Promise<void>}
  * @internal
  * @category (Hooks)
  * @author Zach Ayers

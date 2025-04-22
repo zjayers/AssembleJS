@@ -50,8 +50,6 @@ checkVersion()
 // Read the Process ARGS
 const args = process.argv.slice(2);
 
-
-
 const argv = minimist(args, {
   string: [
     "output",

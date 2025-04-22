@@ -1,70 +1,36 @@
-import type { ComponentFactory, ServerContext } from "asmbl";
-
-/**
- * {{ pascalCase FACTORY_NAME }}Factory
- * 
- * This factory is responsible for preparing data for the {{ pascalCase FACTORY_NAME }} component
- * before it is rendered on the server.
- * 
- * @example
- * // In a component definition
- * {
- *   path: 'my-component',
- *   views: [{
- *     viewName: 'desktop',
- *     templateFile: 'desktop.view.ejs',
- *     factories: [{{ pascalCase FACTORY_NAME }}Factory]
- *   }]
- * }
- * 
- * @example
- * // Accessing the data in your view template
- * <div>
- *   <h1>{{ "{{" }} dataFromFactory.title {{ "}}" }}</h1>
- *   <p>{{ "{{" }} dataFromFactory.description {{ "}}" }}</p>
- * </div>
- */
-export const {{ pascalCase FACTORY_NAME }}Factory: ComponentFactory = {
-  /**
-   * Priority determines the order of factory execution.
-   * Lower numbers run first, higher numbers run later.
-   * Use this to control dependencies between factories.
-   */
-  priority: 1,
-  
-  /**
-   * The factory function that prepares data for the component.
-   * This runs on the server before the component is rendered.
-   * 
-   * @param context - The server context containing request data and methods to manage component state
-   */
-  factory(context: ServerContext) {
-    try {
-      // Example: Fetch data from an API or database
-      // const result = await fetchDataFromApi();
-      
-      // Example: Process data before sending to client
-      const dataForClient = {
-        title: 'Example Title',
-        description: 'This data was prepared by the {{ pascalCase FACTORY_NAME }}Factory',
-        timestamp: new Date().toISOString()
-      };
-      
-      // Make data available to the component view template and client script
-      context.setPublicData(dataForClient);
-      
-      // Optional: Set private data (server-side only)
-      // context.setPrivateData({ sensitiveInfo: 'Not exposed to client' });
-      
-    } catch (error) {
-      // Handle errors properly to prevent rendering failures
-      console.error(`Error in {{ pascalCase FACTORY_NAME }}Factory:`, error);
-      
-      // Provide fallback data in case of errors
-      context.setPublicData({
-        error: true,
-        message: 'Failed to load data'
-      });
-    }
-  },
-}
+import type { ComponentFactory, ServerContext } from "asmbl"; /** *
+{{pascalCase FACTORY_NAME}}Factory * * This factory is responsible for preparing
+data for the
+{{pascalCase FACTORY_NAME}}
+component * before it is rendered on the server. * * @example * // In a
+component definition * { * path: 'my-component', * views: [{ * viewName:
+'desktop', * templateFile: 'desktop.view.ejs', * factories: [{{pascalCase
+  FACTORY_NAME
+}}Factory] * }] * } * * @example * // Accessing the data in your view template *
+<div>
+  *
+  <h1>{{"{{"}} dataFromFactory.title {{"}}"}}</h1>
+  *
+  <p>{{"{{"}} dataFromFactory.description {{"}}"}}</p>
+  *
+</div>
+*/ export const
+{{pascalCase FACTORY_NAME}}Factory: ComponentFactory = { /** * Priority
+determines the order of factory execution. * Lower numbers run first, higher
+numbers run later. * Use this to control dependencies between factories. */
+priority: 1, /** * The factory function that prepares data for the component. *
+This runs on the server before the component is rendered. * * @param context -
+The server context containing request data and methods to manage component state
+*/ factory(context: ServerContext) { try { // Example: Fetch data from an API or
+database // const result = await fetchDataFromApi(); // Example: Process data
+before sending to client const dataForClient = { title: 'Example Title',
+description: 'This data was prepared by the
+{{pascalCase FACTORY_NAME}}Factory', timestamp: new Date().toISOString() }; //
+Make data available to the component view template and client script
+context.setPublicData(dataForClient); // Optional: Set private data (server-side
+only) // context.setPrivateData({ sensitiveInfo: 'Not exposed to client' }); }
+catch (error) { // Handle errors properly to prevent rendering failures
+console.error(`Error in
+{{pascalCase FACTORY_NAME}}Factory:`, error); // Provide fallback data in case
+of errors context.setPublicData({ error: true, message: 'Failed to load data'
+}); } }, }

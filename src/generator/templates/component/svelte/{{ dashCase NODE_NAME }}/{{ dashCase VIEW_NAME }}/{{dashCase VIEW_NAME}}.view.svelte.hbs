@@ -1,17 +1,9 @@
 <script>
-  // Props are passed via context
-  export let params = {};
-  export let publicData = {};
-  export let components = {};
-  export let id;
-  
-  import { svelte } from 'asmbl';
-  
-  // Function to render a sub-component
-  function renderComponent(node, componentName) {
-    if (componentName && components) {
-      svelte.component(componentName, node, {params, publicData, components, id});
-    }
+  // Props are passed via context export let params = {}; export let publicData
+  = {}; export let components = {}; export let id; import { svelte } from
+  'asmbl'; // Function to render a sub-component function renderComponent(node,
+  componentName) { if (componentName && components) {
+  svelte.component(componentName, node, {params, publicData, components, id}); }
   }
 </script>
 
@@ -25,13 +17,6 @@
 </div>
 
 <style>
-  /* Component-specific styles */
-  .content {
-    padding: 1rem;
-  }
-  
-  h1 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
+  /* Component-specific styles */ .content { padding: 1rem; } h1 { font-size:
+  1.5rem; margin-bottom: 1rem; }
 </style>

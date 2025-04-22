@@ -119,7 +119,7 @@ export default function (plop: NodePlopAPI) {
           },
         },
         // 3. REGISTRATION - Not applicable for blueprints
-        
+
         // 4. LANGUAGE - Template language selection
         {
           type: "list",
@@ -131,7 +131,6 @@ export default function (plop: NodePlopAPI) {
       ];
     })(),
     actions: function (answers: Answers = {}) {
-
       const actions = [
         {
           type: "addMany",

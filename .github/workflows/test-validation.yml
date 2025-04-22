@@ -3,6 +3,10 @@ name: Validate No Test Failures
 on:
   # Only run via workflow_call to ensure linting runs first
   workflow_call:
+    outputs:
+      test-success:
+        description: "Indicates if tests passed"
+        value: ${{ jobs.test.outputs.test-success }}
   
   # Also allow manual triggering for debugging
   workflow_dispatch:
@@ -10,6 +14,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      test-success: ${{ steps.test-validation.outputs.success }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,4 +35,21 @@ jobs:
         run: npm run build
       
       - name: Run tests
-        run: npm test
+        id: test-validation
+        continue-on-error: true
+        run: |
+          # Run tests with detailed output
+          if npm test; then
+            echo "Tests passed!"
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "Tests failed!"
+            echo "success=false" >> $GITHUB_OUTPUT
+            exit 1  # This will make the step fail but the job continues due to continue-on-error
+          fi
+          
+      - name: Check test result
+        if: steps.test-validation.outputs.success != 'true'
+        run: |
+          echo "::error::Tests failed! Please fix the failing tests before merging."
+          exit 1  # This will fail the job

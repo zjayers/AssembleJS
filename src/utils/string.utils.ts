@@ -3,7 +3,7 @@
  *
  * @param {unknown | string | undefined | null} value String Value.
  * @param {string} defaultValue Default String Value. (Optional: default = '')
- * @return {string} Returns Default String Value if Value is Undefined/Null.
+ * @returns {string} Returns Default String Value if Value is Undefined/Null.
  */
 import { PATTERN_MULTIPLE_SPACES, PATTERN_PUNCTUATION } from "./pattern.utils";
 
