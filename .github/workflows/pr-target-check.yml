@@ -60,11 +60,28 @@ jobs:
               issue_number: prNumber
             });
             
-            // Look for our warning comment
-            const warningComment = comments.data.find(comment => 
-              comment.body.includes('WARNING: Incorrect Target Branch')
-            );
-            const warningCommentId = warningComment?.id;
+            console.log(`Found ${comments.data.length} comments on PR #${prNumber}`);
+            
+            // Look for warning comments using multiple indicators
+            const warningComments = comments.data.filter(comment => {
+              // Look for any of these phrases in the comment
+              const warningPhrases = [
+                'WARNING: Incorrect Target Branch',
+                '⚠️ WARNING: Incorrect Target Branch',
+                'PRs must target the `next` branch',
+                'This PR is targeting the `main` branch from',
+                'Only PRs from the `next` branch can target `main`'
+              ];
+              
+              return warningPhrases.some(phrase => comment.body.includes(phrase));
+            });
+            
+            console.log(`Found ${warningComments.length} warning comments on PR #${prNumber}`);
+            if (warningComments.length > 0) {
+              warningComments.forEach(comment => {
+                console.log(`Warning comment ID: ${comment.id}, User: ${comment.user.login}, Created: ${comment.created_at}`);
+              });
+            }
             
             // Look for existing labels
             const prData = await github.rest.issues.get({
@@ -80,33 +97,21 @@ jobs:
             // Only check/add warnings for PRs targeting main
             if (context.payload.pull_request.base.ref === 'main') {
               if (isValid) {
-                // PR is valid, remove warning comment and label if they exist
-                if (warningCommentId) {
-                  // Delete the warning comment
-                  await github.rest.issues.deleteComment({
+                // PR is valid, add a resolution note to the warning comment
+                if (warningComments.length > 0) {
+                  console.log(`Adding resolution note to ${warningComments.length} warning comments on PR #${prNumber}`);
+                  
+                  // Add a resolution comment
+                  await github.rest.issues.createComment({
                     owner,
                     repo,
-                    comment_id: warningCommentId
+                    issue_number: prNumber,
+                    body: `✅ **Target Branch Issue Resolved**
+                    
+                    This PR is now correctly targeting \`main\` from the \`next\` branch.`
                   });
-                  console.log(`Removed warning comment from PR #${prNumber}`);
-                  
-                  // Also check for any comments that might contain the exact text
-                  const exactTextComments = comments.data.filter(comment => 
-                    comment.body.includes('⚠️ WARNING: Incorrect Target Branch') &&
-                    comment.body.includes('Please close this PR and create a new one targeting the next branch instead.')
-                  );
-                  
-                  // Delete any matching comments
-                  for (const comment of exactTextComments) {
-                    if (comment.id !== warningCommentId) {
-                      await github.rest.issues.deleteComment({
-                        owner,
-                        repo,
-                        comment_id: comment.id
-                      });
-                      console.log(`Removed additional warning comment (ID: ${comment.id}) from PR #${prNumber}`);
-                    }
-                  }
+                } else {
+                  console.log(`No warning comments found on PR #${prNumber}`);
                 }
                 
                 if (hasInvalidLabel) {
@@ -120,16 +125,7 @@ jobs:
                 }
                 
                 // Add a confirmation comment if the PR was previously invalid
-                if (warningCommentId || hasInvalidLabel) {
-                  await github.rest.issues.createComment({
-                    owner,
-                    repo,
-                    issue_number: prNumber,
-                    body: `✅ **Target Branch Verified**
-                    
-                    This PR is now correctly targeting \`main\` from the \`next\` branch.`
-                  });
-                }
+                // Don't add a confirmation comment if there were warning comments previously
               } else {
                 // PR is invalid, add warning comment and label
                 const warningBody = `⚠️ **WARNING: Incorrect Target Branch**
@@ -145,14 +141,21 @@ jobs:
                 
                 Alternatively, you can edit this PR to change its base branch to \`next\`.`;
                 
-                if (warningCommentId) {
-                  // Update existing comment
-                  await github.rest.issues.updateComment({
-                    owner,
-                    repo,
-                    comment_id: warningCommentId,
-                    body: warningBody
-                  });
+                if (warningComments.length > 0) {
+                  // Update only if the most recent warning comment is different
+                  const mostRecentComment = warningComments.sort((a, b) => 
+                    new Date(b.created_at) - new Date(a.created_at)
+                  )[0];
+                  
+                  if (mostRecentComment.body !== warningBody) {
+                    // Only add a new comment if the content is different
+                    await github.rest.issues.createComment({
+                      owner,
+                      repo,
+                      issue_number: prNumber,
+                      body: warningBody
+                    });
+                  }
                 } else {
                   // Add new comment
                   await github.rest.issues.createComment({
