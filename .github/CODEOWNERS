@@ -1,2 +1,21 @@
-# Global code owner for the entire repository
+# CODEOWNERS file for AssembleJS
+# This file ensures automatic reviewer assignment for pull requests
+
+# Default owners for everything in the repo
+# These users will be requested for review when someone opens a pull request
 *       @zjayers
+
+# Specific ownership for workflow files
+/.github/workflows/ @zjayers
+
+# Specific ownership for source code
+/src/   @zjayers
+
+# Specific ownership for documentation
+/docs/  @zjayers
+*.md    @zjayers
+
+# Specific ownership for configuration files
+*.json  @zjayers
+*.yml   @zjayers
+*.yaml  @zjayers
