@@ -54,59 +54,58 @@ jobs:
           echo "bump-type=$TYPE" >> $GITHUB_OUTPUT
           echo "Version bump type: $TYPE"
       
-      - name: Generate changelog preview
+      - name: Generate commit changes for preview
         run: |
-          # Save original CHANGELOG.md if it exists
-          if [ -f CHANGELOG.md ]; then
-            cp CHANGELOG.md CHANGELOG.md.bak
-          fi
-          
           # Get base and head commits for PR
           BASE_SHA=${{ github.event.pull_request.base.sha }}
           HEAD_SHA=${{ github.event.pull_request.head.sha }}
           
-          # Generate temporary changelog (will not be committed)
-          npm run changelog
-          
-          # Get recent commits specific to this PR
-          echo "Commits included in this PR:" > pr_commits.txt
-          git log $BASE_SHA..$HEAD_SHA --pretty=format:"%h - %s (%an)" >> pr_commits.txt
-          
-          # Extract the unreleased section (with better debugging)
-          echo "Extracting changelog content..."
-          cat CHANGELOG.md | head -n 30 > changelog_debug.txt
-          
-          # More robust extraction that shows structured content even if section markers aren't found
-          UNRELEASED_CONTENT=$(awk '/^## \[Unreleased\]/,/^## /' CHANGELOG.md)
-          if [ -z "$UNRELEASED_CONTENT" ]; then
-            # Fallback: just show the PR's commits if changelog parsing fails
-            UNRELEASED_CHANGES=$(cat pr_commits.txt)
-            echo "⚠️ Could not parse changelog format - showing raw commits instead"
-          else
-            # Remove the last line that contains the next section header
-            UNRELEASED_CHANGES=$(echo "$UNRELEASED_CONTENT" | sed '$d')
-          fi
-          
-          # Debug output
-          echo "Extracted changes:"
-          echo "$UNRELEASED_CHANGES"
-          
-          # Restore original CHANGELOG.md
-          if [ -f CHANGELOG.md.bak ]; then
-            mv CHANGELOG.md.bak CHANGELOG.md
-          fi
-          
-          # Format for PR comment with disclaimer
+          # Start building our changelog content
           echo "### 📝 Changelog Preview" > changelog_preview.md
           echo "" >> changelog_preview.md
           echo "⚠️ **This is only a preview** - The actual changelog will be generated when merging to main and may differ based on other merged PRs." >> changelog_preview.md
           echo "" >> changelog_preview.md
           echo "Based on current commit messages, this PR would result in a **${{ steps.version-type.outputs.bump-type }}** version bump." >> changelog_preview.md
           echo "" >> changelog_preview.md
-          echo "#### Projected Changes:" >> changelog_preview.md
-          echo "```markdown" >> changelog_preview.md
-          echo "$UNRELEASED_CHANGES" >> changelog_preview.md
-          echo "```" >> changelog_preview.md
+          
+          # Extract features
+          FEATURES=$(git log $BASE_SHA..$HEAD_SHA --pretty=format:"%s" | grep -E "^feat(\(.*\))?:")
+          if [ ! -z "$FEATURES" ]; then
+            echo "### Features" >> changelog_preview.md
+            echo "" >> changelog_preview.md
+            git log $BASE_SHA..$HEAD_SHA --pretty=format:"- %s" | grep -E "^feat(\(.*\))?:" | sed 's/feat(\(.*\)):/- \1:/' | sed 's/feat:/- /' >> changelog_preview.md
+            echo "" >> changelog_preview.md
+          fi
+          
+          # Extract fixes
+          FIXES=$(git log $BASE_SHA..$HEAD_SHA --pretty=format:"%s" | grep -E "^fix(\(.*\))?:")
+          if [ ! -z "$FIXES" ]; then
+            echo "### Bug Fixes" >> changelog_preview.md
+            echo "" >> changelog_preview.md
+            git log $BASE_SHA..$HEAD_SHA --pretty=format:"- %s" | grep -E "^fix(\(.*\))?:" | sed 's/fix(\(.*\)):/- \1:/' | sed 's/fix:/- /' >> changelog_preview.md
+            echo "" >> changelog_preview.md
+          fi
+          
+          # Extract others (refactor, chore, etc.)
+          OTHERS=$(git log $BASE_SHA..$HEAD_SHA --pretty=format:"%s" | grep -v -E "^(feat|fix)(\(.*\))?:")
+          if [ ! -z "$OTHERS" ]; then
+            echo "### Other Changes" >> changelog_preview.md
+            echo "" >> changelog_preview.md
+            git log $BASE_SHA..$HEAD_SHA --pretty=format:"- %s" | grep -v -E "^(feat|fix)(\(.*\))?:" >> changelog_preview.md
+            echo "" >> changelog_preview.md
+          fi
+          
+          # If no changes were found, add a note
+          if [ -z "$FEATURES" ] && [ -z "$FIXES" ] && [ -z "$OTHERS" ]; then
+            echo "No conventional commit messages found in this PR." >> changelog_preview.md
+            echo "" >> changelog_preview.md
+            echo "Raw commits:" >> changelog_preview.md
+            echo "" >> changelog_preview.md
+            git log $BASE_SHA..$HEAD_SHA --pretty=format:"- %h %s" >> changelog_preview.md
+          fi
+          
+          # Show the preview in the log
+          cat changelog_preview.md
       
       - name: Comment on PR
         uses: marocchino/sticky-pull-request-comment@v2
