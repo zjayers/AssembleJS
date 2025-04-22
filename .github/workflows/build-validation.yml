@@ -35,6 +35,11 @@ jobs:
           node-version: '20.x'
           cache: 'npm'
           
+      # Define the cache key once to ensure consistency
+      - name: Generate cache key
+        id: cache-key-gen
+        run: echo "key=build-${{ runner.os }}-$(sha256sum package-lock.json | awk '{print $1}')-${{ github.sha }}" >> $GITHUB_OUTPUT
+      
       # Cache the node_modules and build output
       - name: Cache Dependencies and Build
         id: cache-build
@@ -43,9 +48,8 @@ jobs:
           path: |
             node_modules
             lib
-          key: build-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
+          key: ${{ steps.cache-key-gen.outputs.key }}
           restore-keys: |
-            build-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-
             build-${{ runner.os }}-
       
       # Install dependencies only if cache miss
@@ -71,7 +75,7 @@ jobs:
       # Save cache key for later jobs
       - name: Set build cache outputs
         id: build-cache
-        run: echo "cache-key=build-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}" >> $GITHUB_OUTPUT
+        run: echo "cache-key=${{ steps.cache-key-gen.outputs.key }}" >> $GITHUB_OUTPUT
           
       - name: Check build result
         if: steps.build-validation.outputs.success != 'true'
