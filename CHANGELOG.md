@@ -1,3 +1,21 @@
+## <small>0.0.4 (2025-04-22)</small>
+
+* 0.0.3 ([6c9a0c9](https://github.com/zjayers/assemblejs/commit/6c9a0c9))
+* 0.0.4 ([cfcccb2](https://github.com/zjayers/assemblejs/commit/cfcccb2))
+* chore: version script changes ([0550294](https://github.com/zjayers/assemblejs/commit/0550294))
+
+
+
+## <small>0.0.3 (2025-04-22)</small>
+
+* chore: workflow improvements ([ae28a77](https://github.com/zjayers/assemblejs/commit/ae28a77))
+* chore: workflow improvements ([c1f6729](https://github.com/zjayers/assemblejs/commit/c1f6729))
+* chore: workflow improvements ([7c5ed73](https://github.com/zjayers/assemblejs/commit/7c5ed73))
+* chore(release): 0.0.3 [skip ci] ([65f284b](https://github.com/zjayers/assemblejs/commit/65f284b))
+* Update docs/classes/BlueprintController.md ([5993318](https://github.com/zjayers/assemblejs/commit/5993318))
+
+
+
 ## <small>0.0.2 (2025-04-22)</small>
 
 * chore: add @next workflow ([009555e](https://github.com/zjayers/assemblejs/commit/009555e))
