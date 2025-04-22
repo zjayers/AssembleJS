@@ -61,9 +61,10 @@ jobs:
             });
             
             // Look for our warning comment
-            const warningCommentId = comments.data.find(comment => 
+            const warningComment = comments.data.find(comment => 
               comment.body.includes('WARNING: Incorrect Target Branch')
-            )?.id;
+            );
+            const warningCommentId = warningComment?.id;
             
             // Look for existing labels
             const prData = await github.rest.issues.get({
@@ -81,12 +82,31 @@ jobs:
               if (isValid) {
                 // PR is valid, remove warning comment and label if they exist
                 if (warningCommentId) {
+                  // Delete the warning comment
                   await github.rest.issues.deleteComment({
                     owner,
                     repo,
                     comment_id: warningCommentId
                   });
                   console.log(`Removed warning comment from PR #${prNumber}`);
+                  
+                  // Also check for any comments that might contain the exact text
+                  const exactTextComments = comments.data.filter(comment => 
+                    comment.body.includes('⚠️ WARNING: Incorrect Target Branch') &&
+                    comment.body.includes('Please close this PR and create a new one targeting the next branch instead.')
+                  );
+                  
+                  // Delete any matching comments
+                  for (const comment of exactTextComments) {
+                    if (comment.id !== warningCommentId) {
+                      await github.rest.issues.deleteComment({
+                        owner,
+                        repo,
+                        comment_id: comment.id
+                      });
+                      console.log(`Removed additional warning comment (ID: ${comment.id}) from PR #${prNumber}`);
+                    }
+                  }
                 }
                 
                 if (hasInvalidLabel) {
