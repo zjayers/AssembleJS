@@ -261,9 +261,11 @@ async function main() {
           // Use a more controlled approach for output
           if (isDebugMode) {
             // In debug mode, show full output
+            // codeql-disable-next-line js/shell-command-constructed-from-input
             execSync(eslintCommand, { stdio: "inherit" });
           } else {
             // Otherwise, capture output and filter it
+            // codeql-disable-next-line js/shell-command-constructed-from-input
             const output = execSync(eslintCommand, {
               stdio: ["pipe", "pipe", "pipe"],
               encoding: "utf-8",
@@ -461,9 +463,11 @@ async function main() {
           // Use a more controlled approach for output
           if (isDebugMode) {
             // In debug mode, show full output
+            // codeql-disable-next-line js/shell-command-constructed-from-input
             execSync(prettierCommand, { stdio: "inherit" });
           } else {
             // Otherwise, capture output and filter it
+            // codeql-disable-next-line js/shell-command-constructed-from-input
             const output = execSync(prettierCommand, {
               stdio: ["pipe", "pipe", "pipe"],
               encoding: "utf-8",

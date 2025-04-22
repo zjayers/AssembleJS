@@ -26,30 +26,3 @@ jobs:
     if: ${{ needs.lint.outputs.lint-success == 'true' }}
     uses: ./.github/workflows/test-validation.yml
   
-  # Report status to GitHub
-  report-status:
-    needs: [validate-commits, lint, test]
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Report commit validation status
-        if: needs.validate-commits.outputs.validation-success == 'false'
-        run: |
-          echo "::error::Commit validation failed. Please ensure commits follow conventional commit format."
-          exit 1
-          
-      - name: Report lint status
-        if: needs.lint.outputs.lint-success == 'false'
-        run: |
-          echo "::error::Linting failed. Please fix linting errors."
-          exit 1
-          
-      - name: Report test status
-        if: needs.test.outputs.test-success == 'false'
-        run: |
-          echo "::error::Tests failed. Please fix failing tests."
-          exit 1
-          
-      - name: Success
-        if: needs.validate-commits.outputs.validation-success == 'true' && needs.lint.outputs.lint-success == 'true' && needs.test.outputs.test-success == 'true'
-        run: echo "All validation checks passed!"
