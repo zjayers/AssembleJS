@@ -15,7 +15,7 @@ npm run lint:staged
 npm run lint:sort
 
 echo "> Generating Changelog..."
-npm run changelog
+npm run generate:changelog
 
 echo "> Generating Docs..."
 npm run docs

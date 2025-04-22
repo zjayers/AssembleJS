@@ -1,4 +1,4 @@
-name: PR Target Branch Check
+name: pr_target_branch_check
 
 on:
   # Run directly on PRs to main, including when the PR is edited (which happens when target branch changes)

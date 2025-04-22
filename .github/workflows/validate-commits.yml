@@ -1,4 +1,4 @@
-name: Validate Commits
+name: validate_commits
 
 on:
   # Only allow workflow to be called by other workflows

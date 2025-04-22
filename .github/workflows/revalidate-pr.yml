@@ -1,4 +1,4 @@
-name: Revalidate PR
+name: revalidate_pr
 
 on:
   workflow_dispatch:

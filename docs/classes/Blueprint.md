@@ -59,7 +59,7 @@ Get the scoped api interface for this view.
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:205](https://github.com/zjayers/minimesh/blob/9210909/src/browser/client/blueprint.view.ts#L205)
+[src/browser/client/blueprint.view.ts:205](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/client/blueprint.view.ts#L205)
 
 ___
 
@@ -77,7 +77,7 @@ Get the context for this view.
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:189](https://github.com/zjayers/minimesh/blob/9210909/src/browser/client/blueprint.view.ts#L189)
+[src/browser/client/blueprint.view.ts:189](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/client/blueprint.view.ts#L189)
 
 ___
 
@@ -95,7 +95,7 @@ Get the root element for this view.
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:197](https://github.com/zjayers/minimesh/blob/9210909/src/browser/client/blueprint.view.ts#L197)
+[src/browser/client/blueprint.view.ts:197](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/client/blueprint.view.ts#L197)
 
 ## Constructors
 
@@ -120,7 +120,7 @@ Base view constructor
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:70](https://github.com/zjayers/minimesh/blob/9210909/src/browser/client/blueprint.view.ts#L70)
+[src/browser/client/blueprint.view.ts:70](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/client/blueprint.view.ts#L70)
 
 ## Methods
 
@@ -138,7 +138,7 @@ to prevent memory leaks from event listener accumulation
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:281](https://github.com/zjayers/minimesh/blob/9210909/src/browser/client/blueprint.view.ts#L281)
+[src/browser/client/blueprint.view.ts:281](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/client/blueprint.view.ts#L281)
 
 ___
 
@@ -173,7 +173,7 @@ Zach Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:252](https://github.com/zjayers/minimesh/blob/9210909/src/browser/client/blueprint.view.ts#L252)
+[src/browser/client/blueprint.view.ts:252](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/client/blueprint.view.ts#L252)
 
 ___
 
@@ -207,7 +207,7 @@ ViewEventAdapter.toAll
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:234](https://github.com/zjayers/minimesh/blob/9210909/src/browser/client/blueprint.view.ts#L234)
+[src/browser/client/blueprint.view.ts:234](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/client/blueprint.view.ts#L234)
 
 ___
 
@@ -241,7 +241,7 @@ ViewEventAdapter.toBlueprint
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:222](https://github.com/zjayers/minimesh/blob/9210909/src/browser/client/blueprint.view.ts#L222)
+[src/browser/client/blueprint.view.ts:222](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/client/blueprint.view.ts#L222)
 
 ___
 
@@ -275,7 +275,7 @@ ViewEventAdapter.toComponents
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:210](https://github.com/zjayers/minimesh/blob/9210909/src/browser/client/blueprint.view.ts#L210)
+[src/browser/client/blueprint.view.ts:210](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/client/blueprint.view.ts#L210)
 
 ___
 
@@ -311,7 +311,7 @@ Zach Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:273](https://github.com/zjayers/minimesh/blob/9210909/src/browser/client/blueprint.view.ts#L273)
+[src/browser/client/blueprint.view.ts:273](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/client/blueprint.view.ts#L273)
 
 ___
 
@@ -335,4 +335,4 @@ Zach Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:360](https://github.com/zjayers/minimesh/blob/9210909/src/browser/client/blueprint.view.ts#L360)
+[src/browser/client/blueprint.view.ts:360](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/client/blueprint.view.ts#L360)
