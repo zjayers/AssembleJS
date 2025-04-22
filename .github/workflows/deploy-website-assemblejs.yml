@@ -72,46 +72,18 @@ jobs:
           # Use www.assemblejs.com as the bucket name
           S3_BUCKET="www.assemblejs.com"
           
-          # Determine environment (from input or default to staging)
-          ENVIRONMENT="${{ github.event.inputs.environment || 'staging' }}"
+          # Get version information
           VERSION="${{ steps.package-version.outputs.version }}"
           CLEAN_VERSION="${{ steps.package-version.outputs.clean_version }}"
           
-          # Set deployment path based on environment
-          if [ "$ENVIRONMENT" = "production" ]; then
-            # For production, deploy to the version path and to the root
-            DEPLOY_PATH="v$CLEAN_VERSION"
-            
-            # Deploy to version-specific path
-            echo "Deploying to s3://$S3_BUCKET/$DEPLOY_PATH/"
-            aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/$DEPLOY_PATH/" --delete
-            
-            # Deploy to root of bucket
-            echo "Deploying to s3://$S3_BUCKET/"
-            aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/" --delete
-          else
-            # For staging, use 'next' path
-            echo "Deploying to s3://$S3_BUCKET/next/"
-            aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/next/" --delete
-          fi
+          # Deploy to version-specific path
+          DEPLOY_PATH="v$CLEAN_VERSION"
+          echo "Deploying to s3://$S3_BUCKET/$DEPLOY_PATH/"
+          aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/$DEPLOY_PATH/" --delete
           
-          echo "🚀 AssembleJS website successfully deployed to $ENVIRONMENT environment"
+          # Deploy to root of bucket
+          echo "Deploying to s3://$S3_BUCKET/"
+          aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/" --delete
+          
+          echo "🚀 AssembleJS website successfully deployed to production environment"
       
-      - name: Create CloudFront invalidation if configured
-        if: vars.ASSEMBLEJS_CLOUDFRONT_DISTRIBUTION_ID != ''
-        run: |
-          # Determine environment
-          ENVIRONMENT="${{ github.event.inputs.environment || 'staging' }}"
-          CLEAN_VERSION="${{ steps.package-version.outputs.clean_version }}"
-          
-          # Create invalidation paths based on environment
-          if [ "$ENVIRONMENT" = "production" ]; then
-            INVALIDATION_PATHS="/v$CLEAN_VERSION/* /*"
-          else
-            INVALIDATION_PATHS="/next/*"
-          fi
-          
-          # Create the invalidation
-          aws cloudfront create-invalidation \
-            --distribution-id ${{ vars.ASSEMBLEJS_CLOUDFRONT_DISTRIBUTION_ID }} \
-            --paths $INVALIDATION_PATHS
