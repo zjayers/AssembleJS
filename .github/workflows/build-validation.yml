@@ -43,10 +43,10 @@ jobs:
           path: |
             node_modules
             lib
-          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
+          key: build-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}-
-            ${{ runner.os }}-build-
+            build-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-
+            build-${{ runner.os }}-
       
       # Install dependencies only if cache miss
       - name: Install dependencies
@@ -71,7 +71,7 @@ jobs:
       # Save cache key for later jobs
       - name: Set build cache outputs
         id: build-cache
-        run: echo "cache-key=${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}" >> $GITHUB_OUTPUT
+        run: echo "cache-key=build-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-${{ github.sha }}" >> $GITHUB_OUTPUT
           
       - name: Check build result
         if: steps.build-validation.outputs.success != 'true'

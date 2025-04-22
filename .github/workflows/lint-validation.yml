@@ -44,10 +44,18 @@ jobs:
           path: |
             node_modules
             lib
-          key: ${{ inputs.build-cache-key || 'no-cache-' }}
+          key: ${{ inputs.build-cache-key }}
           restore-keys: |
             ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}-
             ${{ runner.os }}-build-
+      
+      # Debug information about cache status
+      - name: Cache Diagnostics
+        run: |
+          echo "Cache hit: ${{ steps.restore-build.outputs.cache-hit }}"
+          echo "Cache key: ${{ inputs.build-cache-key }}"
+          ls -la node_modules || echo "No node_modules"
+          ls -la lib || echo "No lib"
       
       # Install dependencies only if cache miss
       - name: Install dependencies 

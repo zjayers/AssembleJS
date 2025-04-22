@@ -98,15 +98,26 @@ jobs:
             if (warningComments.length > 0 && context.payload.pull_request.base.ref !== 'main') {
               console.log(`PR was changed from targeting main to targeting ${context.payload.pull_request.base.ref}`);
               
-              // Add a resolution note
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number: prNumber,
-                body: `✅ **Target Branch Issue Resolved**
-                
-                This PR is now correctly targeting \`${context.payload.pull_request.base.ref}\` instead of \`main\`.`
-              });
+              // Check if a resolution comment already exists
+              const resolutionComments = comments.data.filter(comment =>
+                comment.body.includes('Target Branch Issue Resolved') &&
+                comment.body.includes('now correctly targeting')
+              );
+              
+              // Only add a resolution note if one doesn't already exist
+              if (resolutionComments.length === 0) {
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  body: `✅ **Target Branch Issue Resolved**
+                  
+                  This PR is now correctly targeting \`${context.payload.pull_request.base.ref}\` instead of \`main\`.`
+                });
+                console.log(`Added resolution comment to PR #${prNumber}`);
+              } else {
+                console.log(`Resolution comment already exists on PR #${prNumber}, skipping`);
+              }
               
               // Also remove the invalid-target label if it exists
               if (hasInvalidLabel) {
