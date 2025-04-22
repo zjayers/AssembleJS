@@ -1,39 +1,60 @@
-### Changelog
+## <small>0.0.2 (2025-04-22)</small>
 
-All notable changes to this project will be documented in this file. Dates are displayed in UTC.
+* chore: add @next workflow ([009555e](https://github.com/zjayers/assemblejs/commit/009555e))
+* chore: add better event triggers for branch targeting ([d9da015](https://github.com/zjayers/assemblejs/commit/d9da015))
+* chore: add better pr target handling ([4fd646b](https://github.com/zjayers/assemblejs/commit/4fd646b))
+* chore: add better pr target handling ([14224bc](https://github.com/zjayers/assemblejs/commit/14224bc))
+* chore: add better pr target handling ([da4fa04](https://github.com/zjayers/assemblejs/commit/da4fa04))
+* chore: add better pr target handling ([dff492e](https://github.com/zjayers/assemblejs/commit/dff492e))
+* chore: add better pr target handling ([8016662](https://github.com/zjayers/assemblejs/commit/8016662))
+* chore: add better pr target handling ([be7933a](https://github.com/zjayers/assemblejs/commit/be7933a))
+* chore: add cache between lint and test steps ([7cdab9d](https://github.com/zjayers/assemblejs/commit/7cdab9d))
+* chore: add codeowners ([d3f38df](https://github.com/zjayers/assemblejs/commit/d3f38df))
+* chore: add codeowners ([2d1eab0](https://github.com/zjayers/assemblejs/commit/2d1eab0))
+* chore: add codeowners ([ebb8ff7](https://github.com/zjayers/assemblejs/commit/ebb8ff7))
+* chore: add more pr target handling ([454c17f](https://github.com/zjayers/assemblejs/commit/454c17f))
+* chore: add pr protection ([8e762b6](https://github.com/zjayers/assemblejs/commit/8e762b6))
+* chore: add pr protection ([71e490b](https://github.com/zjayers/assemblejs/commit/71e490b))
+* chore: add release workflow ([f02306f](https://github.com/zjayers/assemblejs/commit/f02306f))
+* chore: empty ([7b0544b](https://github.com/zjayers/assemblejs/commit/7b0544b))
+* chore: empty ([3966301](https://github.com/zjayers/assemblejs/commit/3966301))
+* chore: empty ([f665764](https://github.com/zjayers/assemblejs/commit/f665764))
+* chore: empty ([dad3c05](https://github.com/zjayers/assemblejs/commit/dad3c05))
+* chore: fix failing tests ([a1fa415](https://github.com/zjayers/assemblejs/commit/a1fa415))
+* chore: fix warnings for codeql in asm-lint ([67a248c](https://github.com/zjayers/assemblejs/commit/67a248c))
+* chore: further update workflows ([563b707](https://github.com/zjayers/assemblejs/commit/563b707))
+* chore: further update workflows ([1ee9fdf](https://github.com/zjayers/assemblejs/commit/1ee9fdf))
+* chore: further update workflows ([393fb37](https://github.com/zjayers/assemblejs/commit/393fb37))
+* chore: further update workflows ([24dd835](https://github.com/zjayers/assemblejs/commit/24dd835))
+* chore: init repository ([fc1c260](https://github.com/zjayers/assemblejs/commit/fc1c260))
+* chore: linting of repo ([c9b40d7](https://github.com/zjayers/assemblejs/commit/c9b40d7))
+* chore: status check addition to workflow ([ab0996c](https://github.com/zjayers/assemblejs/commit/ab0996c))
+* chore: switch to semantic release ([dff6f56](https://github.com/zjayers/assemblejs/commit/dff6f56))
+* chore: trigger next release ([939f087](https://github.com/zjayers/assemblejs/commit/939f087))
+* chore: trigger next release ([ce351b4](https://github.com/zjayers/assemblejs/commit/ce351b4))
+* chore: update formatting and pr validation workflows ([a50b4d3](https://github.com/zjayers/assemblejs/commit/a50b4d3))
+* chore: update GH_TOKEN to use GH_PAT ([6500e24](https://github.com/zjayers/assemblejs/commit/6500e24))
+* chore: update linting and testing workflows ([cddb531](https://github.com/zjayers/assemblejs/commit/cddb531))
+* chore: update semantic release in workflow ([e76d7b2](https://github.com/zjayers/assemblejs/commit/e76d7b2))
+* chore: update semantic release in workflow ([bb1dde4](https://github.com/zjayers/assemblejs/commit/bb1dde4))
+* chore: update workflow to remove circular ref ([32bdc7f](https://github.com/zjayers/assemblejs/commit/32bdc7f))
+* chore: validate all ([486c4a0](https://github.com/zjayers/assemblejs/commit/486c4a0))
+* chore: validate all ([59f0712](https://github.com/zjayers/assemblejs/commit/59f0712))
+* chore: validate all ([6ac2825](https://github.com/zjayers/assemblejs/commit/6ac2825))
+* chore: workflow improvements ([f025bac](https://github.com/zjayers/assemblejs/commit/f025bac))
+* chore: workflow improvements ([31a9ae2](https://github.com/zjayers/assemblejs/commit/31a9ae2))
+* chore: workflow updates ([b139563](https://github.com/zjayers/assemblejs/commit/b139563))
+* chore(github): enhance CODEOWNERS file with detailed paths ([6d52651](https://github.com/zjayers/assemblejs/commit/6d52651))
+* chore(release): 0.0.2 [skip ci] ([b5fd21b](https://github.com/zjayers/assemblejs/commit/b5fd21b))
+* chore(workflows): workflow updates ([34259f6](https://github.com/zjayers/assemblejs/commit/34259f6))
+* chore(workflows): workflow updates for comment permissions ([53f052c](https://github.com/zjayers/assemblejs/commit/53f052c))
+* docs: update README badges with working shields.io badges ([e23f280](https://github.com/zjayers/assemblejs/commit/e23f280))
+* fix(ci): add --ignore-scripts flag to npm ci in release workflow ([9540e6a](https://github.com/zjayers/assemblejs/commit/9540e6a))
+* fix(ci): disable husky hooks during semantic-release ([583cff4](https://github.com/zjayers/assemblejs/commit/583cff4))
+* fix(ci): improve branch handling in release workflow ([97a2507](https://github.com/zjayers/assemblejs/commit/97a2507))
+* fix(ci): use consistent cache key generation in build workflow ([33f05a8](https://github.com/zjayers/assemblejs/commit/33f05a8))
+* refactor(ci): rename release workflow to release-next-package ([bd18d77](https://github.com/zjayers/assemblejs/commit/bd18d77))
+* feat(ci): optimize release workflow for next branch ([9211541](https://github.com/zjayers/assemblejs/commit/9211541))
 
-Generated by [`auto-changelog`](https://github.com/CookPete/auto-changelog).
 
-#### Unreleased
 
-- feat: improve type safety across codebase
-  - Enhanced generic type usage in Component and ComponentView interfaces
-  - Replaced Function type with properly typed ComponentHelper generic
-  - Fixed inconsistent type patterns and naming conventions
-  - Improved ViewContext interfaces with proper generic constraints
-  - Added type safety to context mutation methods
-  - Fixed typecasting issues in various utilities
-  - Added comprehensive documentation for type system
-
-- feat: add comprehensive validation system
-  - Created flexible schema-based validation framework
-  - Implemented validation rules for strings, numbers, booleans, dates, arrays, and objects
-  - Added support for custom validation rules and conditional validation
-  - Added type guards for runtime type checking
-  - Created utility functions for form validation
-  - Added detailed documentation with examples
-- feat: add comprehensive caching system
-  - Created flexible in-memory cache implementation with expiration support
-  - Added cache integration with BlueprintServer
-  - Added view-level cache configuration with TTL support
-  - Implemented cache helper utilities for components and controllers
-  - Added cache decorator for method-level caching
-  - Integrated HTTP response caching
-- feat: enhanced error handling system
-  - Added full error code enum and error classes
-  - Implemented error utilities for common error scenarios
-  - Added proper error handling in component rendering
-  - Improved error presentation in development mode
-- chore: updates [`f9e3b9e`](https://github.com/zjayers/assemblejs/commit/f9e3b9e28341b9dcaadf5c211c5bdedc10814c8f)
-- chore: new changelog [`11ab854`](https://github.com/zjayers/assemblejs/commit/11ab854b32360def40b55ae3e2a58af5a881ca35)
-- feat: initial commit [`9cda797`](https://github.com/zjayers/assemblejs/commit/9cda79786f9f3cc60320b360853496eb48a3c4c0)

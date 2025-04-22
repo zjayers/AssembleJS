@@ -9,26 +9,30 @@
 ░░░░░╚═╝░░╚═╝╚═════╝░╚═════╝░╚══════╝╚═╝░░░░░╚═╝╚═════╝░╚══════╝╚══════╝░░░░░
 ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 ░░  ░░  ░░  ░░  ░░  You Can Build It  ░░  ░░  ░░  ░░  ░░
-  ░░  ░░  ░░  ░░  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ░░  ░░  ░░  ░░
+  ░░  ░░  ░░  ░░  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ░░  ░░  ░░   ░░
 ```
 
 <div align="center">
 
 ### Project Status
+
 [![npm version](https://img.shields.io/npm/v/asmbl)](https://www.npmjs.com/package/asmbl)
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/asmbl)](https://bundlephobia.com/package/asmbl)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ### Quality
+
 [![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/zjayers/assemblejs/pr-validation.yml?branch=main)](https://github.com/zjayers/assemblejs/actions/workflows/pr-validation.yml)
 [![GitHub issues](https://img.shields.io/github/issues/zjayers/assemblejs)](https://github.com/zjayers/assemblejs/issues)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 ### Technology
+
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-success?logo=node.js&logoColor=white)](https://nodejs.org)
 
 ### Community
+
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./DOCUMENTATION.md#contributing-to-assemblejs)
 [![Support](https://img.shields.io/badge/Support-AssembleJS-blue)](https://github.com/sponsors/zjayers)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
@@ -91,37 +95,37 @@ AssembleJS takes a unique approach to UI architecture that addresses common chal
 
 #### Advantages Over Traditional Solutions
 
-| Feature | AssembleJS | Single-SPA | Module Federation | NextJS | Micro-Frontends |
-|---------|------------|------------|-------------------|--------|-----------------|
-| Independent Deployment | ✅ | ✅ | ✅ | ⚠️ | ✅ |
-| Runtime Integration | ✅ | ✅ | ✅ | ❌ | ⚠️ |
-| Shared Styling | ✅ | ❌ | ⚠️ | ✅ | ❌ |
-| SEO Optimization | ✅ | ❌ | ⚠️ | ✅ | ⚠️ |
-| Server-Side Rendering | ✅ | ❌ | ⚠️ | ✅ | ⚠️ |
-| Cross-Framework Support | ✅ | ✅ | ✅ | ❌ | ✅ |
-| Low Bundle Size | ✅ | ⚠️ | ⚠️ | ⚠️ | ✅ |
-| No Framework Lock-in | ✅ | ❌ | ❌ | ❌ | ⚠️ |
-| Component-Level Integration | ✅ | ❌ | ⚠️ | ✅ | ❌ |
-| Islands Architecture | ✅ | ❌ | ⚠️ | ✅ | ❌ |
-| True Micro Frontends | ✅ | ✅ | ⚠️ | ❌ | ✅ |
+| Feature                     | AssembleJS | Single-SPA | Module Federation | NextJS | Micro-Frontends |
+| --------------------------- | ---------- | ---------- | ----------------- | ------ | --------------- |
+| Independent Deployment      | ✅         | ✅         | ✅                | ⚠️     | ✅              |
+| Runtime Integration         | ✅         | ✅         | ✅                | ❌     | ⚠️              |
+| Shared Styling              | ✅         | ❌         | ⚠️                | ✅     | ❌              |
+| SEO Optimization            | ✅         | ❌         | ⚠️                | ✅     | ⚠️              |
+| Server-Side Rendering       | ✅         | ❌         | ⚠️                | ✅     | ⚠️              |
+| Cross-Framework Support     | ✅         | ✅         | ✅                | ❌     | ✅              |
+| Low Bundle Size             | ✅         | ⚠️         | ⚠️                | ⚠️     | ✅              |
+| No Framework Lock-in        | ✅         | ❌         | ❌                | ❌     | ⚠️              |
+| Component-Level Integration | ✅         | ❌         | ⚠️                | ✅     | ❌              |
+| Islands Architecture        | ✅         | ❌         | ⚠️                | ✅     | ❌              |
+| True Micro Frontends        | ✅         | ✅         | ⚠️                | ❌     | ✅              |
 
 #### Supported UI Languages and Frameworks
 
 AssembleJS is designed to be framework-agnostic, supporting numerous UI languages and frameworks:
 
 | UI Technology | Current Support | Future Plans |
-|---------------|-----------------|-------------|
-| HTML | ✅ | ✅ |
-| EJS Templates | ✅ | ✅ |
-| Markdown | ✅ | ✅ |
-| Nunjucks | ✅ | ✅ |
-| Handlebars | ✅ | ✅ |
-| Pug | ✅ | ✅ |
-| WebComponents | ✅ | ✅ |
-| Preact | ✅ | ✅ |
-| React | ✅ | ✅ |
-| Vue | ✅ | ✅ |
-| Svelte | ✅ | ✅ |
+| ------------- | --------------- | ------------ |
+| HTML          | ✅              | ✅           |
+| EJS Templates | ✅              | ✅           |
+| Markdown      | ✅              | ✅           |
+| Nunjucks      | ✅              | ✅           |
+| Handlebars    | ✅              | ✅           |
+| Pug           | ✅              | ✅           |
+| WebComponents | ✅              | ✅           |
+| Preact        | ✅              | ✅           |
+| React         | ✅              | ✅           |
+| Vue           | ✅              | ✅           |
+| Svelte        | ✅              | ✅           |
 
 ✅ - Full Support | 🔄 - In Progress | 🚧 - Planned | ❌ - Not Supported
 
@@ -151,22 +155,22 @@ AssembleJS is designed to be framework-agnostic, supporting numerous UI language
   </a>
 </p>
 
-#### Performance 
+#### Performance
 
 <details>
 <summary>📊 View AssembleJS Performance Benchmarks</summary>
 <br>
 
-| Metric               | AssembleJS | Framework A | Framework B | Framework C |
-|----------------------|:----------:|:-----------:|:-----------:|:-----------:|
-| Time to First Byte   |   🟢 62ms  |  🟡 125ms   |  🟠 189ms   |  🔴 312ms   |
-| First Contentful Paint|  🟢 248ms  |  🟡 389ms   |  🟠 527ms   |  🔴 763ms   |
-| JS Bundle Size       |  🟢 12.4KB |  🟡 58.2KB  |  🟠 97.6KB  |  🔴 143KB   |
-| Memory Usage         |  🟢 Low    |  🟡 Medium  |  🟠 High    |  🔴 Very High |
-| HTTP Requests        |  🟢 4      |  🟡 12      |  🟠 18      |  🔴 26      |
-| Lighthouse Score     |  🟢 98     |  🟡 87      |  🟠 76      |  🔴 64      |
+| Metric                 | AssembleJS | Framework A | Framework B | Framework C  |
+| ---------------------- | :--------: | :---------: | :---------: | :----------: |
+| Time to First Byte     |  🟢 62ms   |  🟡 125ms   |  🟠 189ms   |   🔴 312ms   |
+| First Contentful Paint |  🟢 248ms  |  🟡 389ms   |  🟠 527ms   |   🔴 763ms   |
+| JS Bundle Size         | 🟢 12.4KB  |  🟡 58.2KB  |  🟠 97.6KB  |   🔴 143KB   |
+| Memory Usage           |   🟢 Low   |  🟡 Medium  |   🟠 High   | 🔴 Very High |
+| HTTP Requests          |    🟢 4    |    🟡 12    |    🟠 18    |    🔴 26     |
+| Lighthouse Score       |   🟢 98    |    🟡 87    |    🟠 76    |    🔴 64     |
 
-*Note: All benchmarks performed on identical hardware with identical application complexity*
+_Note: All benchmarks performed on identical hardware with identical application complexity_
 
 </details>
 
@@ -188,7 +192,7 @@ AssembleJS is designed to be framework-agnostic, supporting numerous UI language
 # Install the CLI
 npm install -g asmbl@next
 
-# Create a new project 
+# Create a new project
 asm
 # Select 'Project' and follow the prompts
 
@@ -277,6 +281,7 @@ redline --eslint-only
 ```
 
 **Key Features:**
+
 - Zero-configuration setup
 - Unified ESLint and Prettier integration
 - Intelligent CI/CD pipeline integration
@@ -301,6 +306,7 @@ specsheet --url="https://example.com" --compare="./reports/previous.json"
 ```
 
 **Key Features:**
+
 - Google Lighthouse integration
 - Performance budget enforcement
 - Multiple report formats (HTML, JSON, CSV)
@@ -323,6 +329,7 @@ rivet --ci github
 ```
 
 **Key Features:**
+
 - Multi-platform deployment support (Docker, AWS, Netlify, etc.)
 - CI/CD pipeline integration
 - Environment variable management
@@ -540,7 +547,7 @@ With AssembleJS, <i>You Can Build It</i> - anything you want, any way you want!
   to unlock your full web development potential!
 </h3>
 
-<p>AssembleJS - Building better web experiences, one component at a time. Modern, efficient, and powerful. Enterprise-ready.</p>
+<p>AssembleJS - Building better web experiences, one component at a time.</p>
 
 </div>
 

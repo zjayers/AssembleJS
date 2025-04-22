@@ -1,4 +1,4 @@
-name: Validate No Test Failures
+name: validate_tests
 
 on:
   # Only run via workflow_call to ensure linting runs first

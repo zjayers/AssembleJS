@@ -1,4 +1,4 @@
-name: Release
+name: publish_package
 on:
   push:
     branches:
@@ -9,22 +9,18 @@ on:
       - '.github/workflows/**'
 
 jobs:
-  # Direct release job (skipping tests as they've already been run in PR validation)
-  release:
-    name: Release
+  # Direct publishing job (skipping tests as they've already been run in PR validation)
+  publish:
+    name: Publish Package
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      issues: write
-      pull-requests: write
+      contents: read
       packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          # Use deploy key for git operations to bypass branch protection
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
       
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -39,64 +35,26 @@ jobs:
       - name: Build
         run: npm run build
       
-      - name: Set Git identity and configuration
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          # Ensure we use SSH for GitHub authentication
-          git remote set-url origin git@github.com:zjayers/assemblejs.git
-          # Verify the remote
-          git remote -v
-      
-      - name: Set Release Type
-        id: release-type
+      - name: Determine publish tag
+        id: publish-tag
         run: |
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "Running production release from main branch"
-            echo "type=production" >> $GITHUB_OUTPUT
+            echo "tag=latest" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref }}" == "refs/heads/next" ]]; then
             echo "Running pre-release from next branch"
-            echo "type=prerelease" >> $GITHUB_OUTPUT
+            echo "tag=next" >> $GITHUB_OUTPUT
           else
             echo "Unexpected branch: ${{ github.ref }}"
-            echo "type=unknown" >> $GITHUB_OUTPUT
+            echo "tag=unknown" >> $GITHUB_OUTPUT
             exit 1  # Fail the workflow for unexpected branches
           fi
       
-      # Disable husky hooks for the release to prevent linting issues
-      - name: Disable Husky for release
-        run: npm pkg set scripts.postinstall="echo 'Skipping husky install for release'"
-
-      - name: Start SSH Agent and Set Permissions
-        run: |
-          # Start SSH agent
-          eval "$(ssh-agent -s)"
-          # Make sure private key has correct permissions
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          # Verify that the agent is running
-          echo "SSH Agent PID: $SSH_AGENT_PID"
-      
-      - name: Release
+      - name: Publish to npm
         env:
-          # Use GH_TOKEN for API operations
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          # Force semantic-release to use SSH instead of HTTPS
-          USE_SSH_KEY: true
-          # Force semantic-release git plugin to use SSH URL
-          GIT_AUTHOR_NAME: "github-actions[bot]"
-          GIT_AUTHOR_EMAIL: "github-actions[bot]@users.noreply.github.com"
-          GIT_COMMITTER_NAME: "github-actions[bot]"
-          GIT_COMMITTER_EMAIL: "github-actions[bot]@users.noreply.github.com"
-          # Set SSH repository URL explicitly
-          GIT_REPOSITORY_URL: "git@github.com:zjayers/assemblejs.git"
-          # Use NPM_TOKEN for npm publishing
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          # Pass release type information
-          RELEASE_TYPE: ${{ steps.release-type.outputs.type }}
-          # Skip git hooks during semantic-release
-          HUSKY: 0
         run: |
-          # Run semantic-release with no CI skip
-          npx semantic-release --no-ci-skip
+          # Publish the package with the appropriate tag
+          npm publish --tag ${{ steps.publish-tag.outputs.tag }}
+          
+          echo "Published package to npm with tag: ${{ steps.publish-tag.outputs.tag }}"

@@ -26,4 +26,4 @@ eventBus.publish(address, {data: 'my-payload'}
 
 #### Defined in
 
-[src/browser/eventing/event.address.ts:23](https://github.com/zjayers/minimesh/blob/9210909/src/browser/eventing/event.address.ts#L23)
+[src/browser/eventing/event.address.ts:23](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/browser/eventing/event.address.ts#L23)

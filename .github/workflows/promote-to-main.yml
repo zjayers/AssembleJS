@@ -1,4 +1,4 @@
-name: Promote Next to Main
+name: promote_next_to_main
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ on:
 
 jobs:
   promote:
-    name: Promote Next to Main
+    name: Promote to Main
     runs-on: ubuntu-latest
     permissions:
       contents: write

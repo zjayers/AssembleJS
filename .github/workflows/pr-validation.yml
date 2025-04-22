@@ -1,4 +1,4 @@
-name: PR Validation
+name: pr_validation
 
 on:
   pull_request:
@@ -27,14 +27,7 @@ jobs:
     if: ${{ needs.check-target.outputs.target-valid == 'true' }}
     uses: ./.github/workflows/build-validation.yml
   
-  # Third steps: Run validate-commits, lint, and test in parallel (using build cache)
-  validate-commits:
-    needs: [build]
-    # Run if build passed
-    if: ${{ needs.build.outputs.build-success == 'true' }}
-    uses: ./.github/workflows/validate-commits.yml
-    with:
-      build-cache-key: ${{ needs.build.outputs.build-cache-key }}
+  # Third steps: Run lint and test in parallel (using build cache)
   
   lint:
     needs: [build]

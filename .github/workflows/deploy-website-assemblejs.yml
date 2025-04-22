@@ -1,4 +1,4 @@
-name: Deploy AssembleJS Website
+name: deploy_assemblejs_website
 
 on:
   # Automatic deployment on change to website files or docs

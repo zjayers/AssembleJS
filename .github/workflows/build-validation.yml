@@ -1,4 +1,4 @@
-name: Validate Build
+name: validate_build
 
 on:
   # Only run via workflow_call

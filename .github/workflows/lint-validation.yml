@@ -1,4 +1,4 @@
-name: Validate No Linting Errors
+name: validate_linting
 
 on:
   # Only run via workflow_call to ensure commit validation runs first
