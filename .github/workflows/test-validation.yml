@@ -11,6 +11,9 @@ on:
   # Also allow manual triggering for debugging
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
