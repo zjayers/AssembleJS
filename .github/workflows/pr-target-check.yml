@@ -1,0 +1,19 @@
+name: PR Target Branch Check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+    branches:
+      - main
+
+jobs:
+  check_target_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR target branch
+        if: github.base_ref == 'main' && github.head_ref != 'next'
+        run: |
+          echo "::error::PRs must target the 'next' branch unless they originate from the 'next' branch."
+          echo "::error::Please close this PR and create a new one targeting 'next'."
+          echo "::error::We only allow PRs to main from the 'next' branch via the 'Promote to Main' workflow."
+          exit 1

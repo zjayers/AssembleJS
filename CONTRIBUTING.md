@@ -59,11 +59,27 @@ chore: update dependencies
 
 ### Pull Requests
 
-1. Update your fork to include the latest changes from the main repository
-2. Push your changes to your fork on GitHub
-3. Submit a pull request to the main repository
-4. Include a clear description of the changes and any relevant issue numbers
-5. Be responsive to feedback and be prepared to make additional changes if requested
+1. **Always target the `next` branch with your Pull Requests**
+   - PRs to `main` will be automatically rejected
+   - Create your feature branch from `next`: `git checkout -b feature/your-feature next`
+
+2. Update your fork to include the latest changes from the repository
+3. Push your changes to your fork on GitHub
+4. Submit a pull request to the `next` branch
+5. Include a clear description of the changes and any relevant issue numbers
+6. Be responsive to feedback and be prepared to make additional changes if requested
+
+### Promoting Changes to Production
+
+To release changes to production (moving from `next` to `main`):
+
+1. Go to "Actions" tab in GitHub
+2. Select the "Promote Next to Main" workflow
+3. Click "Run workflow" button
+4. Enter a descriptive merge commit message
+5. Click "Run workflow" to start the process
+
+This workflow will create a merge commit from `next` to `main` and trigger the release process.
 
 ## Types of Contributions
 

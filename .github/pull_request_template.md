@@ -1,3 +1,8 @@
+<!-- 
+IMPORTANT: All PRs should target the `next` branch unless you are using the "Promote to Main" workflow.
+PRs targeting `main` directly will be rejected.
+-->
+
 ## Description
 
 <!-- Please include a summary of the change and which issue is fixed (if applicable) -->
