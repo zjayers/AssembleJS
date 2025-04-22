@@ -62,8 +62,8 @@ import { ServiceContainer } from "./service-container";
  * });
  * ```
  *
- * @param userOpts - Configuration options for the AssembleJS server
- * @returns Promise that resolves to the Assembly instance
+ * @param {BlueprintServerOptions} userOpts - Configuration options for the AssembleJS server
+ * @return {Promise<Assembly>} Promise that resolves to the Assembly instance
  *
  * @throws Will throw an error if the development HTTP server or HMR server is not found
  * @throws Will throw an error if the server fails to start

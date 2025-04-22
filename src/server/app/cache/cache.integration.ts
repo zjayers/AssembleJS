@@ -34,8 +34,8 @@ export interface CacheConfig {
 
 /**
  * Set up caching for the blueprint server
- * @param server Fastify server instance
- * @param options Caching options
+ * @param {FastifyInstance} server Fastify server instance
+ * @param {CacheConfig} options Caching options
  */
 export function setupServerCaching(
   server: FastifyInstance,

@@ -105,7 +105,7 @@ async function main() {
   }
 
   // Default paths for linting files
-  let pathsToLint = args.filter(arg => !arg.startsWith("--")).length > 0
+  const pathsToLint = args.filter(arg => !arg.startsWith("--")).length > 0
     ? args.filter(arg => !arg.startsWith("--")).join(" ")
     : "src/**/*.{js,jsx,ts,tsx}";
 
@@ -457,7 +457,7 @@ async function main() {
 
             if (relevantLines.length > 0) {
               // Format each line to match REDLINE style
-              let fileWithIssues = [];
+              const fileWithIssues = [];
 
               // First, collect files with issues
               relevantLines.forEach(line => {

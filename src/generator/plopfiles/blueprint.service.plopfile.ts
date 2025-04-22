@@ -94,7 +94,7 @@ export default function (plop: NodePlopAPI) {
 
           if (manifestMatch && manifestMatch.index !== undefined) {
             // Check if there's a trailing comma needed
-            let segmentToCheck = serverContent.substring(
+            const segmentToCheck = serverContent.substring(
               manifestMatch.index + manifestMatch[0].length,
               manifestMatch.index + manifestMatch[0].length + 500
             );

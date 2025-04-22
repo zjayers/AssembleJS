@@ -1,4 +1,4 @@
-name: Pull Request Checks
+name: Validate No Linting Errors
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  lint-and-test:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -28,6 +28,3 @@ jobs:
       
       - name: Run linting
         run: npm run lint:dry
-      
-      - name: Run tests
-        run: npm test

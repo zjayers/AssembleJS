@@ -1,0 +1,123 @@
+name: Changelog Preview
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+    types: [opened, synchronize, reopened]
+
+jobs:
+  preview-changelog:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+      
+      - name: Determine version bump type
+        id: version-type
+        run: |
+          # Default to patch
+          TYPE="patch"
+          
+          # Get the PR branch and base branch
+          BASE_SHA=${{ github.event.pull_request.base.sha }}
+          HEAD_SHA=${{ github.event.pull_request.head.sha }}
+          
+          # Find commit messages for this PR
+          COMMITS=$(git log $BASE_SHA..$HEAD_SHA --pretty=format:"%s")
+          
+          # Check for feature and breaking changes
+          if echo "$COMMITS" | grep -q "^feat\|^feat("; then
+            TYPE="minor"
+          fi
+          
+          if echo "$COMMITS" | grep -q "^BREAKING CHANGE\|^feat!"; then
+            TYPE="major"
+          fi
+          
+          echo "bump-type=$TYPE" >> $GITHUB_OUTPUT
+          echo "Version bump type: $TYPE"
+      
+      - name: Generate changelog preview
+        run: |
+          # Save original CHANGELOG.md if it exists
+          if [ -f CHANGELOG.md ]; then
+            cp CHANGELOG.md CHANGELOG.md.bak
+          fi
+          
+          # Generate temporary changelog (will not be committed)
+          npm run changelog
+          
+          # Extract the unreleased section
+          UNRELEASED_CHANGES=$(sed -n '/^## \[Unreleased\]/,/^## /p' CHANGELOG.md | head -n -1)
+          
+          # Restore original CHANGELOG.md
+          if [ -f CHANGELOG.md.bak ]; then
+            mv CHANGELOG.md.bak CHANGELOG.md
+          fi
+          
+          # Format for PR comment with disclaimer
+          echo "### 📝 Changelog Preview" > changelog_preview.md
+          echo "" >> changelog_preview.md
+          echo "⚠️ **This is only a preview** - The actual changelog will be generated when merging to main and may differ based on other merged PRs." >> changelog_preview.md
+          echo "" >> changelog_preview.md
+          echo "Based on current commit messages, this PR would result in a **${{ steps.version-type.outputs.bump-type }}** version bump." >> changelog_preview.md
+          echo "" >> changelog_preview.md
+          echo "#### Projected Changes:" >> changelog_preview.md
+          echo "```markdown" >> changelog_preview.md
+          echo "$UNRELEASED_CHANGES" >> changelog_preview.md
+          echo "```" >> changelog_preview.md
+      
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const preview = fs.readFileSync('changelog_preview.md', 'utf8');
+            
+            const commentHeader = '### 📝 Changelog Preview';
+            
+            // Get existing comments
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            // Find any existing changelog preview comments
+            const changelogComment = comments.find(comment => 
+              comment.user.login === 'github-actions[bot]' && 
+              comment.body.includes(commentHeader)
+            );
+            
+            if (changelogComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: changelogComment.id,
+                body: preview
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: preview
+              });
+            }

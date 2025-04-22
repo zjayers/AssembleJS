@@ -48,6 +48,7 @@ v1.0.0
 
 /**
  * Load deployment plopfile and run specified generator
+ * @param {string[]} args - Command line arguments
  */
 const runDeployGenerator = async (args: string[] = []) => {
   try {

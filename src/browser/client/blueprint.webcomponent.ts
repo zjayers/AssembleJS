@@ -10,6 +10,7 @@ export const webcomponent = {
    * @param {string} name - Custom element name (should include hyphen)
    * @param {string} template - HTML template for the component's shadow DOM
    * @param {Record<string, Function>} methods - Methods to add to the component
+   * @return {void} - No return value
    */
   define: (
     name: string,
@@ -206,6 +207,7 @@ export const webcomponent = {
    * @param {string} componentName - The name of the component to render
    * @param {string} slotName - The name of the slot to render into
    * @param {ViewContext} context - The current context
+   * @return {void} - No return value
    */
   component: (
     componentName: string,

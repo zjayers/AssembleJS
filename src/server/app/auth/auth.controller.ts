@@ -20,7 +20,7 @@ import * as jwt from "jsonwebtoken";
 export class AuthController extends BlueprintController {
   /**
    * Register authentication endpoints with the server
-   * @param app - The AssembleJS instance
+   * @param {Assembly} app - The AssembleJS instance
    */
   public register(app: Assembly): void {
     // Login endpoint
@@ -35,8 +35,8 @@ export class AuthController extends BlueprintController {
 
   /**
    * Login endpoint that handles credential validation and token generation
-   * @param request - FastifyRequest object
-   * @param reply - FastifyReply object
+   * @param {ApiRequest} request - FastifyRequest object
+   * @param {ApiReply} reply - FastifyReply object
    */
   private async login(request: ApiRequest, reply: ApiReply): Promise<void> {
     // Use rate limiting to prevent brute force attacks
@@ -187,8 +187,8 @@ export class AuthController extends BlueprintController {
 
   /**
    * Logout endpoint that clears the authentication cookie
-   * @param _request - FastifyRequest object
-   * @param reply - FastifyReply object
+   * @param {ApiRequest} _request - FastifyRequest object
+   * @param {ApiReply} reply - FastifyReply object
    */
   private async logout(_request: ApiRequest, reply: ApiReply): Promise<void> {
     // Clear the auth cookie
@@ -202,8 +202,8 @@ export class AuthController extends BlueprintController {
 
   /**
    * Check the current authentication status
-   * @param request - FastifyRequest object
-   * @param reply - FastifyReply object
+   * @param {ApiRequest} request - FastifyRequest object
+   * @param {ApiReply} reply - FastifyReply object
    */
   private async checkAuthStatus(
     request: ApiRequest,

@@ -21,9 +21,9 @@ export interface JwtPayload {
 
 /**
  * Check if a route should be public (not require authentication)
- * @param routePath - The route path to check
- * @param authConfig - The authentication configuration
- * @return True if the route should be public
+ * @param {string} routePath - The route path to check
+ * @param {BlueprintServerAuth} authConfig - The authentication configuration
+ * @return {boolean} True if the route should be public
  */
 export function isPublicRoute(
   routePath: string,
@@ -41,8 +41,8 @@ export function isPublicRoute(
 
 /**
  * Create the authentication middleware based on the server configuration
- * @param authConfig - The authentication configuration
- * @return Authentication middleware function
+ * @param {BlueprintServerAuth} authConfig - The authentication configuration
+ * @return {Function} Authentication middleware function
  */
 export function createAuthMiddleware(authConfig?: BlueprintServerAuth) {
   return async function authenticate(

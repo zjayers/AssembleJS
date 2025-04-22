@@ -600,11 +600,21 @@ export default function (plop: NodePlopAPI) {
   });
 }
 
-// Helper functions for server.ts modifications
+/**
+ * Capitalize the first letter of a string
+ * @param {string} str - The string to capitalize
+ * @return {string} The capitalized string
+ */
 function capitalizeFirst(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+/**
+ * Find the start of an object in a string
+ * @param {string} content - The content to search in
+ * @param {number} index - The index to start searching from
+ * @return {number} The index of the opening brace
+ */
 function findObjectStart(content: string, index: number): number {
   // Find the opening brace of the object containing the index
   while (index >= 0 && content[index] !== "{") {
@@ -613,6 +623,11 @@ function findObjectStart(content: string, index: number): number {
   return index;
 }
 
+/**
+ * Find the closing brace that matches the opening brace at the start of the content
+ * @param {string} content - The content to search in (should start with an opening brace)
+ * @return {number} The index of the matching closing brace
+ */
 function findClosingBrace(content: string): number {
   // Find the matching closing brace
   let braceCount = 1;
@@ -629,9 +644,9 @@ function findClosingBrace(content: string): number {
 
 /**
  * Find all places where a component is used in blueprints or other components
- * @param serverContent The content of the server.ts file
- * @param componentName The name of the component to find usages of
- * @returns An array of parent objects with type, name, and path properties
+ * @param {string} serverContent The content of the server.ts file
+ * @param {string} componentName The name of the component to find usages of
+ * @return {Array<{ type: string, name: string, path: string }>} An array of parent objects with type, name, and path properties
  */
 function findComponentUsages(serverContent: string, componentName: string): Array<{ type: string, name: string, path: string }> {
   const parents = [];
