@@ -39,10 +39,14 @@ jobs:
       - name: Build
         run: npm run build
       
-      - name: Set Git identity
+      - name: Set Git identity and configuration
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # Ensure we use SSH for GitHub authentication
+          git remote set-url origin git@github.com:zjayers/assemblejs.git
+          # Verify the remote
+          git remote -v
       
       - name: Set Release Type
         id: release-type
