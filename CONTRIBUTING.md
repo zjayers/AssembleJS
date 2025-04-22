@@ -39,6 +39,24 @@ npm run commit
 
 This will guide you through the commit process, ensuring your commits are properly formatted.
 
+#### Commit Types and Versioning
+
+AssembleJS uses semantic-release for automated versioning and publishing. The commit type determines the version increment:
+
+- `fix:` commits trigger PATCH releases (e.g., 1.0.0 → 1.0.1)
+- `feat:` commits trigger MINOR releases (e.g., 1.0.0 → 1.1.0)
+- `feat!:` or `fix!:` or commits with `BREAKING CHANGE:` in the footer trigger MAJOR releases (e.g., 1.0.0 → 2.0.0)
+- Other types like `docs:`, `chore:`, `refactor:`, etc. won't trigger a release
+
+Examples:
+```
+feat: add new component generator
+fix: resolve issue with server-side rendering
+feat!: redesign component API (BREAKING CHANGE)
+docs: update API documentation
+chore: update dependencies
+```
+
 ### Pull Requests
 
 1. Update your fork to include the latest changes from the main repository
@@ -88,6 +106,22 @@ Code contributions might include:
 ## Development Workflow
 
 See [DOCUMENTATION.md](DOCUMENTATION.md#development-workflow) for detailed instructions on setting up your development environment and workflow.
+
+## Release Process
+
+AssembleJS uses [semantic-release](https://github.com/semantic-release/semantic-release) for automated versioning and package publishing. This ensures:
+
+1. Version numbers follow [Semantic Versioning](https://semver.org/)
+2. Releases are triggered automatically when changes are merged to main
+3. Release notes and changelogs are generated automatically
+
+### Release Branches
+
+- `main`: Production releases (e.g., 1.0.0, 1.1.0)
+- `beta`: Beta pre-releases (e.g., 1.1.0-beta.1)
+- `alpha`: Alpha pre-releases (e.g., 1.1.0-alpha.1)
+
+The CI pipeline handles testing and releasing automatically - no manual version updates or publishing is needed.
 
 ## License
 
