@@ -28,12 +28,17 @@ jobs:
           node-version: '20.x'
           cache: 'npm'
       
-      # Using environment files for setting variables from untrusted inputs
-      # This is more secure than direct interpolation
+      # Using environment variables without shell interpolation for security
       - name: Set environment variables from workflow run
+        env:
+          # Define environment variables directly, without shell interpolation
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
-          echo "WORKFLOW_BRANCH=$(echo '${{ github.event.workflow_run.head_branch }}' | sed 's/[^a-zA-Z0-9._-]//g')" >> $GITHUB_ENV
-          echo "WORKFLOW_SHA=$(echo '${{ github.event.workflow_run.head_sha }}' | sed 's/[^a-zA-Z0-9]//g')" >> $GITHUB_ENV
+          # Sanitize and store as GitHub environment variables
+          # Using $HEAD_BRANCH instead of direct expression interpolation
+          echo "WORKFLOW_BRANCH=$(echo "$HEAD_BRANCH" | sed 's/[^a-zA-Z0-9._-]//g')" >> $GITHUB_ENV
+          echo "WORKFLOW_SHA=$(echo "$HEAD_SHA" | sed 's/[^a-zA-Z0-9]//g')" >> $GITHUB_ENV
 
       - name: Get package info
         id: package-info

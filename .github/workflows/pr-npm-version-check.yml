@@ -131,6 +131,68 @@ jobs:
               });
             }
       
+      - name: Comment on PR if version is valid
+        if: steps.check-versions.outputs.version_exists != 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.issue.number;
+            const packageName = '${{ steps.package-info.outputs.name }}';
+            const packageVersion = '${{ steps.package-info.outputs.version }}';
+            const targetBranch = '${{ github.base_ref }}';
+            const tag = targetBranch === 'main' ? 'latest' : 'next';
+            
+            const body = `✅ **Version Check Passed**
+            
+            The package version \`${packageName}@${packageVersion}\` is valid and does not exist on npm with the \`${tag}\` tag.
+            
+            This PR can be safely merged without version conflicts.`;
+            
+            const comments = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: prNumber
+            });
+            
+            // Look for existing success comments
+            const successComments = comments.data.filter(comment => 
+              comment.body.includes('Version Check Passed') && 
+              comment.body.includes(packageName) &&
+              comment.body.includes(packageVersion)
+            );
+            
+            if (successComments.length === 0) {
+              // Only add a new comment if one doesn't already exist
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body: body
+              });
+              
+              // Remove version-conflict label if it exists
+              try {
+                const labels = await github.rest.issues.listLabelsOnIssue({
+                  owner,
+                  repo,
+                  issue_number: prNumber
+                });
+                
+                if (labels.data.some(label => label.name === 'version-conflict')) {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    name: 'version-conflict'
+                  });
+                }
+              } catch (error) {
+                console.log("Error managing labels:", error);
+              }
+            }
+      
       - name: Set version check result
         id: check-result
         run: |
