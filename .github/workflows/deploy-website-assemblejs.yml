@@ -1,7 +1,15 @@
-name: Deploy AssembleJS Main Website
+name: Deploy AssembleJS Website
 
 on:
-  # This workflow is triggered by the main deploy-websites workflow
+  # Automatic deployment on change to website files or docs
+  push:
+    branches:
+      - main
+    paths:
+      - 'websites/assemblejs/**'
+      - 'docs/**'
+  
+  # Manual trigger
   workflow_dispatch:
     inputs:
       environment:
@@ -12,10 +20,6 @@ on:
         options:
           - staging
           - production
-      version:
-        type: string
-        description: 'Package version to deploy'
-        required: true
 
 permissions:
   contents: read
@@ -24,7 +28,7 @@ permissions:
 jobs:
   deploy-assemblejs-website:
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
+    environment: ${{ github.event.inputs.environment || 'staging' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -37,12 +41,14 @@ jobs:
           node-version: '20.x'
           cache: 'npm'
       
-      - name: Process version for deployment path
-        id: process-version
+      - name: Get package version
+        id: package-version
         run: |
-          VERSION="${{ github.event.inputs.version }}"
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
           # For production, remove any prerelease suffix
-          if [ "${{ github.event.inputs.environment }}" = "production" ]; then
+          if [ "${{ github.event.inputs.environment || 'staging' }}" = "production" ]; then
             CLEAN_VERSION=$(echo $VERSION | sed 's/-next\.[0-9]\+//')
           else
             CLEAN_VERSION=$VERSION
@@ -50,16 +56,10 @@ jobs:
           echo "clean_version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
       
       - name: Install main package dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       
-      - name: Build main package
+      - name: Build everything
         run: npm run build
-      
-      - name: Build assemblejs website
-        run: |
-          cd websites/assemblejs
-          npm ci
-          npm run build
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -69,57 +69,46 @@ jobs:
       
       - name: Deploy to S3
         run: |
-          # Use www.assemblejs.com as the bucket name based on folder structure
+          # Use www.assemblejs.com as the bucket name
           S3_BUCKET="www.assemblejs.com"
           
-          if [ -z "$S3_BUCKET" ]; then
-            echo "Error: S3 bucket name not defined"
-            exit 1
-          fi
+          # Determine environment (from input or default to staging)
+          ENVIRONMENT="${{ github.event.inputs.environment || 'staging' }}"
+          VERSION="${{ steps.package-version.outputs.version }}"
+          CLEAN_VERSION="${{ steps.package-version.outputs.clean_version }}"
           
           # Set deployment path based on environment
-          if [ "${{ github.event.inputs.environment }}" = "production" ]; then
+          if [ "$ENVIRONMENT" = "production" ]; then
             # For production, deploy to the version path and to the root
-            DEPLOY_PATH="v${{ steps.process-version.outputs.clean_version }}"
-            ROOT_DEPLOY=true
-          else
-            # For staging, use 'next' prefix for @next versions
-            if [[ "${{ github.event.inputs.version }}" == *"-next"* ]]; then
-              DEPLOY_PATH="next"
-            else
-              DEPLOY_PATH="${{ github.event.inputs.environment }}"
-            fi
-            ROOT_DEPLOY=false
-          fi
-          
-          # Deploy to version-specific path
-          echo "Deploying assemblejs website to s3://$S3_BUCKET/$DEPLOY_PATH/assemblejs/"
-          aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/$DEPLOY_PATH/assemblejs/" --delete
-          
-          # Deploy to root if this is production
-          if [ "$ROOT_DEPLOY" = "true" ]; then
-            echo "Deploying assemblejs website to root path s3://$S3_BUCKET/assemblejs/"
-            aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/assemblejs/" --delete
+            DEPLOY_PATH="v$CLEAN_VERSION"
             
-            # Also deploy to the root of the bucket for the main website
-            echo "Deploying assemblejs website to bucket root s3://$S3_BUCKET/"
+            # Deploy to version-specific path
+            echo "Deploying to s3://$S3_BUCKET/$DEPLOY_PATH/"
+            aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/$DEPLOY_PATH/" --delete
+            
+            # Deploy to root of bucket
+            echo "Deploying to s3://$S3_BUCKET/"
             aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/" --delete
+          else
+            # For staging, use 'next' path
+            echo "Deploying to s3://$S3_BUCKET/next/"
+            aws s3 sync "websites/assemblejs/dist/" "s3://$S3_BUCKET/next/" --delete
           fi
           
-          echo "🚀 AssembleJS website successfully deployed to ${{ github.event.inputs.environment }} environment"
+          echo "🚀 AssembleJS website successfully deployed to $ENVIRONMENT environment"
       
       - name: Create CloudFront invalidation if configured
         if: vars.ASSEMBLEJS_CLOUDFRONT_DISTRIBUTION_ID != ''
         run: |
-          # Create invalidation paths based on deployment
-          if [ "${{ github.event.inputs.environment }}" = "production" ]; then
-            INVALIDATION_PATHS="/v${{ steps.process-version.outputs.clean_version }}/assemblejs/* /assemblejs/* /*"
+          # Determine environment
+          ENVIRONMENT="${{ github.event.inputs.environment || 'staging' }}"
+          CLEAN_VERSION="${{ steps.package-version.outputs.clean_version }}"
+          
+          # Create invalidation paths based on environment
+          if [ "$ENVIRONMENT" = "production" ]; then
+            INVALIDATION_PATHS="/v$CLEAN_VERSION/* /*"
           else
-            if [[ "${{ github.event.inputs.version }}" == *"-next"* ]]; then
-              INVALIDATION_PATHS="/next/assemblejs/*"
-            else
-              INVALIDATION_PATHS="/${{ github.event.inputs.environment }}/assemblejs/*"
-            fi
+            INVALIDATION_PATHS="/next/*"
           fi
           
           # Create the invalidation
