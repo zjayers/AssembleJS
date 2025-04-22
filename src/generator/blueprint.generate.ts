@@ -163,7 +163,7 @@ const choices = cwdInsideProject()
     };
 
 // Create an object to store the answers
-let componentTypeAnswer = await inquirer.prompt([
+const componentTypeAnswer = await inquirer.prompt([
   {
     type: "list",
     name: "COMPONENT_TYPE",

@@ -37,7 +37,7 @@ module.exports = {
         ) {
           // Get the event name and data
           const eventNameNode = node.arguments[0].arguments[0];
-          let eventName = eventNameNode.value;
+          const eventName = eventNameNode.value;
           let detail = null;
 
           // Extract detail if available

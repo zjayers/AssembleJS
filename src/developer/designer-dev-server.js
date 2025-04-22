@@ -347,7 +347,7 @@ app.get("/api/blueprint/:blueprint/:view", (request, reply) => {
 /**
  * Scan project to build a structure of blueprints and components
  * @param {string} projectDir - The project directory
- * @returns {Promise<object>} - The application structure
+ * @return {Promise<object>} - The application structure
  */
 async function scanProjectStructure(projectDir) {
   const srcDir = path.join(projectDir, "src");

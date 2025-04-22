@@ -4,6 +4,10 @@
 src/generator/templates
 src/analyzer/page-speed-insights
 examples
+testbed
+**/__tests__/**
+**/__mocks__/**
+**/*.test.*
 
 # Logs
 logs

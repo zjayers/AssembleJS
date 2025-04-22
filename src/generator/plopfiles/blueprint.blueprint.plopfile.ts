@@ -185,7 +185,7 @@ export default function (plop: NodePlopAPI) {
             const renderType = answers.RENDER_TYPE;
 
             // Get the appropriate file extension based on the render type
-            let fileExtension = getFileExtensionForRenderType(renderType);
+            const fileExtension = getFileExtensionForRenderType(renderType);
 
             // Check if a component with this path already exists
             const pathRegex = new RegExp(`path:\\s*["']${nodeName}["']`);
