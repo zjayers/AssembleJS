@@ -64,13 +64,22 @@ jobs:
       
       - name: Analyze commits with semantic-release
         id: semantic-release
-        uses: semantic-release/semantic-release@v24
-        with:
-          dry_run: true
-          branches: |
-            [
-              'main'
-            ]
+        run: |
+          # Install semantic-release
+          npm install -g semantic-release@^23.0.0
+          
+          # Run semantic-release in dry-run mode
+          semantic-release --dry-run --branches main > semantic-release-output.txt || true
+          
+          # Extract version information
+          NEW_VERSION=$(grep -o "The next release version is [0-9]\+\.[0-9]\+\.[0-9]\+" semantic-release-output.txt | sed 's/The next release version is //')
+          LAST_VERSION=$(grep -o "The last release version was [0-9]\+\.[0-9]\+\.[0-9]\+" semantic-release-output.txt | sed 's/The last release version was //')
+          
+          # Set outputs
+          if [ -n "$NEW_VERSION" ]; then
+            echo "new_release_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+            echo "last_release_version=$LAST_VERSION" >> $GITHUB_OUTPUT
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
