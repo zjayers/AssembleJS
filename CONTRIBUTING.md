@@ -115,11 +115,21 @@ AssembleJS uses [semantic-release](https://github.com/semantic-release/semantic-
 2. Releases are triggered automatically when changes are merged to main
 3. Release notes and changelogs are generated automatically
 
-### Release Branches
+### Release Branch Strategy
 
-- `main`: Production releases (e.g., 1.0.0, 1.1.0)
-- `beta`: Beta pre-releases (e.g., 1.1.0-beta.1)
-- `alpha`: Alpha pre-releases (e.g., 1.1.0-alpha.1)
+AssembleJS follows a simple two-branch release strategy:
+
+- `next`: Pre-release branch (e.g., 1.1.0-next.1, 1.1.0-next.2)
+- `main`: Production release branch (e.g., 1.0.0, 1.1.0)
+
+**Development Flow:**
+
+1. Feature branches are created from and merged back to the `next` branch via pull requests
+2. The `next` branch automatically publishes pre-releases to npm with the `next` tag
+3. When ready for production, the `next` branch is merged to `main` using the "Promote Next to Main" workflow
+4. The `main` branch automatically publishes production releases to npm with the `latest` tag
+
+**Important:** The `main` branch should only ever receive merges from the `next` branch.
 
 The CI pipeline handles testing and releasing automatically - no manual version updates or publishing is needed.
 

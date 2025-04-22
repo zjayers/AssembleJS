@@ -1,0 +1,47 @@
+name: Promote Next to Main
+
+on:
+  workflow_dispatch:
+    inputs:
+      merge_message:
+        description: 'Merge commit message'
+        required: true
+        default: 'chore: promote next to main'
+        type: string
+
+jobs:
+  promote:
+    name: Promote Next to Main
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_TOKEN || secrets.GITHUB_TOKEN }}
+      
+      - name: Set Git identity
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      
+      - name: Fetch all branches
+        run: git fetch --all
+      
+      - name: Checkout main branch
+        run: git checkout main
+      
+      - name: Merge next into main
+        run: |
+          # Create a merge commit with custom message
+          git merge --no-ff origin/next -m "${{ github.event.inputs.merge_message }}"
+          
+          # Push the merge to main
+          git push origin main
+        
+      - name: Summarize
+        run: |
+          echo "Successfully merged next branch into main!"
+          echo "Merge commit: $(git rev-parse HEAD)"
