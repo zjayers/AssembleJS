@@ -4,6 +4,9 @@ on:
     branches:
       - main
       - next
+    # Prevent release on workflow changes to avoid accidental releases
+    paths-ignore:
+      - '.github/workflows/**'
 
 jobs:
   # Direct release job (skipping tests as they've already been run in PR validation)
@@ -47,9 +50,13 @@ jobs:
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "Running production release from main branch"
             echo "type=production" >> $GITHUB_OUTPUT
-          else
+          elif [[ "${{ github.ref }}" == "refs/heads/next" ]]; then
             echo "Running pre-release from next branch"
             echo "type=prerelease" >> $GITHUB_OUTPUT
+          else
+            echo "Unexpected branch: ${{ github.ref }}"
+            echo "type=unknown" >> $GITHUB_OUTPUT
+            exit 1  # Fail the workflow for unexpected branches
           fi
       
       # Disable husky hooks for the release to prevent linting issues
