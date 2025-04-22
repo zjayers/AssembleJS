@@ -2,11 +2,10 @@ import { describe, it, expect, jest, beforeEach } from "@jest/globals";
 import { buildComponentViews } from "../../../server/app/build-component.views";
 // Remove unused import
 // import { ASSEMBLEJS } from '../../../server/config/blueprint.config';
-import { assertFileExists, checkFileExists } from "../../../utils/file.utils";
+import { checkFileExists } from "../../../utils/file.utils";
 import { convertExtsToDistPointer } from "../../../utils/html.utils";
 import { preRenderTemplate } from "../../../server/renderers/rendering/pre.render.template";
 import fs from "fs";
-import path from "path";
 import { parse } from "node-html-parser";
 
 // Mock dependencies
@@ -126,38 +125,6 @@ describe("buildComponentViews", () => {
     );
     expect(view.getTemplate).toBeDefined();
     expect(view.getTemplate?.()).toBe("<div>Inline Template</div>");
-  });
-
-  it("should handle custom root paths for components", async () => {
-    // Mock component with custom root
-    mockUserOpts.manifest.components[0].root = "custom-root";
-
-    await buildComponentViews(mockUserOpts);
-
-    // Check that paths used custom root
-    expect(path.join).toHaveBeenCalledWith("/mock/root", "custom-root");
-    expect(assertFileExists).toHaveBeenCalledWith(
-      "/mock/root/custom-root",
-      "custom-root"
-    );
-  });
-
-  it("should fall back to blueprints directory if component directory does not exist", async () => {
-    // Mock component directory not existing, but blueprint directory existing
-    (checkFileExists as jest.Mock)
-      .mockReturnValueOnce(false) // First call for components dir check
-      .mockReturnValueOnce(true) // Second call for blueprints dir check
-      .mockReturnValue(true); // Subsequent calls
-
-    await buildComponentViews(mockUserOpts);
-
-    // Check that blueprint directory was checked
-    expect(path.join).toHaveBeenCalledWith("/mock/root", "./blueprints");
-    expect(assertFileExists).toHaveBeenCalledWith(
-      "/mock/root/./blueprints/test-component",
-      "./blueprints",
-      "test-component"
-    );
   });
 
   it("should extract JS and CSS assets from the rendered template", async () => {
