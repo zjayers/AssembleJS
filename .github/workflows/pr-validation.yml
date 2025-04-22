@@ -1,0 +1,67 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  # First step: validate commit messages
+  validate-commits:
+    uses: ./.github/workflows/validate-commits.yml
+  
+  # Second step: run linting checks only if commits pass validation
+  lint:
+    needs: validate-commits
+    if: ${{ needs.validate-commits.outputs.validation-success == 'true' }}
+    uses: ./.github/workflows/lint-validation.yml
+  
+  # Third step: run tests only if linting passes
+  test:
+    needs: lint
+    if: ${{ needs.lint.outputs.lint-success == 'true' }}
+    uses: ./.github/workflows/test-validation.yml
+  
+  # Final step: summarize results
+  summarize:
+    needs: [validate-commits, lint, test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summarize validation results
+        run: |
+          echo "# Validation Results" > summary.md
+          
+          if [[ "${{ needs.validate-commits.result }}" == "success" ]]; then
+            echo "✅ **Commit Message Validation**: Passed" >> summary.md
+          else
+            echo "❌ **Commit Message Validation**: Failed" >> summary.md
+            echo "_Please ensure your commits follow the conventional commit format_" >> summary.md
+          fi
+          
+          if [[ "${{ needs.lint.result }}" == "success" ]]; then
+            echo "✅ **Linting**: Passed" >> summary.md
+          elif [[ "${{ needs.lint.result }}" == "skipped" ]]; then
+            echo "⏭️ **Linting**: Skipped - Fix commit validation first" >> summary.md
+          else
+            echo "❌ **Linting**: Failed" >> summary.md
+          fi
+          
+          if [[ "${{ needs.test.result }}" == "success" ]]; then
+            echo "✅ **Tests**: Passed" >> summary.md
+          elif [[ "${{ needs.test.result }}" == "skipped" ]]; then
+            echo "⏭️ **Tests**: Skipped - Fix earlier validation steps first" >> summary.md
+          else
+            echo "❌ **Tests**: Failed" >> summary.md
+          fi
+          
+          cat summary.md
+      
+      - name: Post summary
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: pr-validation
+          message: |
+            ${{ format('PR Validation Status: {0}', needs.test.result == 'success' && needs.lint.result == 'success' && needs.validate-commits.result == 'success' && '✅ PASSED' || '❌ FAILED') }}
+            
+            $(cat summary.md)

@@ -4,10 +4,19 @@ on:
   pull_request:
     branches:
       - '*'
+  
+  # Allow workflow to be called by other workflows
+  workflow_call:
+    outputs:
+      validation-success:
+        description: "Indicates if commit validation passed"
+        value: ${{ jobs.validate-commits.outputs.validation-success }}
 
 jobs:
   validate-commits:
     runs-on: ubuntu-latest
+    outputs:
+      validation-success: ${{ steps.commit-validation.outputs.success }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -22,6 +31,9 @@ jobs:
           
       # Use existing commitlint config from repo
       - name: Validate PR commits with commitlint
+        id: commit-validation
         run: |
           npm ci --ignore-scripts
           npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+          echo "success=true" >> $GITHUB_OUTPUT
+        # This will fail the job if validation fails, preventing dependent workflows from running

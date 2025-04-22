@@ -1,13 +1,21 @@
 name: Validate No Linting Errors
 
 on:
-  pull_request:
-    branches:
-      - '*'
+  # Only run via workflow_call to ensure commit validation runs first
+  workflow_call:
+    outputs:
+      lint-success:
+        description: "Indicates if linting passed"
+        value: ${{ jobs.lint.outputs.lint-success }}
+  
+  # Also allow manual triggering for debugging
+  workflow_dispatch:
 
 jobs:
   lint:
     runs-on: ubuntu-latest
+    outputs:
+      lint-success: ${{ steps.lint-validation.outputs.success }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -27,4 +35,7 @@ jobs:
         run: npm run build
       
       - name: Run linting
-        run: npm run lint:dry
+        id: lint-validation
+        run: |
+          npm run lint:dry
+          echo "success=true" >> $GITHUB_OUTPUT

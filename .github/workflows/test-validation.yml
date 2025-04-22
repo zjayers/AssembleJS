@@ -1,9 +1,11 @@
 name: Validate No Test Failures
 
 on:
-  pull_request:
-    branches:
-      - '*'
+  # Only run via workflow_call to ensure linting runs first
+  workflow_call:
+  
+  # Also allow manual triggering for debugging
+  workflow_dispatch:
 
 jobs:
   test:

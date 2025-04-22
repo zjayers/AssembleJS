@@ -58,11 +58,35 @@ jobs:
             cp CHANGELOG.md CHANGELOG.md.bak
           fi
           
+          # Get base and head commits for PR
+          BASE_SHA=${{ github.event.pull_request.base.sha }}
+          HEAD_SHA=${{ github.event.pull_request.head.sha }}
+          
           # Generate temporary changelog (will not be committed)
           npm run changelog
           
-          # Extract the unreleased section
-          UNRELEASED_CHANGES=$(sed -n '/^## \[Unreleased\]/,/^## /p' CHANGELOG.md | head -n -1)
+          # Get recent commits specific to this PR
+          echo "Commits included in this PR:" > pr_commits.txt
+          git log $BASE_SHA..$HEAD_SHA --pretty=format:"%h - %s (%an)" >> pr_commits.txt
+          
+          # Extract the unreleased section (with better debugging)
+          echo "Extracting changelog content..."
+          cat CHANGELOG.md | head -n 30 > changelog_debug.txt
+          
+          # More robust extraction that shows structured content even if section markers aren't found
+          UNRELEASED_CONTENT=$(awk '/^## \[Unreleased\]/,/^## /' CHANGELOG.md)
+          if [ -z "$UNRELEASED_CONTENT" ]; then
+            # Fallback: just show the PR's commits if changelog parsing fails
+            UNRELEASED_CHANGES=$(cat pr_commits.txt)
+            echo "⚠️ Could not parse changelog format - showing raw commits instead"
+          else
+            # Remove the last line that contains the next section header
+            UNRELEASED_CHANGES=$(echo "$UNRELEASED_CONTENT" | sed '$d')
+          fi
+          
+          # Debug output
+          echo "Extracted changes:"
+          echo "$UNRELEASED_CHANGES"
           
           # Restore original CHANGELOG.md
           if [ -f CHANGELOG.md.bak ]; then
