@@ -540,6 +540,8 @@ With AssembleJS, <i>You Can Build It</i> - anything you want, any way you want!
   to unlock your full web development potential!
 </h3>
 
+<p>AssembleJS - Building better web experiences, one component at a time.</p>
+
 </div>
 
 ---
