@@ -4,25 +4,51 @@ on:
   pull_request:
     branches:
       - '*'
+    types: [opened, reopened, synchronize, edited]
 
 permissions:
   contents: read
   pull-requests: write  # Required for commenting on pull requests
+  issues: write         # Required for adding comments in the PR
 
 jobs:
-  # First step: validate commit messages
+  # First step: check target branch for all PRs
+  # For PRs to main: validates that they come from 'next'
+  # For PRs to next: always runs
+  check-target:
+    uses: ./.github/workflows/pr-target-check.yml
+    with:
+      force-new-run: ${{ github.event_name == 'pull_request' && github.event.action == 'edited' }}
+  
+  # Second step: build the project
+  build:
+    needs: [check-target]
+    # Run if target is valid
+    if: ${{ needs.check-target.outputs.target-valid == 'true' }}
+    uses: ./.github/workflows/build-validation.yml
+  
+  # Third steps: Run validate-commits, lint, and test in parallel (using build cache)
   validate-commits:
+    needs: [build]
+    # Run if build passed
+    if: ${{ needs.build.outputs.build-success == 'true' }}
     uses: ./.github/workflows/validate-commits.yml
+    with:
+      build-cache-key: ${{ needs.build.outputs.build-cache-key }}
   
-  # Second step: run linting checks only if commits pass validation
   lint:
-    needs: validate-commits
-    if: ${{ needs.validate-commits.outputs.validation-success == 'true' }}
+    needs: [build]
+    # Run if build passed
+    if: ${{ needs.build.outputs.build-success == 'true' }}
     uses: ./.github/workflows/lint-validation.yml
+    with:
+      build-cache-key: ${{ needs.build.outputs.build-cache-key }}
   
-  # Third step: run tests only if linting passes
   test:
-    needs: lint
-    if: ${{ needs.lint.outputs.lint-success == 'true' }}
+    needs: [build]
+    # Run if build passed
+    if: ${{ needs.build.outputs.build-success == 'true' }}
     uses: ./.github/workflows/test-validation.yml
-  
+    with:
+      build-cache-key: ${{ needs.build.outputs.build-cache-key }}
+      

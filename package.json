@@ -50,7 +50,6 @@
   ],
   "scripts": {
     "prepack": "npm run build",
-    "changelog": "auto-changelog",
     "commit": "cz",
     "docs": "typedoc --options typedoc.json",
     "docs:serve": "serve -l 8899 -s ./docs",
@@ -109,7 +108,8 @@
     "reboot": "npm run clean && npm pack && run-s reboot:*",
     "reboot:global": "npm i -g ./asmbl-$npm_package_version.tgz --no-cache --check-files --no-warnings --quiet --loglevel=error",
     "git:update": "git add . && git commit -m \"chore: update\" && git push",
-    "git:update:force": "git add . && git commit -m \"chore: update\" && git push --force"
+    "git:update:force": "git add . && git commit -m \"chore: update\" && git push --force",
+    "semantic-release": "semantic-release"
   },
   "husky": {
     "hooks": {
@@ -200,6 +200,9 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^12.0.1",
     "@types/babelify": "^7.3.7",
     "@types/browserify": "^12.0.37",
     "@types/date-and-time": "0.13.0",
@@ -219,7 +222,6 @@
     "@types/yargs": "17.0.10",
     "@typescript-eslint/eslint-plugin": "5.29.0",
     "@typescript-eslint/parser": "5.29.0",
-    "auto-changelog": "^2.4.0",
     "concurrently": "^7.3.0",
     "cz-conventional-changelog": "^3.3.0",
     "dependency-cruiser": "^11.10.0",
@@ -237,6 +239,7 @@
     "npm-run-all": "4.1.5",
     "prettier": "2.7.1",
     "replace-in-file": "^6.3.5",
+    "semantic-release": "^24.2.3",
     "serve": "^14.0.1",
     "shx": "^0.3.4",
     "terser": "^5.14.2",
@@ -248,12 +251,6 @@
     "typedoc-plugin-markdown": "^3.13.4",
     "typedoc-plugin-merge-modules": "^4.0.1",
     "typedoc-plugin-mermaid": "^1.9.0"
-  },
-  "auto-changelog": {
-    "output": "CHANGELOG.md",
-    "unreleased": true,
-    "commitLimit": false,
-    "sortCommits": "date-desc"
   },
   "readme": "README.md"
 }

@@ -1,0 +1,240 @@
+name: PR Target Branch Check
+
+on:
+  # Run directly on PRs to main, including when the PR is edited (which happens when target branch changes)
+  pull_request:
+    branches:
+      - main
+    types: [opened, reopened, synchronize, edited]
+  
+  # Also callable from other workflows
+  workflow_call:
+    inputs:
+      force-new-run:
+        description: "Force a new run of the check, useful for edited PRs"
+        type: boolean
+        default: false
+        required: false
+    outputs:
+      target-valid:
+        description: "Indicates if the PR target branch is valid"
+        value: ${{ jobs.check_target_branch.outputs.target-valid }}
+
+jobs:
+  check_target_branch:
+    runs-on: ubuntu-latest
+    # Run for all PRs
+    permissions:
+      pull-requests: write
+      contents: read
+      issues: write
+    outputs:
+      target-valid: ${{ steps.check-output.outputs.target-valid }}
+    steps:
+      - name: Check PR target branch and update labels/comments
+        id: check-target-branch
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.issue.number;
+            const headRef = context.payload.pull_request.head.ref;
+            
+            // Check if this is valid based on the target
+            let isValid = true;
+            
+            // For PRs to main: Only valid if coming from 'next'
+            if (context.payload.pull_request.base.ref === 'main') {
+              isValid = headRef === 'next';
+              console.log(`PR #${prNumber} is targeting main from ${headRef}, valid: ${isValid}`);
+            } else {
+              // For PRs to other branches (including next): Always valid
+              console.log(`PR #${prNumber} is targeting ${context.payload.pull_request.base.ref} from ${headRef}, valid: true`);
+            }
+            
+            // Get existing comments to check if we already posted a warning
+            const comments = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: prNumber
+            });
+            
+            console.log(`Found ${comments.data.length} comments on PR #${prNumber}`);
+            
+            // Look for warning comments using multiple indicators
+            const warningComments = comments.data.filter(comment => {
+              // Look for any of these phrases in the comment
+              const warningPhrases = [
+                'WARNING: Incorrect Target Branch',
+                '⚠️ WARNING: Incorrect Target Branch',
+                'PRs must target the `next` branch',
+                'This PR is targeting the `main` branch from',
+                'Only PRs from the `next` branch can target `main`'
+              ];
+              
+              return warningPhrases.some(phrase => comment.body.includes(phrase));
+            });
+            
+            console.log(`Found ${warningComments.length} warning comments on PR #${prNumber}`);
+            if (warningComments.length > 0) {
+              warningComments.forEach(comment => {
+                console.log(`Warning comment ID: ${comment.id}, User: ${comment.user.login}, Created: ${comment.created_at}`);
+              });
+            }
+            
+            // Look for existing labels
+            const prData = await github.rest.issues.get({
+              owner,
+              repo,
+              issue_number: prNumber
+            });
+            
+            const hasInvalidLabel = prData.data.labels.some(label => 
+              label.name === 'invalid-target'
+            );
+            
+            // For PRs that were previously targeting main but now target another branch
+            if (warningComments.length > 0 && context.payload.pull_request.base.ref !== 'main') {
+              console.log(`PR was changed from targeting main to targeting ${context.payload.pull_request.base.ref}`);
+              
+              // Check if a resolution comment already exists
+              const resolutionComments = comments.data.filter(comment =>
+                comment.body.includes('Target Branch Issue Resolved') &&
+                comment.body.includes('now correctly targeting')
+              );
+              
+              // Only add a resolution note if one doesn't already exist
+              if (resolutionComments.length === 0) {
+                await github.rest.issues.createComment({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  body: `✅ **Target Branch Issue Resolved**
+                  
+                  This PR is now correctly targeting \`${context.payload.pull_request.base.ref}\` instead of \`main\`.`
+                });
+                console.log(`Added resolution comment to PR #${prNumber}`);
+              } else {
+                console.log(`Resolution comment already exists on PR #${prNumber}, skipping`);
+              }
+              
+              // Also remove the invalid-target label if it exists
+              if (hasInvalidLabel) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    name: 'invalid-target'
+                  });
+                  console.log(`Removed invalid-target label from PR #${prNumber}`);
+                } catch (error) {
+                  console.error(`Failed to remove label: ${error.message}`);
+                }
+              }
+            }
+            
+            // Only add new warnings for PRs targeting main
+            if (context.payload.pull_request.base.ref === 'main') {
+              if (isValid) {
+                // PR is valid, add a resolution note to the warning comment
+                if (warningComments.length > 0) {
+                  console.log(`Adding resolution note to ${warningComments.length} warning comments on PR #${prNumber}`);
+                  
+                  // Add a resolution comment
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    body: `✅ **Target Branch Issue Resolved**
+                    
+                    This PR is now correctly targeting \`main\` from the \`next\` branch.`
+                  });
+                } else {
+                  console.log(`No warning comments found on PR #${prNumber}`);
+                }
+                
+                if (hasInvalidLabel) {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    name: 'invalid-target'
+                  });
+                  console.log(`Removed invalid-target label from PR #${prNumber}`);
+                }
+                
+                // Add a confirmation comment if the PR was previously invalid
+                // Don't add a confirmation comment if there were warning comments previously
+              } else {
+                // PR is invalid, add warning comment and label
+                const warningBody = `⚠️ **WARNING: Incorrect Target Branch**
+                
+                This PR is targeting the \`main\` branch from \`${headRef}\` which is not allowed.
+                
+                According to our workflow:
+                - PRs must target the \`next\` branch for feature/bugfix development
+                - Only PRs from the \`next\` branch can target \`main\`
+                - Promotion from \`next\` to \`main\` is handled by our promotion workflow
+                
+                Please close this PR and create a new one targeting the \`next\` branch instead.
+                
+                Alternatively, you can edit this PR to change its base branch to \`next\`.`;
+                
+                if (warningComments.length > 0) {
+                  // Update only if the most recent warning comment is different
+                  const mostRecentComment = warningComments.sort((a, b) => 
+                    new Date(b.created_at) - new Date(a.created_at)
+                  )[0];
+                  
+                  if (mostRecentComment.body !== warningBody) {
+                    // Only add a new comment if the content is different
+                    await github.rest.issues.createComment({
+                      owner,
+                      repo,
+                      issue_number: prNumber,
+                      body: warningBody
+                    });
+                  }
+                } else {
+                  // Add new comment
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    body: warningBody
+                  });
+                }
+                
+                if (!hasInvalidLabel) {
+                  // Add label if not present
+                  await github.rest.issues.addLabels({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    labels: ['invalid-target']
+                  });
+                }
+                
+                console.log(`Warning added to PR #${prNumber} about incorrect target branch`);
+                
+                // Make sure the workflow will fail
+                return 'invalid';
+              }
+            }
+            
+            // For PR to next or for valid PR to main, return 'valid'
+            
+            return 'valid';
+      
+      - name: Process check result
+        id: check-output
+        run: |
+          if [ "${{ steps.check-target-branch.outputs.result }}" == "invalid" ]; then
+            echo "target-valid=false" >> $GITHUB_OUTPUT
+            echo "::error::PR must target the 'next' branch unless it originates from the 'next' branch."
+            exit 1
+          else
+            echo "target-valid=true" >> $GITHUB_OUTPUT
+          fi
