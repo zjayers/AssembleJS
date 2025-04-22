@@ -52,28 +52,3 @@ jobs:
     with:
       build-cache-key: ${{ needs.build.outputs.build-cache-key }}
       
-  # Final step to check all validations passed
-  validate-all:
-    needs: [validate-commits, lint, test]
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: Check all validations
-        run: |
-          if [[ "${{ needs.validate-commits.result }}" != "success" ]]; then
-            echo "::error::Commit validation failed!"
-            exit 1
-          fi
-          
-          if [[ "${{ needs.lint.result }}" != "success" ]]; then
-            echo "::error::Lint validation failed!"
-            exit 1
-          fi
-          
-          if [[ "${{ needs.test.result }}" != "success" ]]; then
-            echo "::error::Test validation failed!"
-            exit 1
-          fi
-          
-          echo "All validations passed!"
-  

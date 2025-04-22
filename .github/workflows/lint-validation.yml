@@ -36,7 +36,7 @@ jobs:
           node-version: '20.x'
           cache: 'npm'
           
-      # Restore build cache from previous job
+      # Restore build cache from previous job - must exist
       - name: Restore build cache
         id: restore-build
         uses: actions/cache@v3
@@ -45,27 +45,14 @@ jobs:
             node_modules
             lib
           key: ${{ inputs.build-cache-key }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}-
-            ${{ runner.os }}-build-
-      
-      # Debug information about cache status
-      - name: Cache Diagnostics
+          
+      # Fail the job if cache restoration failed
+      - name: Verify cache
+        if: steps.restore-build.outputs.cache-hit != 'true'
         run: |
-          echo "Cache hit: ${{ steps.restore-build.outputs.cache-hit }}"
+          echo "::error::Build cache restoration failed! This should not happen."
           echo "Cache key: ${{ inputs.build-cache-key }}"
-          ls -la node_modules || echo "No node_modules"
-          ls -la lib || echo "No lib"
-      
-      # Install dependencies only if cache miss
-      - name: Install dependencies 
-        if: steps.restore-build.outputs.cache-hit != 'true'
-        run: npm ci --ignore-scripts
-      
-      # Build project only if cache miss
-      - name: Build project (if needed)
-        if: steps.restore-build.outputs.cache-hit != 'true'
-        run: npm run build
+          exit 1
       
       - name: Run linting
         id: lint-validation
