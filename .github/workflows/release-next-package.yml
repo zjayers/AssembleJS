@@ -67,9 +67,19 @@ jobs:
       - name: Disable Husky for release
         run: npm pkg set scripts.postinstall="echo 'Skipping husky install for release'"
 
+      - name: Start SSH Agent and Set Permissions
+        run: |
+          # Start SSH agent
+          eval "$(ssh-agent -s)"
+          # Make sure private key has correct permissions
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          # Verify that the agent is running
+          echo "SSH Agent PID: $SSH_AGENT_PID"
+      
       - name: Release
         env:
-          # Use GH_TOKEN for API operations (the git operations will use the deploy key)
+          # Use GH_TOKEN for API operations
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           # Force semantic-release to use SSH instead of HTTPS
           USE_SSH_KEY: true
@@ -88,7 +98,5 @@ jobs:
           # Skip git hooks during semantic-release
           HUSKY: 0
         run: |
-          # Ensure SSH is using the correct key
-          ssh-add -l
-          # Run semantic-release with verbose flag to see what's happening
-          npx semantic-release --no-ci-skip --debug
+          # Run semantic-release with no CI skip
+          npx semantic-release --no-ci-skip
