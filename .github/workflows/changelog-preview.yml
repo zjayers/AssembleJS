@@ -112,5 +112,5 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: changelog-preview
-          message_file: changelog_preview.md
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: changelog_preview.md
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
