@@ -60,7 +60,8 @@ chore: update dependencies
 ### Pull Requests
 
 1. **Always target the `next` branch with your Pull Requests**
-   - PRs to `main` will be automatically rejected
+   - PRs to `main` will be automatically rejected and closed
+   - Our CI system will automatically close any PR that targets `main` from a branch other than `next`
    - Create your feature branch from `next`: `git checkout -b feature/your-feature next`
 
 2. Update your fork to include the latest changes from the repository

@@ -1,0 +1,54 @@
+name: Test Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+      - next
+
+jobs:
+  # First check if PR is correctly targeted
+  validate_pr_target:
+    if: github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    outputs:
+      valid_target: ${{ steps.check_target.outputs.valid }}
+    steps:
+      - id: check_target
+        run: |
+          if [[ "${{ github.head_ref }}" == "next" ]]; then
+            echo "valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "valid=false" >> $GITHUB_OUTPUT
+          fi
+
+  # Only run tests if PR is correctly targeted (or not targeting main)
+  test:
+    needs: [validate_pr_target]
+    if: always() && (needs.validate_pr_target.outputs.valid == 'true' || github.base_ref != 'main')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run linting
+        run: npm run lint:dry || true
+      
+      - name: Build
+        run: npm run build
+      
+      - name: Run tests
+        run: npm test

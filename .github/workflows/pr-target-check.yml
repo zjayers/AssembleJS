@@ -9,11 +9,62 @@ on:
 jobs:
   check_target_branch:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+      issues: write
+    outputs:
+      valid_target: ${{ steps.check_target.outputs.valid }}
     steps:
       - name: Check PR target branch
-        if: github.base_ref == 'main' && github.head_ref != 'next'
+        id: check_target
+        run: |
+          if [[ "${{ github.head_ref }}" == "next" ]]; then
+            echo "PR is correctly targeting main from next branch"
+            echo "valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "PR is incorrectly targeting main from a branch other than next"
+            echo "valid=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Auto-close invalid PR
+        if: steps.check_target.outputs.valid == 'false'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issueNumber = context.issue.number;
+            
+            // Add comment explaining why PR is being closed
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: `⛔️ **This PR has been automatically closed.**
+            
+            PR is targeting the \`main\` branch from \`${context.payload.pull_request.head.ref}\` which is not allowed.
+            
+            According to our workflow:
+            - PRs must target the \`next\` branch for feature/bugfix development
+            - Only PRs from the \`next\` branch can target \`main\`
+            - Promotion from \`next\` to \`main\` is handled by our promotion workflow
+            
+            Please close this PR and create a new one targeting the \`next\` branch instead.`
+            });
+            
+            // Close the PR
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: issueNumber,
+              state: 'closed'
+            });
+            
+            console.log(`PR #${issueNumber} closed automatically because it incorrectly targeted main branch`);
+      
+      - name: Fail workflow for invalid target
+        if: steps.check_target.outputs.valid == 'false'
         run: |
           echo "::error::PRs must target the 'next' branch unless they originate from the 'next' branch."
-          echo "::error::Please close this PR and create a new one targeting 'next'."
-          echo "::error::We only allow PRs to main from the 'next' branch via the 'Promote to Main' workflow."
+          echo "::error::This PR will be automatically closed."
           exit 1
