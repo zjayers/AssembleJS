@@ -1,3 +1,10 @@
+## <small>0.0.5 (2025-04-22)</small>
+
+* 0.0.5 ([d7c176b](https://github.com/zjayers/assemblejs/commit/d7c176b))
+* chore: version script changes ([331622a](https://github.com/zjayers/assemblejs/commit/331622a))
+
+
+
 ## <small>0.0.4 (2025-04-22)</small>
 
 * 0.0.3 ([6c9a0c9](https://github.com/zjayers/assemblejs/commit/6c9a0c9))
