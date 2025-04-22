@@ -1,0 +1,157 @@
+name: create_github_release
+
+on:
+  # Run this after the package is published
+  workflow_run:
+    workflows: [publish_package]
+    types:
+      - completed
+
+jobs:
+  create_release:
+    # Only run if the package publish was successful
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Needed to create releases
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Need to checkout the actual commit that triggered the workflow
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Get package info
+        id: package-info
+        run: |
+          # Get package name, version, and branch
+          PKG_NAME=$(node -p "require('./package.json').name")
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          GIT_BRANCH="${{ github.event.workflow_run.head_branch }}"
+          
+          echo "name=$PKG_NAME" >> $GITHUB_OUTPUT
+          echo "version=$PKG_VERSION" >> $GITHUB_OUTPUT
+          echo "branch=$GIT_BRANCH" >> $GITHUB_OUTPUT
+          
+          echo "Package: $PKG_NAME@$PKG_VERSION"
+          echo "Branch: $GIT_BRANCH"
+      
+      - name: Determine release type
+        id: release-type
+        run: |
+          BRANCH="${{ steps.package-info.outputs.branch }}"
+          
+          if [[ "$BRANCH" == "main" ]]; then
+            echo "type=stable" >> $GITHUB_OUTPUT
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+            echo "tag=v${{ steps.package-info.outputs.version }}" >> $GITHUB_OUTPUT
+          elif [[ "$BRANCH" == "next" ]]; then
+            echo "type=next" >> $GITHUB_OUTPUT
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+            echo "tag=v${{ steps.package-info.outputs.version }}-next" >> $GITHUB_OUTPUT
+          else
+            echo "type=unknown" >> $GITHUB_OUTPUT
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+            echo "tag=v${{ steps.package-info.outputs.version }}-${BRANCH}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Extract the latest section from CHANGELOG.md
+          LATEST_CHANGES=$(awk '/^## / { if (p) { exit }; p=1 } p' CHANGELOG.md | sed '1d')
+          
+          echo "changes<<EOF" >> $GITHUB_OUTPUT
+          echo "$LATEST_CHANGES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Create GitHub Release
+        id: create-release
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const releaseType = '${{ steps.release-type.outputs.type }}';
+            const version = '${{ steps.package-info.outputs.version }}';
+            const prerelease = '${{ steps.release-type.outputs.prerelease }}' === 'true';
+            const tag = '${{ steps.release-type.outputs.tag }}';
+            const packageName = '${{ steps.package-info.outputs.name }}';
+            
+            let title = '';
+            if (releaseType === 'stable') {
+              title = `${packageName} v${version}`;
+            } else if (releaseType === 'next') {
+              title = `${packageName} v${version}-next (Preview)`;
+            } else {
+              title = `${packageName} v${version}-${releaseType}`;
+            }
+            
+            let body = `${{ steps.changelog.outputs.changes }}`;
+            
+            if (releaseType === 'next') {
+              body = `> **Preview Release**: This is a development preview of the next version. It may contain experimental features and breaking changes.\n\n${body}`;
+            }
+            
+            body += '\n\n---\n\n';
+            body += '📦 **Installation**\n\n';
+            
+            if (releaseType === 'stable') {
+              body += '```bash\n';
+              body += `npm install ${packageName}\n`;
+              body += '```\n';
+            } else {
+              body += '```bash\n';
+              body += `npm install ${packageName}@${releaseType}\n`;
+              body += '```\n';
+            }
+            
+            // Check if tag exists and delete it if we're going to recreate it
+            try {
+              await github.rest.git.getRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `tags/${tag}`
+              });
+              
+              console.log(`Tag ${tag} exists, deleting it first`);
+              await github.rest.git.deleteRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `tags/${tag}`
+              });
+            } catch (error) {
+              // Tag doesn't exist, which is fine
+              console.log(`Tag ${tag} doesn't exist yet, creating new`);
+            }
+            
+            try {
+              // Create a release
+              const release = await github.rest.repos.createRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                tag_name: tag,
+                name: title,
+                body: body,
+                draft: false,
+                prerelease: prerelease
+              });
+              
+              console.log(`Created release: ${release.data.html_url}`);
+              return { url: release.data.html_url };
+            } catch (error) {
+              console.error(`Failed to create release: ${error}`);
+              core.setFailed(`Failed to create release: ${error.message}`);
+            }
+      
+      - name: Output Release URL
+        if: steps.create-release.outputs.result
+        run: |
+          RELEASE_URL=$(echo '${{ steps.create-release.outputs.result }}' | jq -r '.url')
+          echo "::notice::Created release at $RELEASE_URL"

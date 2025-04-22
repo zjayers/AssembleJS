@@ -46,7 +46,7 @@ Loggable.constructor
 
 #### Defined in
 
-[src/server/abstract/loggable.ts:15](https://github.com/zjayers/AssembleJS/blob/bbb670f/src/server/abstract/loggable.ts#L15)
+[src/server/abstract/loggable.ts:15](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/server/abstract/loggable.ts#L15)
 
 ## Methods
 
@@ -63,7 +63,7 @@ Can be used for setup operations like connecting to databases, initializing clie
 
 #### Defined in
 
-[src/server/abstract/service.ts:14](https://github.com/zjayers/AssembleJS/blob/bbb670f/src/server/abstract/service.ts#L14)
+[src/server/abstract/service.ts:14](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/server/abstract/service.ts#L14)
 
 ## Properties
 
@@ -77,4 +77,4 @@ Loggable.log
 
 #### Defined in
 
-[src/server/abstract/loggable.ts:9](https://github.com/zjayers/AssembleJS/blob/bbb670f/src/server/abstract/loggable.ts#L9)
+[src/server/abstract/loggable.ts:9](https://github.com/zjayers/AssembleJS/blob/e570b1c/src/server/abstract/loggable.ts#L9)
