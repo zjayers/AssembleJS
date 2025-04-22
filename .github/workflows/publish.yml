@@ -64,7 +64,7 @@ jobs:
       
       - name: Analyze commits with semantic-release
         id: semantic-release
-        uses: semantic-release/semantic-release@v22
+        uses: semantic-release/semantic-release@v21
         with:
           dry_run: true
           branches: |
