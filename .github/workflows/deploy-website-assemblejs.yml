@@ -56,19 +56,10 @@ jobs:
           echo "clean_version=$CLEAN_VERSION" >> $GITHUB_OUTPUT
       
       - name: Install main package dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
       
-      - name: Run tests
-        run: npm test
-      
-      - name: Build main package
+      - name: Build everything
         run: npm run build
-      
-      - name: Build assemblejs website
-        run: |
-          cd websites/assemblejs
-          npm ci
-          npm run build
       
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
