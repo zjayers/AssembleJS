@@ -1,6 +1,6 @@
 {
   "name": "asmbl",
-  "version": "0.0.3",
+  "version": "0.0.2",
   "description": "A modern micro-frontend framework for building distributed component-based UIs",
   "keywords": [
     "Micro-Frontends",
@@ -111,7 +111,7 @@
     "git:update:force": "git add . && git commit -m \"chore: update\" && git push --force",
     "publish:npm": "npm publish",
     "publish:npm:next": "npm publish --tag next",
-    "version:patch": "HUSKY=0 npm run generate:changelog && HUSKY=0 npm version patch -m \"chore(release): %s [skip ci]\" --force && git add CHANGELOG.md",
+    "version:patch": "HUSKY=0 npm version patch && HUSKY=0 npm run generate:changelog",
     "version:minor": "HUSKY=0 npm run generate:changelog && HUSKY=0 npm version minor -m \"chore(release): %s [skip ci]\" --force && git add CHANGELOG.md",
     "version:major": "HUSKY=0 npm run generate:changelog && HUSKY=0 npm version major -m \"chore(release): %s [skip ci]\" --force && git add CHANGELOG.md",
     "generate:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
