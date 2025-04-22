@@ -15,23 +15,23 @@
 <div align="center">
 
 ### Project Status
-[![Latest Release](https://github.com/zjayers/assemblejs/badges/release.svg)](https://github.com/zjayers/assemblejs/releases)
+[![npm version](https://img.shields.io/npm/v/asmbl)](https://www.npmjs.com/package/asmbl)
 [![npm bundle size](https://img.shields.io/bundlephobia/minzip/asmbl)](https://bundlephobia.com/package/asmbl)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ### Quality
-[![pipeline status](https://github.com/zjayers/assemblejs/badges/master/pipeline.svg)](https://github.com/zjayers/assemblejs/commits/master)
-[![coverage report](https://github.com/zjayers/assemblejs/badges/master/coverage.svg)](https://github.com/zjayers/assemblejs/commits/master)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/zjayers/assemblejs/pr-validation.yml?branch=main)](https://github.com/zjayers/assemblejs/actions/workflows/pr-validation.yml)
+[![GitHub issues](https://img.shields.io/github/issues/zjayers/assemblejs)](https://github.com/zjayers/assemblejs/issues)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 ### Technology
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js->=18-success?logo=node.js&logoColor=white)](https://nodejs.org)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-success?logo=node.js&logoColor=white)](https://nodejs.org)
 
 ### Community
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./DOCUMENTATION.md#contributing-to-assemblejs)
 [![Support](https://img.shields.io/badge/Support-AssembleJS-blue)](https://github.com/sponsors/zjayers)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 </div>
