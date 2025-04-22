@@ -10,19 +10,44 @@ permissions:
   pull-requests: write  # Required for commenting on pull requests
 
 jobs:
+  # Pre-step: check target branch for PRs to main
+  check-target:
+    if: github.base_ref == 'main'
+    uses: ./.github/workflows/pr-target-check.yml
+  
   # First step: validate commit messages
   validate-commits:
+    needs: [check-target]
+    # Run if either: the target check passed OR we're not targeting main (check-target was skipped)
+    if: |
+      always() && 
+      (
+        (github.base_ref == 'main' && needs.check-target.outputs.target-valid == 'true') || 
+        github.base_ref != 'main'
+      )
     uses: ./.github/workflows/validate-commits.yml
   
   # Second step: run linting checks only if commits pass validation
   lint:
-    needs: validate-commits
-    if: ${{ needs.validate-commits.outputs.validation-success == 'true' }}
+    needs: [check-target, validate-commits]
+    if: |
+      always() && 
+      (
+        (github.base_ref == 'main' && needs.check-target.outputs.target-valid == 'true') || 
+        github.base_ref != 'main'
+      ) && 
+      needs.validate-commits.outputs.validation-success == 'true'
     uses: ./.github/workflows/lint-validation.yml
   
   # Third step: run tests only if linting passes
   test:
-    needs: lint
-    if: ${{ needs.lint.outputs.lint-success == 'true' }}
+    needs: [check-target, lint]
+    if: |
+      always() && 
+      (
+        (github.base_ref == 'main' && needs.check-target.outputs.target-valid == 'true') || 
+        github.base_ref != 'main'
+      ) && 
+      needs.lint.outputs.lint-success == 'true'
     uses: ./.github/workflows/test-validation.yml
   

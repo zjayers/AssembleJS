@@ -1,8 +1,17 @@
 name: PR Target Branch Check
 
 on:
-  pull_request_target:
-    types: [opened, edited, synchronize, reopened]
+  # Run directly on PRs to main
+  pull_request:
+    branches:
+      - main
+  
+  # Also callable from other workflows
+  workflow_call:
+    outputs:
+      target-valid:
+        description: "Indicates if the PR target branch is valid"
+        value: ${{ jobs.check_target_branch.outputs.target-valid }}
 
 jobs:
   check_target_branch:
@@ -13,8 +22,11 @@ jobs:
       pull-requests: write
       contents: read
       issues: write
+    outputs:
+      target-valid: ${{ steps.check-output.outputs.target-valid }}
     steps:
       - name: Check PR target branch and update labels/comments
+        id: check-target-branch
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -128,6 +140,19 @@ jobs:
               
               console.log(`Warning added to PR #${prNumber} about incorrect target branch`);
               
-              // Exit with error to fail the workflow
-              core.setFailed("PRs must target the 'next' branch unless they originate from the 'next' branch.");
+              // Make sure the workflow will fail
+              return 'invalid';
             }
+            
+            return 'valid';
+      
+      - name: Process check result
+        id: check-output
+        run: |
+          if [ "${{ steps.check-target-branch.outputs.result }}" == "invalid" ]; then
+            echo "target-valid=false" >> $GITHUB_OUTPUT
+            echo "::error::PR must target the 'next' branch unless it originates from the 'next' branch."
+            exit 1
+          else
+            echo "target-valid=true" >> $GITHUB_OUTPUT
+          fi
