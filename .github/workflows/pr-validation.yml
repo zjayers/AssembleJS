@@ -11,46 +11,32 @@ permissions:
   pull-requests: write  # Required for commenting on pull requests
 
 jobs:
-  # Pre-step: check target branch for PRs to main
+  # First step: check target branch for all PRs
+  # For PRs to main: validates that they come from 'next'
+  # For PRs to next: always runs
   check-target:
-    if: github.base_ref == 'main'
     uses: ./.github/workflows/pr-target-check.yml
     with:
       force-new-run: ${{ github.event_name == 'pull_request' && github.event.action == 'edited' }}
   
-  # First step: validate commit messages
+  # Second step: validate commit messages
   validate-commits:
     needs: [check-target]
-    # Run if either: the target check passed OR we're not targeting main (check-target was skipped)
-    if: |
-      always() && 
-      (
-        (github.base_ref == 'main' && needs.check-target.outputs.target-valid == 'true') || 
-        github.base_ref != 'main'
-      )
+    # Run if target is valid
+    if: ${{ needs.check-target.outputs.target-valid == 'true' }}
     uses: ./.github/workflows/validate-commits.yml
   
-  # Second step: run linting checks only if commits pass validation
+  # Third step: run linting checks only if commits pass validation
   lint:
-    needs: [check-target, validate-commits]
-    if: |
-      always() && 
-      (
-        (github.base_ref == 'main' && needs.check-target.outputs.target-valid == 'true') || 
-        github.base_ref != 'main'
-      ) && 
-      needs.validate-commits.outputs.validation-success == 'true'
+    needs: [validate-commits]
+    # Run if commits validation passed
+    if: ${{ needs.validate-commits.outputs.validation-success == 'true' }}
     uses: ./.github/workflows/lint-validation.yml
   
-  # Third step: run tests only if linting passes
+  # Fourth step: run tests only if linting passes
   test:
-    needs: [check-target, lint]
-    if: |
-      always() && 
-      (
-        (github.base_ref == 'main' && needs.check-target.outputs.target-valid == 'true') || 
-        github.base_ref != 'main'
-      ) && 
-      needs.lint.outputs.lint-success == 'true'
+    needs: [lint]
+    # Run if lint passed
+    if: ${{ needs.lint.outputs.lint-success == 'true' }}
     uses: ./.github/workflows/test-validation.yml
   

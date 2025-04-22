@@ -23,8 +23,7 @@ on:
 jobs:
   check_target_branch:
     runs-on: ubuntu-latest
-    # Only run for PRs that target main
-    if: github.base_ref == 'main'
+    # Run for all PRs
     permissions:
       pull-requests: write
       contents: read
@@ -42,10 +41,17 @@ jobs:
             const prNumber = context.issue.number;
             const headRef = context.payload.pull_request.head.ref;
             
-            // PR is OK if it comes from 'next'
-            const isValid = headRef === 'next';
+            // Check if this is valid based on the target
+            let isValid = true;
             
-            console.log(`PR #${prNumber} is targeting main from ${headRef}, valid: ${isValid}`);
+            // For PRs to main: Only valid if coming from 'next'
+            if (context.payload.pull_request.base.ref === 'main') {
+              isValid = headRef === 'next';
+              console.log(`PR #${prNumber} is targeting main from ${headRef}, valid: ${isValid}`);
+            } else {
+              // For PRs to other branches (including next): Always valid
+              console.log(`PR #${prNumber} is targeting ${context.payload.pull_request.base.ref} from ${headRef}, valid: true`);
+            }
             
             // Get existing comments to check if we already posted a warning
             const comments = await github.rest.issues.listComments({
@@ -70,86 +76,91 @@ jobs:
               label.name === 'invalid-target'
             );
             
-            if (isValid) {
-              // PR is valid, remove warning comment and label if they exist
-              if (warningCommentId) {
-                await github.rest.issues.deleteComment({
-                  owner,
-                  repo,
-                  comment_id: warningCommentId
-                });
-                console.log(`Removed warning comment from PR #${prNumber}`);
-              }
-              
-              if (hasInvalidLabel) {
-                await github.rest.issues.removeLabel({
-                  owner,
-                  repo,
-                  issue_number: prNumber,
-                  name: 'invalid-target'
-                });
-                console.log(`Removed invalid-target label from PR #${prNumber}`);
-              }
-              
-              // Add a confirmation comment if the PR was previously invalid
-              if (warningCommentId || hasInvalidLabel) {
-                await github.rest.issues.createComment({
-                  owner,
-                  repo,
-                  issue_number: prNumber,
-                  body: `✅ **Target Branch Verified**
-                  
-                  This PR is now correctly targeting \`main\` from the \`next\` branch.`
-                });
-              }
-            } else {
-              // PR is invalid, add warning comment and label
-              const warningBody = `⚠️ **WARNING: Incorrect Target Branch**
-              
-              This PR is targeting the \`main\` branch from \`${headRef}\` which is not allowed.
-              
-              According to our workflow:
-              - PRs must target the \`next\` branch for feature/bugfix development
-              - Only PRs from the \`next\` branch can target \`main\`
-              - Promotion from \`next\` to \`main\` is handled by our promotion workflow
-              
-              Please close this PR and create a new one targeting the \`next\` branch instead.
-              
-              Alternatively, you can edit this PR to change its base branch to \`next\`.`;
-              
-              if (warningCommentId) {
-                // Update existing comment
-                await github.rest.issues.updateComment({
-                  owner,
-                  repo,
-                  comment_id: warningCommentId,
-                  body: warningBody
-                });
+            // Only check/add warnings for PRs targeting main
+            if (context.payload.pull_request.base.ref === 'main') {
+              if (isValid) {
+                // PR is valid, remove warning comment and label if they exist
+                if (warningCommentId) {
+                  await github.rest.issues.deleteComment({
+                    owner,
+                    repo,
+                    comment_id: warningCommentId
+                  });
+                  console.log(`Removed warning comment from PR #${prNumber}`);
+                }
+                
+                if (hasInvalidLabel) {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    name: 'invalid-target'
+                  });
+                  console.log(`Removed invalid-target label from PR #${prNumber}`);
+                }
+                
+                // Add a confirmation comment if the PR was previously invalid
+                if (warningCommentId || hasInvalidLabel) {
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    body: `✅ **Target Branch Verified**
+                    
+                    This PR is now correctly targeting \`main\` from the \`next\` branch.`
+                  });
+                }
               } else {
-                // Add new comment
-                await github.rest.issues.createComment({
-                  owner,
-                  repo,
-                  issue_number: prNumber,
-                  body: warningBody
-                });
+                // PR is invalid, add warning comment and label
+                const warningBody = `⚠️ **WARNING: Incorrect Target Branch**
+                
+                This PR is targeting the \`main\` branch from \`${headRef}\` which is not allowed.
+                
+                According to our workflow:
+                - PRs must target the \`next\` branch for feature/bugfix development
+                - Only PRs from the \`next\` branch can target \`main\`
+                - Promotion from \`next\` to \`main\` is handled by our promotion workflow
+                
+                Please close this PR and create a new one targeting the \`next\` branch instead.
+                
+                Alternatively, you can edit this PR to change its base branch to \`next\`.`;
+                
+                if (warningCommentId) {
+                  // Update existing comment
+                  await github.rest.issues.updateComment({
+                    owner,
+                    repo,
+                    comment_id: warningCommentId,
+                    body: warningBody
+                  });
+                } else {
+                  // Add new comment
+                  await github.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    body: warningBody
+                  });
+                }
+                
+                if (!hasInvalidLabel) {
+                  // Add label if not present
+                  await github.rest.issues.addLabels({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    labels: ['invalid-target']
+                  });
+                }
+                
+                console.log(`Warning added to PR #${prNumber} about incorrect target branch`);
+                
+                // Make sure the workflow will fail
+                return 'invalid';
               }
-              
-              if (!hasInvalidLabel) {
-                // Add label if not present
-                await github.rest.issues.addLabels({
-                  owner,
-                  repo,
-                  issue_number: prNumber,
-                  labels: ['invalid-target']
-                });
-              }
-              
-              console.log(`Warning added to PR #${prNumber} about incorrect target branch`);
-              
-              // Make sure the workflow will fail
-              return 'invalid';
             }
+            
+            // For PR to next or for valid PR to main, return 'valid'
             
             return 'valid';
       
