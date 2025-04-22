@@ -25,10 +25,14 @@ jobs:
           # Use deploy key for git operations to bypass branch protection
           ssh-key: ${{ secrets.DEPLOY_KEY }}
       
-      - name: Set Git identity
+      - name: Set Git identity and configuration
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # Ensure we use SSH for GitHub authentication
+          git remote set-url origin git@github.com:zjayers/assemblejs.git
+          # Verify the remote
+          git remote -v
       
       - name: Fetch all branches
         run: git fetch --all
@@ -41,8 +45,12 @@ jobs:
           # Create a merge commit with custom message
           git merge --no-ff origin/next -m "${{ github.event.inputs.merge_message }}"
           
-          # Push the merge to main
-          git push origin main
+          # Debug info
+          echo "Current branch: $(git branch --show-current)"
+          echo "Current commit: $(git rev-parse HEAD)"
+          
+          # Push the merge to main using SSH URL explicitly
+          git push git@github.com:zjayers/assemblejs.git main
         
       - name: Summarize
         run: |
