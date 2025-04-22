@@ -15,6 +15,11 @@ on:
         type: boolean
         default: false
         required: false
+    # Explicitly declare permissions needed by the called workflow
+    permissions:
+      pull-requests: write
+      contents: read
+      issues: write
     outputs:
       target-valid:
         description: "Indicates if the PR target branch is valid"

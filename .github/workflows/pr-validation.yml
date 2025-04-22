@@ -9,6 +9,7 @@ on:
 permissions:
   contents: read
   pull-requests: write  # Required for commenting on pull requests
+  issues: write         # Required for adding comments in the PR
 
 jobs:
   # First step: check target branch for all PRs

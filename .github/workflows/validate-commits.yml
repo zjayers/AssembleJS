@@ -1,11 +1,7 @@
 name: Validate Commits
 
 on:
-  pull_request:
-    branches:
-      - '*'
-  
-  # Allow workflow to be called by other workflows
+  # Only allow workflow to be called by other workflows
   workflow_call:
     outputs:
       validation-success:
