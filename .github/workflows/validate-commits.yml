@@ -3,6 +3,11 @@ name: Validate Commits
 on:
   # Only allow workflow to be called by other workflows
   workflow_call:
+    inputs:
+      build-cache-key:
+        description: "The build cache key from the build job"
+        type: string
+        required: false
     outputs:
       validation-success:
         description: "Indicates if commit validation passed"
@@ -28,12 +33,29 @@ jobs:
           node-version: '20.x'
           cache: 'npm'
           
+      # Restore build cache from previous job
+      - name: Restore build cache
+        id: restore-build
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            lib
+          key: ${{ inputs.build-cache-key || 'no-cache-' }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}-
+            ${{ runner.os }}-build-
+      
+      # Install dependencies only if cache miss
+      - name: Install dependencies 
+        if: steps.restore-build.outputs.cache-hit != 'true'
+        run: npm ci --ignore-scripts
+      
       # Use existing commitlint config from repo
       - name: Validate PR commits with commitlint
         id: commit-validation
         continue-on-error: true
         run: |
-          npm ci --ignore-scripts
           
           # Print SHA info for debugging
           echo "Base SHA: ${{ github.event.pull_request.base.sha }}"

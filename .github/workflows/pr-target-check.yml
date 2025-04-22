@@ -94,7 +94,37 @@ jobs:
               label.name === 'invalid-target'
             );
             
-            // Only check/add warnings for PRs targeting main
+            // For PRs that were previously targeting main but now target another branch
+            if (warningComments.length > 0 && context.payload.pull_request.base.ref !== 'main') {
+              console.log(`PR was changed from targeting main to targeting ${context.payload.pull_request.base.ref}`);
+              
+              // Add a resolution note
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body: `✅ **Target Branch Issue Resolved**
+                
+                This PR is now correctly targeting \`${context.payload.pull_request.base.ref}\` instead of \`main\`.`
+              });
+              
+              // Also remove the invalid-target label if it exists
+              if (hasInvalidLabel) {
+                try {
+                  await github.rest.issues.removeLabel({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    name: 'invalid-target'
+                  });
+                  console.log(`Removed invalid-target label from PR #${prNumber}`);
+                } catch (error) {
+                  console.error(`Failed to remove label: ${error.message}`);
+                }
+              }
+            }
+            
+            // Only add new warnings for PRs targeting main
             if (context.payload.pull_request.base.ref === 'main') {
               if (isValid) {
                 // PR is valid, add a resolution note to the warning comment
