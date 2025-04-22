@@ -27,7 +27,7 @@ jobs:
     if: ${{ needs.check-target.outputs.target-valid == 'true' }}
     uses: ./.github/workflows/build-validation.yml
   
-  # Third step: validate commit messages (using build cache)
+  # Third steps: Run validate-commits, lint, and test in parallel (using build cache)
   validate-commits:
     needs: [build]
     # Run if build passed
@@ -36,21 +36,44 @@ jobs:
     with:
       build-cache-key: ${{ needs.build.outputs.build-cache-key }}
   
-  # Fourth step: run linting checks (using build cache)
   lint:
-    needs: [build, validate-commits]
-    # Run if commits validation passed
-    if: ${{ needs.validate-commits.outputs.validation-success == 'true' }}
+    needs: [build]
+    # Run if build passed
+    if: ${{ needs.build.outputs.build-success == 'true' }}
     uses: ./.github/workflows/lint-validation.yml
     with:
       build-cache-key: ${{ needs.build.outputs.build-cache-key }}
   
-  # Fifth step: run tests (using build cache)
   test:
-    needs: [build, lint]
-    # Run if lint passed
-    if: ${{ needs.lint.outputs.lint-success == 'true' }}
+    needs: [build]
+    # Run if build passed
+    if: ${{ needs.build.outputs.build-success == 'true' }}
     uses: ./.github/workflows/test-validation.yml
     with:
       build-cache-key: ${{ needs.build.outputs.build-cache-key }}
+      
+  # Final step to check all validations passed
+  validate-all:
+    needs: [validate-commits, lint, test]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check all validations
+        run: |
+          if [[ "${{ needs.validate-commits.result }}" != "success" ]]; then
+            echo "::error::Commit validation failed!"
+            exit 1
+          fi
+          
+          if [[ "${{ needs.lint.result }}" != "success" ]]; then
+            echo "::error::Lint validation failed!"
+            exit 1
+          fi
+          
+          if [[ "${{ needs.test.result }}" != "success" ]]; then
+            echo "::error::Test validation failed!"
+            exit 1
+          fi
+          
+          echo "All validations passed!"
   
