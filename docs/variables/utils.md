@@ -19,4 +19,4 @@
 
 #### Defined in
 
-[src/index.ts:36](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/index.ts#L36)
+[src/index.ts:36](https://github.com/zjayers/AssembleJS/blob/bbb670f/src/index.ts#L36)

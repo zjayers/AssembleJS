@@ -4,4 +4,4 @@
 
 #### Defined in
 
-[src/index.ts:85](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/index.ts#L85)
+[src/index.ts:85](https://github.com/zjayers/AssembleJS/blob/bbb670f/src/index.ts#L85)

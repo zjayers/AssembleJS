@@ -20,11 +20,19 @@ jobs:
     with:
       force-new-run: ${{ github.event_name == 'pull_request' && github.event.action == 'edited' }}
   
-  # Second step: build the project
-  build:
+  # Second step: check npm version
+  # This ensures we're not using a version that already exists
+  check-npm-version:
     needs: [check-target]
     # Run if target is valid
     if: ${{ needs.check-target.outputs.target-valid == 'true' }}
+    uses: ./.github/workflows/pr-npm-version-check.yml
+  
+  # Third step: build the project
+  build:
+    needs: [check-target, check-npm-version]
+    # Run if target is valid and npm version check passed
+    if: ${{ needs.check-target.outputs.target-valid == 'true' && needs.check-npm-version.outputs.version-valid == 'true' }}
     uses: ./.github/workflows/build-validation.yml
   
   # Third steps: Run lint and test in parallel (using build cache)

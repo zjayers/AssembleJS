@@ -1,0 +1,143 @@
+name: pr_npm_version_check
+
+on:
+  # Can be called by other workflows
+  workflow_call:
+    inputs:
+      force-new-run:
+        description: "Force a new run of the check"
+        type: boolean
+        default: false
+        required: false
+    outputs:
+      version-valid:
+        description: "Indicates if the package version is valid (not already published)"
+        value: ${{ jobs.check_npm_version.outputs.version-valid }}
+
+jobs:
+  check_npm_version:
+    runs-on: ubuntu-latest
+    outputs:
+      version-valid: ${{ steps.check-result.outputs.version-valid }}
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Get package info
+        id: package-info
+        run: |
+          # Extract package name and version
+          PKG_NAME=$(node -p "require('./package.json').name")
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          echo "name=$PKG_NAME" >> $GITHUB_OUTPUT
+          echo "version=$PKG_VERSION" >> $GITHUB_OUTPUT
+          echo "Package: $PKG_NAME@$PKG_VERSION"
+      
+      - name: Check for existing versions
+        id: check-versions
+        run: |
+          PKG_NAME="${{ steps.package-info.outputs.name }}"
+          PKG_VERSION="${{ steps.package-info.outputs.version }}"
+          
+          # Determine which tags to check based on branch
+          if [[ "${{ github.base_ref }}" == "main" ]]; then
+            echo "Checking if @latest version exists: $PKG_NAME@$PKG_VERSION"
+            # Check if the version exists with latest tag
+            if npm view "$PKG_NAME@$PKG_VERSION" version &>/dev/null; then
+              echo "version_exists=true" >> $GITHUB_OUTPUT
+              echo "tag=latest" >> $GITHUB_OUTPUT
+              echo "::error::Version $PKG_VERSION already exists with tag 'latest'. Please update the version in package.json"
+            else
+              echo "version_exists=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "Checking if @next version exists: $PKG_NAME@$PKG_VERSION"
+            # Check if the version exists with next tag
+            if npm view "$PKG_NAME@$PKG_VERSION" version --tag next &>/dev/null; then
+              echo "version_exists=true" >> $GITHUB_OUTPUT
+              echo "tag=next" >> $GITHUB_OUTPUT
+              echo "::error::Version $PKG_VERSION already exists with tag 'next'. Please update the version in package.json"
+            else
+              echo "version_exists=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+      
+      - name: Comment on PR if version exists
+        if: steps.check-versions.outputs.version_exists == 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo;
+            const prNumber = context.issue.number;
+            const packageName = '${{ steps.package-info.outputs.name }}';
+            const packageVersion = '${{ steps.package-info.outputs.version }}';
+            const tag = '${{ steps.check-versions.outputs.tag }}';
+            
+            const body = `⚠️ **Version Conflict Warning**
+            
+            The package version \`${packageName}@${packageVersion}\` already exists on npm with the \`${tag}\` tag.
+            
+            Please update the version in package.json before merging this PR. You can increment the:
+            - patch version for bug fixes
+            - minor version for backwards-compatible features
+            - major version for breaking changes
+            
+            Example:
+            \`\`\`json
+            {
+              "name": "${packageName}",
+              "version": "x.y.z" // Update this version
+            }
+            \`\`\``;
+            
+            const comments = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number: prNumber
+            });
+            
+            // Look for existing version conflict warnings
+            const versionWarnings = comments.data.filter(comment => 
+              comment.body.includes('Version Conflict Warning') && 
+              comment.body.includes(packageName) &&
+              comment.body.includes(packageVersion)
+            );
+            
+            if (versionWarnings.length === 0) {
+              // Only add a new comment if one doesn't already exist
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body: body
+              });
+              
+              // Add label
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: prNumber,
+                labels: ['version-conflict']
+              });
+            }
+      
+      - name: Set version check result
+        id: check-result
+        run: |
+          if [[ "${{ steps.check-versions.outputs.version_exists }}" == "true" ]]; then
+            echo "version-valid=false" >> $GITHUB_OUTPUT
+            echo "::error::Package version already exists on npm. Please update the version in package.json."
+            exit 1
+          else
+            echo "version-valid=true" >> $GITHUB_OUTPUT
+          fi

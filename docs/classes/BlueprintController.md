@@ -74,7 +74,7 @@ Loggable.constructor
 
 #### Defined in
 
-[src/server/abstract/loggable.ts:15](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/server/abstract/loggable.ts#L15)
+[src/server/abstract/loggable.ts:15](https://github.com/zjayers/AssembleJS/blob/bbb670f/src/server/abstract/loggable.ts#L15)
 
 ## Methods
 
@@ -88,7 +88,8 @@ It's where you define all routes, hooks, and handlers for your controller.
 The method is called during server initialization to set up the controller's
 functionality.
 
-**`Returns`**
+**`Returnss`**
+
 **`Example`**
 
 ```typescript
@@ -120,7 +121,7 @@ register(app: Assembly): void {
 
 #### Defined in
 
-[src/server/abstract/blueprint.controller.ts:111](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/server/abstract/blueprint.controller.ts#L111)
+[src/server/abstract/blueprint.controller.ts:111](https://github.com/zjayers/AssembleJS/blob/bbb670f/src/server/abstract/blueprint.controller.ts#L111)
 
 ___
 
@@ -164,7 +165,7 @@ The service instance of the requested type
 
 #### Defined in
 
-[src/server/abstract/blueprint.controller.ts:56](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/server/abstract/blueprint.controller.ts#L56)
+[src/server/abstract/blueprint.controller.ts:56](https://github.com/zjayers/AssembleJS/blob/bbb670f/src/server/abstract/blueprint.controller.ts#L56)
 
 ___
 
@@ -204,7 +205,7 @@ True if the service is registered, false otherwise
 
 #### Defined in
 
-[src/server/abstract/blueprint.controller.ts:80](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/server/abstract/blueprint.controller.ts#L80)
+[src/server/abstract/blueprint.controller.ts:80](https://github.com/zjayers/AssembleJS/blob/bbb670f/src/server/abstract/blueprint.controller.ts#L80)
 
 ## Properties
 
@@ -218,4 +219,4 @@ Loggable.log
 
 #### Defined in
 
-[src/server/abstract/loggable.ts:9](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/server/abstract/loggable.ts#L9)
+[src/server/abstract/loggable.ts:9](https://github.com/zjayers/AssembleJS/blob/bbb670f/src/server/abstract/loggable.ts#L9)

@@ -73,4 +73,4 @@ Promise that resolves to the Assembly instance
 
 #### Defined in
 
-[src/server/app/create-blueprint.server.ts:80](https://github.com/zjayers/AssembleJS/blob/b5fd21b/src/server/app/create-blueprint.server.ts#L80)
+[src/server/app/create-blueprint.server.ts:80](https://github.com/zjayers/AssembleJS/blob/bbb670f/src/server/app/create-blueprint.server.ts#L80)
