@@ -1,3 +1,14 @@
+## <small>0.0.7 (2025-04-23)</small>
+
+* 0.0.7 ([d61c29b](https://github.com/zjayers/assemblejs/commit/d61c29b))
+* chore: add release management to workflow ([8b9f16d](https://github.com/zjayers/assemblejs/commit/8b9f16d))
+* chore: add release management to workflow ([c7ebe16](https://github.com/zjayers/assemblejs/commit/c7ebe16))
+* chore: add release management to workflow ([35c30ec](https://github.com/zjayers/assemblejs/commit/35c30ec))
+* chore: add release management to workflow ([a764ecf](https://github.com/zjayers/assemblejs/commit/a764ecf))
+* chore(release): %s [skip ci] ([4a6b569](https://github.com/zjayers/assemblejs/commit/4a6b569))
+
+
+
 ## <small>0.0.6 (2025-04-22)</small>
 
 * 0.0.6 ([f42a897](https://github.com/zjayers/assemblejs/commit/f42a897))
