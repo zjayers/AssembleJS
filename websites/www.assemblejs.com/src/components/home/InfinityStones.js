@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './InfinityStones.css';
 
 // Infinity Stone positions (hidden all over the page)
@@ -17,6 +17,160 @@ let counterElement = null;
 
 const InfinityStones = () => {
   const [snapActive, setSnapActive] = useState(false);
+
+  // Function to create ripple effect
+  const createRippleEffect = useCallback((stone) => {
+    // Get stone color
+    const stoneColors = {
+      space: '#3D5AFE',
+      reality: '#FF1744',
+      power: '#AA00FF',
+      mind: '#FFAB00',
+      time: '#00BFA5',
+      soul: '#FF9100'
+    };
+    
+    // Create ripple element
+    const ripple = document.createElement('div');
+    ripple.className = 'stone-ripple';
+    ripple.style.backgroundColor = stoneColors[stone];
+    
+    // Add a subtle radial gradient to enhance the power effect
+    ripple.style.background = `radial-gradient(circle at center, ${stoneColors[stone]}88 0%, ${stoneColors[stone]}66 40%, ${stoneColors[stone]}44 70%, ${stoneColors[stone]}22 100%)`;
+    
+    document.body.appendChild(ripple);
+    
+    // Activate ripple
+    setTimeout(() => {
+      ripple.classList.add('active');
+      
+      // Remove after animation completes
+      setTimeout(() => {
+        ripple.remove();
+      }, 2100); // Slightly longer than animation duration to ensure completion
+    }, 10);
+  }, []);
+
+  // Function to update counter display
+  const updateCounter = useCallback((remaining) => {
+    if (!counterElement) return;
+    
+    // Clear any existing timeout
+    if (window.counterTimeout) {
+      clearTimeout(window.counterTimeout);
+    }
+    
+    // Update text directly
+    counterElement.textContent = remaining === 0 
+      ? `You found them all!` 
+      : `You have ${remaining} more to collect`;
+    
+    // Show the counter
+    counterElement.classList.add('active');
+    counterElement.classList.remove('hidden');
+    
+    // Hide after a few seconds
+    window.counterTimeout = setTimeout(() => {
+      counterElement.classList.remove('active');
+      counterElement.classList.add('hidden');
+      
+      setTimeout(() => {
+        counterElement.classList.remove('hidden');
+      }, 500);
+    }, 3000);
+  }, []);
+  
+  // Function to show final message
+  const showFinalMessage = useCallback(() => {
+    if (!counterElement) return;
+    
+    counterElement.textContent = 'You found them all!';
+    counterElement.classList.add('active');
+    
+    // Hide just before snap
+    setTimeout(() => {
+      counterElement.classList.remove('active');
+    }, 1500);
+  }, []);
+  
+  // Function to trigger snap
+  const triggerSnap = useCallback(() => {
+    // Create snap effect element
+    const snapElement = document.createElement('div');
+    snapElement.className = 'snap-effect';
+    
+    // Background color is set in CSS to #0f172a (--dark-bg)
+    
+    // Add balance message
+    const messageElement = document.createElement('div');
+    messageElement.className = 'balance-message';
+    messageElement.textContent = 'Perfectly balanced, as all web development should be.';
+    snapElement.appendChild(messageElement);
+    
+    // Add submessage
+    const submessageElement = document.createElement('div');
+    submessageElement.className = 'balance-submessage';
+    submessageElement.textContent = 'In the cosmic dance of frameworks and libraries, true power comes from harmony.';
+    snapElement.appendChild(submessageElement);
+    
+    // Add reload button
+    const reloadButton = document.createElement('button');
+    reloadButton.className = 'reload-button';
+    reloadButton.textContent = 'Restore the Universe';
+    reloadButton.addEventListener('click', () => window.location.reload());
+    
+    snapElement.appendChild(reloadButton);
+    document.body.appendChild(snapElement);
+    
+    // Activate the snap
+    setTimeout(() => {
+      setSnapActive(true);
+      snapElement.classList.add('active');
+      
+      // Hide all content except our snap effect
+      const elements = document.querySelectorAll('body > *:not(.snap-effect):not(.stone-counter)');
+      elements.forEach(element => {
+        element.style.transition = 'opacity 1s ease';
+        element.style.opacity = '0';
+        
+        // Hide the element after transition
+        setTimeout(() => {
+          element.style.display = 'none';
+        }, 1000);
+      });
+    }, 100);
+  }, [setSnapActive]);
+  
+  // Function to collect stone - define this with useCallback to avoid dependency issues
+  const collectStone = useCallback((stone, stoneElement) => {
+    // Skip if already collected (check class instead of state)
+    if (stoneElement.classList.contains('collected')) {
+      return;
+    }
+    
+    // Highlight the stone
+    stoneElement.classList.add('collected');
+    
+    // Create ripple effect
+    createRippleEffect(stone);
+    
+    // Increment global counter
+    stonesCollected += 1;
+    
+    // Update counter display with the remaining count
+    updateCounter(6 - stonesCollected);
+    
+    // Check if all stones are collected
+    if (stonesCollected === 6 && !snapActive) {
+      // Final message
+      showFinalMessage();
+      
+      // Trigger the snap after a delay
+      setTimeout(() => {
+        triggerSnap();
+      }, 2000);
+    }
+  }, [snapActive, createRippleEffect, updateCounter, showFinalMessage, triggerSnap]);
 
   useEffect(() => {
     // Add infinity stones to the page after elements are loaded
@@ -105,162 +259,7 @@ const InfinityStones = () => {
       // Reset global counter
       stonesCollected = 0;
     };
-  }, []);
-
-  const collectStone = (stone, stoneElement) => {
-    // Skip if already collected (check class instead of state)
-    if (stoneElement.classList.contains('collected')) {
-      return;
-    }
-    
-    // Highlight the stone
-    stoneElement.classList.add('collected');
-    
-    // Create ripple effect
-    createRippleEffect(stone);
-    
-    // Increment global counter
-    stonesCollected += 1;
-    
-    // Update counter display with the remaining count
-    updateCounter(6 - stonesCollected);
-    
-    // No sound needed
-    
-    // Check if all stones are collected
-    if (stonesCollected === 6 && !snapActive) {
-      // Final message
-      showFinalMessage();
-      
-      // Trigger the snap after a delay
-      setTimeout(() => {
-        triggerSnap();
-      }, 2000);
-    }
-  };
-  
-  const updateCounter = (remaining) => {
-    if (!counterElement) return;
-    
-    // Clear any existing timeout
-    if (window.counterTimeout) {
-      clearTimeout(window.counterTimeout);
-    }
-    
-    // Update text directly
-    counterElement.textContent = remaining === 0 
-      ? `You found them all!` 
-      : `You have ${remaining} more to collect`;
-    
-    // Show the counter
-    counterElement.classList.add('active');
-    counterElement.classList.remove('hidden');
-    
-    // Hide after a few seconds
-    window.counterTimeout = setTimeout(() => {
-      counterElement.classList.remove('active');
-      counterElement.classList.add('hidden');
-      
-      setTimeout(() => {
-        counterElement.classList.remove('hidden');
-      }, 500);
-    }, 3000);
-  };
-  
-  const showFinalMessage = () => {
-    if (!counterElement) return;
-    
-    counterElement.textContent = 'You found them all!';
-    counterElement.classList.add('active');
-    
-    // Hide just before snap
-    setTimeout(() => {
-      counterElement.classList.remove('active');
-    }, 1500);
-  };
-  
-  const createRippleEffect = (stone) => {
-    // Get stone color
-    const stoneColors = {
-      space: '#3D5AFE',
-      reality: '#FF1744',
-      power: '#AA00FF',
-      mind: '#FFAB00',
-      time: '#00BFA5',
-      soul: '#FF9100'
-    };
-    
-    // Create ripple element
-    const ripple = document.createElement('div');
-    ripple.className = 'stone-ripple';
-    ripple.style.backgroundColor = stoneColors[stone];
-    
-    // Add a subtle radial gradient to enhance the power effect
-    ripple.style.background = `radial-gradient(circle at center, ${stoneColors[stone]}88 0%, ${stoneColors[stone]}66 40%, ${stoneColors[stone]}44 70%, ${stoneColors[stone]}22 100%)`;
-    
-    document.body.appendChild(ripple);
-    
-    // Activate ripple
-    setTimeout(() => {
-      ripple.classList.add('active');
-      
-      // Remove after animation completes
-      setTimeout(() => {
-        ripple.remove();
-      }, 2100); // Slightly longer than animation duration to ensure completion
-    }, 10);
-  };
-
-  // Collection sound removed as requested
-
-  const triggerSnap = () => {
-    // Create snap effect element
-    const snapElement = document.createElement('div');
-    snapElement.className = 'snap-effect';
-    
-    // Background color is set in CSS to #0f172a (--dark-bg)
-    
-    // Add balance message
-    const messageElement = document.createElement('div');
-    messageElement.className = 'balance-message';
-    messageElement.textContent = 'Perfectly balanced, as all web development should be.';
-    snapElement.appendChild(messageElement);
-    
-    // Add submessage
-    const submessageElement = document.createElement('div');
-    submessageElement.className = 'balance-submessage';
-    submessageElement.textContent = 'In the cosmic dance of frameworks and libraries, true power comes from harmony.';
-    snapElement.appendChild(submessageElement);
-    
-    // Add reload button
-    const reloadButton = document.createElement('button');
-    reloadButton.className = 'reload-button';
-    reloadButton.textContent = 'Restore the Universe';
-    reloadButton.addEventListener('click', () => window.location.reload());
-    
-    snapElement.appendChild(reloadButton);
-    document.body.appendChild(snapElement);
-    
-    // Activate the snap
-    setTimeout(() => {
-      setSnapActive(true);
-      snapElement.classList.add('active');
-      
-      // Hide all content except our snap effect
-      const elements = document.querySelectorAll('body > *:not(.snap-effect):not(.stone-counter)');
-      elements.forEach(element => {
-        element.style.transition = 'opacity 1s ease';
-        element.style.opacity = '0';
-        
-        // Hide the element after transition
-        setTimeout(() => {
-          element.style.display = 'none';
-        }, 1000);
-      });
-    }, 100);
-  };
-
-  // Sound functionality removed as requested
+  }, [collectStone]); // Include collectStone dependency
 
   return null; // This component doesn't render anything directly
 };

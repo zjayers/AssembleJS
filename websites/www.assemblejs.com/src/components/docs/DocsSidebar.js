@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 const DocsSidebar = () => {
@@ -9,7 +9,7 @@ const DocsSidebar = () => {
   const sidebarRef = useRef(null);
   
   // Define the documentation structure - based on docs/index.md table of contents
-  const docsStructure = [
+  const docsStructure = useMemo(() => [
     {
       title: 'Getting Started',
       icon: '🚀',
@@ -112,7 +112,7 @@ const DocsSidebar = () => {
         { name: 'Philosophy', path: 'the-assemblejs-philosophy' },
       ]
     }
-  ];
+  ], []);
 
   // Initially expand the section of the current page
   useEffect(() => {
@@ -130,7 +130,7 @@ const DocsSidebar = () => {
     });
     
     setExpandedSections(initialExpandedSections);
-  }, [location.pathname]);
+  }, [location.pathname, docsStructure]);
   
   // Reset mobile sidebar visibility on navigation
   useEffect(() => {

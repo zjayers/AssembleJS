@@ -57,15 +57,15 @@ const Hero = () => {
                   <div className="code-line"></div>
                   <div className="code-line"></div>
                   <div className="code-line"><span className="code-function">createBlueprintServer</span>({'{'}</div>
-                  <div className="code-line">  <span className="code-comment">// Server config</span></div>
+                  <div className="code-line">  <span className="code-comment">{"// Server config"}</span></div>
                   <div className="code-line">  serverRoot: <span className="code-string">'./src'</span>,</div>
                   <div className="code-line">  port: <span className="code-number">3000</span>,</div>
                   <div className="code-line"></div>
-                  <div className="code-line">  <span className="code-comment">// Components</span></div>
+                  <div className="code-line">  <span className="code-comment">{"// Components"}</span></div>
                   <div className="code-line">  manifest: {'{'}</div>
                   <div className="code-line">    components: [</div>
                   <div className="code-line">      {'{'} path: <span className="code-string">'product'</span>,</div>
-                  <div className="code-line">        views: [{'{'} <span className="code-keyword">/*...*/</span> {'}'}</div>
+                  <div className="code-line">        views: [{'{'} <span className="code-keyword">{"/*...*/"}</span> {'}'}</div>
                   <div className="code-line">      ]{'}'}</div>
                   <div className="code-line">    ]</div>
                   <div className="code-line">  {'}'}</div>

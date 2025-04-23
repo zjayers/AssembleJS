@@ -134,9 +134,11 @@ const DocsContent = () => {
     // Add event listener for smooth scrolling
     contentRef.current.addEventListener('click', handleAnchorClick);
     
+    // Save contentRef.current to a variable for the cleanup function
+    const currentContentRef = contentRef.current;
     return () => {
-      if (contentRef.current) {
-        contentRef.current.removeEventListener('click', handleAnchorClick);
+      if (currentContentRef) {
+        currentContentRef.removeEventListener('click', handleAnchorClick);
       }
     };
   }, [isLoading, content]);

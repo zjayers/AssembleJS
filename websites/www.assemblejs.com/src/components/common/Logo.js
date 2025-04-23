@@ -25,7 +25,7 @@ const Logo = () => {
     // Only start animation if reduced motion is not preferred
     if (!reducedMotion) {
       // Ensure logo animation starts after a short delay
-      const animationTimeout = setTimeout(() => {
+      setTimeout(() => {
         // Add animated class to start animations
         if (logoIcon) {
           logoIcon.classList.add("animated");

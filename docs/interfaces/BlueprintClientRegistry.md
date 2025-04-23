@@ -24,4 +24,4 @@ Zach Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.client.registry.ts:19](https://github.com/zjayers/AssembleJS/blob/afc9ef0/src/browser/client/blueprint.client.registry.ts#L19)
+[src/browser/client/blueprint.client.registry.ts:19](https://github.com/zjayers/AssembleJS/blob/e3653e0/src/browser/client/blueprint.client.registry.ts#L19)
