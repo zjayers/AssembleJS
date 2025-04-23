@@ -1,0 +1,319 @@
+/* CSS variables for parallax effect */
+:root {
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+  --parallax-reverse-x: 0px;
+  --parallax-reverse-y: 0px;
+  
+  /* Theme colors */
+  --primary-color: #FF5A00;
+  --secondary-color: #2B67F8;
+  --tertiary-color: #62B245;
+  --accent-color-1: #FEE440;
+  --accent-color-2: #9B5DE5;
+  --accent-color-3: #00BBF9;
+}
+
+/* Parallax background */
+.parallax-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.parallax-bg::before,
+.parallax-bg::after {
+  content: "";
+  position: fixed;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  z-index: -1;
+  background-attachment: fixed;
+  pointer-events: none;
+}
+
+/* First parallax layer - slow */
+.parallax-bg::before {
+  background-image: radial-gradient(
+      circle at 100px 100px,
+      rgba(255, 90, 0, 0.03) 30px,
+      transparent 30px
+    ),
+    radial-gradient(
+      circle at 200px 300px,
+      rgba(43, 103, 248, 0.03) 60px,
+      transparent 60px
+    ),
+    radial-gradient(
+      circle at 600px 500px,
+      rgba(98, 178, 69, 0.02) 100px,
+      transparent 100px
+    ),
+    radial-gradient(
+      circle at 300px 200px,
+      rgba(254, 228, 64, 0.02) 80px,
+      transparent 80px
+    ),
+    radial-gradient(
+      circle at 800px 100px,
+      rgba(155, 93, 229, 0.02) 50px,
+      transparent 50px
+    ),
+    radial-gradient(
+      circle at 400px 600px,
+      rgba(0, 187, 249, 0.03) 70px,
+      transparent 70px
+    );
+  animation: float-bg 20s ease-in-out infinite alternate;
+  transform: translate(
+    calc(var(--parallax-x) * 1),
+    calc(var(--parallax-y) * 1)
+  );
+  transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Second parallax layer - faster */
+.parallax-bg::after {
+  background-image: radial-gradient(
+      circle at 200px 200px,
+      rgba(255, 90, 0, 0.02) 50px,
+      transparent 50px
+    ),
+    radial-gradient(
+      circle at 400px 500px,
+      rgba(43, 103, 248, 0.02) 30px,
+      transparent 30px
+    ),
+    radial-gradient(
+      circle at 700px 300px,
+      rgba(98, 178, 69, 0.01) 70px,
+      transparent 70px
+    ),
+    radial-gradient(
+      circle at 150px 400px,
+      rgba(254, 228, 64, 0.01) 40px,
+      transparent 40px
+    ),
+    radial-gradient(
+      circle at 600px 200px,
+      rgba(155, 93, 229, 0.01) 60px,
+      transparent 60px
+    ),
+    radial-gradient(
+      circle at 300px 700px,
+      rgba(0, 187, 249, 0.02) 90px,
+      transparent 90px
+    ),
+    /* Add triangles and other shapes */
+    linear-gradient(45deg, rgba(255, 90, 0, 0.01) 25%, transparent 25%),
+    linear-gradient(135deg, rgba(43, 103, 248, 0.01) 25%, transparent 25%);
+  background-size: auto, auto, auto, auto, auto, auto, 100px 100px, 120px 120px;
+  background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0,
+    var(--parallax-x) var(--parallax-y),
+    var(--parallax-reverse-x) var(--parallax-reverse-y);
+  animation: float-bg-opposite 25s ease-in-out infinite alternate;
+  transform: translate(
+    calc(var(--parallax-reverse-x) * 1),
+    calc(var(--parallax-reverse-y) * 1)
+  );
+  transition: transform 2.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Animations for floating background */
+@keyframes float-bg {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(5px, 5px);
+  }
+}
+
+@keyframes float-bg-opposite {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-5px, -5px);
+  }
+}
+
+/* Abstract floating shapes */
+.parallax-shapes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.shape {
+  position: absolute;
+  opacity: 0.05;
+  will-change: transform;
+  transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* Adjust shape visibility in light mode */
+body.light-theme .shape {
+  opacity: 0.08;
+}
+
+/* Different shape styles */
+.shape-1 {
+  top: 15%;
+  left: 10%;
+  width: 80px;
+  height: 80px;
+  clip-path: polygon(
+    50% 0%,
+    100% 38%,
+    82% 100%,
+    18% 100%,
+    0% 38%
+  ); /* Pentagon */
+  background-color: var(--primary-color);
+  animation: float-shape 18s ease-in-out infinite alternate;
+}
+
+.shape-2 {
+  top: 25%;
+  right: 15%;
+  width: 60px;
+  height: 60px;
+  clip-path: polygon(
+    50% 0%,
+    80% 30%,
+    100% 50%,
+    80% 70%,
+    50% 100%,
+    20% 70%,
+    0% 50%,
+    20% 30%
+  ); /* 8-point star */
+  background-color: var(--secondary-color);
+  animation: float-shape 13s ease-in-out infinite alternate-reverse;
+}
+
+.shape-3 {
+  bottom: 15%;
+  left: 20%;
+  width: 70px;
+  height: 70px;
+  clip-path: polygon(
+    20% 0%,
+    80% 0%,
+    100% 20%,
+    100% 80%,
+    80% 100%,
+    20% 100%,
+    0% 80%,
+    0% 20%
+  ); /* Octagon */
+  background-color: var(--tertiary-color);
+  animation: float-shape 15s ease-in-out infinite alternate;
+}
+
+.shape-4 {
+  top: 50%;
+  left: 80%;
+  width: 50px;
+  height: 50px;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Diamond */
+  background-color: var(--accent-color-1);
+  animation: float-shape 14s ease-in-out infinite alternate-reverse;
+}
+
+.shape-5 {
+  top: 75%;
+  left: 40%;
+  width: 65px;
+  height: 65px;
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* Triangle */
+  background-color: var(--accent-color-2);
+  animation: float-shape 17s ease-in-out infinite alternate;
+}
+
+.shape-6 {
+  top: 30%;
+  left: 50%;
+  width: 55px;
+  height: 55px;
+  clip-path: polygon(
+    25% 0%,
+    75% 0%,
+    100% 50%,
+    75% 100%,
+    25% 100%,
+    0% 50%
+  ); /* Hexagon */
+  background-color: var(--accent-color-3);
+  animation: float-shape 20s ease-in-out infinite alternate-reverse;
+}
+
+.shape-7 {
+  top: 10%;
+  right: 30%;
+  width: 70px;
+  height: 70px;
+  clip-path: circle(50% at 50% 50%); /* Circle */
+  background-color: var(--primary-color);
+  animation: float-shape 16s ease-in-out infinite alternate;
+}
+
+.shape-8 {
+  bottom: 20%;
+  right: 20%;
+  width: 75px;
+  height: 75px;
+  clip-path: polygon(
+    50% 0%,
+    100% 25%,
+    100% 75%,
+    50% 100%,
+    0% 75%,
+    0% 25%
+  ); /* Hexagon */
+  background-color: var(--secondary-color);
+  animation: float-shape 19s ease-in-out infinite alternate-reverse;
+}
+
+/* Floating animation for shapes */
+@keyframes float-shape {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translate(10px, 15px) rotate(3deg) scale(1.02);
+  }
+  50% {
+    transform: translate(-5px, 10px) rotate(6deg) scale(1);
+  }
+  75% {
+    transform: translate(-15px, -10px) rotate(3deg) scale(0.98);
+  }
+  100% {
+    transform: translate(5px, -15px) rotate(0deg) scale(1);
+  }
+}
+
+/* Theme-specific adjustments */
+[data-theme="dark"] .parallax-bg::before,
+[data-theme="dark"] .parallax-bg::after {
+  opacity: 0.8;
+}
+
+[data-theme="light"] .parallax-bg::before,
+[data-theme="light"] .parallax-bg::after {
+  opacity: 0.4;
+}

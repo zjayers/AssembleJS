@@ -102,6 +102,7 @@ out
 .nuxt
 dist
 lib
+build
 
 # Gatsby files
 .cache/

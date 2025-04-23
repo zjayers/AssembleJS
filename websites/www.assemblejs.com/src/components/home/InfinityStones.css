@@ -1,0 +1,310 @@
+/* Infinity stone styling */
+.infinity-stone {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 5px currentColor, inset 0 0 4px rgba(255, 255, 255, 0.7);
+  transition: all 0.3s ease;
+  opacity: 0.15;
+  z-index: 10;
+  animation: pulse 6s infinite ease-in-out;
+}
+
+.infinity-stone:hover {
+  transform: scale(1.2);
+  opacity: 0.7;
+}
+
+.infinity-stone.collected {
+  opacity: 0.5;
+  animation: collected-pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.1;
+    box-shadow: 0 0 3px currentColor, inset 0 0 3px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.3;
+    box-shadow: 0 0 8px currentColor, inset 0 0 5px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.1;
+    box-shadow: 0 0 3px currentColor, inset 0 0 3px rgba(255, 255, 255, 0.5);
+  }
+}
+
+@keyframes collected-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+/* Stone ripple effect */
+.stone-ripple {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+
+.stone-ripple.active {
+  opacity: 0;
+  animation: ripple-fade 2s forwards cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@keyframes ripple-fade {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.4;
+  }
+  80% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Stone collection counter */
+.stone-counter {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  z-index: 9997;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+}
+
+.stone-counter.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stone-counter.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.infinity-stone.space {
+  background-color: #3D5AFE;
+  background: radial-gradient(circle at center, #3D5AFE 40%, #2541f7 100%);
+  filter: drop-shadow(0 0 6px rgba(61, 90, 254, 0.7));
+}
+
+.infinity-stone.reality {
+  background-color: #FF1744;
+  background: radial-gradient(circle at center, #FF1744 40%, #e9002e 100%);
+  filter: drop-shadow(0 0 6px rgba(255, 23, 68, 0.7));
+}
+
+.infinity-stone.power {
+  background-color: #AA00FF;
+  background: radial-gradient(circle at center, #AA00FF 40%, #8c00d1 100%);
+  filter: drop-shadow(0 0 6px rgba(170, 0, 255, 0.7));
+}
+
+.infinity-stone.mind {
+  background-color: #FFAB00;
+  background: radial-gradient(circle at center, #FFAB00 40%, #e69900 100%);
+  filter: drop-shadow(0 0 6px rgba(255, 171, 0, 0.7));
+}
+
+.infinity-stone.time {
+  background-color: #00BFA5;
+  background: radial-gradient(circle at center, #00BFA5 40%, #00a38d 100%);
+  filter: drop-shadow(0 0 6px rgba(0, 191, 165, 0.7));
+}
+
+.infinity-stone.soul {
+  background-color: #FF9100;
+  background: radial-gradient(circle at center, #FF9100 40%, #e68300 100%);
+  filter: drop-shadow(0 0 6px rgba(255, 145, 0, 0.7));
+}
+
+/* Snap effect */
+.snap-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #0f172a; /* Same as --dark-bg value */
+  overflow: hidden;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1.5s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.snap-effect.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+
+/* Balance message */
+.balance-message {
+  font-size: 2.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  max-width: 800px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fade-in 0.8s forwards 0.5s;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.balance-submessage {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 300;
+  max-width: 600px;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fade-in 0.8s forwards 1s;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes fade-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Button styling */
+.reload-button {
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 400;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease 2s;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1), 0 0 40px rgba(70, 131, 180, 0.1), inset 0 0 15px rgba(70, 131, 180, 0.1);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+}
+
+.reload-button::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 50px;
+  background: linear-gradient(45deg, #3498db, #2ecc71, #3498db);
+  z-index: -1;
+  animation: button-glow 3s linear infinite;
+  opacity: 0.3;
+}
+
+@keyframes button-glow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.snap-effect.active .reload-button {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reload-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.2), 0 0 60px rgba(70, 131, 180, 0.2);
+  transform: translateY(-3px);
+  letter-spacing: 0.12em;
+}
+
+.reload-button:active {
+  transform: scale(0.97);
+}
+
+.dust-particle {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  filter: blur(1px);
+  animation: float-away 3s forwards ease-out;
+  opacity: 0;
+  z-index: 9998;
+}
+
+@keyframes float-away {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg);
+  }
+  10% {
+    opacity: 0.9;
+  }
+  30% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) rotate(540deg) scale(0.1);
+  }
+}
+
+/* GPU acceleration for animations */
+.stars, .shooting-star, .snap-effect, .dust-particle, .infinity-stone, .reload-button {
+  transform: translateZ(0);
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+}

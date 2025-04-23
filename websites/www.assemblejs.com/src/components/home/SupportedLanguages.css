@@ -1,0 +1,143 @@
+.language-icon i[class^="devicon-"] {
+  font-size: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.language-icon i[class^="devicon-"]:hover {
+  transform: scale(1.05);
+}
+
+.more-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.more-icon span {
+  margin-top: -5px;
+}
+
+.more-icon:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* Custom Web Components icon */
+.web-components-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.web-components-icon::before {
+  content: "<>";
+  font-size: 30px;
+  font-weight: bold;
+  color: #E44D26; /* HTML color */
+  transform: rotate(90deg);
+  position: absolute;
+}
+
+.wc-inner {
+  width: 22px;
+  height: 22px;
+  background-color: #4285F4; /* Google blue */
+  border-radius: 6px;
+  position: absolute;
+  z-index: -1;
+}
+
+.web-components-icon:hover {
+  transform: scale(1.05);
+}
+
+/* Add custom styling for the language grid */
+.languages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.language-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  border-radius: 8px;
+  background-color: var(--surface, #f8f9fa);
+  border: 1px solid var(--border, #eaeaea);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.language-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.language-card h3 {
+  margin-top: 1rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text, #333);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .languages-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1rem;
+  }
+  
+  .language-card {
+    padding: 1rem 0.75rem;
+  }
+  
+  .language-icon i[class^="devicon-"] {
+    font-size: 50px;
+  }
+  
+  .more-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+  }
+  
+  .web-components-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .web-components-icon::before {
+    font-size: 24px;
+  }
+  
+  .wc-inner {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .languages-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

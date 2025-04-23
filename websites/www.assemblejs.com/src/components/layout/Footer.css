@@ -1,0 +1,225 @@
+.footer {
+  padding: 1.5rem 0 1rem;
+  background: linear-gradient(to bottom, var(--surface), var(--surface-2));
+  border-top: 1px solid var(--border);
+  margin-top: 5rem;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.footer-content {
+  max-width: 1280px;
+  margin: 0 auto 0.75rem;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+.footer-col {
+  max-width: 400px;
+  margin: 0 auto 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-col p.footer-description {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  max-width: 300px;
+}
+
+.footer-logo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-logo .tagline {
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 0.1rem;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+}
+
+.footer-links-container {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin: 0 auto;
+  flex-direction: row !important;
+}
+
+.footer-links {
+  min-width: 120px;
+}
+
+.footer-links h4 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+  text-align: center;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-links li {
+  margin-bottom: 0.4rem;
+}
+
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s;
+  font-size: 0.85rem;
+}
+
+.footer-links a:hover {
+  color: var(--primary-color);
+}
+
+.copyright {
+  text-align: center;
+  padding-top: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  padding-bottom: 0.25rem;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+  font-weight: 700;
+}
+
+/* Social links */
+.social-links {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  max-width: 1280px;
+  margin: 0.75rem auto 0.5rem;
+  padding: 0 2rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.75rem;
+}
+
+.social-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--surface), var(--surface-2));
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.social-icon::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.social-icon svg {
+  z-index: 1;
+  position: relative;
+}
+
+.social-icon:hover {
+  transform: translateY(-2px);
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.social-icon:hover::before {
+  opacity: 1;
+}
+
+.social-icon.github:hover {
+  background-color: #333;
+  border-color: #333;
+}
+
+.social-icon.twitter:hover {
+  background-color: #1DA1F2;
+  border-color: #1DA1F2;
+}
+
+.social-icon.discord:hover {
+  background-color: #5865F2;
+  border-color: #5865F2;
+}
+
+.social-icon.email:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer {
+    padding: 1.25rem 0 0.75rem;
+  }
+
+  .footer-col {
+    max-width: 100%;
+    margin-bottom: 0.25rem;
+  }
+
+  .footer-links-container {
+    gap: 2rem;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .footer-links {
+    min-width: 100px;
+  }
+
+  .footer-links h4 {
+    margin-bottom: 0.35rem;
+  }
+
+  .social-links {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-links-container {
+    gap: 1.5rem;
+  }
+}
