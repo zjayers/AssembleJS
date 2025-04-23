@@ -47,6 +47,7 @@ jobs:
         with:
           path: |
             node_modules
+            websites/www.assemblejs.com/node_modules
             lib
           key: ${{ steps.cache-key-gen.outputs.key }}
           restore-keys: |
@@ -56,15 +57,6 @@ jobs:
       - name: Install dependencies
         if: steps.cache-build.outputs.cache-hit != 'true'
         run: npm ci --include=dev
-      
-      # Install website dependencies if they exist
-      - name: Install website dependencies
-        if: steps.cache-build.outputs.cache-hit != 'true'
-        run: |
-          if [ -d "websites/www.assemblejs.com" ]; then
-            cd websites/www.assemblejs.com
-            npm ci
-          fi
       
       # Build project
       - name: Build project
