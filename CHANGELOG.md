@@ -1,3 +1,14 @@
+## <small>0.0.9 (2025-04-23)</small>
+
+* 0.0.9 ([1e1eecf](https://github.com/zjayers/assemblejs/commit/1e1eecf))
+* chore: kick pipeline ([09f5e8f](https://github.com/zjayers/assemblejs/commit/09f5e8f))
+* chore: kick pipeline ([cabdff8](https://github.com/zjayers/assemblejs/commit/cabdff8))
+* chore: kick pipeline ([df07561](https://github.com/zjayers/assemblejs/commit/df07561))
+* chore: try website workflow update ([ae1f29c](https://github.com/zjayers/assemblejs/commit/ae1f29c))
+* chore(release): %s [skip ci] ([3fbde01](https://github.com/zjayers/assemblejs/commit/3fbde01))
+
+
+
 ## <small>0.0.8 (2025-04-23)</small>
 
 * 0.0.8 ([7f73571](https://github.com/zjayers/assemblejs/commit/7f73571))
