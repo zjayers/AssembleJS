@@ -1,0 +1,384 @@
+/* Documentation Sidebar Styles
+ * Completely rebuilt for optimal UX
+ */
+
+/* Sidebar Container */
+.docs-sidebar {
+  width: 280px;
+  background-color: var(--bg);
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 60px; /* Match header height */
+  height: auto; 
+  max-height: calc(100vh - 60px);
+  z-index: 10;
+  overflow: hidden; /* Hide scrollbars on the container */
+}
+
+/* Sidebar Inner Container */
+.sidebar-inner {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto; /* Only scrollbar here */
+  overflow-x: hidden;
+  
+  /* Firefox scrollbar styling */
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  
+  /* Remove the scrollbar completely in most browsers */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sidebar-inner::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+/* Add padding to content sections */
+.docs-nav {
+  padding: 0 1.5rem 1.5rem;
+}
+
+.docs-search {
+  padding: 1.5rem 1.5rem 0;
+}
+
+/* Search Box */
+.docs-search {
+  position: relative;
+  margin: 0 0 1.5rem 0;
+}
+
+.docs-search input {
+  width: 100%;
+  padding: 0.625rem 0.75rem 0.625rem 2.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  background-color: var(--surface);
+  color: var(--text);
+  transition: all 0.2s ease;
+}
+
+.docs-search input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 1px var(--primary-color-light);
+}
+
+.docs-search input::placeholder {
+  color: var(--placeholder-color);
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.clear-search {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clear-search:hover {
+  color: var(--text-color);
+}
+
+/* Navigation Sections */
+.docs-nav {
+  flex: 1;
+  overflow-y: visible;
+}
+
+.docs-nav-section {
+  margin-bottom: 0.5rem;
+}
+
+.docs-nav-section h3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 0.5rem;
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: var(--theme-transition);
+  user-select: none;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.docs-nav-section h3:hover {
+  background-color: var(--surface-2);
+  color: var(--primary-color);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Remove section icons */
+
+.expand-icon {
+  transition: transform 0.2s ease;
+}
+
+.docs-nav-section h3.expanded .expand-icon {
+  transform: rotate(180deg);
+}
+
+/* Section Content */
+.doc-section-content {
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-0.5rem);
+  transition: height 0.3s ease, opacity 0.2s ease, transform 0.2s ease;
+  will-change: height, opacity, transform;
+  max-height: none;
+}
+
+.doc-section-content.expanded {
+  height: auto;
+  opacity: 1;
+  transform: translateY(0);
+  overflow: visible;
+}
+
+.doc-section-content ul {
+  list-style: none;
+  padding: 0 0 0 1.75rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.doc-section-content li {
+  margin: 0.375rem 0;
+  position: relative;
+}
+
+.doc-section-content a {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 0.25rem;
+  transition: var(--theme-transition);
+  line-height: 1.5;
+}
+
+.doc-section-content a:hover {
+  background-color: var(--surface-2);
+  color: var(--text);
+}
+
+.doc-section-content a.active {
+  font-weight: 500;
+  color: var(--primary-color);
+  background-color: var(--primary-color-light);
+}
+
+/* Sidebar Footer */
+.docs-sidebar-footer {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.875rem;
+}
+
+.docs-footer-links {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.github-link, .contribute-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.github-link:hover, .contribute-link:hover {
+  color: var(--text-color);
+}
+
+.docs-version-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.docs-version {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background-color: var(--version-badge-bg);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.version-select {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  appearance: none;
+  font-family: inherit;
+  padding-right: 1rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+.version-select:focus {
+  outline: none;
+  color: var(--text-color);
+}
+
+/* Theme handled by the global site header */
+
+/* Mobile Navigation */
+.docs-sidebar-mobile-toggle {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
+  margin-bottom: 0;
+  display: none;
+}
+
+.docs-sidebar-mobile-toggle button {
+  width: auto;
+  padding: 0.75rem 1rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.docs-sidebar-mobile-toggle button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+.close-sidebar-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+
+.close-sidebar-button:hover {
+  color: var(--text-color);
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 19;
+  cursor: pointer;
+  animation: fadeIn 0.2s ease;
+}
+
+.sidebar-overlay.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 1023px) {
+  .docs-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 80%;
+    max-width: 20rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 20;
+    padding: 0;
+  }
+  
+  .docs-sidebar .sidebar-inner {
+    padding: 4rem 1.5rem 1.5rem 1.5rem;
+  }
+  
+  .docs-sidebar.mobile-visible {
+    transform: translateX(0);
+  }
+  
+  .docs-sidebar-mobile-toggle {
+    display: block;
+  }
+  
+  .sidebar-overlay {
+    display: block;
+  }
+  
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}

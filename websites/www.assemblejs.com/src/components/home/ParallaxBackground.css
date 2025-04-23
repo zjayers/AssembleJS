@@ -4,14 +4,6 @@
   --parallax-y: 0px;
   --parallax-reverse-x: 0px;
   --parallax-reverse-y: 0px;
-  
-  /* Theme colors */
-  --primary-color: #FF5A00;
-  --secondary-color: #2B67F8;
-  --tertiary-color: #62B245;
-  --accent-color-1: #FEE440;
-  --accent-color-2: #9B5DE5;
-  --accent-color-3: #00BBF9;
 }
 
 /* Parallax background */
@@ -110,14 +102,9 @@
       circle at 300px 700px,
       rgba(0, 187, 249, 0.02) 90px,
       transparent 90px
-    ),
-    /* Add triangles and other shapes */
-    linear-gradient(45deg, rgba(255, 90, 0, 0.01) 25%, transparent 25%),
-    linear-gradient(135deg, rgba(43, 103, 248, 0.01) 25%, transparent 25%);
-  background-size: auto, auto, auto, auto, auto, auto, 100px 100px, 120px 120px;
-  background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0,
-    var(--parallax-x) var(--parallax-y),
-    var(--parallax-reverse-x) var(--parallax-reverse-y);
+    );
+  background-size: auto, auto, auto, auto, auto, auto;
+  background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
   animation: float-bg-opposite 25s ease-in-out infinite alternate;
   transform: translate(
     calc(var(--parallax-reverse-x) * 1),
@@ -165,7 +152,7 @@
 }
 
 /* Adjust shape visibility in light mode */
-body.light-theme .shape {
+[data-theme="light"] .shape {
   opacity: 0.08;
 }
 
@@ -308,8 +295,8 @@ body.light-theme .shape {
 }
 
 /* Theme-specific adjustments */
-[data-theme="dark"] .parallax-bg::before,
-[data-theme="dark"] .parallax-bg::after {
+:root .parallax-bg::before,
+:root .parallax-bg::after {
   opacity: 0.8;
 }
 

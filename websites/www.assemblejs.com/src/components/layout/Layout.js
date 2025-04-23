@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import './Layout.css';
 
 // Background shapes component for visual interest
 const BackgroundShapes = () => (
@@ -47,14 +48,14 @@ const Layout = ({ children }) => {
   }, []);
 
   return (
-    <>
+    <div className="layout">
       <BackgroundShapes />
       <Header />
       <main id="main-content" role="main">
         {children}
       </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

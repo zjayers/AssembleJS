@@ -1,0 +1,338 @@
+/* Comparison section styling */
+.comparison {
+  padding: 5rem 0;
+  background: var(--surface);
+  overflow: hidden;
+  position: relative;
+  background-color: transparent;
+  /* Allow background to show through */
+}
+
+.comparison .container {
+  max-width: 1320px; /* Increased to provide more space for the table */
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.section-subtitle {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.5;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  color: var(--text-secondary);
+}
+
+.comparison-content {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin: 0 auto;
+  align-items: stretch; /* Make items stretch to match heights */
+  max-width: 1200px; /* Limit maximum width to ensure proper display */
+}
+
+/* Table styling */
+.comparison-table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 1px solid rgba(var(--dark-border-rgb), 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  flex: 3;
+  width: 75%; /* Further increased width to eliminate scrolling */
+  display: flex;
+  flex-direction: column;
+  height: auto; /* Auto height based on content */
+}
+
+.comparison-table {
+  width: 100%;
+  height: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: center;
+  table-layout: fixed; /* Ensures fixed column widths are respected */
+  flex: 1;
+}
+
+.comparison-table td {
+  text-align: center;
+}
+
+/* Column widths */
+.comparison-table .col-feature {
+  width: 250px; /* Width for features column */
+  min-width: 250px; /* Ensure minimum width */
+}
+
+.comparison-table .col-framework {
+  width: 100px; /* Fixed width for framework columns */
+  min-width: 100px; /* Ensure minimum width */
+  white-space: nowrap;
+  overflow: visible;
+  padding: 0 10px; /* Add horizontal padding to create more space */
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 1.5rem 0.25rem;
+  border-bottom: 1px solid rgba(var(--dark-border-rgb), 0.2);
+  position: relative;
+}
+
+/* Header styling */
+.comparison-table thead tr {
+  background-color: rgba(var(--dark-surface-rgb), 0.3);
+}
+
+.comparison-table th {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;  /* Slightly reduced letter spacing */
+  padding: 1.25rem 0.25rem !important; /* Increased horizontal padding */
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: visible;
+  border-bottom: 2px solid rgba(var(--dark-border-rgb), 0.3);
+}
+
+.comparison-table th:first-child,
+.comparison-table thead tr th:first-child {
+  text-align: center !important;
+  width: 250px;
+  border-top-left-radius: 8px;
+}
+
+.comparison-table th:last-child {
+  border-top-right-radius: 8px;
+}
+
+/* Row styling */
+.comparison-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.comparison-table tbody tr:nth-child(odd) {
+  background-color: rgba(var(--dark-surface-rgb), 0.1);
+}
+
+.comparison-table tbody tr:hover {
+  background-color: rgba(var(--dark-surface-rgb), 0.2);
+}
+
+.comparison-table tbody tr:hover th {
+  color: var(--tertiary-color);
+  background-color: rgba(var(--dark-surface-rgb), 0.25);
+}
+
+/* Cell styling */
+.comparison-table tbody th {
+  text-align: center; /* Changed from left to center */
+  font-weight: 600;
+  background-color: rgba(var(--dark-surface-rgb), 0.15);
+  color: var(--text);
+  text-transform: none;
+  font-size: 0.95rem;
+  white-space: normal;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Check and X marks */
+.comparison-table td .icon-container {
+  font-size: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: rgba(30, 41, 59, 0.4);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  margin: 0 auto; /* Centers horizontally */
+}
+
+[data-theme="light"] .comparison-table td .icon-container {
+  background-color: rgba(203, 213, 225, 0.4);
+}
+
+.comparison-table td .icon-container:hover {
+  transform: scale(1.1);
+  background-color: rgba(30, 41, 59, 0.6);
+}
+
+[data-theme="light"] .comparison-table td .icon-container:hover {
+  background-color: rgba(203, 213, 225, 0.6);
+}
+
+/* Check mark styles */
+.comparison-table td .check-icon {
+  color: #22c55e;
+  /* Success green */
+}
+
+/* X mark styles */
+.comparison-table td .x-icon {
+  color: #ef4444;
+  /* Error red */
+}
+
+/* Framework column highlighting */
+.comparison-table th:nth-child(2),
+.comparison-table td:nth-child(2) {
+  background-color: rgba(var(--tertiary-color-rgb), 0.08);
+  /* AssembleJS highlight */
+  border-left: 1px solid rgba(var(--tertiary-color-rgb), 0.2);
+  border-right: 1px solid rgba(var(--tertiary-color-rgb), 0.2);
+}
+
+.comparison-text {
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 2rem;
+  border-radius: 8px;
+  background-color: transparent;
+  border: 1px solid rgba(var(--dark-border-rgb), 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  flex: 1;
+  width: 25%; /* Adjusted to accommodate wider table */
+  height: 100%; /* Take full height of flex container */
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+.comparison-lead {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text);
+  margin: 0;
+}
+
+.comparison-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.comparison-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.comparison-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  width: 1rem;
+  height: 1rem;
+  color: var(--tertiary-color);
+  /* Using the tertiary color instead of primary */
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.comparison-list li strong {
+  color: var(--tertiary-color);
+  /* Using the tertiary color instead of primary */
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 0.95rem;
+}
+
+/* Remove redundant styles that were moved up */
+
+/* Only switch to column layout on mobile */
+@media (max-width: 768px) {
+  .comparison-content {
+    flex-direction: column;
+  }
+
+  .comparison-table-container,
+  .comparison-text {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .comparison-table .col-framework {
+    width: 100px; /* Fixed width on mobile */
+  }
+}
+
+@media (max-width: 1199px) {
+  .section-title {
+    font-size: 2.5rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1.125rem;
+    max-width: 700px;
+  }
+}
+
+@media (max-width: 767px) {
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .comparison {
+    padding: 4rem 0;
+  }
+
+  .comparison-content {
+    gap: 2rem;
+  }
+
+  .comparison-table th,
+  .comparison-table td {
+    padding: 1rem 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .comparison-table th:first-child {
+    width: 200px;
+  }
+
+  .comparison-lead {
+    font-size: 1.125rem;
+  }
+
+  .comparison-list li {
+    font-size: 0.95rem;
+  }
+
+  .comparison-table td .icon-container {
+    width: 2rem;
+    height: 2rem;
+  }
+}

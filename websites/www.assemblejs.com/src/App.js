@@ -8,6 +8,9 @@ import ShowcasePage from './pages/ShowcasePage';
 import NotFoundPage from './pages/NotFoundPage';
 import './App.css';
 
+// Import documentation styles
+import './pages/DocsPage.css';
+
 function App() {
   const location = useLocation();
   

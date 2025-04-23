@@ -10,7 +10,7 @@ const Hero = () => {
       
       <div className="container">
         <div className="hero-content">
-          <h1 id="hero-heading" className="hero-title">Micro-Frontends, Assemble!</h1>
+          <h1 id="hero-heading" className="hero-title">Micro-Frontends, <span className="gold-emboss">Assemble!</span></h1>
           <p className="hero-description">
             AssembleJS unites the mightiest web technologies to build powerful distributed UIs.
             Harness the strength of multiple frameworks within a single application.
@@ -40,8 +40,8 @@ const Hero = () => {
             </div>
           </div>
         </div>
-        <div className="hero-image" aria-hidden="true">
-          <div className="hero-image-container">
+        <div className="hero-image" aria-hidden="true" style={{ height: '100%' }}>
+          <div className="hero-image-container" style={{ height: '100%' }}>
             <div className="code-block" role="img" aria-label="Example AssembleJS server code">
               <div className="code-header">
                 <span className="code-title">server.ts</span>
@@ -54,19 +54,28 @@ const Hero = () => {
               <pre className="code-content">
                 <code className="code-block-content">
                   <div className="code-line"><span className="code-keyword">import</span> {'{' } createBlueprintServer {'}' } <span className="code-keyword">from</span> <span className="code-string">'asmbl'</span>;</div>
-                  <div className="code-line"></div>
-                  <div className="code-line"></div>
                   <div className="code-line"><span className="code-function">createBlueprintServer</span>({'{'}</div>
-                  <div className="code-line">  <span className="code-comment">{"// Server config"}</span></div>
-                  <div className="code-line">  serverRoot: <span className="code-string">'./src'</span>,</div>
-                  <div className="code-line">  port: <span className="code-number">3000</span>,</div>
-                  <div className="code-line"></div>
-                  <div className="code-line">  <span className="code-comment">{"// Components"}</span></div>
+                  <div className="code-line">  serverRoot: <span className="code-string">import.meta.url</span>,</div>
                   <div className="code-line">  manifest: {'{'}</div>
                   <div className="code-line">    components: [</div>
-                  <div className="code-line">      {'{'} path: <span className="code-string">'product'</span>,</div>
-                  <div className="code-line">        views: [{'{'} <span className="code-keyword">{"/*...*/"}</span> {'}'}</div>
-                  <div className="code-line">      ]{'}'}</div>
+                  <div className="code-line">      {'{'}</div>
+                  <div className="code-line">        path: <span className="code-string">'app'</span>,</div>
+                  <div className="code-line">        views: [{'{' }</div>
+                  <div className="code-line">          <span className="code-comment">{/* React blueprint */}</span></div>
+                  <div className="code-line">          exposeAsBlueprint: <span className="code-keyword">true</span>,</div>
+                  <div className="code-line">          templateFile: <span className="code-string">'app.view.jsx'</span>,</div>
+                  <div className="code-line">          components: [</div>
+                  <div className="code-line">            <span className="code-comment">{/* Svelte component */}</span></div>
+                  <div className="code-line">            {'{'} name: <span className="code-string">'cart'</span>, contentUrl: </div>
+                  <div className="code-line">              <span className="code-string">'/cart/dropdown/'</span> {'}'}</div>
+                  <div className="code-line">          ]</div>
+                  <div className="code-line">        {'}'}]</div>
+                  <div className="code-line">      {'}'},</div>
+                  <div className="code-line">      {'{'}</div>
+                  <div className="code-line">        path: <span className="code-string">'cart'</span>,</div>
+                  <div className="code-line">        views: [{'{' } viewName: <span className="code-string">'dropdown'</span>, </div>
+                  <div className="code-line">          templateFile: <span className="code-string">'dropdown.view.svelte'</span> {'}'}]</div>
+                  <div className="code-line">      {'}'}</div>
                   <div className="code-line">    ]</div>
                   <div className="code-line">  {'}'}</div>
                   <div className="code-line">{'}'});</div>

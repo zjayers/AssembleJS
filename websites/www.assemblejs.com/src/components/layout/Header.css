@@ -13,9 +13,7 @@
   padding: 0;
   
   /* Visual styling */
-  background-color: transparent;
-  backdrop-filter: blur(0);
-  -webkit-backdrop-filter: blur(0);
+  background-color: var(--bg);
   
   /* Animation */
   transition: all 0.3s ease;
@@ -39,11 +37,8 @@
 .site-header.scrolled {
   /* Visual changes on scroll */
   height: 60px;
-  background-color: var(--bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--border) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Header state: docs page specific */

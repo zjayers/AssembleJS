@@ -1,0 +1,185 @@
+/* DocumentationLoader Component Styles
+ * Styling for the component that loads and displays documentation content
+ */
+
+.documentation-loader {
+  width: 100%;
+  min-height: 300px;
+  position: relative;
+}
+
+/* Loading State */
+.documentation-loader.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 4px solid rgba(59, 130, 246, 0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spinner 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error State */
+.documentation-loader.error {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  margin: 2rem 0;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
+}
+
+.documentation-loader.error h2 {
+  margin-top: 0;
+  color: var(--error-color);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.documentation-loader.error p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.documentation-loader.error a {
+  color: var(--primary-color);
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  background-color: var(--primary-color-light);
+  display: inline-block;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.documentation-loader.error a:hover {
+  text-decoration: none;
+  background-color: rgba(255, 90, 0, 0.2);
+}
+
+/* Documentation Content */
+.documentation-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  line-height: 1.2;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.documentation-content {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+/* Code Block Enhancements */
+.code-block-wrapper {
+  position: relative;
+  margin: 1.5rem 0;
+  transition: var(--theme-transition);
+}
+
+.code-block-wrapper.npm-install-block pre {
+  background-color: var(--code-block-bg) !important;
+  color: var(--code-block-text) !important;
+  border-color: var(--border) !important;
+}
+
+.code-block-wrapper.npm-install-block pre code {
+  color: var(--code-block-text) !important;
+  background-color: transparent !important;
+}
+
+.code-lang {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0.75rem;
+  background-color: var(--code-block-button-bg, rgba(30, 41, 59, 0.8));
+  color: var(--code-block-button-text, #94a3b8);
+  padding: 0.25rem 0.75rem;
+  border-radius: 0 0.5rem 0 0.5rem;
+  z-index: 1;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: var(--theme-transition);
+}
+
+/* Heading Anchors */
+.heading-anchor {
+  position: absolute;
+  margin-left: -1.5rem;
+  padding-right: 0.5rem;
+  opacity: 0;
+  text-decoration: none;
+  color: var(--text-muted);
+  font-weight: 400;
+  transition: all 0.15s ease;
+}
+
+h1:hover .heading-anchor,
+h2:hover .heading-anchor,
+h3:hover .heading-anchor,
+h4:hover .heading-anchor {
+  opacity: 1;
+}
+
+.heading-anchor:hover {
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+/* For headings that span multiple lines */
+h1, h2, h3, h4 {
+  position: relative;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .documentation-title {
+    font-size: 1.75rem;
+  }
+  
+  .heading-anchor {
+    opacity: 0.5;
+    margin-left: 0;
+    position: relative;
+    padding-right: 0.25rem;
+  }
+}
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

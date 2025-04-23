@@ -2054,7 +2054,7 @@ Cache interfaces for this assembly instance
 
 #### Defined in
 
-[src/types/blueprint.simple.types.ts:45](https://github.com/zjayers/AssembleJS/blob/986668e/src/types/blueprint.simple.types.ts#L45)
+[src/types/blueprint.simple.types.ts:45](https://github.com/zjayers/AssembleJS/blob/e3653e0/src/types/blueprint.simple.types.ts#L45)
 
 ___
 
@@ -2220,7 +2220,7 @@ Server manifest containing registered components, blueprints, controllers, etc.
 
 #### Defined in
 
-[src/types/blueprint.simple.types.ts:51](https://github.com/zjayers/AssembleJS/blob/986668e/src/types/blueprint.simple.types.ts#L51)
+[src/types/blueprint.simple.types.ts:51](https://github.com/zjayers/AssembleJS/blob/e3653e0/src/types/blueprint.simple.types.ts#L51)
 
 ___
 
@@ -2380,7 +2380,7 @@ Service container for dependency injection
 
 #### Defined in
 
-[src/types/blueprint.simple.types.ts:48](https://github.com/zjayers/AssembleJS/blob/986668e/src/types/blueprint.simple.types.ts#L48)
+[src/types/blueprint.simple.types.ts:48](https://github.com/zjayers/AssembleJS/blob/e3653e0/src/types/blueprint.simple.types.ts#L48)
 
 ___
 

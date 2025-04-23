@@ -7,8 +7,9 @@
 /* Main content area */
 main {
   flex: 1;
-  padding-top: 70px; /* Match the header height */
+  padding-top: 35px; /* Half of the original 70px padding */
   min-height: 100vh;
+  overflow-y: auto; /* Enable page-wide scrolling */
 }
 
 /* Adjust padding for the docs page */
@@ -23,13 +24,10 @@ html {
 
 /* Adjust padding when header is scrolled */
 .site-header.scrolled + main {
-  padding-top: 60px; /* Match the scrolled header height */
+  padding-top: 30px; /* Half of the original 60px padding */
 }
 
-/* Home page specific adjustments */
-.hero {
-  padding-top: 4rem; /* Additional spacing for hero section */
-}
+/* Home page specific adjustments - removed padding */
 
 /* Abstract floating shapes */
 .abstract-shapes {

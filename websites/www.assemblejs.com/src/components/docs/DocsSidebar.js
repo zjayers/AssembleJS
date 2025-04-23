@@ -1,55 +1,85 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, forwardRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
-const DocsSidebar = () => {
+const DocsSidebar = forwardRef(({ className = '' }, ref) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedSections, setExpandedSections] = useState({});
   const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const location = useLocation();
-  const sidebarRef = useRef(null);
+  const localSidebarRef = useRef(null);
   
-  // Define the documentation structure - based on docs/index.md table of contents
+  // Use the forwarded ref or fallback to local ref
+  const sidebarRef = ref || localSidebarRef;
+  
+  // Define the documentation structure - comprehensive API documentation inspired by Vue/React
   const docsStructure = useMemo(() => [
     {
-      title: 'Getting Started',
-      icon: '🚀',
+      title: 'Introduction',
       items: [
-        { name: 'Introduction', path: 'index' },
+        { name: 'Getting Started', path: 'index' },
+        { name: 'Why AssembleJS', path: 'why-assemblejs' },
+        { name: 'Quick Start', path: 'quick-start' },
+      ]
+    },
+    {
+      title: 'Core Concepts',
+      items: [
         { name: 'Architecture Overview', path: 'architecture-overview' },
-        { name: 'Core Concepts', path: 'core-concepts' },
+        { name: 'Blueprints', path: 'core-concepts/blueprints' },
+        { name: 'Components', path: 'core-concepts/components' },
+        { name: 'Factories', path: 'core-concepts/factories' },
+        { name: 'Event System', path: 'core-concepts/event-system' },
+        { name: 'Renderers', path: 'core-concepts/renderers' },
       ]
     },
     {
       title: 'Guides',
-      icon: '📚',
       items: [
-        { name: 'Development Setup', path: 'development-setup' },
+        { name: 'Project Setup', path: 'development-setup' },
         { name: 'Development Workflow', path: 'development-workflow' },
-        { name: 'CLI Guide', path: 'cli-guide' },
-        { name: 'Best Practices', path: 'best-practices' },
+        { name: 'Deployment', path: 'deployment-guide' },
+        { name: 'Testing', path: 'testing-guide' },
+        { name: 'Performance Optimization', path: 'performance-optimization' },
       ]
     },
     {
-      title: 'Reference',
-      icon: '📖',
+      title: 'Tutorials',
       items: [
-        { name: 'Components Reference', path: 'components-reference' },
-        { name: 'Technical Implementation', path: 'technical-implementation' },
-        { name: 'Detailed Architecture', path: 'detailed-architecture' },
+        { name: 'Building a Storefront', path: 'tutorials/storefront' },
+        { name: 'Component Communication', path: 'tutorials/component-communication' },
+        { name: 'Server-Side Data Fetching', path: 'tutorials/server-side-data' },
+        { name: 'Multi-Framework Integration', path: 'tutorials/multi-framework' },
+      ]
+    },
+    {
+      title: 'CLI Reference',
+      items: [
+        { name: 'CLI Overview', path: 'cli-guide' },
+        { name: 'asmgen (Generator)', path: 'cli/asmgen' },
+        { name: 'asm-build (Build)', path: 'cli/asm-build' },
+        { name: 'asm-serve (Development)', path: 'cli/asm-serve' },
+        { name: 'asm-insights (Analysis)', path: 'cli/asm-insights' },
       ]
     },
     {
       title: 'Enterprise Tools',
-      icon: '🔧',
       items: [
         { name: 'REDLINE: Code Quality', path: 'redline-code-quality-tool' },
         { name: 'RIVET: Deployment System', path: 'rivet-deployment-system' },
-        { name: 'Website Deployment', path: 'website-deployment' },
+        { name: 'SPECSHEET: Performance', path: 'specsheet-performance-tool' },
       ]
     },
     {
-      title: 'Classes',
-      icon: '🧩',
+      title: 'API Reference',
+      items: [
+        { name: 'Global API', path: 'api/global' },
+        { name: 'Server API', path: 'api/server' },
+        { name: 'Client API', path: 'api/client' },
+        { name: 'Event API', path: 'api/event' },
+      ]
+    },
+    {
+      title: 'Core Classes',
       items: [
         { name: 'Blueprint', path: 'classes/Blueprint' },
         { name: 'BlueprintClient', path: 'classes/BlueprintClient' },
@@ -59,8 +89,7 @@ const DocsSidebar = () => {
       ]
     },
     {
-      title: 'Functions',
-      icon: '⚙️',
+      title: 'Core Functions',
       items: [
         { name: 'createBlueprintServer', path: 'functions/createBlueprintServer' },
         { name: 'http', path: 'functions/http' },
@@ -68,7 +97,6 @@ const DocsSidebar = () => {
     },
     {
       title: 'Interfaces',
-      icon: '🔄',
       items: [
         { name: 'Assembly', path: 'interfaces/Assembly' },
         { name: 'BlueprintClientRegistry', path: 'interfaces/BlueprintClientRegistry' },
@@ -81,8 +109,7 @@ const DocsSidebar = () => {
       ]
     },
     {
-      title: 'Types',
-      icon: '📝',
+      title: 'Type Definitions',
       items: [
         { name: 'ApiReply', path: 'types/ApiReply' },
         { name: 'ApiRequest', path: 'types/ApiRequest' },
@@ -92,8 +119,7 @@ const DocsSidebar = () => {
       ]
     },
     {
-      title: 'Variables',
-      icon: '🔠',
+      title: 'Exports',
       items: [
         { name: 'events', path: 'variables/events' },
         { name: 'hooks', path: 'variables/hooks' },
@@ -102,8 +128,28 @@ const DocsSidebar = () => {
       ]
     },
     {
-      title: 'Help & Information',
-      icon: '❓',
+      title: 'UI Framework Integration',
+      items: [
+        { name: 'HTML & Templates', path: 'frameworks/html-templates' },
+        { name: 'Preact Integration', path: 'frameworks/preact' },
+        { name: 'React Integration', path: 'frameworks/react' },
+        { name: 'Vue Integration', path: 'frameworks/vue' },
+        { name: 'Svelte Integration', path: 'frameworks/svelte' },
+        { name: 'Web Components', path: 'frameworks/web-components' },
+      ]
+    },
+    {
+      title: 'Advanced Topics',
+      items: [
+        { name: 'Islands Architecture', path: 'advanced/islands-architecture' },
+        { name: 'Server-Side Rendering', path: 'advanced/server-side-rendering' },
+        { name: 'Component Lifecycle', path: 'advanced/component-lifecycle' },
+        { name: 'Cross-Framework State', path: 'advanced/cross-framework-state' },
+        { name: 'Security Best Practices', path: 'advanced/security' },
+      ]
+    },
+    {
+      title: 'Help & Resources',
       items: [
         { name: 'Troubleshooting', path: 'troubleshooting' },
         { name: 'Development Roadmap', path: 'development-roadmap' },
@@ -117,11 +163,13 @@ const DocsSidebar = () => {
   // Initially expand the section of the current page
   useEffect(() => {
     const currentPath = location.pathname.replace('/docs/', '');
+    // Handle empty path as 'index'
+    const normalizedCurrentPath = currentPath === '' ? 'index' : currentPath;
     const initialExpandedSections = {};
     
     docsStructure.forEach((section, index) => {
       const hasActiveItem = section.items.some(item => 
-        currentPath === item.path || currentPath.startsWith(item.path + '/')
+        normalizedCurrentPath === item.path || normalizedCurrentPath.startsWith(item.path + '/')
       );
       
       if (hasActiveItem) {
@@ -186,7 +234,7 @@ const DocsSidebar = () => {
       document.addEventListener('keydown', handleTabKey);
       return () => document.removeEventListener('keydown', handleTabKey);
     }
-  }, [showMobileSidebar]);
+  }, [showMobileSidebar, sidebarRef]);
   
   // Filter items based on search term
   const filteredStructure = docsStructure.map(section => {
@@ -227,10 +275,11 @@ const DocsSidebar = () => {
       
       <aside 
         id={sidebarId}
-        className={`docs-sidebar ${showMobileSidebar ? 'mobile-visible' : ''}`}
+        className={`docs-sidebar ${showMobileSidebar ? 'mobile-visible' : ''} ${className}`}
         ref={sidebarRef}
         aria-label="Documentation navigation"
       >
+        <div className="sidebar-inner">
         {/* Close button for mobile - only shown when sidebar is visible */}
         {showMobileSidebar && (
           <button 
@@ -321,11 +370,6 @@ const DocsSidebar = () => {
                   }}
                 >
                   <div className="section-header">
-                    {section.icon && (
-                      <span className="section-icon" aria-hidden="true">
-                        {section.icon}
-                      </span>
-                    )}
                     <span className="section-title">{section.title}</span>
                   </div>
                   <svg 
@@ -354,8 +398,10 @@ const DocsSidebar = () => {
                     <ul>
                       {section.items.map((item, itemIndex) => {
                         const currentPath = location.pathname.replace('/docs/', '');
-                        const isActive = currentPath === item.path || 
-                                      currentPath.startsWith(item.path + '/');
+                        // Handle empty path as 'index'
+                        const normalizedCurrentPath = currentPath === '' ? 'index' : currentPath;
+                        const isActive = normalizedCurrentPath === item.path || 
+                                      normalizedCurrentPath.startsWith(item.path + '/');
                         
                         return (
                           <li key={itemIndex}>
@@ -379,35 +425,72 @@ const DocsSidebar = () => {
         
         {searchTerm === "" && (
           <div className="docs-sidebar-footer">
-            <a 
-              href="https://github.com/zjayers/assemblejs" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="github-link"
-              aria-label="AssembleJS on GitHub (opens in a new tab)"
-            >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="20" 
-                height="20" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-                aria-hidden="true"
-                focusable="false"
+            <div className="docs-footer-links">
+              <a 
+                href="https://github.com/zjayers/assemblejs" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="github-link"
+                aria-label="AssembleJS on GitHub (opens in a new tab)"
               >
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-              </svg>
-              GitHub
-            </a>
-            <span className="docs-version" aria-label="AssembleJS version 1.0.0">
-              v1.0.0
-            </span>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="20" 
+                  height="20" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+                GitHub
+              </a>
+              <a 
+                href="/docs/contributing-to-assemblejs" 
+                className="contribute-link"
+                aria-label="Contribute to AssembleJS"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="18" 
+                  height="18" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 01-.923 1.785A5.969 5.969 0 006 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337z" />
+                </svg>
+                Contribute
+              </a>
+            </div>
+            <div className="docs-version-selector">
+              <span className="docs-version" aria-label="AssembleJS version 1.0.0">
+                v1.0.0-alpha
+              </span>
+              <select 
+                className="version-select" 
+                aria-label="Select documentation version"
+                defaultValue="1.0.0-alpha"
+              >
+                <option value="1.0.0-alpha">v1.0.0-alpha (Current)</option>
+                <option value="next">next (Development)</option>
+                <option disabled>──────────</option>
+                <option value="releases">All releases</option>
+              </select>
+            </div>
           </div>
         )}
+        </div>
       </aside>
       
       {/* Overlay for mobile sidebar */}
@@ -421,6 +504,6 @@ const DocsSidebar = () => {
       )}
     </>
   );
-};
+});
 
 export default DocsSidebar;

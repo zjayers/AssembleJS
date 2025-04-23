@@ -35,7 +35,7 @@ const opts: BlueprintServerOptions = {
 
 #### Defined in
 
-[src/types/blueprint.server.manifest.ts:27](https://github.com/zjayers/AssembleJS/blob/986668e/src/types/blueprint.server.manifest.ts#L27)
+[src/types/blueprint.server.manifest.ts:27](https://github.com/zjayers/AssembleJS/blob/e3653e0/src/types/blueprint.server.manifest.ts#L27)
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 #### Defined in
 
-[src/types/blueprint.server.manifest.ts:25](https://github.com/zjayers/AssembleJS/blob/986668e/src/types/blueprint.server.manifest.ts#L25)
+[src/types/blueprint.server.manifest.ts:25](https://github.com/zjayers/AssembleJS/blob/e3653e0/src/types/blueprint.server.manifest.ts#L25)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[src/types/blueprint.server.manifest.ts:30](https://github.com/zjayers/AssembleJS/blob/986668e/src/types/blueprint.server.manifest.ts#L30)
+[src/types/blueprint.server.manifest.ts:30](https://github.com/zjayers/AssembleJS/blob/e3653e0/src/types/blueprint.server.manifest.ts#L30)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-[src/types/blueprint.server.manifest.ts:26](https://github.com/zjayers/AssembleJS/blob/986668e/src/types/blueprint.server.manifest.ts#L26)
+[src/types/blueprint.server.manifest.ts:26](https://github.com/zjayers/AssembleJS/blob/e3653e0/src/types/blueprint.server.manifest.ts#L26)
 
 ___
 
@@ -85,7 +85,7 @@ Value is the service class constructor that extends the Service base class
 
 #### Defined in
 
-[src/types/blueprint.server.manifest.ts:44](https://github.com/zjayers/AssembleJS/blob/986668e/src/types/blueprint.server.manifest.ts#L44)
+[src/types/blueprint.server.manifest.ts:44](https://github.com/zjayers/AssembleJS/blob/e3653e0/src/types/blueprint.server.manifest.ts#L44)
 
 ___
 
@@ -105,4 +105,4 @@ ___
 
 #### Defined in
 
-[src/types/blueprint.server.manifest.ts:45](https://github.com/zjayers/AssembleJS/blob/986668e/src/types/blueprint.server.manifest.ts#L45)
+[src/types/blueprint.server.manifest.ts:45](https://github.com/zjayers/AssembleJS/blob/e3653e0/src/types/blueprint.server.manifest.ts#L45)

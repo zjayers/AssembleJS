@@ -16,6 +16,9 @@ const Header = () => {
     const savedTheme = localStorage.getItem('theme') || 'dark';
     setTheme(savedTheme);
     document.body.setAttribute('data-theme', savedTheme);
+    
+    // Apply a transition to all elements for smoother theme switching
+    document.documentElement.style.setProperty('--theme-transition-time', '0.3s');
   }, []);
 
   // Track scroll for header styling
@@ -100,7 +103,7 @@ const Header = () => {
               </li>
               <li>
                 <NavLink to="/docs" className={({isActive}) => isActive || isDocsPage ? 'active' : ''}>
-                  Docs
+                  Documentation
                 </NavLink>
               </li>
               <li>
