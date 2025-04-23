@@ -55,7 +55,7 @@ jobs:
             if npm view "$PKG_NAME@$PKG_VERSION" version &>/dev/null; then
               echo "version_exists=true" >> $GITHUB_OUTPUT
               echo "tag=latest" >> $GITHUB_OUTPUT
-              echo "::error::Version $PKG_VERSION already exists with tag 'latest'. Please update the version in package.json"
+              echo "::error::Version $PKG_VERSION already exists with tag 'latest'. Please update the version by running: npm run version:patch (or version:minor or version:major)"
             else
               echo "version_exists=false" >> $GITHUB_OUTPUT
             fi
@@ -65,7 +65,7 @@ jobs:
             if npm view "$PKG_NAME@$PKG_VERSION" version --tag next &>/dev/null; then
               echo "version_exists=true" >> $GITHUB_OUTPUT
               echo "tag=next" >> $GITHUB_OUTPUT
-              echo "::error::Version $PKG_VERSION already exists with tag 'next'. Please update the version in package.json"
+              echo "::error::Version $PKG_VERSION already exists with tag 'next'. Please update the version by running: npm run version:patch (or version:minor or version:major)"
             else
               echo "version_exists=false" >> $GITHUB_OUTPUT
             fi
@@ -87,18 +87,25 @@ jobs:
             
             The package version \`${packageName}@${packageVersion}\` already exists on npm with the \`${tag}\` tag.
             
-            Please update the version in package.json before merging this PR. You can increment the:
-            - patch version for bug fixes
-            - minor version for backwards-compatible features
-            - major version for breaking changes
+            Please update the version before merging this PR by running one of these commands:
             
-            Example:
-            \`\`\`json
-            {
-              "name": "${packageName}",
-              "version": "x.y.z" // Update this version
-            }
-            \`\`\``;
+            \`\`\`bash
+            # For bug fixes
+            npm run version:patch
+            
+            # For new features (backwards compatible)
+            npm run version:minor
+            
+            # For breaking changes
+            npm run version:major
+            \`\`\`
+            
+            This will:
+            1. Update the version in package.json
+            2. Generate the changelog
+            3. Create a version commit
+            
+            Then push your changes and update this PR.`;
             
             const comments = await github.rest.issues.listComments({
               owner,
@@ -198,7 +205,7 @@ jobs:
         run: |
           if [[ "${{ steps.check-versions.outputs.version_exists }}" == "true" ]]; then
             echo "version-valid=false" >> $GITHUB_OUTPUT
-            echo "::error::Package version already exists on npm. Please update the version in package.json."
+            echo "::error::Package version already exists on npm. Please update the version by running: npm run version:patch (or version:minor or version:major)"
             exit 1
           else
             echo "version-valid=true" >> $GITHUB_OUTPUT
