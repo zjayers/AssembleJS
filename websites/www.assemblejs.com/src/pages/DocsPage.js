@@ -188,7 +188,7 @@ const DocsPage = () => {
   const params = useParams();
   const docPath = params.path || '';
   
-  console.log('DocsPage - current route path parameter:', docPath);
+  // Current route path parameter is used for conditional rendering below
   
   return (
     <>

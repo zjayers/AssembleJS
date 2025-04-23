@@ -22,12 +22,12 @@ const InfinityStones = () => {
   const createRippleEffect = useCallback((stone) => {
     // Get stone color
     const stoneColors = {
-      space: '#1E88E5', // Clearer blue
-      reality: '#E53935', // Brighter red
-      power: '#8E24AA', // Distinct purple
-      mind: '#FDD835', // Brighter yellow
-      time: '#00897B', // Deeper green
-      soul: '#FB8C00'  // More distinct orange
+      space: '#3D5AFE',
+      reality: '#FF1744',
+      power: '#AA00FF',
+      mind: '#FFAB00',
+      time: '#00BFA5',
+      soul: '#FF9100'
     };
     
     // Create ripple element
@@ -95,47 +95,47 @@ const InfinityStones = () => {
   
   // Function to trigger snap
   const triggerSnap = useCallback(() => {
-    // Create snap effect element - will respect theme
+    // Create snap effect element
     const snapElement = document.createElement('div');
     snapElement.className = 'snap-effect';
     
-    // Define colors for the infinity stones
-    const stoneColors = {
-      space: '#1E88E5', // Clearer blue
-      reality: '#E53935', // Brighter red
-      power: '#8E24AA', // Distinct purple
-      mind: '#FDD835', // Brighter yellow
-      time: '#00897B', // Deeper green
-      soul: '#FB8C00'  // More distinct orange
-    };
-
-    // Add the special background effects
-    const infinityStonesContainer = document.createElement('div');
-    infinityStonesContainer.className = 'floating-stones-container';
-    snapElement.appendChild(infinityStonesContainer);
+    // Background color uses CSS variable to respect theme
     
-    // Create and append each infinity stone
-    Object.entries(stoneColors).forEach(([stoneName, color], index) => {
-      // Create DOM element for the stone
+    // Add floating stones container
+    const stonesContainer = document.createElement('div');
+    stonesContainer.className = 'floating-stones-container';
+    snapElement.appendChild(stonesContainer);
+    
+    // Create each infinity stone with random position and movement
+    const stoneColors = {
+      space: '#1E88E5', // Blue
+      reality: '#E53935', // Red
+      power: '#8E24AA', // Purple
+      mind: '#FDD835', // Yellow
+      time: '#00897B', // Green
+      soul: '#FB8C00'  // Orange
+    };
+    
+    // Add each infinity stone
+    Object.entries(stoneColors).forEach(([stoneName, color]) => {
       const stone = document.createElement('div');
-      stone.className = `bouncing-stone ${stoneName}`;
+      stone.className = `floating-stone ${stoneName}`;
       
-      // Set random starting position (within 10-90% of viewport)
+      // Set random starting position (within viewport)
       const randomX = 10 + Math.random() * 80;
       const randomY = 10 + Math.random() * 80;
       stone.style.left = `${randomX}%`;
       stone.style.top = `${randomY}%`;
       
-      // Set unique animation duration and delay for each stone
-      stone.style.animationDuration = `${8 + Math.random() * 8}s`;
-      stone.style.animationDelay = `${Math.random() * 2}s`;
+      // Set unique animation timing for each stone
+      stone.style.animationDuration = `${30 + Math.random() * 20}s`;
+      stone.style.animationDelay = `${Math.random() * 5}s`;
       
-      // Apply the color
+      // Apply color
       stone.style.backgroundColor = color;
       stone.style.boxShadow = `0 0 20px ${color}, 0 0 40px ${color}`;
       
-      // Add to container
-      infinityStonesContainer.appendChild(stone);
+      stonesContainer.appendChild(stone);
     });
     
     // Add balance message
@@ -150,81 +150,56 @@ const InfinityStones = () => {
     submessageElement.textContent = 'In the cosmic dance of frameworks and libraries, true power comes from harmony.';
     snapElement.appendChild(submessageElement);
     
-    // Add ASSEMBLE button with Dr. Strange portal effect
-    const assembleButton = document.createElement('button');
-    assembleButton.className = 'assemble-button';
-    assembleButton.textContent = 'ASSEMBLE and Restore the Universe';
+    // Add button with initial "Initializing Portal" text
+    const reloadButton = document.createElement('button');
+    reloadButton.className = 'reload-button initializing';
+    reloadButton.disabled = true; // Disable initially
     
-    // Add single portal circle for Dr. Strange effect
+    // Create text wrapper for button text with span for gold gradient
+    const buttonText = document.createElement('span');
+    buttonText.textContent = 'Initializing Portal...';
+    reloadButton.appendChild(buttonText);
+    
+    // Create portal container inside the button
+    const portalContainer = document.createElement('div');
+    portalContainer.className = 'portal-container';
+    reloadButton.appendChild(portalContainer);
+    
+    // Create the portal circle
     const portalCircle = document.createElement('div');
     portalCircle.className = 'portal-circle';
-    assembleButton.appendChild(portalCircle);
+    portalContainer.appendChild(portalCircle);
     
-    // Removed sparkle dots from perimeter
-    
-    // Create a view of the home page inside the portal
+    // Create portal view
     const portalView = document.createElement('div');
     portalView.className = 'portal-view';
-    
-    // Use the portal image from assets
-    const heroImage = document.createElement('div');
-    heroImage.className = 'portal-home-view';
-    
-    // Add the portal image - support both light and dark mode
-    const portalImageContainer = document.createElement('div');
-    portalImageContainer.className = 'portal-image-container';
-    
-    // Check if the site is in dark mode - checking body attribute instead of documentElement
-    const isDarkMode = document.body.getAttribute('data-theme') === 'dark';
-    
-    // Apply the appropriate image based on theme
-    if (!isDarkMode) {
-      // Use light version in light mode only
-      portalImageContainer.classList.add('light-mode-image');
-    }
-    // In dark mode, use the default dark image (no additional class needed)
-    
-    heroImage.appendChild(portalImageContainer);
-    portalView.appendChild(heroImage);
     portalCircle.appendChild(portalView);
     
-    // Disable button initially with a visual indicator
-    assembleButton.disabled = true;
-    assembleButton.classList.add('disabled');
-    assembleButton.textContent = 'Stabilizing Portal...';
-    assembleButton.style.display = 'inline-block'; // Ensure it's visible
-    assembleButton.style.opacity = '0.7'; // Ensure it has some opacity
+    // Create portal image that respects theme
+    const portalImage = document.createElement('div');
+    portalImage.className = 'portal-image';
+    
+    // Check if dark mode is active
+    const isDarkMode = document.body.getAttribute('data-theme') === 'dark';
+    if (!isDarkMode) {
+      portalImage.classList.add('light-mode');
+    }
+    
+    portalView.appendChild(portalImage);
+    
+    // Add click handler (will only work once enabled)
+    reloadButton.addEventListener('click', () => window.location.reload());
     
     // Enable button after 5 seconds
     setTimeout(() => {
-      // Ensure button is visible and enabled
-      assembleButton.disabled = false;
-      assembleButton.classList.remove('disabled');
-      assembleButton.textContent = 'ASSEMBLE and Restore the Universe';
-      assembleButton.style.opacity = '1';
-      
-      // Add a subtle glow animation to indicate it's now active
-      assembleButton.classList.add('button-ready');
-      
-      // Log to console for debugging
-      console.log('Portal stabilized, button should be ready');
+      // Update button text using the span element
+      buttonText.textContent = 'ASSEMBLE and Restore the Universe';
+      reloadButton.disabled = false;
+      reloadButton.classList.remove('initializing');
+      reloadButton.classList.add('ready');
     }, 5000);
     
-    // Simple click with subtle feedback effect
-    assembleButton.onclick = () => {
-      if (assembleButton.disabled) return;
-      
-      // Add a pulse animation to the portal circle
-      portalCircle.style.animation = 'pulse-notification 0.6s';
-      
-      // Reload the page after a small delay to show the animation
-      setTimeout(() => {
-        window.location.reload();
-      }, 400); // Give time for the animation to be noticed
-    };
-    snapElement.appendChild(assembleButton);
-    
-    // Add to document
+    snapElement.appendChild(reloadButton);
     document.body.appendChild(snapElement);
     
     // Activate the snap
@@ -284,14 +259,8 @@ const InfinityStones = () => {
       const anyElement = document.querySelector('.hero-content, .feature-card, .footer');
       if (!anyElement) return;
 
-      // Check if stones are already added and ensure their animations are running
-      const existingStones = document.querySelectorAll('.infinity-stone');
-      if (existingStones.length > 0) {
-        existingStones.forEach(stone => {
-          stone.style.animationPlayState = 'running';
-        });
-        return;
-      }
+      // Check if stones are already added
+      if (document.querySelector('.infinity-stone')) return;
       
       // Create counter element
       counterElement = document.createElement('div');
@@ -302,9 +271,6 @@ const InfinityStones = () => {
       
       // Reset global counter
       stonesCollected = 0;
-      
-      // Add a subtle hint to the console for developers
-      console.log('%c✧ Find the six Infinity Stones to unlock a hidden feature... ✧', 'color: #AA00FF; font-weight: bold;');
 
       Object.entries(stonePositions).forEach(([stone, { selector, position }]) => {
         const element = document.querySelector(selector);
@@ -313,9 +279,6 @@ const InfinityStones = () => {
         const stoneElement = document.createElement('div');
         stoneElement.className = `infinity-stone ${stone}`;
         stoneElement.dataset.stone = stone;
-        
-        // Randomize animation-delay to prevent all stones flashing at once
-        stoneElement.style.animationDelay = `${Math.random() * 3}s`;
         
         // Make sure parent element has position
         if (window.getComputedStyle(element).position === 'static') {
@@ -362,13 +325,8 @@ const InfinityStones = () => {
     // Cleanup
     return () => {
       clearInterval(interval);
-      
-      // Instead of removing stones, just pause their animations and hide them
       const stones = document.querySelectorAll('.infinity-stone');
-      stones.forEach(stone => {
-        stone.style.animationPlayState = 'paused';
-        stone.style.visibility = 'visible'; // Ensure they're visible
-      });
+      stones.forEach(stone => stone.remove());
       
       // Also remove counter
       if (counterElement) {

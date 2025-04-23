@@ -15,31 +15,40 @@ const DocumentationLoader = ({ path }) => {
     setContent('');
     setIsLoading(true);
     setError(null);
-    console.log('DocumentationLoader - path changed, resetting state:', path);
+    // Reset state when path changes
   }, [path]);
   
   useEffect(() => {
     const loadContent = async () => {
       if (!path) return;
       
-      console.log('DocumentationLoader - Loading content for path:', path);
+      // Start loading content for path
       setIsLoading(true);
       
       try {
         // Create the document path correctly with proper handling
         const docPath = path.includes('/') ? path : `${path}`;
-        console.log('Attempting to fetch from:', `/docs/${docPath}.md`);
         
+        // First attempt to load from custom docs
+        const customResponse = await fetch(`/custom-docs/${docPath}.md`);
+        
+        if (customResponse.ok) {
+          const markdown = await customResponse.text();
+          setContent(markdown);
+          setError(null);
+          return;
+        }
+        
+        // If not found in custom docs, try the auto-generated docs
         const response = await fetch(`/docs/${docPath}.md`);
         
         if (!response.ok) {
-          console.warn(`Document fetch failed for /docs/${docPath}.md with status:`, response.status);
+          // Document fetch failed, try fallback
           
           if (path === 'index') {
             // Special case for index - check if we need to redirect
             try {
               // Try loading modules.md as a fallback for index
-              console.log('Trying fallback to modules.md for index');
               const modulesResponse = await fetch('/docs/modules.md');
               if (modulesResponse.ok) {
                 const markdown = await modulesResponse.text();
@@ -48,18 +57,18 @@ const DocumentationLoader = ({ path }) => {
                 return;
               }
             } catch (e) {
-              console.error('Error loading fallback content:', e);
+              // Error in fallback
             }
           }
           throw new Error(`Failed to load documentation: ${response.status} ${response.statusText}`);
         }
         
         const markdown = await response.text();
-        console.log('Successfully loaded content, length:', markdown.length);
+        // Successfully loaded content
         setContent(markdown);
         setError(null);
       } catch (err) {
-        console.error('Error loading documentation:', err);
+        // Error loading documentation
         setError(`Failed to load documentation content for "${path}". The page may not exist or there could be a server issue.`);
       } finally {
         setIsLoading(false);
@@ -129,7 +138,7 @@ const DocumentationLoader = ({ path }) => {
                 }, 2000);
               })
               .catch(err => {
-                console.error('Could not copy text: ', err);
+                // Handle clipboard copy error
               });
           });
           
@@ -148,7 +157,7 @@ const DocumentationLoader = ({ path }) => {
           try {
             window.hljs.highlightAll();
           } catch (e) {
-            console.error('Error applying syntax highlighting:', e);
+            // Error applying syntax highlighting
           }
         }, 500);
       }
@@ -164,6 +173,9 @@ const DocumentationLoader = ({ path }) => {
     
     // Enhance code blocks with language information
     renderer.code = function(code, language) {
+      // Make sure code is a string
+      code = String(code || '');
+      
       // Store the raw code for the copy functionality
       const escapedCode = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
       let highlighted = escapedCode;
@@ -189,7 +201,7 @@ const DocumentationLoader = ({ path }) => {
           }
         }
       } catch (e) {
-        console.warn('Error highlighting code:', e);
+        console.error('Error highlighting code:', e);
         // In case of error, use the escaped code
         highlighted = escapedCode;
       }
@@ -197,10 +209,11 @@ const DocumentationLoader = ({ path }) => {
       // Add language label to code blocks
       const langLabel = validLang ? `<div class="code-lang">${language}</div>` : '';
       
-      // Check if this is an npm install block
-      const isNpmInstall = code.trim().includes('npm install') || 
-                          code.trim().includes('npm i') || 
-                          code.trim().startsWith('npm ');
+      // Check if this is an npm install block (ensuring code is a string)
+      const trimmedCode = String(code).trim();
+      const isNpmInstall = trimmedCode.includes('npm install') || 
+                          trimmedCode.includes('npm i') || 
+                          trimmedCode.startsWith('npm ');
       
       const npmClass = isNpmInstall ? 'npm-install-block' : '';
       

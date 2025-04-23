@@ -5,14 +5,15 @@
 /* Sidebar Container */
 .docs-sidebar {
   width: 280px;
-  background-color: var(--bg);
-  border-right: 1px solid var(--border);
+  background-color: var(--surface-color);
+  border-right: 1px solid var(--border-color);
   position: sticky;
   top: 60px; /* Match header height */
   height: auto; 
   max-height: calc(100vh - 60px);
   z-index: 10;
   overflow: hidden; /* Hide scrollbars on the container */
+  padding-top: 1rem;
 }
 
 /* Sidebar Inner Container */
@@ -48,18 +49,19 @@
 /* Search Box */
 .docs-search {
   position: relative;
-  margin: 0 0 1.5rem 0;
+  margin: 0 1rem 1.5rem 1rem;
 }
 
 .docs-search input {
   width: 100%;
   padding: 0.625rem 0.75rem 0.625rem 2.25rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-color);
   border-radius: 0.375rem;
   font-size: 0.875rem;
-  background-color: var(--surface);
-  color: var(--text);
+  background-color: var(--bg-color);
+  color: var(--text-color);
   transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .docs-search input:focus {
@@ -115,21 +117,25 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.625rem 0.5rem;
+  padding: 0.625rem 1rem;
   margin: 0;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-color);
   cursor: pointer;
-  border-radius: 0.25rem;
-  transition: var(--theme-transition);
+  border-radius: 0;
+  transition: all 0.15s ease-in-out;
   user-select: none;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
 }
 
 .docs-nav-section h3:hover {
-  background-color: var(--surface-2);
+  background-color: var(--surface-color-hover);
+  color: var(--primary-color);
+}
+
+.docs-nav-section h3.expanded {
   color: var(--primary-color);
 }
 
@@ -169,35 +175,49 @@
 
 .doc-section-content ul {
   list-style: none;
-  padding: 0 0 0 1.75rem;
-  margin: 0.5rem 0 1rem;
+  padding: 0 0 0 1.25rem;
+  margin: 0.25rem 0 0.75rem;
 }
 
 .doc-section-content li {
-  margin: 0.375rem 0;
+  margin: 0.125rem 0;
   position: relative;
 }
 
 .doc-section-content a {
-  display: inline-block;
-  padding: 0.25rem 0.5rem;
+  display: block;
+  padding: 0.375rem 0.625rem;
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   text-decoration: none;
   border-radius: 0.25rem;
-  transition: var(--theme-transition);
-  line-height: 1.5;
+  transition: all 0.15s ease-in-out;
+  line-height: 1.4;
+  border-left: 2px solid transparent;
 }
 
 .doc-section-content a:hover {
-  background-color: var(--surface-2);
-  color: var(--text);
+  background-color: var(--surface-color-hover);
+  color: var(--text-color);
 }
 
 .doc-section-content a.active {
   font-weight: 500;
   color: var(--primary-color);
   background-color: var(--primary-color-light);
+  border-left: 2px solid var(--primary-color);
+}
+
+/* NavLink component generates .active class on parent li element */
+.doc-section-content li a {
+  border-left: 2px solid transparent;
+}
+
+.doc-section-content li.active a {
+  font-weight: 500;
+  color: var(--primary-color);
+  background-color: var(--primary-color-light);
+  border-left: 2px solid var(--primary-color);
 }
 
 /* Sidebar Footer */

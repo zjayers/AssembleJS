@@ -12,8 +12,7 @@ const DocsContent = () => {
       navigate('/docs/index', { replace: true });
     }
     
-    // Debug the current path parameter for development
-    console.log('Current path parameter:', path);
+    // Path will be used for navigation logic
   }, [path, navigate]);
   
   // Handle anchor link clicks for smooth scrolling
