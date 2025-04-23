@@ -61,11 +61,25 @@ jobs:
       - name: Build everything
         run: npm run build
       
+      - name: Debug OIDC provider
+        run: |
+          echo "GitHub OIDC Provider URL: https://token.actions.githubusercontent.com"
+          echo "GitHub Workflow Repository: ${{ github.repository }}"
+          echo "GitHub Workflow Actor: ${{ github.actor }}"
+          echo "GitHub Workflow Ref: ${{ github.ref }}"
+          echo "GitHub Workflow SHA: ${{ github.sha }}"
+          echo "GitHub Workflow Run ID: ${{ github.run_id }}"
+          echo "GitHub Workflow Run Number: ${{ github.run_number }}"
+      
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+          role-session-name: GithubActionsSession
+          role-duration-seconds: 900
+          mask-aws-account-id: 'no'
+          output-credentials: true
       
       - name: Deploy to S3
         run: |
