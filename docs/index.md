@@ -33,12 +33,7 @@ AssembleJS follows a distributed micro-frontend architecture designed to enable 
 3. **Blueprints**: Composition layers that bring together multiple Components
 4. **Event System**: A global event system for communication between components
 
-The architecture of AssembleJS is presented through several PlantUML diagrams that can be rendered in HTML documentation:
-
-1. **Core Architecture**: [readme-assets/architecture.puml](readme-assets/architecture.puml) - Overall system architecture
-2. **Request Cycle**: [readme-assets/request_cycle.puml](readme-assets/request_cycle.puml) - How requests flow through the system
-3. **Development Lifecycle**: [readme-assets/development_lifecycle.puml](readme-assets/development_lifecycle.puml) - How developers interact with AssembleJS
-4. **Blueprint Composition**: [readme-assets/blueprint_composition.puml](readme-assets/blueprint_composition.puml) - How blueprints compose components
+The architecture of AssembleJS is composed of several key components that work together to provide a comprehensive micro-frontend framework:
 
 ### Flow Diagram
 
@@ -378,7 +373,6 @@ AssembleJS provides several CLI commands:
 | Command | Description |
 |---------|-------------|
 | `asmgen` | Main generator for creating blueprints, components, and other artifacts |
-| `asm` | Shorthand for `asmgen` with convenient syntax |
 | `asm-build` | Build your AssembleJS application for production |
 | `asm-serve` | Start the development server |
 
@@ -484,8 +478,6 @@ npx asmgen
 # Follow the prompts
 
 # Repeat for other components
-# Create footer component
-# Create sidebar component
 
 # Create a factory for dynamic content
 npx asmgen
@@ -1103,161 +1095,6 @@ The AssembleJS development approach is guided by a singular vision: to create th
 4. **Enterprise Edition**
    - Complete essential Level 4 and 5 features
    - Focus on security, authentication, and deployment
-
-## Contributing to AssembleJS
-
-Thank you for considering contributing to AssembleJS! This section explains our development process and how to submit changes.
-
-### Development Workflow
-
-#### Branch Structure
-
-We use a protected branch strategy with the following main branches:
-
-- **main**: Production-ready code. Never push directly to this branch.
-- **next**: Development branch for upcoming features. Never push directly to this branch.
-
-#### Feature Development Process
-
-1. **Create a feature branch**:
-   ```bash
-   # Make sure you're on the latest version of next
-   git checkout next
-   git pull
-   
-   # Create a feature branch
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Make your changes** with regular commits following our commit message format:
-   ```bash
-   # Make changes to code...
-   
-   # Easiest way - use commitizen
-   npm run commit
-   
-   # Or git directly (must follow conventional format)
-   git commit -m "feat: add your feature"
-   ```
-
-3. **Push your branch** to GitHub:
-   ```bash
-   git push -u origin feature/your-feature-name
-   ```
-
-4. **Create a Pull Request** against the `next` branch.
-   - Fill out the PR template
-   - Wait for CI checks to pass
-   - Request a review
-
-5. **Address review feedback** if needed:
-   ```bash
-   # Make more changes
-   npm run commit  # or git commit -m "fix: address review feedback"
-   git push
-   ```
-
-6. **PR is merged** into `next` by a maintainer after approval.
-
-7. **Update your local repository**:
-   ```bash
-   git checkout next
-   git pull
-   ```
-
-#### Bug Fix Process
-
-1. **Create a bugfix branch from main**:
-   ```bash
-   git checkout main
-   git pull
-   git checkout -b bugfix/issue-123-short-description
-   ```
-
-2. **Fix the bug** with regular commits:
-   ```bash
-   # Fix the bug
-   npm run commit  # or git commit -m "fix: resolve issue 123"
-   ```
-
-3. **Push your branch** to GitHub:
-   ```bash
-   git push -u origin bugfix/issue-123-short-description
-   ```
-
-4. **Create a Pull Request** against the `main` branch.
-   - Fill out the PR template
-   - Wait for CI checks to pass
-   - Request a review
-
-5. **PR is merged** into `main` after approval.
-
-#### Documentation Updates
-
-Documentation updates can be submitted directly against the `main` branch:
-
-```bash
-git checkout main
-git pull
-git checkout -b docs/update-readme
-# Make documentation changes
-npm run commit  # or git commit -m "docs: update README"
-git push -u origin docs/update-readme
-```
-
-### Commit Message Guidelines
-
-We use semantic commit messages to automate versioning and changelog generation:
-
-#### Format
-
-```
-<type>(<scope>): <subject>
-
-<body>
-
-<footer>
-```
-
-#### Types
-
-- **feat**: A new feature
-- **fix**: A bug fix
-- **docs**: Documentation changes
-- **style**: Code style changes (formatting, etc.)
-- **refactor**: Code change that neither fixes a bug nor adds a feature
-- **perf**: Performance improvements
-- **test**: Adding or updating tests
-- **chore**: Changes to the build process or auxiliary tools
-- **ci**: Changes to CI configuration
-
-#### Breaking Changes
-
-For breaking changes, either:
-- Add a `!` after the type: `feat!: redesign API`
-- Include `BREAKING CHANGE:` in the footer:
-  ```
-  feat: redesign API
-  
-  BREAKING CHANGE: The API has been completely redesigned
-  ```
-
-#### Examples
-
-```
-feat(auth): add user authentication
-fix(core): resolve memory leak in event handler
-docs: update installation instructions
-refactor(components): simplify blueprint initialization
-test(api): add tests for new endpoints
-```
-
-### Release Process
-
-Our release process is automated:
-
-1. Merges to `main` trigger automatic releases with the `next` npm tag
-2. Official releases are done manually by maintainers through GitHub Actions
 
 ## Frequently Asked Questions
 

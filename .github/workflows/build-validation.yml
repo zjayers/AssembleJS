@@ -55,7 +55,16 @@ jobs:
       # Install dependencies only if cache miss
       - name: Install dependencies
         if: steps.cache-build.outputs.cache-hit != 'true'
-        run: npm ci --ignore-scripts
+        run: npm ci --include=dev
+      
+      # Install website dependencies if they exist
+      - name: Install website dependencies
+        if: steps.cache-build.outputs.cache-hit != 'true'
+        run: |
+          if [ -d "websites/www.assemblejs.com" ]; then
+            cd websites/www.assemblejs.com
+            npm ci
+          fi
       
       # Build project
       - name: Build project
