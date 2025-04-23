@@ -81,8 +81,8 @@
   margin-top: 0;
   margin-bottom: 2rem;
   line-height: 1.2;
-  color: var(--text);
-  border-bottom: 1px solid var(--border);
+  color: var(--text-color);
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 0.75rem;
   letter-spacing: -0.02em;
 }
@@ -90,7 +90,7 @@
 .documentation-content {
   font-size: 1rem;
   line-height: 1.7;
-  color: var(--text);
+  color: var(--text-color);
 }
 
 /* Code Block Enhancements */
@@ -103,7 +103,7 @@
 .code-block-wrapper.npm-install-block pre {
   background-color: var(--code-block-bg) !important;
   color: var(--code-block-text) !important;
-  border-color: var(--border) !important;
+  border-color: var(--border-color) !important;
 }
 
 .code-block-wrapper.npm-install-block pre code {

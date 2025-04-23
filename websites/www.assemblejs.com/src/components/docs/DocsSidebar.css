@@ -117,13 +117,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.625rem 1rem;
+  padding: 0.625rem 0.75rem;
   margin: 0;
   font-size: 0.8125rem;
   font-weight: 600;
   color: var(--text-color);
   cursor: pointer;
-  border-radius: 0;
+  border-radius: 0.25rem;
   transition: all 0.15s ease-in-out;
   user-select: none;
   letter-spacing: 0.03em;
@@ -137,6 +137,7 @@
 
 .docs-nav-section h3.expanded {
   color: var(--primary-color);
+  background-color: var(--surface-color-hover);
 }
 
 .section-header {
@@ -171,11 +172,12 @@
   opacity: 1;
   transform: translateY(0);
   overflow: visible;
+  padding-bottom: 0.5rem;
 }
 
 .doc-section-content ul {
   list-style: none;
-  padding: 0 0 0 1.25rem;
+  padding: 0 0 0 0.75rem;
   margin: 0.25rem 0 0.75rem;
 }
 
@@ -194,6 +196,9 @@
   transition: all 0.15s ease-in-out;
   line-height: 1.4;
   border-left: 2px solid transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .doc-section-content a:hover {
@@ -206,6 +211,7 @@
   color: var(--primary-color);
   background-color: var(--primary-color-light);
   border-left: 2px solid var(--primary-color);
+  white-space: normal; /* Allow wrapping for active items to ensure visibility */
 }
 
 /* NavLink component generates .active class on parent li element */

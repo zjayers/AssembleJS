@@ -92,7 +92,7 @@ body.sidebar-open {
   position: relative;
   overflow-x: hidden; /* Prevent horizontal overflow */
   overflow-y: visible; /* Allow vertical content to flow naturally */
-  background-color: var(--bg);
+  background-color: var(--bg-color); /* Fix variable name */
   border-top: 1px solid var(--border-color); /* Add a subtle top border */
 }
 
