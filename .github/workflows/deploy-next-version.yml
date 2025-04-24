@@ -219,30 +219,9 @@ jobs:
                 if [ -f "../../../.github/docker/Dockerfile.testbed" ]; then
                   cp "../../../.github/docker/Dockerfile.testbed" "./Dockerfile"
                 else
-                  echo "⚠️ Shared Dockerfile not found, creating default"
-                  cat > Dockerfile << 'EOF'
-FROM node:20-alpine
-
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm install asmbl@next
-
-# Copy source code
-COPY . .
-
-# Build the application
-RUN npm run build
-
-# Expose port
-EXPOSE 3000
-
-# Start the application
-CMD ["node", "dist/server.js"]
-EOF
+                  echo "::error::Shared Dockerfile template not found at .github/docker/Dockerfile.testbed"
+                  echo "::error::Please create the Dockerfile template before deploying"
+                  exit 1
                 fi
               fi
               
