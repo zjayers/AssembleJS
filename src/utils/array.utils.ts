@@ -13,7 +13,7 @@
  * const featuredUserIds = getRandomElementSubset(allUserIds);
  * // Result might be [4, 2, 9] (random subset with random length 1-5)
  * ```
- * @category (Utils)
+ * @category Utils
  * @author Zachariah Ayers
  */
 export const getRandomElementSubset = <T>(arr: T[]): T[] => {
@@ -51,7 +51,7 @@ export const getRandomElementSubset = <T>(arr: T[]): T[] => {
  * const productsByCategory = reduceAndMergeKeys(products, 'category', 'name');
  * // Result: { clothing: ['T-shirt', 'Pants'], food: ['Apple'] }
  * ```
- * @category (Utils)
+ * @category Utils
  * @author Zachariah Ayers
  */
 export const reduceAndMergeKeys = <T>(
@@ -84,7 +84,7 @@ export const reduceAndMergeKeys = <T>(
  * const secondPage = paginate(allItems, 10, 1);
  * // Result: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
  * ```
- * @category (Utils)
+ * @category Utils
  * @author Zachariah Ayers
  */
 export const paginate = <T>(
@@ -114,7 +114,7 @@ export const paginate = <T>(
  * const categories = getDistinctKeys(products, 'category');
  * // Result: ['clothing', 'food']
  * ```
- * @category (Utils)
+ * @category Utils
  * @author Zachariah Ayers
  */
 export const getDistinctKeys = <T>(arr: T[], key: keyof T): T[typeof key][] =>

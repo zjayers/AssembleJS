@@ -6,7 +6,7 @@ import { statusCodes } from "../common/http.status.codes";
  * Interface for the base Assemble http client that is exposed to client and server instances.
  * @interface BlueprintHttpClient
  * @extends {AxiosStatic}
- * @author Zach Ayers
+ * @author Zachariah Ayers
  */
 type BlueprintHttpClient = AxiosStatic & {
   useApi: (context: ViewContext, opts?: AxiosRequestConfig) => AxiosInstance;
@@ -16,7 +16,7 @@ type BlueprintHttpClient = AxiosStatic & {
 /**
  * Base Assemble http client implementation that is exposed to client and server instances.
  * @type {BlueprintHttpClient}
- * @author Zach Ayers
+ * @author Zachariah Ayers
  */
 export const http: BlueprintHttpClient = axios as BlueprintHttpClient;
 
@@ -36,6 +36,6 @@ http.useApi = (context: ViewContext, opts?: AxiosRequestConfig) =>
 /**
  * Status Codes Interface - The status codes that are available to use when reporting HTTP codes.
  * @type {typeof statusCodes} - The status codes that are available to use when reporting HTTP codes.
- * @author Zach Ayers
+ * @author Zachariah Ayers
  */
 http.statusCodes = statusCodes;

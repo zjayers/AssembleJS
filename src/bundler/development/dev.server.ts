@@ -4,10 +4,18 @@ import { createServer } from "vite";
 import livereload from "vite-plugin-live-reload";
 import preact from "@preact/preset-vite";
 import { CONSTANTS } from "../../constants/blueprint.constants";
+import {
+  createServerTransformPlugin,
+  logWithBadge,
+  printHeaderBox,
+} from "../common/visual.utils";
 
 export const startBlueprintDevServer = async (serverRoot: string) => {
   const serverEntryFile = "server.ts";
   const serverEntryPath = path.join(process.cwd(), "src", serverEntryFile);
+
+  printHeaderBox("AssembleJS Development Server");
+  logWithBadge("Starting development server...", "info");
 
   // Create the vite server.
   const server = await createServer({
@@ -18,7 +26,7 @@ export const startBlueprintDevServer = async (serverRoot: string) => {
     root: serverRoot,
     server: {
       port: 3000,
-    }, // We manually add a list of dependencies to be pre-bundled, in order to avoid a page reload at dev start which breaks vite-plugin-ssr's CI
+    },
     optimizeDeps: {
       include: [
         "preact/devtools",
@@ -29,6 +37,9 @@ export const startBlueprintDevServer = async (serverRoot: string) => {
       ],
     },
     plugins: [
+      // Add the server transformation plugin
+      createServerTransformPlugin(serverRoot, "development"),
+
       preact(),
       /**
        * `vavite` is a set of tools for developing and building server-side applications with Vite.
@@ -53,6 +64,11 @@ export const startBlueprintDevServer = async (serverRoot: string) => {
 
   // Start the Vite dev server
   await server.listen();
+
+  logWithBadge(
+    "Development server running at http://localhost:3000",
+    "success"
+  );
 
   return server;
 };

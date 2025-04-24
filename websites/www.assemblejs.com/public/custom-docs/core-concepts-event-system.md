@@ -21,33 +21,38 @@ The AssembleJS Event System solves these issues by:
 
 ### Event Addresses
 
-Events in AssembleJS are identified by addresses, which have a format similar to topic paths:
+Events in AssembleJS are identified by addresses, which consist of a channel and topic:
 
 ```typescript
-// Topic format: [channel].[topic].[subtopic]
-'cart.item.added'
-'user.profile.updated'
-'navigation.route.changed'
+// Event address format
+interface EventAddress {
+  channel: string; // The event channel
+  topic: string;   // The event topic
+}
+
+// Example addresses
+{ channel: 'cart', topic: 'item.added' }
+{ channel: 'user', topic: 'profile.updated' }
+{ channel: 'navigation', topic: 'route.changed' }
 ```
 
-This hierarchical addressing allows for precise targeting and filtering of events.
+This addressing system allows for precise targeting and filtering of events.
 
 ### Event Bus
 
-The central event bus manages the publication and subscription of events:
+The central event bus manages the publication and subscription of events. Within a Blueprint component, you can use built-in methods to interact with the event system:
 
 ```typescript
-import { events } from 'asmbl';
-
-// Publishing an event
-events.emit('cart.item.added', { 
+// From within a Blueprint component
+// Publishing an event to all components
+this.toComponents({ 
   productId: '123', 
   quantity: 2 
-});
+}, 'add');
 
 // Subscribing to an event
-events.on('cart.item.added', (event) => {
-  console.log('Item added to cart:', event.data);
+this.subscribe({ channel: 'cart', topic: 'add' }, (event) => {
+  console.log('Item added to cart:', event.payload);
 });
 ```
 
@@ -57,10 +62,9 @@ Each event contains metadata and payload information:
 
 ```typescript
 interface BlueprintEvent<T = unknown> {
-  address: EventAddress; // The event address
-  data: T;               // The event payload
-  sender: string;        // Component ID that sent the event
-  timestamp?: number;    // When the event was created
+  channel: string;       // The event channel
+  topic: string;         // The event topic
+  payload: T;            // The event payload
 }
 ```
 
@@ -72,14 +76,14 @@ Components can publish events to notify others about changes or actions:
 
 ```typescript
 // In a component client file
-import { Blueprint, BlueprintClient, events } from "asmbl";
+import { Blueprint } from "asmbl";
 
 export class CartButtonClient extends Blueprint {
   protected override onMount(): void {
     super.onMount();
     
-    // Find the add-to-cart button
-    const addButton = document.querySelector('.add-to-cart-btn');
+    // Find the add-to-cart button within this component's root element
+    const addButton = this.root.querySelector('.add-to-cart-btn');
     
     if (addButton) {
       addButton.addEventListener('click', this.handleAddToCart.bind(this));
@@ -90,20 +94,20 @@ export class CartButtonClient extends Blueprint {
     e.preventDefault();
     
     // Get product information
-    const productId = this.context.element.getAttribute('data-product-id');
+    const productId = this.root.getAttribute('data-product-id');
     const quantity = parseInt(
-      document.querySelector('.quantity-input')?.value || '1'
+      this.root.querySelector('.quantity-input')?.value || '1'
     );
     
-    // Emit the cart.add event
-    events.emit('cart.add', { 
+    // Publish the event to components
+    this.toComponents({ 
       productId, 
       quantity,
       timestamp: Date.now()
-    });
+    }, 'add');
     
     // Show success message
-    const messageEl = document.querySelector('.success-message');
+    const messageEl = this.root.querySelector('.success-message');
     if (messageEl) {
       messageEl.textContent = 'Added to cart!';
       messageEl.classList.add('visible');
@@ -115,7 +119,7 @@ export class CartButtonClient extends Blueprint {
   }
 }
 
-BlueprintClient.registerComponentCodeBehind(CartButtonClient);
+export default CartButtonClient;
 ```
 
 ### Subscribing to Events
@@ -124,7 +128,8 @@ Components can subscribe to events to react to changes:
 
 ```typescript
 // In a component client file
-import { Blueprint, BlueprintClient, events } from "asmbl";
+import { Blueprint } from "asmbl";
+import type { BlueprintEvent } from "asmbl";
 
 export class CartIndicatorClient extends Blueprint {
   private cartCount = 0;
@@ -134,19 +139,15 @@ export class CartIndicatorClient extends Blueprint {
     super.onMount();
     
     // Find the cart count element
-    this.countElement = document.querySelector('.cart-count');
+    this.countElement = this.root.querySelector('.cart-count');
     
     // Initialize from localStorage if available
     this.initializeCartCount();
     
-    // Listen for cart.add events
-    events.on('cart.add', this.handleCartAdd.bind(this));
-    
-    // Listen for cart.remove events
-    events.on('cart.remove', this.handleCartRemove.bind(this));
-    
-    // Listen for cart.clear events
-    events.on('cart.clear', this.handleCartClear.bind(this));
+    // Listen for cart events with proper EventAddress objects
+    this.subscribe({ channel: 'cart', topic: 'add' }, this.handleCartAdd.bind(this));
+    this.subscribe({ channel: 'cart', topic: 'remove' }, this.handleCartRemove.bind(this));
+    this.subscribe({ channel: 'cart', topic: 'clear' }, this.handleCartClear.bind(this));
   }
   
   private initializeCartCount(): void {
@@ -162,15 +163,15 @@ export class CartIndicatorClient extends Blueprint {
     }
   }
   
-  private handleCartAdd(event: any): void {
-    const { quantity = 1 } = event.data;
+  private handleCartAdd(event: BlueprintEvent<{ quantity: number }>): void {
+    const { quantity = 1 } = event.payload;
     this.cartCount += quantity;
     this.updateCountDisplay();
     this.saveCartCount();
   }
   
-  private handleCartRemove(event: any): void {
-    const { quantity = 1 } = event.data;
+  private handleCartRemove(event: BlueprintEvent<{ quantity: number }>): void {
+    const { quantity = 1 } = event.payload;
     this.cartCount = Math.max(0, this.cartCount - quantity);
     this.updateCountDisplay();
     this.saveCartCount();
@@ -199,65 +200,70 @@ export class CartIndicatorClient extends Blueprint {
   }
   
   protected override onDestroy(): void {
-    // Clean up event subscriptions
-    events.off('cart.add', this.handleCartAdd.bind(this));
-    events.off('cart.remove', this.handleCartRemove.bind(this));
-    events.off('cart.clear', this.handleCartClear.bind(this));
+    // Clean up is handled automatically by the Blueprint's dispose method
+    // AssembleJS will automatically unsubscribe from events when the component is destroyed
   }
 }
 
-BlueprintClient.registerComponentCodeBehind(CartIndicatorClient);
+export default CartIndicatorClient;
 ```
 
-### Advanced Event Patterns
+### Using the Standalone Events API
 
-#### Pattern Matching Subscriptions
-
-Subscribe to multiple related events with wildcard pattern matching:
+For code outside of Blueprint components, AssembleJS provides a standalone events API:
 
 ```typescript
-// Subscribe to all cart events
-events.on('cart.*', (event) => {
-  console.log(`Cart event: ${event.address}`, event.data);
+import { events } from "asmbl";
+
+// Subscribe to events
+events.subscribe({ channel: 'cart', topic: 'add' }, (event) => {
+  console.log('Item added to cart:', event.payload);
 });
 
-// Subscribe to all user profile events
-events.on('user.profile.*', (event) => {
-  console.log(`Profile event: ${event.address}`, event.data);
+// Publish events
+events.publish({ channel: 'cart', topic: 'add' }, { 
+  productId: '123', 
+  quantity: 2 
 });
+
+// Convenience methods for global events
+events.toComponents({ message: 'Hello from standalone code' });
+events.toBlueprint({ message: 'Hello from standalone code' });
+events.toAll({ message: 'Hello to everyone' });
 ```
 
-#### Once-Only Subscriptions
+### Event Targeting Patterns
 
-Listen for an event only once:
+The AssembleJS event system provides specialized methods for targeting specific types of components:
 
 ```typescript
-// Listen for initialization event once
-events.once('app.initialized', (event) => {
-  console.log('App initialized, one-time setup complete');
-});
+// From within a Blueprint:
+
+// Send to all components (not blueprints)
+this.toComponents(payload, 'topic');
+
+// Send to all blueprints (not components)
+this.toBlueprint(payload, 'topic');
+
+// Send to all components and blueprints
+this.toAll(payload, 'topic');
+
+// With the standalone events API:
+events.toComponents(payload, 'topic');
+events.toBlueprint(payload, 'topic');
+events.toAll(payload, 'topic');
 ```
 
-#### Event Queues
+### Auto-Cleanup on Component Destruction
 
-For critical events that must be processed, even if subscribers register late:
+AssembleJS automatically handles event subscription cleanup when components are destroyed:
 
 ```typescript
-// Create a queued event
-const queuedEvents = events.createQueue('critical.notifications.*');
-
-// Publish events to the queue
-queuedEvents.emit('critical.notifications.systemUpdate', {
-  message: 'System update required',
-  severity: 'high'
-});
-
-// Late subscribers still receive previously queued events
-setTimeout(() => {
-  queuedEvents.on('critical.notifications.*', (event) => {
-    console.log('Received queued notification:', event);
-  });
-}, 5000);
+// No need for manual cleanup in most cases
+protected override onDestroy(): void {
+  // Event subscriptions are automatically removed
+  // Any other cleanup can be done here
+}
 ```
 
 ## Best Practices
@@ -285,14 +291,17 @@ Keep event payloads:
 
 ```typescript
 // Good payload example
-events.emit('order.status.changed', {
-  orderId: '12345',
-  previousStatus: 'processing',
-  newStatus: 'shipped',
-  updatedAt: new Date().toISOString(),
-  reason: 'fulfillment_complete',
-  affectedItems: ['item_1', 'item_2']
-});
+events.publish(
+  { channel: 'order', topic: 'status.changed' },
+  {
+    orderId: '12345',
+    previousStatus: 'processing',
+    newStatus: 'shipped',
+    updatedAt: new Date().toISOString(),
+    reason: 'fulfillment_complete',
+    affectedItems: ['item_1', 'item_2']
+  }
+);
 ```
 
 ### Centralized Event Documentation
@@ -331,17 +340,14 @@ export const CART_EVENTS = {
 Always clean up event subscriptions to prevent memory leaks:
 
 ```typescript
-// In a component
+// In a Blueprint component
 protected override onMount(): void {
-  // Bind handlers to preserve reference for later removal
-  this.boundHandler = this.handleCartAdd.bind(this);
-  events.on('cart.add', this.boundHandler);
+  // Subscribe to events
+  this.subscribe({ channel: 'cart', topic: 'add' }, this.handleCartAdd.bind(this));
 }
 
-protected override onDestroy(): void {
-  // Remove event listener using the same function reference
-  events.off('cart.add', this.boundHandler);
-}
+// No need for manual cleanup in onDestroy
+// Blueprint.dispose() automatically unsubscribes all events when the component is destroyed
 ```
 
 ## Cross-Framework Communication
@@ -349,38 +355,59 @@ protected override onDestroy(): void {
 A key advantage of the AssembleJS Event System is communication between components built with different frameworks:
 
 ```typescript
-// React component broadcasting an event
-import { events } from 'asmbl';
+// React component using Blueprint client file for events
+// search-form.client.ts
+import { Blueprint } from 'asmbl';
 
-function SearchForm() {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const query = e.target.elements.query.value;
-    events.emit('search.query.submitted', { query });
-  };
-  
+class SearchFormClient extends Blueprint {
+  protected override onMount(): void {
+    super.onMount();
+    
+    const form = this.root.querySelector('form');
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const query = (e.target as HTMLFormElement).elements.namedItem('query') as HTMLInputElement;
+      
+      // Publish to all components
+      this.toAll({ query: query.value }, 'search:submitted');
+    });
+  }
+}
+
+// The React component itself
+// search-form.view.jsx
+function SearchForm({ data }) {
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <input name="query" type="text" />
       <button type="submit">Search</button>
     </form>
   );
 }
 
-// Vue component listening for the event
-export default {
-  mounted() {
-    events.on('search.query.submitted', this.handleSearch);
-  },
-  methods: {
-    handleSearch(event) {
-      this.searchResults = this.performSearch(event.data.query);
-    }
-  },
-  beforeDestroy() {
-    events.off('search.query.submitted', this.handleSearch);
+// Vue component client file
+// search-results.client.ts
+import { Blueprint } from 'asmbl';
+
+class SearchResultsClient extends Blueprint {
+  protected override onMount(): void {
+    super.onMount();
+    
+    // Listen for search events
+    this.subscribe({ channel: 'global', topic: 'search:submitted' }, (event) => {
+      const query = event.payload.query;
+      
+      // In the real implementation, you would update the Vue component's state
+      console.log(`Searching for: ${query}`);
+      
+      // You might dispatch a custom event to the Vue component
+      const customEvent = new CustomEvent('perform-search', { 
+        detail: { query } 
+      });
+      this.root.dispatchEvent(customEvent);
+    });
   }
-};
+}
 ```
 
 ## Next Steps

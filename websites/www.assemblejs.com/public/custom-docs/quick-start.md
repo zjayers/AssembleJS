@@ -14,17 +14,22 @@ Before you start, make sure you have:
 
 ### Step 1: Install the AssembleJS CLI
 
-```bash
-# Install the CLI globally
-npm install -g asmbl@next
+You can use AssembleJS without any global installation using `npx`:
 
-# Or use npx without installing globally
-npx asmbl@next
+```bash
+# No installation needed - use npx to run the CLI
+npx asm
+```
+
+If you prefer, you can install it globally:
+
+```bash
+npm install -g asmbl@next
 ```
 
 ### Step 2: Generate a New Project
 
-Create a new AssembleJS project using the generator:
+Create a new AssembleJS project using the interactive generator:
 
 ```bash
 # Start the generator

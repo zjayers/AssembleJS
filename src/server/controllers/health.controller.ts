@@ -6,7 +6,10 @@ import { ComponentController } from "../abstract/component.controller";
 
 /**
  * Health Status Controller - exposed for each component/blueprint.
- * @author Zach Ayers
+ * @description Provides health status endpoints for monitoring component/blueprint availability
+ * @author Zachariah Ayers
+ * @category Server
+ * @public
  */
 export class HealthController extends ComponentController {
   /** @inheritDoc */

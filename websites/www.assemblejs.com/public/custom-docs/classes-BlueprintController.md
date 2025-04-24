@@ -9,6 +9,10 @@ and handlers in AssembleJS applications. This base class includes dependency inj
 capabilities through the ServiceContainer, allowing controllers to easily access shared
 services. All custom controllers in an AssembleJS application should extend this class.
 
+**`Author`**
+
+Zachariah Ayers
+
 **`Example`**
 
 ```typescript
@@ -45,36 +49,19 @@ Zachariah Ayers
 
 ## Table of contents
 
-### Constructors
-
-- [constructor](BlueprintController.md#constructor)
-
 ### Methods
 
 - [register](BlueprintController.md#register)
 - [getService](BlueprintController.md#getservice)
 - [hasService](BlueprintController.md#hasservice)
 
+### Constructors
+
+- [constructor](BlueprintController.md#constructor)
+
 ### Properties
 
 - [log](BlueprintController.md#log)
-
-## Constructors
-
-### constructor
-
-**new BlueprintController**()
-
-Creates a new Loggable instance
-Initializes a ConsoleLogger with the class name for consistent logging
-
-#### Inherited from
-
-Loggable.constructor
-
-#### Defined in
-
-[src/server/abstract/loggable.ts:15](https://github.com/zjayers/AssembleJS/blob/3539104/src/server/abstract/loggable.ts#L15)
 
 ## Methods
 
@@ -87,8 +74,6 @@ This abstract method must be implemented by all concrete controller classes.
 It's where you define all routes, hooks, and handlers for your controller.
 The method is called during server initialization to set up the controller's
 functionality.
-
-**`Returnss`**
 
 **`Example`**
 
@@ -121,7 +106,7 @@ register(app: Assembly): void {
 
 #### Defined in
 
-[src/server/abstract/blueprint.controller.ts:111](https://github.com/zjayers/AssembleJS/blob/3539104/src/server/abstract/blueprint.controller.ts#L111)
+[src/server/abstract/blueprint.controller.ts:116](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/blueprint.controller.ts#L116)
 
 ___
 
@@ -136,6 +121,10 @@ Services are singleton instances that provide shared functionality across the ap
 **`Throws`**
 
 When the requested service is not found in the container
+
+**`Author`**
+
+Zachariah Ayers
 
 **`Example`**
 
@@ -165,7 +154,7 @@ The service instance of the requested type
 
 #### Defined in
 
-[src/server/abstract/blueprint.controller.ts:56](https://github.com/zjayers/AssembleJS/blob/3539104/src/server/abstract/blueprint.controller.ts#L56)
+[src/server/abstract/blueprint.controller.ts:60](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/blueprint.controller.ts#L60)
 
 ___
 
@@ -177,6 +166,10 @@ Check if a service is available in the container.
 This method verifies if a service with the given token exists in the ServiceContainer
 before attempting to retrieve it. This allows for graceful fallbacks when optional
 services are not available.
+
+**`Author`**
+
+Zachariah Ayers
 
 **`Example`**
 
@@ -205,7 +198,31 @@ True if the service is registered, false otherwise
 
 #### Defined in
 
-[src/server/abstract/blueprint.controller.ts:80](https://github.com/zjayers/AssembleJS/blob/3539104/src/server/abstract/blueprint.controller.ts#L80)
+[src/server/abstract/blueprint.controller.ts:85](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/blueprint.controller.ts#L85)
+
+## Constructors
+
+### constructor
+
+`Protected` **new BlueprintController**()
+
+Creates a new Loggable instance
+
+**`Description`**
+
+Initializes a ConsoleLogger with the class name for consistent logging
+
+**`Author`**
+
+Zachariah Ayers
+
+#### Inherited from
+
+Loggable.constructor
+
+#### Defined in
+
+[src/server/abstract/loggable.ts:19](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/loggable.ts#L19)
 
 ## Properties
 
@@ -219,4 +236,4 @@ Loggable.log
 
 #### Defined in
 
-[src/server/abstract/loggable.ts:9](https://github.com/zjayers/AssembleJS/blob/3539104/src/server/abstract/loggable.ts#L9)
+[src/server/abstract/loggable.ts:11](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/loggable.ts#L11)

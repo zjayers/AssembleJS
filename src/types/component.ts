@@ -28,8 +28,8 @@ import type { ComponentPublicData } from "./component.simple.types";
  * 5.
  * The requesting Component will then compile the retrieved template,
  *   and any required Assets, into a final template.
- * @category (Component)
- * @author Zach Ayers
+ * @category Component
+ * @author Zachariah Ayers
  * @public
  */
 export interface Component<
@@ -38,17 +38,24 @@ export interface Component<
 > {
   /**
    * The name of this component
+   * @type {string}
+   * @author Zachariah Ayers
    */
   readonly path: string;
 
   /**
-   * The base directory to search for this component set in.
+   * The base directory to search for this component set in
+   * @type {string}
+   * @optional
+   * @author Zachariah Ayers
    */
   readonly root?: string;
 
   /**
    * When AssembleJS is NOT in 'production', and this Component is NOT being requested
    * from another Component, apply these development options tools
+   * @optional
+   * @author Zachariah Ayers
    */
   readonly developmentOptions?: ComponentView<
     Public,
@@ -57,6 +64,9 @@ export interface Component<
 
   /**
    * Collection of common Component options that will be passed to ALL Component views
+   * @type {object}
+   * @optional
+   * @author Zachariah Ayers
    */
   readonly shared?: {
     /** Array of Component Factories to run on the ComponentTemplate of each view, sorted by Priority */
@@ -75,11 +85,18 @@ export interface Component<
     readonly routeOpts?: RouteShorthandOptions;
   };
 
-  /** Array of views for this Component */
+  /**
+   * Array of views for this Component
+   * @type {Array<ComponentView<Public, Params>>}
+   * @author Zachariah Ayers
+   */
   readonly views: Array<ComponentView<Public, Params>>;
 }
 
 /**
  * Array of Renderable Components
+ * @author Zachariah Ayers
+ * @category Component
+ * @public
  */
 export type ComponentManifest = Array<Component>;

@@ -10,9 +10,9 @@ import type { PreactViewContext } from "./component.context";
 /**
  * Any type of Component Asset -
  * These will be sent along on the Component manifest to allow other components to grab assets.
- * @category (Component)
+ * @category Component
  * @public
- * @author Zach Ayers
+ * @author Zachariah Ayers
  * @example
  * ```typescript
  * // NodeAsset is a generic type that encompasses all Assets for a Component (CSS, JS, Img, Font, etc)
@@ -27,17 +27,17 @@ export type NodeAsset = JsAsset | CssAsset | { value: string };
 /**
  * PUBLIC data to be exposed to the Client side -
  * Public data is serialized and sent alongside the Component as a payload script.
- * @category (Component)
+ * @category Component
  * @public
- * @author Zach Ayers
+ * @author Zachariah Ayers
  */
 export type ComponentPublicData = Record<string, unknown>;
 
 /**
  * Map of addresses used to render external components.
- * @category (Component)
+ * @category Component
  * @public
- * @author Zach Ayers
+ * @author Zachariah Ayers
  * @example
  * ```typescript
  * const addresses: ComponentAddresses = [
@@ -61,9 +61,9 @@ export type ComponentAddresses = Array<ComponentAddress>;
 
 /**
  * A helper function which may be passed to templates and run inside of templates.
- * @category (Component)
+ * @category Component
  * @public
- * @author Zach Ayers
+ * @author Zachariah Ayers
  * @example
  * ```typescript
  * const reverseText = (text: string) => text.split('').reverse().join('');
@@ -75,9 +75,9 @@ export type ComponentHelper<T extends any[] = any[], R = any> = (
 
 /**
  * Map of Component helper functions, used to access via a helper key.
- * @category (Component)
+ * @category Component
  * @public
- * @author Zach Ayers
+ * @author Zachariah Ayers
  * @example
  * ```typescript
  * // Create a map of Helpers
@@ -92,9 +92,9 @@ export type ComponentHelperMap = Record<string, ComponentHelper>;
 /**
  * Template to be rendered by a ComponentRenderer.
  * Templates are run through any defined factories before they are sent to the client.
- * @category (Component)
+ * @category Component
  * @public
- * @author Zach Ayers
+ * @author Zachariah Ayers
  */
 export type ComponentTemplate = VNodeFn<PreactViewContext> | RawTemplate;
 
@@ -110,9 +110,9 @@ export type VNodeFn<P> = (context: P) => VNode<P>;
 
 /**
  * A Component's Content and ViewName identifier.
- * @category (Component)
+ * @category Component
  * @public
- * @author Zach Ayers
+ * @author Zachariah Ayers
  * @example
  * ```typescript
  * const componentContent: ComponentContent = {

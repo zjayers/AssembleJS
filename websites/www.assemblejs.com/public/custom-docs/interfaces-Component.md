@@ -30,7 +30,7 @@ The requesting Component will then compile the retrieved template,
 
 **`Author`**
 
-Zach Ayers
+Zachariah Ayers
 
 ## Type parameters
 
@@ -58,6 +58,12 @@ Zach Ayers
 When AssembleJS is NOT in 'production', and this Component is NOT being requested
 from another Component, apply these development options tools
 
+**`Optional`**
+
+**`Author`**
+
+Zachariah Ayers
+
 #### Type declaration
 
 | Name | Type |
@@ -66,7 +72,7 @@ from another Component, apply these development options tools
 
 #### Defined in
 
-[src/types/component.ts:53](https://github.com/zjayers/AssembleJS/blob/3539104/src/types/component.ts#L53)
+[src/types/component.ts:60](https://github.com/zjayers/AssembleJS/blob/d2354de/src/types/component.ts#L60)
 
 ___
 
@@ -76,9 +82,13 @@ ___
 
 The name of this component
 
+**`Author`**
+
+Zachariah Ayers
+
 #### Defined in
 
-[src/types/component.ts:42](https://github.com/zjayers/AssembleJS/blob/3539104/src/types/component.ts#L42)
+[src/types/component.ts:44](https://github.com/zjayers/AssembleJS/blob/d2354de/src/types/component.ts#L44)
 
 ___
 
@@ -86,11 +96,17 @@ ___
 
  `Optional` `Readonly` **root**: `string`
 
-The base directory to search for this component set in.
+The base directory to search for this component set in
+
+**`Optional`**
+
+**`Author`**
+
+Zachariah Ayers
 
 #### Defined in
 
-[src/types/component.ts:47](https://github.com/zjayers/AssembleJS/blob/3539104/src/types/component.ts#L47)
+[src/types/component.ts:52](https://github.com/zjayers/AssembleJS/blob/d2354de/src/types/component.ts#L52)
 
 ___
 
@@ -99,6 +115,12 @@ ___
  `Optional` `Readonly` **shared**: `Object`
 
 Collection of common Component options that will be passed to ALL Component views
+
+**`Optional`**
+
+**`Author`**
+
+Zachariah Ayers
 
 #### Type declaration
 
@@ -112,7 +134,7 @@ Collection of common Component options that will be passed to ALL Component view
 
 #### Defined in
 
-[src/types/component.ts:61](https://github.com/zjayers/AssembleJS/blob/3539104/src/types/component.ts#L61)
+[src/types/component.ts:71](https://github.com/zjayers/AssembleJS/blob/d2354de/src/types/component.ts#L71)
 
 ___
 
@@ -122,6 +144,10 @@ ___
 
 Array of views for this Component
 
+**`Author`**
+
+Zachariah Ayers
+
 #### Defined in
 
-[src/types/component.ts:79](https://github.com/zjayers/AssembleJS/blob/3539104/src/types/component.ts#L79)
+[src/types/component.ts:93](https://github.com/zjayers/AssembleJS/blob/d2354de/src/types/component.ts#L93)

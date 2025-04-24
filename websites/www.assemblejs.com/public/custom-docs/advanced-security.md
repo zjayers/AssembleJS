@@ -746,15 +746,15 @@ export class SecurityMonitor extends Service {
   private logger: SecureLogger;
   
   initialize() {
-    // Listen for security-related events
-    events.on('auth.login.failed', this.handleFailedLogin.bind(this));
-    events.on('auth.password.reset', this.handlePasswordReset.bind(this));
-    events.on('user.role.changed', this.handleRoleChange.bind(this));
-    events.on('security.violation', this.handleSecurityViolation.bind(this));
+    // Listen for security-related events using proper event addressing
+    events.subscribe({ channel: 'auth', topic: 'login.failed' }, this.handleFailedLogin.bind(this));
+    events.subscribe({ channel: 'auth', topic: 'password.reset' }, this.handlePasswordReset.bind(this));
+    events.subscribe({ channel: 'user', topic: 'role.changed' }, this.handleRoleChange.bind(this));
+    events.subscribe({ channel: 'security', topic: 'violation' }, this.handleSecurityViolation.bind(this));
   }
   
   async handleFailedLogin(event) {
-    const { username, ip, userAgent, timestamp } = event.data;
+    const { username, ip, userAgent, timestamp } = event.payload;
     
     // Log the event
     this.logger.warn('Failed login attempt', {

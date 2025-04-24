@@ -2,8 +2,8 @@ import type { BlueprintEvent } from "./blueprint.event";
 
 /**
  * Address to use when publishing/subscribing to events.
- * @category (Eventing)
- * @author Zach Ayers
+ * @category Eventing
+ * @author Zachariah Ayers
  * @public
  * @example
  * ```typescript

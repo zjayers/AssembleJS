@@ -105,18 +105,18 @@ class ProductCardComponent extends Blueprint {
     super.onMount();
     
     // Get a reference to the Add to Cart button
-    const addToCartButton = this.element.querySelector('.add-to-cart-button');
+    const addToCartButton = this.root.querySelector('.add-to-cart-button');
     
     // Add event listener
     addToCartButton?.addEventListener('click', () => {
       const productId = this.context.data.product.id;
-      const quantity = this.element.querySelector('.quantity-control span')?.textContent;
+      const quantity = this.root.querySelector('.quantity-control span')?.textContent;
       
       // Publish an event to notify other components
-      this.eventBus.publish('cart:add', { 
+      this.toComponents({ 
         productId,
         quantity: parseInt(quantity || '1', 10)
-      });
+      }, 'add');
     });
   }
 }
@@ -279,7 +279,7 @@ class NotificationComponent extends Blueprint {
     super.onMount();
     
     // Store reference to the Preact component's function
-    this.element.addEventListener('notificationReady', (e: any) => {
+    this.root.addEventListener('notificationReady', (e: any) => {
       this.showNotificationFn = e.detail.showNotification;
       
       // Process any queued notifications
@@ -292,8 +292,8 @@ class NotificationComponent extends Blueprint {
     });
     
     // Listen for cart events
-    this.eventBus.subscribe('cart:add', (data) => {
-      this.showNotification(`Added ${data.quantity} item(s) to cart`);
+    this.subscribe('cart', 'add', (event) => {
+      this.showNotification(`Added ${event.payload.quantity} item(s) to cart`);
     });
   }
   

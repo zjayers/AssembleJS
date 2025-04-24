@@ -1,118 +1,118 @@
 # asmgen - AssembleJS Generator Command
 
-The `asmgen` command is the primary code generator for AssembleJS, helping you quickly create various project artifacts including blueprints, components, factories, services, controllers, and more.
+The `asmgen` command is the primary code generator for AssembleJS, helping you quickly create various project artifacts including blueprints, components, factories, services, controllers, and more through an interactive CLI experience.
 
 ## Overview
 
 `asmgen` provides an interactive command-line interface that guides you through the process of creating different elements of your AssembleJS application. It generates files with proper structure, boilerplate code, and TypeScript types to accelerate your development workflow.
 
+## Server Configuration
+
+When creating a Blueprint server with `createBlueprintServer()`, make sure to include these required configuration options:
+
+```typescript
+// src/server.ts
+import { createBlueprintServer } from 'asmbl';
+
+void createBlueprintServer({
+  serverRoot: import.meta.url,
+  httpServer: vaviteHttpServer,  // Required for development server
+  devServer: viteDevServer,      // Required for development server
+  
+  // Other configuration options
+});
+```
+
 ## Usage
+
+To run the generator, use:
+
+```bash
+npm run asm
+```
+
+Or directly:
 
 ```bash
 npx asmgen [options]
-```
-
-Or if you have asmbl installed globally:
-
-```bash
-asmgen [options]
 ```
 
 ## Command Options
 
 | Option | Alias | Description |
 |--------|-------|-------------|
-| `--output=MODE` | `-o` | Set output verbosity [minimal\|standard\|verbose] |
+| `--output=MODE` | `-o` | Set output verbosity [minimal|standard|verbose] |
 | `--standard` | `-s` | Use standard output mode (more detailed than minimal) |
 | `--verbose` | `-v` | Use verbose output mode (maximum detail with examples) |
 | `--help` | `-h` | Display help information |
 
-## Generator Types
+## Interactive Generator Workflow
 
-When you run `asmgen`, you'll be prompted to select the type of artifact you want to generate:
+`asmgen` uses a fully interactive approach with prompts that guide you through the generation process:
 
-### Project
+### Project Generation
 
-Generates a complete AssembleJS project with the recommended directory structure, configuration files, and base components.
-
-**Example:**
 ```bash
 npx asmgen
-# Select "Project" from the list
-# Enter "my-project" as the name
+• Select "Project" from the menu
+--> Enter project name
+• Choose project features
 ```
 
-### Blueprint
+### Component Generation
 
-Creates a new Blueprint, which serves as a composition layer for multiple components.
-
-**Example:**
 ```bash
 npx asmgen
-# Select "Blueprint" from the list
-# Enter "feature-name" as the name
-# Follow the prompts for additional configuration
+• Select "Component" from the menu
+• Choose to create new component or add view to existing one
+--> Enter component name (for new components)
+--> Enter view name
+• Select parent components (optional)
+• Select template language (HTML, EJS, Markdown, Preact, etc.)
 ```
 
-### Component
+### Blueprint Generation
 
-Generates a new Component with template, styles, and client-side code.
-
-**Example:**
 ```bash
 npx asmgen
-# Select "Component" from the list
-# Enter "header" as the name
-# Select the template engine (HTML, EJS, Markdown, Preact, etc.)
-# Follow the prompts for additional configuration
+• Select "Blueprint" from the menu
+--> Enter blueprint name
+--> Enter view name
+• Select view template language
 ```
 
-### Factory
+### Controller Generation
 
-Creates a new Factory for data preparation and transformation.
-
-**Example:**
 ```bash
 npx asmgen
-# Select "Factory" from the list
-# Enter "data-provider" as the name
-# Follow the prompts for Factory configuration
+• Select "Controller" from the menu
+--> Enter controller name
+• Choose whether to register in server.ts (yes/no)
 ```
 
-### Service
+### Factory Generation
 
-Generates a new Service for shared functionality.
-
-**Example:**
 ```bash
 npx asmgen
-# Select "Service" from the list
-# Enter "authentication" as the name
-# Follow the prompts for Service configuration
+• Select "Factory" from the menu
+--> Enter factory name
 ```
 
-### Controller
+### Service Generation
 
-Creates a new API Controller for handling HTTP requests.
-
-**Example:**
 ```bash
 npx asmgen
-# Select "Controller" from the list
-# Enter "users" as the name
-# Follow the prompts for Controller configuration
+• Select "Service" from the menu
+--> Enter service name
+• Choose whether to register in service container
 ```
 
-### Model
+### Model Generation
 
-Generates a data model with proper TypeScript interfaces.
-
-**Example:**
 ```bash
 npx asmgen
-# Select "Model" from the list
-# Enter "user" as the name
-# Follow the prompts for Model configuration
+• Select "Model" from the menu
+--> Enter model name
 ```
 
 ## Output Verbosity Levels
@@ -123,11 +123,7 @@ npx asmgen
 2. **Standard** (`-s`): More detailed information with examples
 3. **Verbose** (`-v`): Maximum detail with comprehensive examples
 
-**Examples:**
 ```bash
-# Minimal output (default)
-npx asmgen 
-
 # Standard output
 npx asmgen -s
 
@@ -142,11 +138,15 @@ npx asmgen -v
 ```bash
 # Create a new project
 npx asmgen
-# Select "Project" from the list
-# Enter "my-project" as the name
+• Select "Project" from the menu
+--> Enter "my-project" as the name
+• Select desired features
 
 # Navigate to project 
 cd my-project
+
+# Install dependencies
+npm install
 
 # Start development server
 npm run dev
@@ -157,38 +157,27 @@ npm run dev
 ```bash
 # Create a new blueprint
 npx asmgen
-# Select "Blueprint" from the list
-# Enter "feature-name" as the name
-# Follow the prompts
+• Select "Blueprint" from the menu
+--> Enter "feature-name" as the name
+--> Enter view name
+• Select template language
 
 # Create components for the feature
 npx asmgen
-# Select "Component" from the list
-# Enter "header" as the name
-# Follow the prompts
-
-# Repeat for other components
-```
-
-### Creating API Controllers
-
-```bash
-# Create controllers for your API
-npx asmgen
-# Select "Controller" from the list
-# Enter "users" as the name
-# Follow the prompts
-
-# Repeat for other controllers
+• Select "Component" from the menu
+--> Enter "header" as the name
+--> Enter view name
+• Select parent components (optional)
+• Select template language
 ```
 
 ## Best Practices
 
 - Use consistent naming conventions for your Blueprints and Components
-- Follow the suggested directory structure for optimal organization
-- Take advantage of the Factory system for data preparation
+- Follow kebab-case naming for components and blueprints (e.g., "user-profile")
 - Create Components that are focused on a single responsibility
-- Leverage the Event System for communication between Components
+- Use the interactive generator for all artifacts instead of creating files manually
+- Leverage the server configuration with required parameters
 
 ## Related Commands
 

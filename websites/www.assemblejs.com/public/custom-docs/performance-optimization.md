@@ -276,8 +276,8 @@ class AddToCartButton extends Blueprint {
   }
 }
 
-// Register the component for hydration
-BlueprintClient.registerComponentCodeBehind(AddToCartButton);
+// Export the component for hydration
+export default AddToCartButton;
 ```
 
 Best practices:
@@ -402,7 +402,7 @@ class ProductDetails extends Blueprint {
   }
 }
 
-BlueprintClient.registerComponentCodeBehind(ProductDetails);
+export default ProductDetails;
 ```
 
 Best practices:
@@ -594,7 +594,7 @@ class PerformanceMonitor extends Blueprint {
   }
 }
 
-BlueprintClient.registerComponentCodeBehind(PerformanceMonitor);
+export default PerformanceMonitor;
 ```
 
 Best practices:
@@ -673,9 +673,7 @@ class GalleryViewer extends Blueprint {
     });
     
     // Subscribe to events
-    this.subscriptions.push(
-      EventBus.subscribe('gallery.update', this.handleGalleryUpdate.bind(this))
-    );
+    this.subscribe({ channel: 'gallery', topic: 'update' }, this.handleGalleryUpdate.bind(this));
   }
   
   private handleIntersection(entries): void {
@@ -694,16 +692,14 @@ class GalleryViewer extends Blueprint {
       this.observer = null;
     }
     
-    // Clean up event subscriptions
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-    this.subscriptions = [];
+    // No need to manually unsubscribe from events - Blueprint handles this automatically
     
     // Clear references
     this.images = [];
   }
 }
 
-BlueprintClient.registerComponentCodeBehind(GalleryViewer);
+export default GalleryViewer;
 ```
 
 Best practices:

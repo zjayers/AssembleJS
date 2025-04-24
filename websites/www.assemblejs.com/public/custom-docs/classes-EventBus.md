@@ -39,9 +39,13 @@ EventBus Constructor
 Initializing an event bus will ensure there is an EventManager on the global window object.
 Once an EventManager is created, the EventSink and EventEmitter will be referenced by this class.
 
+**`Author`**
+
+Zachariah Ayers
+
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:275](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.bus.ts#L275)
+[src/browser/eventing/event.bus.ts:286](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L286)
 
 ## Properties
 
@@ -55,7 +59,7 @@ IEventBus.eventEmitter
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:202](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.bus.ts#L202)
+[src/browser/eventing/event.bus.ts:212](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L212)
 
 ___
 
@@ -69,7 +73,7 @@ IEventBus.eventSink
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:203](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.bus.ts#L203)
+[src/browser/eventing/event.bus.ts:213](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L213)
 
 ## Methods
 
@@ -101,7 +105,7 @@ IEventBus.peek
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:206](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.bus.ts#L206)
+[src/browser/eventing/event.bus.ts:216](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L216)
 
 ___
 
@@ -133,7 +137,7 @@ IEventBus.publish
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:211](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.bus.ts#L211)
+[src/browser/eventing/event.bus.ts:221](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L221)
 
 ___
 
@@ -166,7 +170,7 @@ IEventBus.subscribe
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:261](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.bus.ts#L261)
+[src/browser/eventing/event.bus.ts:271](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L271)
 
 ___
 
@@ -200,7 +204,7 @@ IEventBus.toAll
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:225](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.bus.ts#L225)
+[src/browser/eventing/event.bus.ts:235](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L235)
 
 ___
 
@@ -234,7 +238,7 @@ IEventBus.toBlueprint
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:249](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.bus.ts#L249)
+[src/browser/eventing/event.bus.ts:259](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L259)
 
 ___
 
@@ -268,7 +272,7 @@ IEventBus.toComponents
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:237](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.bus.ts#L237)
+[src/browser/eventing/event.bus.ts:247](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L247)
 
 ___
 
@@ -295,4 +299,4 @@ IEventBus.unsubscribe
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:266](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.bus.ts#L266)
+[src/browser/eventing/event.bus.ts:276](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L276)

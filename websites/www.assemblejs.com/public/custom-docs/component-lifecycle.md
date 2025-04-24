@@ -140,8 +140,8 @@ class ProductDetail extends Blueprint {
   // More lifecycle methods below...
 }
 
-// Register the component with AssembleJS
-BlueprintClient.registerComponentCodeBehind(ProductDetail);
+// Export the component class (AssembleJS handles registration)
+export default ProductDetail;
 ```
 
 Lifecycle events:
@@ -184,7 +184,7 @@ class ProductDetail extends Blueprint {
   // More lifecycle methods below...
 }
 
-BlueprintClient.registerComponentCodeBehind(ProductDetail);
+export default ProductDetail;
 ```
 
 During `onInit`:
@@ -236,9 +236,7 @@ class ProductDetail extends Blueprint {
     }
     
     // Subscribe to events
-    this.subscriptions = [
-      EventBus.subscribe('cart.updated', this.handleCartUpdate.bind(this))
-    ];
+    this.subscribe({ channel: 'cart', topic: 'updated' }, this.handleCartUpdate.bind(this));
     
     console.log('Product detail mounted:', this.product.id);
   }
@@ -252,10 +250,10 @@ class ProductDetail extends Blueprint {
   }
   
   private handleAddToCart(): void {
-    EventBus.publish('cart.add', {
+    this.toComponents({
       productId: this.product.id,
       quantity: this.state.quantity
-    });
+    }, 'add');
   }
   
   private handleCartUpdate(data): void {
@@ -265,7 +263,7 @@ class ProductDetail extends Blueprint {
   // More lifecycle methods below...
 }
 
-BlueprintClient.registerComponentCodeBehind(ProductDetail);
+export default ProductDetail;
 ```
 
 During `onMount`:
@@ -347,7 +345,7 @@ class ProductDetail extends Blueprint {
   // More lifecycle methods below...
 }
 
-BlueprintClient.registerComponentCodeBehind(ProductDetail);
+export default ProductDetail;
 ```
 
 During state updates:
@@ -368,7 +366,8 @@ Best practices:
 Components can respond to DOM events and system events:
 
 ```typescript
-import { Blueprint, BlueprintClient, EventBus } from 'assemblejs';
+import { Blueprint, BlueprintClient } from 'assemblejs';
+import { events } from 'assemblejs';
 
 class ProductDetail extends Blueprint {
   // Previous code...
@@ -380,8 +379,8 @@ class ProductDetail extends Blueprint {
     
     // System event subscriptions
     this.subscriptions = [
-      EventBus.subscribe('cart.updated', this.handleCartUpdate.bind(this)),
-      EventBus.subscribe('product.stock.updated', this.handleStockUpdate.bind(this))
+      events.subscribe({ channel: 'cart', topic: 'updated' }, this.handleCartUpdate.bind(this)),
+      events.subscribe({ channel: 'product', topic: 'stock:updated' }, this.handleStockUpdate.bind(this))
     ];
   }
   
@@ -396,7 +395,7 @@ class ProductDetail extends Blueprint {
     event.preventDefault();
     
     // Publish event to system
-    EventBus.publish('cart.add', {
+    events.publish({ channel: 'cart', topic: 'add' }, {
       productId: this.product.id,
       quantity: this.state.quantity
     });
@@ -426,7 +425,7 @@ class ProductDetail extends Blueprint {
   // More lifecycle methods below...
 }
 
-BlueprintClient.registerComponentCodeBehind(ProductDetail);
+export default ProductDetail;
 ```
 
 Event handling includes:
@@ -499,7 +498,7 @@ class ProductDetail extends Blueprint {
   // More lifecycle methods below...
 }
 
-BlueprintClient.registerComponentCodeBehind(ProductDetail);
+export default ProductDetail;
 ```
 
 DOM update patterns:
@@ -556,7 +555,7 @@ class ProductDetail extends Blueprint {
   }
 }
 
-BlueprintClient.registerComponentCodeBehind(ProductDetail);
+export default ProductDetail;
 ```
 
 During `onDestroy`:
@@ -618,7 +617,7 @@ class ProductDetail extends Blueprint {
   }
 }
 
-BlueprintClient.registerComponentCodeBehind(ProductDetail);
+export default ProductDetail;
 ```
 
 Hydration sequence:
@@ -685,7 +684,7 @@ class DynamicComponentCreator extends Blueprint {
   }
 }
 
-BlueprintClient.registerComponentCodeBehind(DynamicComponentCreator);
+export default DynamicComponentCreator;
 ```
 
 Dynamic component lifecycle:
@@ -708,7 +707,8 @@ Best practices:
 Here's a comprehensive example of a component implementing the full lifecycle:
 
 ```typescript
-import { Blueprint, BlueprintClient, EventBus } from 'assemblejs';
+import { Blueprint, BlueprintClient } from 'assemblejs';
+import { events } from 'assemblejs';
 
 class ProductGallery extends Blueprint {
   // Properties
@@ -797,8 +797,8 @@ class ProductGallery extends Blueprint {
     
     // Subscribe to system events
     this.subscriptions = [
-      EventBus.subscribe('product.gallery.update', this.handleGalleryUpdate.bind(this)),
-      EventBus.subscribe('theme.change', this.handleThemeChange.bind(this))
+      events.subscribe({ channel: 'product', topic: 'gallery:update' }, this.handleGalleryUpdate.bind(this)),
+      events.subscribe({ channel: 'theme', topic: 'change' }, this.handleThemeChange.bind(this))
     ];
     
     // Initialize third-party carousel library
@@ -1079,8 +1079,8 @@ class ProductGallery extends Blueprint {
   }
 }
 
-// Register the component
-BlueprintClient.registerComponentCodeBehind(ProductGallery);
+// Export the component
+export default ProductGallery;
 ```
 
 ## Best Practices for Component Lifecycle

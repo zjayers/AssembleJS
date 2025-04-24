@@ -1,3 +1,4 @@
+/* eslint-disable valid-jsdoc */
 import fs from "fs";
 import glob from "glob";
 import path from "path";
@@ -88,11 +89,29 @@ function compileStyleByPath(serverRoot: string, fullPath: string) {
  * @param {ReturnType<any>} compileResult - The result of the compile.
  * @author Zach Ayers
  */
-function emitFile(compileResult: ReturnType<typeof compileStyleByPath>) {
+import { logWithBadge } from "../common/visual.utils";
+
+/**
+ * Write a file to the local system.
+ * @param compileResult The result of the compile
+ * @return True if successful, false otherwise
+ */
+function emitFile(
+  compileResult: ReturnType<typeof compileStyleByPath>
+): boolean {
   const { css, outputPath } = compileResult;
-  ensureDirectoryExistence(outputPath);
-  console.log("Compiling: " + path.basename(outputPath));
-  fs.writeFileSync(outputPath, css);
+  const fileName = path.basename(outputPath);
+
+  try {
+    ensureDirectoryExistence(outputPath);
+    fs.writeFileSync(outputPath, css);
+    logWithBadge(`Compiled: ${fileName}`, "success");
+    return true;
+  } catch (error: unknown) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    logWithBadge(`Failed to write ${fileName}: ${errorMsg}`, "error");
+    return false;
+  }
 }
 
 /**
@@ -100,26 +119,44 @@ function emitFile(compileResult: ReturnType<typeof compileStyleByPath>) {
  * @description The compiler will watch any SCSS files currently in the project on startup.
  * @todo Add ability to auto pickup new files and compile them. This can likely be done with fs.watch() surrounding this island watcher. Possibly make this file a single flow and wrap in a watcher instead. This will allow for more flexibility in the future.
  * @param {string} serverRoot - The server root path.
- * @author Zach Ayers
  */
 export function startStyleIslandWatcher(serverRoot: string) {
   // Gather SCSS files
-  glob
-    .sync(`./src/**/*.{scss,css}`, {
-      cwd: serverRoot,
-    })
+  const styleFiles = glob.sync(`./src/**/*.{scss,css}`, {
+    cwd: serverRoot,
+  });
+
+  if (styleFiles.length === 0) {
+    logWithBadge("No style files found", "info");
+    return;
+  }
+
+  logWithBadge(`Found ${styleFiles.length} style files to watch`, "info");
+
+  styleFiles
     .map((file) => compileStyleByPath(serverRoot, path.join(serverRoot, file)))
     .forEach((compileResult) => {
       emitFile(compileResult);
 
       // Add a watch on the file to handle next change
       fs.watch(compileResult.srcPath, { persistent: true }, () => {
-        // write the changes to disk
-        const newCompile = compileStyleByPath(
-          serverRoot,
-          compileResult.srcPath
-        );
-        emitFile(newCompile);
+        try {
+          // write the changes to disk
+          const newCompile = compileStyleByPath(
+            serverRoot,
+            compileResult.srcPath
+          );
+          emitFile(newCompile);
+        } catch (error: unknown) {
+          const errorMsg =
+            error instanceof Error ? error.message : String(error);
+          logWithBadge(
+            `Error recompiling ${path.basename(
+              compileResult.srcPath
+            )}: ${errorMsg}`,
+            "error"
+          );
+        }
       });
     });
 }

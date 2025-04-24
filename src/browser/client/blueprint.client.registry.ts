@@ -3,7 +3,7 @@ import { getWindow } from "../common/get.window";
 
 /**
  * The main component registry store. Stored on the <code>window</code> object.
- * @author Zach Ayers
+ * @author Zachariah Ayers
  */
 declare global {
   interface Window {
@@ -13,7 +13,7 @@ declare global {
 
 /**
  * The main component registry store. Stored on the <code>window</code> object.
- * @author Zach Ayers
+ * @author Zachariah Ayers
  */
 export interface BlueprintClientRegistry {
   components: {
@@ -23,7 +23,7 @@ export interface BlueprintClientRegistry {
 
 /**
  * Get the Client Registry singleton from the global window. If one does not exist, create a new singleton.
- * @author Zach Ayers
+ * @author Zachariah Ayers
  * @return {BlueprintClientRegistry} The singleton Client registry instance (stored on the window object)
  * */
 export function getAssembleJSClientRegistry(): BlueprintClientRegistry {

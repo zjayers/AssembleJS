@@ -32,12 +32,15 @@ function CartButton({ product }) {
   const events = useEvents();
   
   const handleAddToCart = () => {
-    events.publish('cart:item-added', {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      quantity: 1
-    });
+    events.publish(
+      { channel: 'cart', topic: 'item-added' },
+      {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: 1
+      }
+    );
   };
   
   return (
@@ -66,8 +69,8 @@ export default {
     const itemCount = ref(0);
     const cartItems = ref([]);
     
-    events.subscribe('cart:item-added', (item) => {
-      cartItems.value.push(item);
+    events.subscribe({ channel: 'cart', topic: 'item-added' }, (event) => {
+      cartItems.value.push(event.payload);
       itemCount.value = cartItems.value.length;
     });
     
@@ -91,7 +94,8 @@ export default {
   onMount(() => {
     const events = getEvents();
     
-    const unsubscribe = events.subscribe('cart:item-added', (item) => {
+    const unsubscribe = events.subscribe({ channel: 'cart', topic: 'item-added' }, (event) => {
+      const item = event.payload;
       notifications = [...notifications, {
         type: 'success',
         message: `${item.name} added to cart`
@@ -121,42 +125,64 @@ export default {
 For more complex scenarios, use these event patterns:
 
 ```typescript
-// Request-response pattern
-// Component A: Send request
-events.request('cart:get-items', null, (items) => {
+// Request-response pattern using events
+// Component A: Send request and create a specific response channel
+const responseChannel = `response-${Date.now()}`;
+events.publish(
+  { channel: 'cart', topic: 'get-items' },
+  { responseChannel } // Include the response channel in the payload
+);
+
+// Listen for the response on a specific channel
+events.subscribe({ channel: responseChannel, topic: 'items' }, (event) => {
   // Handle response with cart items
+  const items = event.payload;
   console.log('Received cart items:', items);
+  
+  // Unsubscribe after receiving the response
+  events.unsubscribe({ channel: responseChannel, topic: 'items' }, this);
 });
 
 // Component B: Handle request
-events.handleRequest('cart:get-items', (data, respond) => {
+events.subscribe({ channel: 'cart', topic: 'get-items' }, (event) => {
   // Get items from local state
   const items = getCartItems();
   
-  // Send response
-  respond(items);
+  // Send response to the specified channel
+  if (event.payload.responseChannel) {
+    events.publish(
+      { channel: event.payload.responseChannel, topic: 'items' },
+      items
+    );
+  }
 });
 ```
 
 ```typescript
 // Filtered subscriptions
-events.subscribe('product:updated', (product) => {
-  // Only handle updates for specific products
-}, {
-  filter: (product) => product.category === 'electronics'
+events.subscribe({ channel: 'product', topic: 'updated' }, (event) => {
+  const product = event.payload;
+  // Only process this event if the product is in the electronics category
+  if (product.category === 'electronics') {
+    // Handle electronics product update
+    console.log('Electronics product updated:', product);
+  }
 });
 ```
 
 ```typescript
-// Event namespacing
+// Using a consistent channel for related events
 // Component A
-const productEvents = events.namespace('product');
-productEvents.publish('updated', { id: '123', name: 'Updated Product' });
+events.publish(
+  { channel: 'product', topic: 'updated' },
+  { id: '123', name: 'Updated Product' }
+);
 
 // Component B
-const productEvents = events.namespace('product');
-productEvents.subscribe('updated', (product) => {
+events.subscribe({ channel: 'product', topic: 'updated' }, (event) => {
   // Handle product update
+  const product = event.payload;
+  console.log('Product updated:', product);
 });
 ```
 
@@ -706,13 +732,19 @@ client.onReady(() => {
   }
   
   // Listen for events from React
-  client.events.subscribe('react:state-update', updateState);
+  client.events.subscribe({ channel: 'react', topic: 'state-update' }, (event) => {
+    updateState(event.payload);
+  });
   
   // Listen for events from Vue
-  client.events.subscribe('vue:state-update', updateState);
+  client.events.subscribe({ channel: 'vue', topic: 'state-update' }, (event) => {
+    updateState(event.payload);
+  });
   
   // Listen for events from Svelte
-  client.events.subscribe('svelte:state-update', updateState);
+  client.events.subscribe({ channel: 'svelte', topic: 'state-update' }, (event) => {
+    updateState(event.payload);
+  });
 });
 ```
 

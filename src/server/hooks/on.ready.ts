@@ -11,10 +11,10 @@
  *
  * Hook functions are invoked with this bound to the associated Fastify instance.
  *
- * @returns {Promise<void>}
+ * @returns Promise<void>
  * @internal
- * @author Zach Ayers
- * @category (Hooks)
+ * @author Zachariah Ayers
+ * @category Hooks
  * @example
  * ```typescript
  * async () => {

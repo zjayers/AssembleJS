@@ -113,7 +113,7 @@ export interface BlueprintServerOptions {
    * @description Used to resolve relative paths
    * @example import.meta.url
    */
-  serverRoot: string;
+  serverRoot?: string;
 
   /**
    * Host to bind the server to

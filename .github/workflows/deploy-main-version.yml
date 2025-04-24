@@ -1,0 +1,146 @@
+name: deploy_main_version
+
+on:
+  push:
+    branches:
+      - main
+    # Prevent build on workflow changes to avoid accidental releases
+    paths-ignore:
+      - '.github/workflows/**'
+  
+  # Manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+# Define reusable cache key
+env:
+  cache-key: build-artifacts-${{ github.sha }}
+
+jobs:
+  # Primary build job that constructs all artifacts
+  build:
+    name: Build Main Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Install dependencies
+        run: npm ci --include=dev
+      
+      - name: Install website dependencies
+        run: cd websites/www.assemblejs.com && npm ci
+      
+      - name: Build main package
+        run: npm run build
+      
+      - name: Cache build artifacts
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            lib/
+            websites/www.assemblejs.com/build/
+            docs/
+          key: ${{ env.cache-key }}
+          enableCrossOsArchive: true
+  
+  # Publish package to npm with latest tag
+  publish-package:
+    name: Publish Package to NPM
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+      
+      - name: Install dependencies
+        run: npm ci --include=dev
+      
+      - name: Restore build artifacts
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            lib/
+            websites/www.assemblejs.com/build/
+            docs/
+          key: ${{ env.cache-key }}
+          fail-on-cache-miss: true
+      
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish --tag latest
+          echo "Published package to npm with tag: latest"
+  
+  # Deploy website to S3 production bucket
+  deploy-website:
+    name: Deploy Main Website
+    needs: publish-package
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      
+      - name: Restore build artifacts
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            lib/
+            websites/www.assemblejs.com/build/
+            docs/
+          key: ${{ env.cache-key }}
+          fail-on-cache-miss: true
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+          role-session-name: GithubActionsSession
+          role-duration-seconds: 900
+          mask-aws-account-id: 'no'
+          output-credentials: true
+      
+      - name: Deploy to S3 production bucket
+        run: |
+          # Use www.assemblejs.com as the bucket name
+          S3_BUCKET="www.assemblejs.com"
+          
+          # Deploy to root of production bucket
+          echo "Deploying to s3://$S3_BUCKET/"
+          aws s3 sync "websites/www.assemblejs.com/build/" "s3://$S3_BUCKET/" --delete
+          
+          echo "🚀 AssembleJS website successfully deployed to www.assemblejs.com"

@@ -110,15 +110,16 @@ export class ProductFactory {
 The Event Bus enables communication between components through a publish-subscribe pattern. Components can emit and listen for events without direct dependencies.
 
 ```typescript
-// In a component that adds items to cart
-events.emit('cart.add', { 
+// In a Blueprint component that adds items to cart
+this.toComponents({ 
   productId: product.id,
   quantity: 1
-});
+}, 'add');
 
 // In the cart component
-events.on('cart.add', (data) => {
-  // Handle adding item to cart
+this.subscribe('cart', 'add', (event) => {
+  // Handle adding item to cart using event.payload
+  const { productId, quantity } = event.payload;
 });
 ```
 

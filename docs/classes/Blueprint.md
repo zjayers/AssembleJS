@@ -8,7 +8,7 @@ This is the base class for all views in the browser.
 
 **`Author`**
 
-Zach Ayers
+Zachariah Ayers
 
 ## Type parameters
 
@@ -51,15 +51,19 @@ Zach Ayers
 
 Get the scoped api interface for this view.
 
+**`Author`**
+
+Zachariah Ayers
+
 #### Returns
 
 `AxiosInstance`
 
-- The scoped api interface for this view.
+The scoped api interface for this view.
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:205](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.view.ts#L205)
+[src/browser/client/blueprint.view.ts:216](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L216)
 
 ___
 
@@ -69,15 +73,19 @@ ___
 
 Get the context for this view.
 
+**`Author`**
+
+Zachariah Ayers
+
 #### Returns
 
 [`ViewContext`](../interfaces/ViewContext.md)<`Public`, `Params`\>
 
-- The context for this view.
+The context for this view.
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:189](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.view.ts#L189)
+[src/browser/client/blueprint.view.ts:196](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L196)
 
 ___
 
@@ -87,15 +95,19 @@ ___
 
 Get the root element for this view.
 
+**`Author`**
+
+Zachariah Ayers
+
 #### Returns
 
 `undefined` \| `HTMLElement`
 
-- The root element for this view.
+The root element for this view.
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:197](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.view.ts#L197)
+[src/browser/client/blueprint.view.ts:206](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L206)
 
 ## Constructors
 
@@ -104,6 +116,14 @@ Get the root element for this view.
 **new Blueprint**<`Public`, `Params`\>(`idSelector`)
 
 Base view constructor
+
+**`Throws`**
+
+- If the root element or data payload cannot be found
+
+**`Author`**
+
+Zachariah Ayers
 
 #### Type parameters
 
@@ -120,7 +140,7 @@ Base view constructor
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:70](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.view.ts#L70)
+[src/browser/client/blueprint.view.ts:75](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L75)
 
 ## Methods
 
@@ -132,13 +152,17 @@ Clean up this view's resources - especially event listeners
 This method should be called when the view is no longer needed
 to prevent memory leaks from event listener accumulation
 
+**`Author`**
+
+Zachariah Ayers
+
 #### Returns
 
 `void`
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:281](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.view.ts#L281)
+[src/browser/client/blueprint.view.ts:299](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L299)
 
 ___
 
@@ -150,14 +174,14 @@ Subscribe to a topic on a channel.
 
 **`Author`**
 
-Zach Ayers
+Zachariah Ayers
 
 #### Type parameters
 
-| Name |
-| :------ |
-| `Payload` |
-| `Response` |
+| Name | Description |
+| :------ | :------ |
+| `Payload` | The type of the payload |
+| `Response` | The type of the expected response |
 
 #### Parameters
 
@@ -173,7 +197,7 @@ Zach Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:252](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.view.ts#L252)
+[src/browser/client/blueprint.view.ts:266](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L266)
 
 ___
 
@@ -207,7 +231,7 @@ ViewEventAdapter.toAll
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:234](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.view.ts#L234)
+[src/browser/client/blueprint.view.ts:245](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L245)
 
 ___
 
@@ -241,7 +265,7 @@ ViewEventAdapter.toBlueprint
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:222](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.view.ts#L222)
+[src/browser/client/blueprint.view.ts:233](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L233)
 
 ___
 
@@ -275,7 +299,7 @@ ViewEventAdapter.toComponents
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:210](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.view.ts#L210)
+[src/browser/client/blueprint.view.ts:221](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L221)
 
 ___
 
@@ -283,27 +307,27 @@ ___
 
 `Protected` **onMessage**<`P`\>(`message`): `void`
 
-This method will fire anytime <strong>subscribed</strong> event is recieved.
+This method will fire anytime <strong>subscribed</strong> event is received.
 
 **`Description`**
 
-If this view is not subscribed to the particular channel and topic, it will not recieve the event. Components subscribe to the 'all', 'component', and 'blueprint' channels by default.
+If this view is not subscribed to the particular channel and topic, it will not receive the event. Components subscribe to the 'all', 'component', and 'blueprint' channels by default.
 
 **`Author`**
 
-Zach Ayers
+Zachariah Ayers
 
 #### Type parameters
 
-| Name | Type |
-| :------ | :------ |
-| `P` | `unknown` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `P` | `unknown` | The type of the message payload |
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `message` | [`BlueprintEvent`](../interfaces/BlueprintEvent.md)<`P`\> |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `message` | [`BlueprintEvent`](../interfaces/BlueprintEvent.md)<`P`\> | The event message |
 
 #### Returns
 
@@ -311,7 +335,7 @@ Zach Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:273](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.view.ts#L273)
+[src/browser/client/blueprint.view.ts:289](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L289)
 
 ___
 
@@ -327,7 +351,7 @@ Any post-mount actions should be done here.
 
 **`Author`**
 
-Zach Ayers
+Zachariah Ayers
 
 #### Returns
 
@@ -335,4 +359,4 @@ Zach Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:360](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.view.ts#L360)
+[src/browser/client/blueprint.view.ts:382](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L382)

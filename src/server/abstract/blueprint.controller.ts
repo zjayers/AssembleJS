@@ -9,6 +9,9 @@ import type { Service } from "./service";
  * and handlers in AssembleJS applications. This base class includes dependency injection
  * capabilities through the ServiceContainer, allowing controllers to easily access shared
  * services. All custom controllers in an AssembleJS application should extend this class.
+ * @author Zachariah Ayers
+ * @category Server
+ * @public
  *
  * @example
  * ```typescript
@@ -33,7 +36,7 @@ import type { Service } from "./service";
  * }
  * ```
  *
- * @category (Server)
+ * @category Server
  * @author Zachariah Ayers
  */
 export abstract class BlueprintController extends Loggable {
@@ -46,6 +49,7 @@ export abstract class BlueprintController extends Loggable {
    * @param {string} token - The service identifier used during registration
    * @return {T} The service instance of the requested type
    * @throws {Error} When the requested service is not found in the container
+   * @author Zachariah Ayers
    * @example
    * ```typescript
    * // Get the user service from the container
@@ -65,6 +69,7 @@ export abstract class BlueprintController extends Loggable {
    *
    * @param {string} token - The service identifier to check
    * @return {boolean} True if the service is registered, false otherwise
+   * @author Zachariah Ayers
    * @example
    * ```typescript
    * // Check if the optional caching service is available
@@ -89,7 +94,7 @@ export abstract class BlueprintController extends Loggable {
    * functionality.
    *
    * @param {Assembly} app - The server instance to register the controller with
-   * @returnss {void}
+   * @returns {void}
    * @example
    * ```typescript
    * // Sample implementation in a concrete controller

@@ -1,6 +1,6 @@
 {
   "name": "asmbl",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A modern micro-frontend framework for building distributed component-based UIs",
   "keywords": [
     "Micro-Frontends",
@@ -49,8 +49,10 @@
     "lib/**/*"
   ],
   "scripts": {
+    "bootstrap": "npm install && npm run install:website && npm pack && npm run install:testbed",
     "prepack": "npm run build",
-    "postinstall": "cd websites/www.assemblejs.com && npm install",
+    "install:website": "cd websites/www.assemblejs.com && npm install --ignore-scripts",
+    "install:testbed": "run-s testbed:install",
     "commit": "cz",
     "docs": "typedoc --options typedoc.json",
     "docs:serve": "serve -l 8899 -s ./docs",
@@ -114,6 +116,8 @@
     "git:update:force": "git add . && git commit -m \"chore: update\" && git push --force",
     "publish:npm": "npm publish",
     "publish:npm:next": "npm publish --tag next",
+    "testbed:install": "node testbed/scripts/install-all.js",
+    "testbed:build": "node testbed/scripts/build-all.js",
     "version:patch": "HUSKY=0 npm version patch && HUSKY=0 npm run generate:changelog && git add CHANGELOG.md && git commit -m \"chore(release): update patch version\" --no-verify",
     "version:minor": "HUSKY=0 npm version minor && HUSKY=0 npm run generate:changelog && git add CHANGELOG.md && git commit -m \"chore(release): update minor version\" --no-verify",
     "version:major": "HUSKY=0 npm version major && HUSKY=0 npm run generate:changelog && git add CHANGELOG.md --no-verify && git commit -m \"chore(release): update major version\" --no-verify",

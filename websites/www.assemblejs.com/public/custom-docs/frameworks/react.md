@@ -95,14 +95,14 @@ class ProductCardComponent extends Blueprint {
     super.onMount();
     
     // Get a reference to the Add to Cart button
-    const addToCartButton = this.element.querySelector('.add-to-cart-button');
+    const addToCartButton = this.root.querySelector('.add-to-cart-button');
     
     // Add event listener
     addToCartButton?.addEventListener('click', () => {
       const productId = this.context.data.product.id;
       
       // Publish an event to notify other components
-      this.eventBus.publish('cart:add', { productId });
+      this.toComponents({ productId }, 'add');
     });
   }
 }
@@ -211,9 +211,10 @@ class NotificationComponent extends Blueprint {
     super.onMount();
     
     // Listen for cart events
-    this.eventBus.subscribe('cart:add', (data) => {
+    this.subscribe('cart', 'add', (event) => {
+      const data = event.payload;
       // Get the React component instance
-      const reactRoot = this.element.querySelector('[data-react-root]');
+      const reactRoot = this.root.querySelector('[data-react-root]');
       if (!reactRoot) return;
       
       // Call a method on the React component

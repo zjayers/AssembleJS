@@ -6,7 +6,7 @@ Address to use when publishing/subscribing to events.
 
 **`Author`**
 
-Zach Ayers
+Zachariah Ayers
 
 **`Example`**
 
@@ -26,4 +26,4 @@ eventBus.publish(address, {data: 'my-payload'}
 
 #### Defined in
 
-[src/browser/eventing/event.address.ts:23](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.address.ts#L23)
+[src/browser/eventing/event.address.ts:23](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.address.ts#L23)

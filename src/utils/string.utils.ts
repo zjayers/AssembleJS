@@ -1,18 +1,20 @@
 /**
- * Convert a value that could be `null` or `undefined` to a valid `string`. In addition, an value of an unknown type that is NOT `undefined`, `null` or a `string` will be converted to a `string`.
- *
- * @param {unknown | string | undefined | null} value String Value.
- * @param {string} defaultValue Default String Value. (Optional: default = '')
- * @returns {string} Returns Default String Value if Value is Undefined/Null.
+ * String utility functions
+ * @description A collection of string manipulation and validation utilities
+ * @author Zachariah Ayers
+ * @category Utils
+ * @public
  */
 import { PATTERN_MULTIPLE_SPACES, PATTERN_PUNCTUATION } from "./pattern.utils";
 
 /**
  * Check if the length of the provided string matches the provided number.
- * @param {string} str - The String to be checked.
- * @param {number} length - The expected length of the String.
- * @return {boolean} True if <code>string.length</code> equals the expected number value.
- * @author Zach Ayers
+ * @param {string} str - The string to be checked
+ * @param {number} length - The expected length of the string
+ * @return {boolean} True if string.length equals the expected number value
+ * @author Zachariah Ayers
+ * @category Utils
+ * @public
  */
 export const isStringOfLength = (str: string, length: number) =>
   str.length === length;

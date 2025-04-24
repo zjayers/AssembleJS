@@ -18,13 +18,17 @@ import { CONSTANTS } from "../constants/blueprint.constants";
 
 /**
  * Just a plain empty object expectation type.
- * @author Zach Ayers
+ * @author Zachariah Ayers
+ * @category Component
+ * @public
  */
 export type EMPTY_NODE_PARAM = AnyObject;
 
 /**
  * Helper interface for pointing to a base Param map that is available to components.
- * @author Zach Ayers
+ * @author Zachariah Ayers
+ * @category Component
+ * @public
  */
 export interface EMPTY_NODE_PARAMS extends ComponentParams {
   headers: EMPTY_NODE_PARAM;
@@ -37,8 +41,8 @@ export interface EMPTY_NODE_PARAMS extends ComponentParams {
  * Component Context - Built during each request for a Component
  * @description The Component context captures the state of a Component as data passes through the system
  * @description Items on the Context are thrown away after a Reply is returned, and Context should only exist for a single request session.
- * @category (Component)
- * @author Zach Ayers
+ * @category Component
+ * @author Zachariah Ayers
  * @public
  * @example
  * ```typescript

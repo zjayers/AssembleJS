@@ -13,6 +13,8 @@ AssembleJS components follow these key principles:
 
 ## Component Structure
 
+### File Organization
+
 A typical AssembleJS component consists of three files:
 
 ```
@@ -21,6 +23,50 @@ src/components/header/main/
 ├── main.styles.scss     # Component styling
 └── main.view.html       # Component template (any supported format)
 ```
+
+### Component Definition in Manifest
+
+Components are registered in the server manifest when creating a blueprint server:
+
+```typescript
+import { createBlueprintServer } from "asmbl";
+import viteDevServer from 'vavite/vite-dev-server';
+import vaviteHttpServer from 'vavite/http-dev-server';
+
+void createBlueprintServer({
+  serverRoot: import.meta.url,
+  httpServer: vaviteHttpServer,
+  devServer: viteDevServer,
+  
+  manifest: {
+    components: [
+      {
+        // Component path - dictates the component's namespace
+        path: 'header',
+        
+        // Component views - different visual representations of this component
+        views: [
+          {
+            // View name - combined with path creates the fully qualified name
+            viewName: 'main',
+            
+            // Template file - relative to the component path
+            templateFile: 'main.view.html',
+            
+            // Optional - make this view available as a blueprint/page
+            exposeAsBlueprint: false,
+            
+            // Optional - route to expose this view at if exposeAsBlueprint is true
+            route: '/header'
+          }
+        ]
+      }
+    ]
+  }
+});
+```
+
+The `path` property defines the component's namespace, while `viewName` specifies the particular view within that component. Together, they form the fully qualified component name (e.g., `header.main`) used throughout the application.
 
 ### The View File
 
@@ -140,11 +186,11 @@ export class MainClient extends Blueprint {
       this.menuButton.addEventListener('click', this.toggleMenu.bind(this));
     }
     
-    // Listen for global events
-    events.on('app.theme.change', this.handleThemeChange.bind(this));
+    // Listen for global events using proper subscribe method
+    this.subscribe({ channel: 'app', topic: 'theme.change' }, this.handleThemeChange.bind(this));
     
-    // Emit component ready event
-    events.emit('header.ready', { componentId: this.context.id });
+    // Emit component ready event using proper publish method
+    this.toComponents({ componentId: this.context.id }, 'header.ready');
   }
   
   private toggleMenu(): void {
@@ -155,7 +201,7 @@ export class MainClient extends Blueprint {
   
   private handleThemeChange(event: any): void {
     // Update component based on theme change
-    const { theme } = event.data;
+    const { theme } = event.payload; // Use payload, not data
     this.context.element.setAttribute('data-theme', theme);
   }
   
@@ -165,12 +211,12 @@ export class MainClient extends Blueprint {
       this.menuButton.removeEventListener('click', this.toggleMenu.bind(this));
     }
     
-    events.off('app.theme.change', this.handleThemeChange.bind(this));
+    // No need to manually unsubscribe - Blueprint handles this automatically
   }
 }
 
-// Register the client-side behavior
-BlueprintClient.registerComponentCodeBehind(MainClient);
+// Export the client class (AssembleJS will handle registration)
+export default MainClient;
 ```
 
 ### The Styles File
@@ -275,9 +321,14 @@ Components are registered in the server manifest:
 ```typescript
 // server.ts
 import { createBlueprintServer } from "asmbl";
+import viteDevServer from 'vavite/vite-dev-server';
+import vaviteHttpServer from 'vavite/http-dev-server';
 
 void createBlueprintServer({
   serverRoot: import.meta.url,
+  // HTTP and development server configuration
+  httpServer: vaviteHttpServer,
+  devServer: viteDevServer,
   manifest: {
     components: [
       {
