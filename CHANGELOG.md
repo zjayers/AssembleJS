@@ -1,3 +1,22 @@
+## <small>0.0.11 (2025-04-24)</small>
+
+* 0.0.11 ([31ffd02](https://github.com/zjayers/assemblejs/commit/31ffd02))
+* chore: build script updates ([42c4c84](https://github.com/zjayers/assemblejs/commit/42c4c84))
+* chore: fix build issues ([81daa88](https://github.com/zjayers/assemblejs/commit/81daa88))
+* chore: fix build issues ([4ca829e](https://github.com/zjayers/assemblejs/commit/4ca829e))
+* chore: fix build issues ([0d4ec0b](https://github.com/zjayers/assemblejs/commit/0d4ec0b))
+* chore: fix websites build issues ([2621f67](https://github.com/zjayers/assemblejs/commit/2621f67))
+* chore: fix websites build issues ([b223c90](https://github.com/zjayers/assemblejs/commit/b223c90))
+* chore: update workflows for cache error ([fb2ffda](https://github.com/zjayers/assemblejs/commit/fb2ffda))
+* chore: website docs improvement ([03d1c5e](https://github.com/zjayers/assemblejs/commit/03d1c5e))
+* chore: website docs improvement ([99d39c6](https://github.com/zjayers/assemblejs/commit/99d39c6))
+* chore: website improvements ([2abdf6a](https://github.com/zjayers/assemblejs/commit/2abdf6a))
+* chore: website improvements ([0daa8cd](https://github.com/zjayers/assemblejs/commit/0daa8cd))
+* chore(release): update patch version ([afc9ef0](https://github.com/zjayers/assemblejs/commit/afc9ef0))
+* fix: improve documentation styling and fix CSS variable references ([3539104](https://github.com/zjayers/assemblejs/commit/3539104))
+
+
+
 ## <small>0.0.10 (2025-04-23)</small>
 
 * 0.0.10 ([a5454e5](https://github.com/zjayers/assemblejs/commit/a5454e5))
