@@ -11,9 +11,9 @@
 
 ---
 
-## Index
-
 <!-- TOC -->
+
+## Index
 
 - [Index](#index)
 - [About](#about)

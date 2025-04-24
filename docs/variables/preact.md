@@ -35,4 +35,4 @@ Zach Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.preact.ts:14](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.preact.ts#L14)
+[src/browser/client/blueprint.preact.ts:14](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.preact.ts#L14)

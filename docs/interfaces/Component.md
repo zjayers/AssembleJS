@@ -72,7 +72,7 @@ Zachariah Ayers
 
 #### Defined in
 
-[src/types/component.ts:60](https://github.com/zjayers/AssembleJS/blob/d2354de/src/types/component.ts#L60)
+[src/types/component.ts:60](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/types/component.ts#L60)
 
 ___
 
@@ -88,7 +88,7 @@ Zachariah Ayers
 
 #### Defined in
 
-[src/types/component.ts:44](https://github.com/zjayers/AssembleJS/blob/d2354de/src/types/component.ts#L44)
+[src/types/component.ts:44](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/types/component.ts#L44)
 
 ___
 
@@ -106,7 +106,7 @@ Zachariah Ayers
 
 #### Defined in
 
-[src/types/component.ts:52](https://github.com/zjayers/AssembleJS/blob/d2354de/src/types/component.ts#L52)
+[src/types/component.ts:52](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/types/component.ts#L52)
 
 ___
 
@@ -134,7 +134,7 @@ Zachariah Ayers
 
 #### Defined in
 
-[src/types/component.ts:71](https://github.com/zjayers/AssembleJS/blob/d2354de/src/types/component.ts#L71)
+[src/types/component.ts:71](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/types/component.ts#L71)
 
 ___
 
@@ -150,4 +150,4 @@ Zachariah Ayers
 
 #### Defined in
 
-[src/types/component.ts:93](https://github.com/zjayers/AssembleJS/blob/d2354de/src/types/component.ts#L93)
+[src/types/component.ts:93](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/types/component.ts#L93)

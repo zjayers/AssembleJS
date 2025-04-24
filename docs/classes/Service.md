@@ -55,7 +55,7 @@ A promise that resolves when initialization is complete
 
 #### Defined in
 
-[src/server/abstract/service.ts:19](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/service.ts#L19)
+[src/server/abstract/service.ts:19](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/server/abstract/service.ts#L19)
 
 ## Constructors
 
@@ -79,7 +79,7 @@ Loggable.constructor
 
 #### Defined in
 
-[src/server/abstract/loggable.ts:19](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/loggable.ts#L19)
+[src/server/abstract/loggable.ts:19](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/server/abstract/loggable.ts#L19)
 
 ## Properties
 
@@ -93,4 +93,4 @@ Loggable.log
 
 #### Defined in
 
-[src/server/abstract/loggable.ts:11](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/loggable.ts#L11)
+[src/server/abstract/loggable.ts:11](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/server/abstract/loggable.ts#L11)

@@ -63,7 +63,7 @@ The scoped api interface for this view.
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:216](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L216)
+[src/browser/client/blueprint.view.ts:216](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.view.ts#L216)
 
 ___
 
@@ -85,7 +85,7 @@ The context for this view.
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:196](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L196)
+[src/browser/client/blueprint.view.ts:196](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.view.ts#L196)
 
 ___
 
@@ -107,7 +107,7 @@ The root element for this view.
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:206](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L206)
+[src/browser/client/blueprint.view.ts:206](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.view.ts#L206)
 
 ## Constructors
 
@@ -140,7 +140,7 @@ Zachariah Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:75](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L75)
+[src/browser/client/blueprint.view.ts:75](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.view.ts#L75)
 
 ## Methods
 
@@ -162,7 +162,7 @@ Zachariah Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:299](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L299)
+[src/browser/client/blueprint.view.ts:299](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.view.ts#L299)
 
 ___
 
@@ -197,7 +197,7 @@ Zachariah Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:266](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L266)
+[src/browser/client/blueprint.view.ts:266](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.view.ts#L266)
 
 ___
 
@@ -231,7 +231,7 @@ ViewEventAdapter.toAll
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:245](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L245)
+[src/browser/client/blueprint.view.ts:245](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.view.ts#L245)
 
 ___
 
@@ -265,7 +265,7 @@ ViewEventAdapter.toBlueprint
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:233](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L233)
+[src/browser/client/blueprint.view.ts:233](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.view.ts#L233)
 
 ___
 
@@ -299,7 +299,7 @@ ViewEventAdapter.toComponents
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:221](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L221)
+[src/browser/client/blueprint.view.ts:221](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.view.ts#L221)
 
 ___
 
@@ -335,7 +335,7 @@ Zachariah Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:289](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L289)
+[src/browser/client/blueprint.view.ts:289](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.view.ts#L289)
 
 ___
 
@@ -359,4 +359,4 @@ Zachariah Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.view.ts:382](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.view.ts#L382)
+[src/browser/client/blueprint.view.ts:382](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.view.ts#L382)

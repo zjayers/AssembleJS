@@ -1,4 +1,4 @@
-# AssembleJS Framework Documentation - v0.0.11
+# AssembleJS Framework Documentation - v0.0.12
 
 ## Table of contents
 

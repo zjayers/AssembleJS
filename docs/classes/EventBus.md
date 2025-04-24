@@ -45,7 +45,7 @@ Zachariah Ayers
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:286](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L286)
+[src/browser/eventing/event.bus.ts:286](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/eventing/event.bus.ts#L286)
 
 ## Properties
 
@@ -59,7 +59,7 @@ IEventBus.eventEmitter
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:212](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L212)
+[src/browser/eventing/event.bus.ts:212](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/eventing/event.bus.ts#L212)
 
 ___
 
@@ -73,7 +73,7 @@ IEventBus.eventSink
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:213](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L213)
+[src/browser/eventing/event.bus.ts:213](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/eventing/event.bus.ts#L213)
 
 ## Methods
 
@@ -105,7 +105,7 @@ IEventBus.peek
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:216](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L216)
+[src/browser/eventing/event.bus.ts:216](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/eventing/event.bus.ts#L216)
 
 ___
 
@@ -137,7 +137,7 @@ IEventBus.publish
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:221](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L221)
+[src/browser/eventing/event.bus.ts:221](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/eventing/event.bus.ts#L221)
 
 ___
 
@@ -170,7 +170,7 @@ IEventBus.subscribe
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:271](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L271)
+[src/browser/eventing/event.bus.ts:271](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/eventing/event.bus.ts#L271)
 
 ___
 
@@ -204,7 +204,7 @@ IEventBus.toAll
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:235](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L235)
+[src/browser/eventing/event.bus.ts:235](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/eventing/event.bus.ts#L235)
 
 ___
 
@@ -238,7 +238,7 @@ IEventBus.toBlueprint
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:259](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L259)
+[src/browser/eventing/event.bus.ts:259](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/eventing/event.bus.ts#L259)
 
 ___
 
@@ -272,7 +272,7 @@ IEventBus.toComponents
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:247](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L247)
+[src/browser/eventing/event.bus.ts:247](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/eventing/event.bus.ts#L247)
 
 ___
 
@@ -299,4 +299,4 @@ IEventBus.unsubscribe
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:276](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/eventing/event.bus.ts#L276)
+[src/browser/eventing/event.bus.ts:276](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/eventing/event.bus.ts#L276)
