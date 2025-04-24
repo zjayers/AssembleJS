@@ -13,8 +13,6 @@
 
 ## Index
 
-<!-- TOC -->
-
 - [Index](#index)
 - [About](#about)
   - [What is AssembleJS?](#what-is-assemblejs)
