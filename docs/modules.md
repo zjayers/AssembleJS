@@ -1,8 +1,8 @@
-# AssembleJS Framework Documentation - v0.0.10
+# AssembleJS Framework Documentation - v0.0.11
 
 ## Table of contents
 
-### (Eventing) Type Aliases
+### Eventing Type Aliases
 
 - [EventAddress](types/EventAddress.md)
 
@@ -13,17 +13,17 @@
 - [ComponentFactory](types/ComponentFactory.md)
 - [ServerContext](types/ServerContext.md)
 
-### (AssembleJS) Interfaces
-
-- [BlueprintServerManifest](interfaces/BlueprintServerManifest.md)
-
-### (Component) Interfaces
+### Component Interfaces
 
 - [Component](interfaces/Component.md)
 
-### (Eventing) Interfaces
+### Eventing Interfaces
 
 - [BlueprintEvent](interfaces/BlueprintEvent.md)
+
+### (AssembleJS) Interfaces
+
+- [BlueprintServerManifest](interfaces/BlueprintServerManifest.md)
 
 ### (Server) Interfaces
 
@@ -36,31 +36,34 @@
 - [PreactViewContext](interfaces/PreactViewContext.md)
 - [ViewContext](interfaces/ViewContext.md)
 
-### (Client) Classes
+### Server Classes
+
+- [BlueprintController](classes/BlueprintController.md)
+- [Service](classes/Service.md)
+
+### Client Classes
 
 - [BlueprintClient](classes/BlueprintClient.md)
 
-### (Eventing) Classes
+### Eventing Classes
 
 - [EventBus](classes/EventBus.md)
 
-### (Server) Classes
-
-- [BlueprintController](classes/BlueprintController.md)
-
-### Other Classes
+### Browser Classes
 
 - [Blueprint](classes/Blueprint.md)
-- [Service](classes/Service.md)
 
 ### Functions
 
 - [createBlueprintServer](functions/createBlueprintServer.md)
 - [http](functions/http.md)
 
-### Variables
+### Eventing Variables
 
 - [events](variables/events.md)
+
+### Other Variables
+
 - [hooks](variables/hooks.md)
 - [preact](variables/preact.md)
 - [utils](variables/utils.md)

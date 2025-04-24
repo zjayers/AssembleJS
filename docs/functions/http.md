@@ -6,7 +6,7 @@ Base Assemble http client implementation that is exposed to client and server in
 
 **`Author`**
 
-Zach Ayers
+Zachariah Ayers
 
 #### Parameters
 
@@ -28,7 +28,7 @@ Base Assemble http client implementation that is exposed to client and server in
 
 **`Author`**
 
-Zach Ayers
+Zachariah Ayers
 
 #### Parameters
 

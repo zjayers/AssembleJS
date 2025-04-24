@@ -1,7 +1,7 @@
 /**
  * Event interface used by the Eventing system
- * @author Zach Ayers
- * @category (Eventing)
+ * @author Zachariah Ayers
+ * @category Eventing
  * @public
  * @example
  * ```typescript

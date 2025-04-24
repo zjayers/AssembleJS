@@ -275,12 +275,12 @@ class ProductCardComponent extends Blueprint {
     super.onMount();
     
     // Listen for custom events from the Web Component
-    this.element.addEventListener('add-to-cart', (event: CustomEvent) => {
+    this.root.addEventListener('add-to-cart', (event: CustomEvent) => {
       // Forward to AssembleJS event bus
-      this.eventBus.publish('cart:add', {
+      this.toComponents({
         productId: event.detail.productId,
         quantity: event.detail.quantity
-      });
+      }, 'add');
     });
   }
 }
@@ -704,7 +704,7 @@ class InteractiveComponentClient extends Blueprint {
     super.onMount();
     
     // Listen for the custom event from the Web Component
-    this.element.addEventListener('component-action', (event: CustomEvent) => {
+    this.root.addEventListener('component-action', (event: CustomEvent) => {
       const { action, timestamp } = event.detail;
       
       // Process the action
@@ -718,14 +718,14 @@ class InteractiveComponentClient extends Blueprint {
     
     // Call a method on the Web Component
     const result = `Action processed at ${new Date().toLocaleString()}`;
-    (this.element as any).displayResult(result);
+    (this.root as any).displayResult(result);
     
     // Publish an event to the AssembleJS event bus
-    this.eventBus.publish('component:action-processed', {
+    this.toComponents({
       action,
       result,
       timestamp
-    });
+    }, 'action-processed');
   }
 }
 

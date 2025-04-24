@@ -10,8 +10,8 @@ Functional Eventing Interface
 
 **`Author`**
 
-Zach Ayers
+Zachariah Ayers
 
 #### Defined in
 
-[src/browser/eventing/event.bus.ts:302](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/eventing/event.bus.ts#L302)
+[src/browser/eventing/event.bus.ts:330](https://github.com/zjayers/AssembleJS/blob/14bff3e/src/browser/eventing/event.bus.ts#L330)

@@ -47,7 +47,7 @@ npm init -y
 3. Install AssembleJS and its dependencies:
 
 ```bash
-npm install asmbl@latest typescript fastify
+npm install asmbl@next typescript fastify
 ```
 
 4. Create a minimal TypeScript configuration (`tsconfig.json`):
@@ -87,12 +87,17 @@ mkdir -p src/components/header/main
 
 ```typescript
 import { createBlueprintServer } from 'asmbl';
+import viteDevServer from 'vavite/vite-dev-server';
+import vaviteHttpServer from 'vavite/http-dev-server';
 
 const server = createBlueprintServer({
   port: 3000,
   host: 'localhost',
   serverRoot: import.meta.url,
-  componentDirs: ['./blueprints', './components']
+  componentDirs: ['./blueprints', './components'],
+  // HTTP and development server configuration
+  httpServer: vaviteHttpServer,
+  devServer: viteDevServer
 });
 
 server.start().then(() => {

@@ -193,18 +193,18 @@ class ProductCardComponent extends Blueprint {
     super.onMount();
     
     // Get a reference to the Add to Cart button
-    const addToCartButton = this.element.querySelector('.add-to-cart-button');
+    const addToCartButton = this.root.querySelector('.add-to-cart-button');
     
     // Add event listener
     addToCartButton?.addEventListener('click', () => {
       const productId = this.context.data.product.id;
-      const quantity = this.element.querySelector('.quantity-control span')?.textContent;
+      const quantity = this.root.querySelector('.quantity-control span')?.textContent;
       
       // Publish an event to notify other components
-      this.eventBus.publish('cart:add', { 
+      this.toComponents({ 
         productId,
         quantity: parseInt(quantity || '1', 10)
-      });
+      }, 'add');
     });
   }
 }
@@ -604,12 +604,12 @@ class NotificationComponent extends Blueprint {
     super.onMount();
     
     // Listen for cart events
-    this.eventBus.subscribe('cart:add', (data) => {
+    this.subscribe('cart', 'add', (event) => {
       // Use custom event to communicate with Vue component
-      const event = new CustomEvent('show-notification', {
-        detail: `Added ${data.quantity} item(s) to cart`
+      const customEvent = new CustomEvent('show-notification', {
+        detail: `Added ${event.payload.quantity} item(s) to cart`
       });
-      this.element.dispatchEvent(event);
+      this.root.dispatchEvent(customEvent);
     });
   }
 }

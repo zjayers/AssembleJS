@@ -1,10 +1,10 @@
 # asm-build - AssembleJS Build Command
 
-The `asm-build` command is designed to build your AssembleJS application for production deployment, optimizing assets and generating the most efficient output.
+The `asm-build` command provides a streamlined way to build your AssembleJS application. This feature is currently in development with basic functionality.
 
 ## Overview
 
-`asm-build` compiles, bundles, and optimizes your AssembleJS application, preparing it for production deployment. It handles asset optimization, code minification, and creates a production-ready build with the highest performance characteristics.
+`asm-build` is a simple build tool that will compile your AssembleJS application. The current implementation is minimal, with more features planned for future releases.
 
 ## Usage
 
@@ -15,131 +15,64 @@ npm run build
 Or directly:
 
 ```bash
-npx asm-build [options]
+npx asm-build
 ```
 
-## Command Options
+## Current Implementation Status
 
-| Option | Description |
-|--------|-------------|
-| `--outDir=<DIR>` | Specify the output directory (defaults to "dist") |
-| `--minify` | Enable minification (enabled by default) |
-| `--no-minify` | Disable minification |
-| `--sourcemap` | Generate source maps |
-| `--stats` | Generate bundle statistics |
-| `--analyze` | Analyze the bundle size and composition |
-| `--help`, `-h` | Display help information |
+> **Note:** The build command is currently in early development. Many of the features described below are planned for future implementation.
 
-## Environment Variables
+The current version of `asm-build` provides basic build functionality. Advanced features like asset optimization, code splitting, and configuration options are under development.
 
-The build process can be customized using environment variables:
+## Basic Configuration
 
-| Variable | Description |
-|----------|-------------|
-| `ASSEMBLEJS_ENVIRONMENT` | The build environment (development, production, test) |
-| `ASSEMBLEJS_BUILD_OUTDIR` | The output directory for the build |
-| `ASSEMBLEJS_BUILD_MINIFY` | Whether to minify the output (true/false) |
-| `ASSEMBLEJS_BUILD_SOURCEMAP` | Whether to generate source maps (true/false) |
+When using `asm-build`, ensure your server configuration includes the required HTTP and development server options:
 
-## Build Output
+```typescript
+// server.ts
+import { createBlueprintServer } from "asmbl";
 
-The build process generates the following output structure:
-
-```
-dist/
-├── server/         # Server-side code
-│   ├── index.js    # Server entry point
-│   └── ...         # Other server files
-├── client/         # Client-side assets
-│   ├── js/         # JavaScript bundles
-│   ├── css/        # CSS bundles
-│   └── assets/     # Other assets (images, fonts, etc.)
-├── package.json    # Production dependencies
-└── ...             # Other configuration files
+void createBlueprintServer({
+  serverRoot: import.meta.url,
+  httpServer: vaviteHttpServer,  // Required
+  devServer: viteDevServer,      // Required
+  
+  // Other configuration options
+});
 ```
 
-## Build Process
+## Planned Features
 
-The `asm-build` command performs the following steps:
+The following features are planned for future releases:
 
-1. **Clean** - Removes previous build artifacts
-2. **TypeScript Compilation** - Compiles TypeScript to JavaScript
-3. **Asset Bundling** - Bundles JavaScript and CSS files
-4. **Optimization** - Minifies and optimizes all assets
-5. **Code Splitting** - Creates optimal chunks for better loading performance
-6. **Cache Optimization** - Adds content hashes for long-term caching
-7. **Generation of Server Entry** - Creates optimized server entry points
+- Output directory configuration
+- Minification options
+- Source map generation
+- Bundle analysis
+- Tree shaking
+- Code splitting
+- Asset optimization
+- Configuration via `asm.config.js`
 
-## Advanced Configuration
+## Current Best Practices
 
-For advanced build configuration, you can create an `asm.config.js` file in your project root:
+- For production builds, use the basic `npm run build` command
+- Ensure your server.ts file includes the required HTTP and development server configuration
+- Consider using alternative build tools for advanced needs until `asm-build` is fully implemented
 
-```javascript
-// asm.config.js
-module.exports = {
-  build: {
-    outDir: './build',
-    minify: true,
-    sourcemap: false,
-    // Advanced options
-    optimization: {
-      splitChunks: true,
-      treeShaking: true
-    },
-    assets: {
-      inlineLimit: 10000, // inline assets < 10kb
-      publicPath: '/static/'
-    }
-  }
-};
-```
-
-## Performance Optimizations
-
-The build process includes several performance optimizations:
-
-- **Tree Shaking** - Removes unused code
-- **Code Splitting** - Creates smaller, more focused bundles
-- **Asset Optimization** - Compresses images and other assets
-- **CSS Minification** - Removes whitespace and optimizes styles
-- **JavaScript Minification** - Reduces code size for faster loading
-- **Long-term Caching** - Content-hashed filenames for optimal caching
-
-## Common Use Cases
-
-### Basic Production Build
+## Example Basic Usage
 
 ```bash
-npm run build
+# Interactive mode
+npx asm
+# Select "build" from the options
+
+# Direct command
+npx asm-build
 ```
-
-### Development Build with Source Maps
-
-```bash
-ASSEMBLEJS_BUILD_SOURCEMAP=true npm run build
-```
-
-### Build with Bundle Analysis
-
-```bash
-npx asm-build --analyze
-```
-
-### Custom Output Directory
-
-```bash
-npx asm-build --outDir=./build
-```
-
-## Best Practices
-
-- Run `npm run build` before deployment to ensure production-ready code
-- Commit the `asm.config.js` file to version control for consistent builds
-- Use environment variables for environment-specific configurations
-- Review bundle analysis to identify optimization opportunities
 
 ## Related Commands
 
 - [asmgen](./asmgen.md) - Generate project artifacts
 - [asm-serve](./asm-serve.md) - Start the development server
-- [asm-insights](./asm-insights.md) - Analyze and optimize your application
+- [asm-insights](./asm-insights.md) - Analyze application performance

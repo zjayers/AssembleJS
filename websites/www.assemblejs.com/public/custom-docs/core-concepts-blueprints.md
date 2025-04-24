@@ -60,28 +60,27 @@ export function Welcome(context: PreactViewContext) {
 The client file handles the client-side logic for the blueprint:
 
 ```typescript
-import { Blueprint, BlueprintClient, events } from "asmbl";
+import { Blueprint } from "asmbl";
 
 export class WelcomeClient extends Blueprint {
-  protected override async onMount(): Promise<void> {
+  protected override onMount(): void {
     // Initialize the component
     super.onMount();
     
-    // Set up event listeners
-    events.on('feature.selected', this.handleFeatureSelected.bind(this));
+    // Set up event listeners using the proper event addressing format
+    this.subscribe({ channel: 'feature', topic: 'selected' }, this.handleFeatureSelected.bind(this));
     
     // Notify other components that the page is ready
-    events.emit('welcome.ready', { pageId: this.context.id });
+    this.toAll({ pageId: this.context.id }, 'welcome.ready');
   }
   
   private handleFeatureSelected(event: any): void {
     // Handle feature selection events
-    console.log('Feature selected:', event.data);
+    console.log('Feature selected:', event.payload);
   }
 }
 
-// Register the client-side behavior
-BlueprintClient.registerComponentCodeBehind(WelcomeClient);
+export default WelcomeClient;
 ```
 
 ### The Styles File
@@ -111,16 +110,25 @@ The styles file contains the SCSS styling for the blueprint:
 }
 ```
 
-## Registering Blueprints
+## Registering Blueprints and Routes
 
-Blueprints are registered in the server manifest:
+Blueprints are registered in the server manifest in one of two ways:
+
+### Method 1: Using `exposeAsBlueprint` on Component Views
+
+You can expose any component view as a blueprint by setting `exposeAsBlueprint: true`:
 
 ```typescript
 // server.ts
 import { createBlueprintServer } from "asmbl";
+import viteDevServer from 'vavite/vite-dev-server';
+import vaviteHttpServer from 'vavite/http-dev-server';
 
 void createBlueprintServer({
   serverRoot: import.meta.url,
+  // HTTP and development server configuration
+  httpServer: vaviteHttpServer,
+  devServer: viteDevServer,
   manifest: {
     components: [
       {
@@ -129,12 +137,73 @@ void createBlueprintServer({
           viewName: 'welcome',
           templateFile: 'welcome.view.tsx',
           exposeAsBlueprint: true, // This makes it accessible as a route
+          route: '/', // Optional explicit route path (defaults to /{path}/{viewName})
         }],
       },
       // Other components...
     ],
   }
 });
+```
+
+### Method 2: Using Dedicated Blueprints Entry
+
+For more clarity, you can use a dedicated `blueprints` entry in the manifest:
+
+```typescript
+// server.ts
+import { createBlueprintServer } from "asmbl";
+import viteDevServer from 'vavite/vite-dev-server';
+import vaviteHttpServer from 'vavite/http-dev-server';
+
+void createBlueprintServer({
+  serverRoot: import.meta.url,
+  // HTTP and development server configuration
+  httpServer: vaviteHttpServer,
+  devServer: viteDevServer,
+  manifest: {
+    // Regular components
+    components: [
+      // Component definitions...
+    ],
+    
+    // Blueprints (page-level components with routes)
+    blueprints: [
+      {
+        path: 'home',
+        views: [{
+          viewName: 'welcome',
+          templateFile: 'welcome.view.tsx',
+          route: '/', // The URL route to access this blueprint
+        }]
+      },
+      {
+        path: 'product',
+        views: [{
+          viewName: 'details',
+          templateFile: 'details.view.tsx',
+          route: '/product/:id', // Dynamic route with parameters
+        }]
+      }
+    ],
+  }
+});
+```
+
+### Route Parameters
+
+Routes can include parameters that are made available to your blueprint:
+
+```typescript
+{
+  path: 'user',
+  views: [{
+    viewName: 'profile',
+    templateFile: 'profile.view.tsx',
+    route: '/user/:userId', // :userId becomes available as context.params.userId
+  }]
+}
+```
 ```
 
 ## Accessing Data in Blueprints

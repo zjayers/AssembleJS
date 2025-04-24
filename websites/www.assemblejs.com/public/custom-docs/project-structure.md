@@ -219,31 +219,68 @@ The server entry point ties everything together:
 
 ```typescript
 // src/server.ts
-import { createBlueprintServer } from 'assemblejs';
-import { UserController } from './controllers/user.controller';
-import { ProductController } from './controllers/product.controller';
-import { ProductService } from './services/product.service';
+import { createBlueprintServer } from 'asmbl';
+import { Card as ProductCard } from './components/product/card/card.view';
 
-const server = createBlueprintServer({
+void createBlueprintServer({
+  // Server root URL (using import.meta.url for ESM compatibility)
   serverRoot: import.meta.url,
-  services: [
-    ProductService
-  ],
-  routes: [
-    {
-      method: 'GET',
-      path: '/api/users',
-      controller: UserController
-    },
-    {
-      method: 'GET',
-      path: '/api/products/:id',
-      controller: ProductController
+  
+  // Application manifest - register all your components here
+  manifest: {
+    // Components are registered here
+    components: [
+      {
+        path: 'checkout',
+        views: [{
+          exposeAsBlueprint: true,
+          viewName: 'form',
+          templateFile: 'form.view.svelte',
+        }],
+      },
+      {
+        path: "cart",
+        views: [{
+          viewName: "dropdown",
+          templateFile: "dropdown.view.vue"
+        }]
+      },
+      {
+        path: "product",
+        views: [{
+          viewName: "card",
+          template: ProductCard,
+          components: [
+            {name: "cart", contentUrl: "/cart/dropdown/"}
+          ]
+        }, {
+          exposeAsBlueprint: true,
+          viewName: 'details',
+          templateFile: 'details.view.jsx',
+        }]
+      },
+      {
+        path: 'home',
+        views: [{
+          exposeAsBlueprint: true,
+          viewName: 'welcome',
+          templateFile: 'welcome.view.tsx',
+        }],
+      }
+    ],
+    
+    // Controllers and services can be registered here
+    // controllers: [],
+    // services: []
+  },
+  
+  // Optional hooks for lifecycle events
+  hooks: {
+    onReady: async (server) => {
+      console.log('Server is ready at', server.address);
     }
-  ]
+  }
 });
-
-server.start();
 ```
 
 Best practices:

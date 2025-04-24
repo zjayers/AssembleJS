@@ -4,7 +4,7 @@ The main component registry store. Stored on the <code>window</code> object.
 
 **`Author`**
 
-Zach Ayers
+Zachariah Ayers
 
 ## Table of contents
 
@@ -24,4 +24,4 @@ Zach Ayers
 
 #### Defined in
 
-[src/browser/client/blueprint.client.registry.ts:19](https://github.com/zjayers/AssembleJS/blob/3539104/src/browser/client/blueprint.client.registry.ts#L19)
+[src/browser/client/blueprint.client.registry.ts:19](https://github.com/zjayers/AssembleJS/blob/14bff3e/src/browser/client/blueprint.client.registry.ts#L19)

@@ -17,7 +17,8 @@ import {
 /**
  * Base view constructor for a Component in the browser.
  * @description This is the base class for all views in the browser.
- * @author Zach Ayers
+ * @author Zachariah Ayers
+ * @category Browser
  */
 export type BlueprintConstructor<
   Public extends ComponentPublicData = EMPTY_NODE_PARAM,
@@ -27,7 +28,9 @@ export type BlueprintConstructor<
 /**
  * Blueprint is the base class for all views in the browser.
  * @description This is the base class for all views in the browser.
- * @author Zach Ayers
+ * @author Zachariah Ayers
+ * @category Browser
+ * @public
  */
 export abstract class Blueprint<
   Public extends ComponentPublicData = EMPTY_NODE_PARAM,
@@ -66,6 +69,8 @@ export abstract class Blueprint<
   /**
    * Base view constructor
    * @param {string} idSelector - The id selector for the root element of this view.
+   * @throws {Error} - If the root element or data payload cannot be found
+   * @author Zachariah Ayers
    */
   constructor(idSelector: string) {
     // Initialize with proper default objects that satisfy minimum interface requirements
@@ -184,7 +189,9 @@ export abstract class Blueprint<
 
   /**
    * Get the context for this view.
-   * @return {NodeContext<Public, Params>} - The context for this view.
+   * @return {ViewContext<Public, Params>} The context for this view.
+   * @public
+   * @author Zachariah Ayers
    */
   public get context(): ViewContext<Public, Params> {
     return this._context;
@@ -192,7 +199,9 @@ export abstract class Blueprint<
 
   /**
    * Get the root element for this view.
-   * @return {Element | null} - The root element for this view.
+   * @return {HTMLElement | undefined} The root element for this view.
+   * @public
+   * @author Zachariah Ayers
    */
   public get root(): HTMLElement | undefined {
     return this._root;
@@ -200,7 +209,9 @@ export abstract class Blueprint<
 
   /**
    * Get the scoped api interface for this view.
-   * @return {AxiosInstance} - The scoped api interface for this view.
+   * @return {AxiosInstance} The scoped api interface for this view.
+   * @public
+   * @author Zachariah Ayers
    */
   public get api(): AxiosInstance {
     return this._api;
@@ -244,10 +255,13 @@ export abstract class Blueprint<
 
   /**
    * Subscribe to a topic on a channel.
+   * @template Payload - The type of the payload
+   * @template Response - The type of the expected response
    * @param {string} channel - The channel to subscribe to.
    * @param {string} topic - The topic to subscribe to.
    * @param {EventListener} listener - The listener to subscribe to the topic.
-   * @author Zach Ayers
+   * @return {void}
+   * @author Zachariah Ayers
    */
   public subscribe<Payload, Response>(
     channel: string,
@@ -264,11 +278,13 @@ export abstract class Blueprint<
   }
 
   /**
-   * This method will fire anytime <strong>subscribed</strong> event is recieved.
-   * @description If this view is not subscribed to the particular channel and topic, it will not recieve the event. Components subscribe to the 'all', 'component', and 'blueprint' channels by default.
-   * @param {BlueprintEvent<any>} message
+   * This method will fire anytime <strong>subscribed</strong> event is received.
+   * @description If this view is not subscribed to the particular channel and topic, it will not receive the event. Components subscribe to the 'all', 'component', and 'blueprint' channels by default.
+   * @template P - The type of the message payload
+   * @param {BlueprintEvent<P>} message - The event message
+   * @return {void}
    * @protected
-   * @author Zach Ayers
+   * @author Zachariah Ayers
    */
   protected onMessage<P = unknown>(message: BlueprintEvent<P>): void {}
 
@@ -276,7 +292,9 @@ export abstract class Blueprint<
    * Clean up this view's resources - especially event listeners
    * This method should be called when the view is no longer needed
    * to prevent memory leaks from event listener accumulation
+   * @return {void}
    * @public
+   * @author Zachariah Ayers
    */
   public dispose(): void {
     // Unsubscribe from all event listeners to prevent memory leaks
@@ -315,7 +333,9 @@ export abstract class Blueprint<
    * @param {HTMLElement} container - The HTML element to render the error message in
    * @param {string} message - The error message to display
    * @param {string} title - The title of the error message
+   * @return {void}
    * @private
+   * @author Zachariah Ayers
    */
   private renderErrorMessage(
     container: HTMLElement,
@@ -355,7 +375,9 @@ export abstract class Blueprint<
   /**
    * This method will fire when the view is mounted.
    * @description Any post-mount actions should be done here.
-   * @author Zach Ayers
+   * @return {void}
+   * @protected
+   * @author Zachariah Ayers
    */
   protected onMount() {
     const identifierText = this.context.renderAsBlueprint
@@ -413,7 +435,8 @@ export abstract class Blueprint<
    * Components should not be nested too deeply, this can have poor performance implications.
    * @description If the nest level is too deep, a warning will be logged to the browser console.
    * @private
-   * @author Zach Ayers
+   * @author Zachariah Ayers
+   * @return {void}
    */
   private checkNestLevel() {
     if (this.context.nestLevel > 1) {

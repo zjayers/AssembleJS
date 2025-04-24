@@ -13,6 +13,11 @@ import { Loggable } from "../abstract/loggable";
 
 /**
  * Preact Renderer for server-side rendering of Preact components
+ * @description Provides server-side rendering capabilities for Preact components.
+ * It converts JSX components into HTML strings with proper data hydration.
+ * @author Zachariah Ayers
+ * @category Renderers
+ * @public
  */
 export class PreactRenderer extends Loggable implements ComponentRenderer {
   public vendorAssets: Array<NodeAsset> = [];

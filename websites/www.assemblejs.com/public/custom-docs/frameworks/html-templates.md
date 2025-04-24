@@ -193,8 +193,8 @@ class HeaderComponent extends Blueprint {
     super.onMount();
     
     // Get references to DOM elements
-    const mobileMenuToggle = this.element.querySelector('.mobile-menu-toggle');
-    const nav = this.element.querySelector('nav');
+    const mobileMenuToggle = this.root.querySelector('.mobile-menu-toggle');
+    const nav = this.root.querySelector('nav');
     
     // Add event listeners
     mobileMenuToggle?.addEventListener('click', () => {
@@ -202,8 +202,8 @@ class HeaderComponent extends Blueprint {
     });
     
     // Subscribe to events from other components
-    this.eventBus.subscribe('app:theme:changed', (data) => {
-      this.element.dataset.theme = data.theme;
+    this.subscribe('app', 'theme:changed', (event) => {
+      this.root.dataset.theme = event.payload.theme;
     });
   }
 }

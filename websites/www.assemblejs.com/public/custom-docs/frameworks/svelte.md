@@ -165,18 +165,18 @@ class ProductCardComponent extends Blueprint {
     super.onMount();
     
     // Get a reference to the Add to Cart button
-    const addToCartButton = this.element.querySelector('.add-to-cart-button');
+    const addToCartButton = this.root.querySelector('.add-to-cart-button');
     
     // Add event listener
     addToCartButton?.addEventListener('click', () => {
       const productId = this.context.data.product.id;
-      const quantity = this.element.querySelector('.quantity-control span')?.textContent;
+      const quantity = this.root.querySelector('.quantity-control span')?.textContent;
       
       // Publish an event to notify other components
-      this.eventBus.publish('cart:add', { 
+      this.toComponents({ 
         productId,
         quantity: parseInt(quantity || '1', 10)
-      });
+      }, 'add');
     });
   }
 }
@@ -363,12 +363,16 @@ class NotificationComponent extends Blueprint {
     super.onMount();
     
     // Listen for cart events
-    this.eventBus.subscribe('cart:add', (data) => {
+    this.subscribe('cart', 'add', (event) => {
       // Use custom event to communicate with Svelte component
-      const event = new CustomEvent('show-notification', {
-        detail: `Added ${data.quantity} item(s) to cart`
+      const customEvent = new CustomEvent('show-notification', {
+        detail: `Added ${event.payload.quantity} item(s) to cart`
       });
-      this.element.dispatchEvent(event);
+      
+      // Use the global notification root that was created in the Svelte component
+      if (window.__notificationRoot) {
+        window.__notificationRoot.dispatchEvent(customEvent);
+      }
     });
   }
 }
@@ -398,14 +402,24 @@ In your Svelte component, listen for these custom events:
   
   // Listen for custom events from the client file
   onMount(() => {
-    const element = document.currentScript.parentElement;
+    // Create a root element for notifications
+    const notificationRoot = document.createElement('div');
+    notificationRoot.classList.add('notification-container-root');
+    document.body.appendChild(notificationRoot);
     
-    element.addEventListener('show-notification', (event) => {
+    // Listen for custom events
+    notificationRoot.addEventListener('show-notification', (event) => {
       showNotification(event.detail);
     });
     
+    // Store a reference in a global variable for the client file to access
+    // This is a pattern for Svelte since it manages its own DOM
+    window.__notificationRoot = notificationRoot;
+    
     return () => {
-      element.removeEventListener('show-notification', showNotification);
+      notificationRoot.removeEventListener('show-notification', showNotification);
+      document.body.removeChild(notificationRoot);
+      delete window.__notificationRoot;
     };
   });
 </script>

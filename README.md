@@ -295,6 +295,22 @@ rivet
 
 - To view the contributing guide, please see the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
 
+### Development Setup
+
+If you're contributing to AssembleJS or developing locally, our bootstrap process makes it easy to get started:
+
+```bash
+# Install all dependencies for main repo, websites, and testbed projects
+npm run bootstrap
+```
+
+The `bootstrap` command will:
+1. Install all dependencies for the main repository
+2. Install dependencies for the documentation website
+3. Install AssembleJS in all testbed example projects
+
+This ensures your development environment is completely set up in a single command.
+
 ---
 
 ## Security / Bug Reports

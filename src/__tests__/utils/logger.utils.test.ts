@@ -203,10 +203,6 @@ describe("logger.utils", () => {
       );
     });
 
-    // Skipping failing test
-    it.skip("should stylize messages when requested", () => {
-      // This test is being skipped due to issues with mocking chalk stylizing
-    });
 
     it("should provide convenience methods for all log levels", () => {
       // Arrange
