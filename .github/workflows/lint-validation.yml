@@ -43,6 +43,7 @@ jobs:
         with:
           path: |
             node_modules
+            websites/www.assemblejs.com/node_modules
             lib
           key: ${{ inputs.build-cache-key }}
           

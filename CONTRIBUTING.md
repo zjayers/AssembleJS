@@ -12,8 +12,7 @@ By participating in this project, you agree to maintain a respectful and inclusi
 
 1. **Fork the repository** on GitHub
 2. **Clone your fork** to your local machine
-3. **Set up the development environment** as described in [DOCUMENTATION.md](DOCUMENTATION.md#development-setup)
-4. **Create a new branch** for your feature or bug fix
+3. **Create a new branch** for your feature or bug fix
 
 ## Making Changes
 
@@ -121,10 +120,6 @@ Code contributions might include:
 - Performance improvements
 - Code refactoring
 - Test coverage improvements
-
-## Development Workflow
-
-See [DOCUMENTATION.md](DOCUMENTATION.md#development-workflow) for detailed instructions on setting up your development environment and workflow.
 
 ## Release Process
 

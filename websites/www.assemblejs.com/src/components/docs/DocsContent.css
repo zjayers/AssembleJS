@@ -1,0 +1,576 @@
+/* Documentation Content Styles
+ * Styles for the middle content column
+ */
+
+/* Base layout */
+.docs-content-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.docs-content {
+  padding: 0 1rem;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-color);
+}
+
+/* Documentation Content Inner */
+.docs-content-inner {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Documentation Headers */
+.docs-page-header {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.docs-page-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--heading-color);
+}
+
+/* API Tag styling */
+.api-tag {
+  display: flex;
+  align-items: center;
+}
+
+.api-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+}
+
+/* Documentation Loader */
+.documentation-loader {
+  width: 100%;
+}
+
+/* Markdown Content Styling */
+.markdown-content {
+  color: var(--text-color);
+}
+
+.markdown-content h1 {
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: var(--heading-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.markdown-content h2 {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: var(--heading-color);
+  border-bottom: 1px solid var(--border-color-light);
+  padding-bottom: 0.5rem;
+}
+
+.markdown-content h3 {
+  font-size: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--heading-color);
+}
+
+.markdown-content h4, .markdown-content h5, .markdown-content h6 {
+  font-size: 1rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--heading-color);
+}
+
+.markdown-content p {
+  margin: 0.75rem 0;
+}
+
+.markdown-content a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
+}
+
+.markdown-content ul, .markdown-content ol {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+
+/* Code Blocks */
+.markdown-content pre {
+  background-color: var(--surface-color-alt);
+  border-radius: 6px;
+  padding: 1rem;
+  padding-right: 3rem; /* Make room for the copy button */
+  overflow-x: auto;
+  border: 1px solid var(--border-color);
+  margin: 0;
+  position: relative; /* Needed for absolute positioning of copy button */
+  height: auto;
+  min-height: 0;
+  max-height: none;
+}
+
+.markdown-content code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background-color: var(--surface-color-alt);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+.markdown-content pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Code block actions - copy button */
+.code-block-wrapper {
+  position: relative;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  height: auto;
+}
+
+.code-block-actions {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  z-index: 5;
+}
+
+/* Ensure copy button is visible on mobile */
+@media (max-width: 768px) {
+  .code-block-actions {
+    top: 0.25rem;
+    right: 0.25rem;
+  }
+}
+
+/* Add hover state to show copy button more prominently */
+pre:hover .copy-button,
+.code-block-wrapper:hover .copy-button {
+  opacity: 1;
+}
+
+.code-lang {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  font-size: 0.65rem;
+  padding: 0.15rem 0.5rem;
+  color: white;
+  background-color: #3b82f6; /* Default blue */
+  border-radius: 4px;
+  z-index: 5;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  display: inline-block;
+  width: auto;
+  min-width: min-content;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.code-block-wrapper:hover .code-lang {
+  opacity: 1;
+}
+
+/* Language-specific styling */
+.code-lang-javascript, .code-lang-js {
+  background-color: #f7df1e; /* JavaScript yellow */
+  color: #000;
+}
+
+.code-lang-typescript, .code-lang-ts {
+  background-color: #3178c6; /* TypeScript blue */
+  color: #fff;
+}
+
+.code-lang-jsx, .code-lang-tsx {
+  background-color: #61dafb; /* React blue */
+  color: #000;
+}
+
+.code-lang-html, .code-lang-xml {
+  background-color: #e34c26; /* HTML orange/red */
+  color: #fff;
+}
+
+.code-lang-css, .code-lang-scss, .code-lang-sass {
+  background-color: #264de4; /* CSS blue */
+  color: #fff;
+}
+
+.code-lang-json {
+  background-color: #1e1e1e; /* JSON dark */
+  color: #fff;
+}
+
+.code-lang-bash, .code-lang-sh, .code-lang-shell {
+  background-color: #4eaa25; /* Bash green */
+  color: #fff;
+}
+
+.code-lang-md, .code-lang-markdown {
+  background-color: #083fa1; /* Markdown blue */
+  color: #fff;
+}
+
+.code-lang-java {
+  background-color: #b07219; /* Java brown */
+  color: #fff;
+}
+
+.code-lang-python, .code-lang-py {
+  background-color: #3572A5; /* Python blue */
+  color: #fff;
+}
+
+.code-lang-ruby, .code-lang-rb {
+  background-color: #CC342D; /* Ruby red */
+  color: #fff;
+}
+
+.code-lang-go {
+  background-color: #00ADD8; /* Go blue */
+  color: #fff;
+}
+
+.code-lang-rust {
+  background-color: #DEA584; /* Rust orange */
+  color: #000;
+}
+
+.copy-button {
+  background-color: #3b82f6; /* Fixed primary color for visibility */
+  border: 1px solid #3b82f6;
+  border-radius: 4px;
+  color: white;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 1;
+  font-size: 14px;
+  font-weight: 500;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 50;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.copy-button .copy-icon {
+  margin-right: 6px;
+}
+
+.copy-button::after {
+  content: "Copy";
+  display: inline;
+}
+
+.copy-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.copy-button.copied {
+  background-color: #16a34a;
+  border-color: #16a34a;
+}
+
+.copy-button.copied::after {
+  content: "Copied!";
+}
+
+.copy-button.error {
+  background-color: #ef4444;
+  border-color: #ef4444;
+}
+
+.copy-button.error::after {
+  content: "Error!";
+}
+
+/* Table Styles */
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9em;
+}
+
+.markdown-content th, .markdown-content td {
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+}
+
+.markdown-content th {
+  background-color: var(--surface-color-alt);
+  font-weight: 600;
+}
+
+/* TOC Styles */
+.toc-container {
+  padding: 0 1rem;
+}
+
+.toc-header {
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.toc-header h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.5rem 0;
+  color: var(--text-muted);
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-item {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.toc-item a {
+  color: var(--text-muted);
+  text-decoration: none;
+  display: block;
+  padding: 0.375rem 0.5rem;
+  border-left: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.toc-item a:hover {
+  color: var(--text-color);
+  background-color: var(--surface-color-hover);
+}
+
+.toc-item.active a {
+  color: var(--primary-color);
+  border-left-color: var(--primary-color);
+  background-color: var(--primary-color-light);
+}
+
+.toc-level-2 {
+  padding-left: 0.75rem;
+}
+
+.toc-level-3 {
+  padding-left: 1.5rem;
+}
+
+/* Documentation footer */
+.docs-footer {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Feedback section */
+.docs-feedback {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.docs-feedback p {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.feedback-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.feedback-buttons button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 100px;
+  padding: 0.5rem 1.25rem;
+  background-color: #1e2838;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .feedback-buttons button {
+  background-color: #f3f4f6;
+}
+
+.feedback-buttons button:hover {
+  background-color: #242f42;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] .feedback-buttons button:hover {
+  background-color: #e9ecef;
+}
+
+.feedback-buttons button:active {
+  transform: translateY(0);
+}
+
+.feedback-buttons button svg {
+  color: var(--text-muted);
+}
+
+.feedback-buttons button:hover svg {
+  color: var(--text-color);
+}
+
+/* Feedback thank you message */
+.feedback-thank-you {
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(98, 178, 69, 0.1);
+  border: 1px solid var(--tertiary-color, #62B245);
+  border-radius: 6px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.feedback-thank-you p {
+  margin: 0;
+  color: var(--tertiary-color, #62B245);
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Navigation links */
+.docs-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin: 2rem 0 1rem;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  background-color: #1e2838;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  min-width: 120px;
+  cursor: pointer;
+}
+
+[data-theme="light"] .nav-button {
+  background-color: #f3f4f6;
+}
+
+.nav-button:hover {
+  background-color: #242f42;
+  border-color: var(--border-color);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] .nav-button:hover {
+  background-color: #e9ecef;
+}
+
+.nav-button svg {
+  color: var(--text-muted);
+}
+
+.nav-button:hover svg {
+  color: var(--text-color);
+}
+
+.nav-button.prev {
+  margin-right: auto;
+}
+
+.nav-button.next {
+  margin-left: auto;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .docs-content {
+    padding: 0;
+  }
+  
+  .docs-navigation {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .nav-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .feedback-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  
+  .feedback-buttons button {
+    width: 100%;
+    max-width: 200px;
+  }
+}

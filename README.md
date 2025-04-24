@@ -1,48 +1,15 @@
 ```text
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░░░░░█████╗░░██████╗░██████╗███████╗███╗░░░███╗██████╗░██╗░░░░░███████╗░░░░░
-░░░░░██╔══██╗██╔════╝██╔════╝██╔════╝████╗░████║██╔══██╗██║░░░░░██╔════╝░░░░░
-░░░░░███████║╚█████╗░╚█████╗░█████╗░░██╔████╔██║██████╦╝██║░░░░░█████╗░░░░░░░
-░░░░░██╔══██║░╚═══██╗░╚═══██╗██╔══╝░░██║╚██╔╝██║██╔══██╗██║░░░░░██╔══╝░░░░░░░
-░░░░░██║░░██║██████╔╝██████╔╝███████╗██║░╚═╝░██║██████╦╝███████╗███████╗░░░░░
-░░░░░╚═╝░░╚═╝╚═════╝░╚═════╝░╚══════╝╚═╝░░░░░╚═╝╚═════╝░╚══════╝╚══════╝░░░░░
-░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-░░  ░░  ░░  ░░  ░░  You Can Build It  ░░  ░░  ░░  ░░  ░░
-  ░░  ░░  ░░  ░░  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ░░  ░░  ░░   ░░
+ █████╗  ██████╗ ██████╗███████╗███╗   ███╗██████╗ ██╗     ███████╗     
+██╔══██╗██╔════╝██╔════╝██╔════╝████╗ ████║██╔══██╗██║     ██╔════╝     
+███████║╚█████╗ ╚█████╗ █████╗  ██╔████╔██║██████╦╝██║     █████╗       
+██╔══██║ ╚═══██╗ ╚═══██╗██╔══╝  ██║╚██╔╝██║██╔══██╗██║     ██╔══╝       
+██║  ██║██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██████╦╝███████╗███████╗     
+╚═╝  ╚═╝╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═════╝ ╚══════╝╚══════╝     
 ```
 
-<div align="center">
-
-### Project Status
-
-[![npm version](https://img.shields.io/npm/v/asmbl)](https://www.npmjs.com/package/asmbl)
-[![npm bundle size](https://img.shields.io/bundlephobia/minzip/asmbl)](https://bundlephobia.com/package/asmbl)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-### Quality
-
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/zjayers/assemblejs/pr-validation.yml?branch=main)](https://github.com/zjayers/assemblejs/actions/workflows/pr-validation.yml)
-[![GitHub issues](https://img.shields.io/github/issues/zjayers/assemblejs)](https://github.com/zjayers/assemblejs/issues)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-
-### Technology
-
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-success?logo=node.js&logoColor=white)](https://nodejs.org)
-
-### Community
-
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./DOCUMENTATION.md#contributing-to-assemblejs)
-[![Support](https://img.shields.io/badge/Support-AssembleJS-blue)](https://github.com/sponsors/zjayers)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-
-</div>
+> AssembleJS is in a stable Alpha Release stage. Features will be added, bugs may occur. If you encounter a bug, please raise an issue so we may patch it as quickly as possible: [Issues](https://github.com/zjayers/assemblejs/issues)
 
 ---
-
-> AssembleJS is in a stable Alpha Release stage. Features will be added, bugs may occur. If you encounter a bug, please raise an issue so we may patch it as quickly as possible: [Issues](https://github.com/zjayers/assemblejs/issues)
 
 ## Index
 
@@ -69,12 +36,10 @@
 - [Changelog](#changelog)
 - [Contributing](#contributing)
 - [Security / Bug Reports](#security--bug-reports)
-- [Used By](#used-by)
 - [Sponsors](#sponsors)
 - [Support AssembleJS](#support-assemblejs)
 - [Developing Locally](#developing-locally)
-- [Community & Ecosystem](#community--ecosystem)
-- [Thanks For Stopping By...](#thanks-for-stopping-by)
+- [License](#license)
 <!-- TOC -->
 
 ---
@@ -84,10 +49,6 @@
 ### What is AssembleJS?
 
 - `AssembleJS` is a modern micro-frontend framework designed for building distributed, component-based UIs. It manages the compiling, bundling, and serving of UI blueprints and components in a distributed style that enables teams to work independently while creating a cohesive user experience. For the majority of cases, it should not be implemented directly, but instead generated using the `asmbl` npm package.
-
-### Architecture
-
-For a detailed explanation of the AssembleJS architecture, please see the [DOCUMENTATION.md](DOCUMENTATION.md) file. This document explains the system design, component interactions, and technical implementation details with comprehensive diagrams.
 
 ### Why Choose AssembleJS?
 
@@ -147,32 +108,7 @@ AssembleJS is designed to be framework-agnostic, supporting numerous UI language
 - Systems that need to blend static and dynamic content seamlessly
 - Applications where SEO and performance are critical
 
-#### Built With
 
-<p align="center">
-  <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=ts,nodejs,fastify,vite,preact" />
-  </a>
-</p>
-
-#### Performance
-
-<details>
-<summary>📊 View AssembleJS Performance Benchmarks</summary>
-<br>
-
-| Metric                 | AssembleJS | Framework A | Framework B | Framework C  |
-| ---------------------- | :--------: | :---------: | :---------: | :----------: |
-| Time to First Byte     |  🟢 62ms   |  🟡 125ms   |  🟠 189ms   |   🔴 312ms   |
-| First Contentful Paint |  🟢 248ms  |  🟡 389ms   |  🟠 527ms   |   🔴 763ms   |
-| JS Bundle Size         | 🟢 12.4KB  |  🟡 58.2KB  |  🟠 97.6KB  |   🔴 143KB   |
-| Memory Usage           |   🟢 Low   |  🟡 Medium  |   🟠 High   | 🔴 Very High |
-| HTTP Requests          |    🟢 4    |    🟡 12    |    🟠 18    |    🔴 26     |
-| Lighthouse Score       |   🟢 98    |    🟡 87    |    🟠 76    |    🔴 64     |
-
-_Note: All benchmarks performed on identical hardware with identical application complexity_
-
-</details>
 
 ---
 
@@ -193,7 +129,7 @@ _Note: All benchmarks performed on identical hardware with identical application
 npm install -g asmbl@next
 
 # Create a new project
-asm
+asmgen
 # Select 'Project' and follow the prompts
 
 # Navigate to your new project
@@ -221,14 +157,11 @@ Open your browser to http://localhost:3000 and start building!
   ```
 
 - Once installed, you will have a few _new_ commands available in your terminal:
+  - `asmgen` - _generate various AssembleJS components (Projects, Blueprints, Components, etc.)_
   - `asm-build` - _build an AssembleJS project for production_
   - `asm-insights` - _run [PageSpeed Insights](https://developers.google.com/speed/docs/insights/v5/about) on your project, and report the findings_
   - `asm-serve` - _run an AssembleJS development server - normally used when developing a new
     AssembleJS project_
-  - `asm-generate` - _generate various AssembleJS components (Projects, Blueprints, Components,
-    etc.)_
-  - `asmgen` - _short-hand command to invoke `asm-generate`_
-  - `asm` - _ultra short-hand command with convenient syntax (e.g., `asm b home` for blueprint)_
 
 ---
 
@@ -237,24 +170,22 @@ Open your browser to http://localhost:3000 and start building!
 AssembleJS provides a powerful CLI to streamline your development workflow:
 
 - **`asmgen`**: Main generator for creating blueprints, components, and other artifacts
-- **`asm`**: Ultra-shorthand for `asmgen` with convenient positional arguments
 - **`asm-build`**: Build your AssembleJS application for production
 - **`asm-serve`**: Start the development server with hot reloading
 
-**Shorthand Examples:**
+The CLI is designed to be used in interactive mode:
 
 ```bash
-# Create a blueprint named "home" with view "desktop" using EJS
-npx asm b home desktop EJS
+# Generate a blueprint, component, or other artifact
+npx asmgen
+# Follow the interactive prompts to select the type of artifact and configure it
 
-# Create a component named "header" with view "mobile" using Preact
-npx asm c header mobile Preact
+# Build your application for production
+npx asm-build
 
-# Create a service with standard output verbosity
-npx asm s user-auth -s
+# Start the development server
+npx asm-serve
 ```
-
-For a comprehensive guide to all CLI commands and options, see the [CLI Guide section in the documentation](./DOCUMENTATION.md#cli-guide).
 
 ---
 
@@ -264,7 +195,7 @@ AssembleJS includes a suite of professional-grade tools designed to streamline d
 
 ### REDLINE - Code Quality System
 
-REDLINE elevates code quality by combining ESLint and Prettier into a unified, zero-configuration system that keeps your codebase consistently formatted and error-free.
+REDLINE is a zero-configuration code quality tool that combines ESLint and Prettier to keep your codebase consistently formatted and error-free.
 
 ```bash
 # Standard linting
@@ -272,71 +203,25 @@ redline
 
 # Automatic code fixing
 redline --fix
-
-# Format-only mode (Prettier)
-redline --prettier-only --fix
-
-# Lint-only mode (ESLint)
-redline --eslint-only
 ```
-
-**Key Features:**
-
-- Zero-configuration setup
-- Unified ESLint and Prettier integration
-- Intelligent CI/CD pipeline integration
-- Custom rule configuration
-- Git-aware mode for staged changes only
-
-For more information, see the [REDLINE section in the documentation](./DOCUMENTATION.md#redline-code-quality-tool).
 
 ### SPECSHEET - Performance Analysis
 
-SPECSHEET provides comprehensive web quality metrics and actionable insights to optimize your application's performance, accessibility, and user experience.
+SPECSHEET analyzes your application's performance, providing actionable insights to optimize speed, accessibility, and user experience.
 
 ```bash
-# Basic performance analysis
+# Performance analysis
 specsheet --url="https://example.com"
-
-# CI mode with threshold validation
-specsheet --url="https://example.com" --threshold=90 --ci
-
-# Comparative analysis
-specsheet --url="https://example.com" --compare="./reports/previous.json"
 ```
-
-**Key Features:**
-
-- Google Lighthouse integration
-- Performance budget enforcement
-- Multiple report formats (HTML, JSON, CSV)
-- Historical comparison analytics
-- Customizable performance thresholds
 
 ### RIVET - Deployment System
 
-RIVET simplifies application deployment with platform-specific configurations, CI/CD integration, and production-ready defaults for various hosting environments.
+RIVET simplifies deployment with platform-specific configurations for Docker, AWS, Netlify, and more.
 
 ```bash
 # Interactive deployment setup
 rivet
-
-# Platform-specific deployment
-rivet --target docker
-
-# CI/CD workflow generation
-rivet --ci github
 ```
-
-**Key Features:**
-
-- Multi-platform deployment support (Docker, AWS, Netlify, etc.)
-- CI/CD pipeline integration
-- Environment variable management
-- Production best practices enforcement
-- Infrastructure as code generation
-
-For more information, see the [RIVET section in the documentation](./DOCUMENTATION.md#rivet-deployment-system).
 
 ---
 
@@ -408,7 +293,7 @@ For more information, see the [RIVET section in the documentation](./DOCUMENTATI
 
 ## Contributing
 
-- To view the contributing guide, please see the [Contributing section in the documentation](./DOCUMENTATION.md#contributing-to-assemblejs).
+- To view the contributing guide, please see the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
 
 ---
 
@@ -418,138 +303,20 @@ For more information, see the [RIVET section in the documentation](./DOCUMENTATI
 
 ---
 
-## Used By
-
-<div align="center">
-
-AssembleJS is trusted by innovative companies and organizations worldwide:
-
-<table>
-  <tr>
-    <td align="center"><a href="#"><img src="https://via.placeholder.com/150x50?text=Your+Logo" width="120px;" alt=""/></a></td>
-    <td align="center"><a href="#"><img src="https://via.placeholder.com/150x50?text=Your+Logo" width="120px;" alt=""/></a></td>
-    <td align="center"><a href="#"><img src="https://via.placeholder.com/150x50?text=Your+Logo" width="120px;" alt=""/></a></td>
-    <td align="center"><a href="#"><img src="https://via.placeholder.com/150x50?text=Your+Logo" width="120px;" alt=""/></a></td>
-  </tr>
-</table>
-
-<em>Using AssembleJS in production? <a href="https://github.com/zjayers/assemblejs/issues/new?template=company_showcase.md&title=Company+Showcase:+YOUR_COMPANY_NAME">Submit your company</a> to be featured here.</em>
-
-</div>
-
 ## Sponsors
 
-<div align="center">
-
-We're grateful to the following sponsors whose support makes continued development of AssembleJS possible:
-
-### Gold Sponsors
-
-<table>
-  <tr>
-    <td align="center"><a href="#"><img src="https://via.placeholder.com/180x60?text=Gold+Sponsor" width="140px;" alt="Gold Sponsor"/></a></td>
-    <td align="center"><a href="#"><img src="https://via.placeholder.com/180x60?text=Gold+Sponsor" width="140px;" alt="Gold Sponsor"/></a></td>
-  </tr>
-</table>
-
-### Silver Sponsors
-
-<table>
-  <tr>
-    <td align="center"><a href="#"><img src="https://via.placeholder.com/140x50?text=Silver+Sponsor" width="120px;" alt="Silver Sponsor"/></a></td>
-    <td align="center"><a href="#"><img src="https://via.placeholder.com/140x50?text=Silver+Sponsor" width="120px;" alt="Silver Sponsor"/></a></td>
-    <td align="center"><a href="#"><img src="https://via.placeholder.com/140x50?text=Silver+Sponsor" width="120px;" alt="Silver Sponsor"/></a></td>
-  </tr>
-</table>
-
-### Individual Sponsors
-
-<a href="https://github.com/sponsors/zjayers#sponsors"><img src="https://via.placeholder.com/800x60?text=Individual+Sponsors" alt="Individual Sponsors" /></a>
-
-<em>Become a sponsor through <a href="https://github.com/sponsors/zjayers">GitHub Sponsors</a> and have your name or logo featured here.</em>
-
-</div>
+Your logo could be displayed here! If you find AssembleJS valuable and would like to support its continued development, consider becoming a sponsor.
 
 ## Support AssembleJS
 
 AssembleJS is an open-source project developed and maintained by Zachariah Ayers. Your support helps ensure continued development, maintenance, and growth of this framework.
 
-### Sponsorship Options
+If you'd like to support the project, you can do so through:
 
 - **[GitHub Sponsors](https://github.com/sponsors/zjayers)**: Direct support through GitHub's sponsorship program
-- **[Patreon](https://patreon.com/assemblejs)**: Recurring monthly support with exclusive patron benefits
-- **[Open Collective](https://opencollective.com/assemblejs)**: Transparent budget management for community funding
-
-### Enterprise Support
-
-Enterprise users requiring dedicated support, custom development, or training can contact us at [enterprise@assemblejs.com](mailto:enterprise@assemblejs.com) for information on available service packages.
 
 ---
 
-## Developing Locally
-
-- Want to contribute to AssembleJS? Have a look at our [Contributing Guide](./DOCUMENTATION.md#contributing-to-assemblejs) and the [Development Roadmap](./DOCUMENTATION.md#development-roadmap).
-
----
-
-## Community & Ecosystem
-
-<div align="center">
-
-Join our growing community of developers building amazing UIs with AssembleJS!
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://twitter.com/search?q=%23AssembleJS&src=typed_query">
-        <img src="https://img.shields.io/badge/Twitter-%231DA1F2.svg?logo=Twitter&logoColor=white" width="100px;" alt=""/>
-        <br />
-        <sub><b>#AssembleJS</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://github.com/zjayers/assemblejs/discussions">
-        <img src="https://img.shields.io/badge/GitHub-Discussions-%23181717.svg?logo=github&logoColor=white" width="130px" alt=""/>
-        <br />
-        <sub><b>Join Discussions</b></sub>
-      </a>
-    </td>
-    <td align="center">
-      <a href="https://assemblejs.com">
-        <img src="https://img.shields.io/badge/Website-assemblejs.com-%23ff0000.svg?logo=safari&logoColor=white" width="150px" alt=""/>
-        <br />
-        <sub><b>Official Website</b></sub>
-      </a>
-    </td>
-  </tr>
-</table>
-
-</div>
-
-## Thanks For Stopping By...
-
-<div align="center">
-
-<details>
-<summary>💬 What do developers like most about AssembleJS?</summary>
-<br>
-With AssembleJS, <i>You Can Build It</i> - anything you want, any way you want!
-</details>
-
-<br>
-
-![Jokes Card](https://readme-jokes.vercel.app/api)
-
-<img src="https://user-images.githubusercontent.com/18350557/176309783-0785949b-9127-417c-8b55-ab5a4333674e.gif" alt="Here's a cool animation">
-
-<h3>
-  <a href="https://assemblejs.com/developer">Visit assemblejs.com/developer</a><br>
-  to unlock your full web development potential!
-</h3>
-
-<p>AssembleJS - Building better web experiences, one component at a time.</p>
-
-</div>
 
 ---
 

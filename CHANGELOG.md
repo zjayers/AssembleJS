@@ -1,3 +1,11 @@
+## <small>0.0.10 (2025-04-23)</small>
+
+* 0.0.10 ([a5454e5](https://github.com/zjayers/assemblejs/commit/a5454e5))
+* chore: assemblejs website buildout ([0d231d0](https://github.com/zjayers/assemblejs/commit/0d231d0))
+* chore(release): update patch version ([5a4905b](https://github.com/zjayers/assemblejs/commit/5a4905b))
+
+
+
 ## <small>0.0.9 (2025-04-23)</small>
 
 * 0.0.9 ([1e1eecf](https://github.com/zjayers/assemblejs/commit/1e1eecf))
