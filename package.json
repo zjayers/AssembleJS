@@ -1,6 +1,6 @@
 {
   "name": "asmbl",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A modern micro-frontend framework for building distributed component-based UIs",
   "keywords": [
     "Micro-Frontends",
