@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable valid-jsdoc */
 /* eslint-disable require-jsdoc */
 
 import { getServerRoot } from "../utils/directory.utils";
@@ -10,6 +11,13 @@ import glob from "glob";
 import rimraf from "rimraf";
 import fs from "fs";
 import sass from "sass";
+import chalk from "chalk";
+import {
+  logWithBadge,
+  logProgress,
+  printHeaderBox,
+  createServerTransformPlugin,
+} from "./common/visual.utils";
 import { ensureDirectoryExistence } from "../utils/directory.utils";
 
 // Get the server root
@@ -33,79 +41,223 @@ function buildCssScopeInjector(serverRoot: string, fullPath: string) {
   };
 }
 
-function compileStyleByPath(serverRoot: any, fullPath: any) {
-  const fileContent = fs.readFileSync(fullPath, "utf8");
-  const scopeInjector = buildCssScopeInjector(serverRoot, fullPath);
-  const wrappedContent = scopeInjector.injector + "{" + fileContent + "}";
-  const outputPath = fullPath
-    .replaceAll("src", CONSTANTS.buildOutputFolder)
-    .replace(".scss", ".css");
+/**
+ * Compiles a SCSS/CSS file with proper scope injection
+ * @param serverRoot The server root directory path
+ * @param fullPath The full path to the style file
+ * @returns Object containing compiled CSS, output path, and source path
+ */
+function compileStyleByPath(serverRoot: string, fullPath: string) {
+  try {
+    // Read the file content
+    const fileContent = fs.readFileSync(fullPath, "utf8");
 
-  const result = sass.compileString(wrappedContent, {
-    style: "compressed",
-    sourceMapIncludeSources: true,
-    sourceMap: true,
-    verbose: true,
-  });
+    // Generate scope injector for CSS isolation
+    const scopeInjector = buildCssScopeInjector(serverRoot, fullPath);
+    const wrappedContent = scopeInjector.injector + "{" + fileContent + "}";
 
-  const sm = JSON.stringify(result.sourceMap);
-  const smBase64 = (Buffer.from(sm, "utf8") || "").toString("base64");
-  const smComment =
-    "/*# sourceMappingURL=data:application/json;charset=utf-8;base64," +
-    smBase64 +
-    " */";
-  const rootedCss = result.css.replaceAll(
-    `${scopeInjector.injector} :root`,
-    scopeInjector.injector
-  );
-  const css = rootedCss + "\n".repeat(2) + smComment;
+    // Determine the output path
+    const outputPath = fullPath
+      .replaceAll("src", CONSTANTS.buildOutputFolder)
+      .replace(".scss", ".css");
 
-  return {
-    css,
-    outputPath,
-    srcPath: fullPath,
-  };
+    // Compile the SCSS
+    const result = sass.compileString(wrappedContent, {
+      style: "compressed",
+      sourceMapIncludeSources: true,
+      sourceMap: true,
+      verbose: true,
+      loadPaths: [path.dirname(fullPath), serverRoot], // Allow imports from style file location and server root
+    });
+
+    // Generate source map
+    const sm = JSON.stringify(result.sourceMap);
+    const smBase64 = (Buffer.from(sm, "utf8") || "").toString("base64");
+    const smComment =
+      "/*# sourceMappingURL=data:application/json;charset=utf-8;base64," +
+      smBase64 +
+      " */";
+
+    // Fix :root selector scope
+    const rootedCss = result.css.replaceAll(
+      `${scopeInjector.injector} :root`,
+      scopeInjector.injector
+    );
+
+    // Combine CSS with source map
+    const css = rootedCss + "\n".repeat(2) + smComment;
+
+    return {
+      css,
+      outputPath,
+      srcPath: fullPath,
+      success: true,
+    };
+  } catch (error: unknown) {
+    // Get error message safely
+    const errorMsg = error instanceof Error ? error.message : String(error);
+
+    // Generate a minimal CSS file with error information
+    const errorCss = `
+/* ======================================= */
+/* ERROR: Failed to compile SCSS/CSS file  */
+/* Filename: ${path.basename(fullPath)}    */
+/* Error: ${errorMsg}                      */
+/* ======================================= */
+    `;
+
+    // Create output path even if we failed
+    const outputPath = fullPath
+      .replaceAll("src", CONSTANTS.buildOutputFolder)
+      .replace(".scss", ".css");
+
+    // Return error information but allow build to continue
+    return {
+      css: errorCss,
+      outputPath,
+      srcPath: fullPath,
+      success: false,
+      error: error instanceof Error ? error : new Error(errorMsg),
+    };
+  }
 }
 
-function emitFile(compileResult: { css: any; outputPath: any; srcPath?: any }) {
+/**
+ * Emits a compiled CSS file to the output path
+ * @param compileResult The compilation result containing CSS and output path
+ * @returns True if successful, false otherwise
+ */
+function emitFile(compileResult: {
+  css: string;
+  outputPath: string;
+  srcPath: string;
+  success?: boolean;
+  error?: Error;
+}): boolean {
   const { css, outputPath } = compileResult;
-  ensureDirectoryExistence(outputPath);
-  console.log("Compiling: " + path.basename(outputPath));
-  fs.writeFileSync(outputPath, css);
+  const fileName = path.basename(outputPath);
+
+  try {
+    // Ensure the directory exists
+    ensureDirectoryExistence(outputPath);
+
+    // Write the file
+    fs.writeFileSync(outputPath, css);
+
+    // Log successful write for error cases (to show we created a CSS file despite SCSS errors)
+    if (compileResult.success === false) {
+      logWithBadge(
+        `Generated fallback CSS for ${fileName} (contains error details)`,
+        "warning"
+      );
+    }
+
+    return true;
+  } catch (error: unknown) {
+    // Log the error but don't throw to allow other files to continue
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    logWithBadge(`Failed to write ${fileName}: ${errorMsg}`, "error");
+    return false;
+  }
 }
 
-// Process styles without watching
-function processStyles(serverRoot: string) {
-  console.log("Processing styles...");
+/**
+ * Process all style files in parallel
+ * @param serverRoot The server root directory path
+ * @returns Promise that resolves when all styles are processed
+ */
+async function processStyles(serverRoot: string) {
+  logWithBadge("Processing styles...", "info");
+
   const styleFiles = glob.sync(`./src/**/*.{scss,css}`, {
     cwd: serverRoot,
   });
 
-  styleFiles.forEach((file) => {
-    const compileResult = compileStyleByPath(
-      serverRoot,
-      path.join(serverRoot, file)
-    );
-    emitFile(compileResult);
-  });
+  if (styleFiles.length === 0) {
+    logWithBadge("No style files found", "info");
+    return;
+  }
 
-  console.log(`Processed ${styleFiles.length} style files`);
+  // Track statistics
+  let processed = 0;
+  let successCount = 0;
+  let errorCount = 0;
+
+  // Process in parallel with Promise.all for better performance
+  await Promise.all(
+    styleFiles.map(async (file) => {
+      try {
+        // Compile the style file
+        const compileResult = compileStyleByPath(
+          serverRoot,
+          path.join(serverRoot, file)
+        );
+
+        // Track compilation status
+        if (compileResult.success) {
+          successCount++;
+        } else {
+          errorCount++;
+          const errorMsg = compileResult.error?.message || "Unknown error";
+          logWithBadge(
+            `Failed to compile ${path.basename(file)}: ${errorMsg}`,
+            "error"
+          );
+        }
+
+        // Emit the file regardless (will contain error CSS if compilation failed)
+        emitFile(compileResult);
+
+        // Update progress
+        processed++;
+        logProgress(processed, styleFiles.length, "Compiling styles:");
+      } catch (error: unknown) {
+        // This should rarely happen since compileStyleByPath handles its own errors
+        errorCount++;
+        processed++;
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        logWithBadge(`Error processing ${file}: ${errorMsg}`, "error");
+        logProgress(processed, styleFiles.length, "Compiling styles:");
+      }
+    })
+  );
+
+  // Log final status with success/error counts
+  if (errorCount > 0) {
+    logWithBadge(
+      `Processed ${styleFiles.length} style files (${successCount} succeeded, ${errorCount} failed)`,
+      "warning"
+    );
+  } else {
+    logWithBadge(
+      `Processed ${styleFiles.length} style files successfully`,
+      "success"
+    );
+  }
 }
 
 // Main build function
 async function buildBlueprint() {
-  console.log("Starting AssembleJS production build...");
+  printHeaderBox("AssembleJS Production Build");
+
+  // Start timing the build
+  const startTime = Date.now();
 
   // Clear the dist directory
-  rimraf.sync(path.join(serverRoot, "dist"));
-  console.log("Cleared dist directory");
+  try {
+    rimraf.sync(path.join(serverRoot, "dist"));
+    logWithBadge("Cleared dist directory", "success");
+  } catch (error: unknown) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    logWithBadge(`Failed to clear dist directory: ${errorMsg}`, "error");
+  }
 
   try {
     // 1. Process styles (compile CSS/SCSS)
-    processStyles(serverRoot);
+    await processStyles(serverRoot);
 
     // 2. Build script islands
-    console.log("Building script islands...");
+    logWithBadge("Building script islands...", "info");
     const scriptIslands = glob
       .sync(`./src/**/*.ts`, {
         cwd: serverRoot,
@@ -123,16 +275,25 @@ async function buildBlueprint() {
         ),
       }));
 
-    // Build script islands
-    const buildPromises = [];
-    for (const island of scriptIslands) {
-      buildPromises.push(
-        build({
+    if (scriptIslands.length === 0) {
+      logWithBadge("No script islands found", "info");
+    } else {
+      // Build script islands with progress tracking
+      const buildPromises = [];
+      const results = [];
+      const totalIslands = scriptIslands.length;
+      let completedIslands = 0;
+
+      logProgress(0, totalIslands, "Building script islands:");
+
+      for (const island of scriptIslands) {
+        const promise = build({
           mode: "production",
           configFile: false,
           envDir: serverRoot,
           envPrefix: CONSTANTS.env.prefix.key,
           plugins: [preact()],
+          logLevel: "silent", // Suppress Vite logs to keep our UI clean
           build: {
             minify: true,
             emptyOutDir: false,
@@ -157,40 +318,118 @@ async function buildBlueprint() {
             },
           },
         })
-      );
+          .then((result) => {
+            completedIslands++;
+            logProgress(
+              completedIslands,
+              totalIslands,
+              "Building script islands:"
+            );
+            return { island, result, success: true };
+          })
+          .catch((error: unknown) => {
+            completedIslands++;
+            logProgress(
+              completedIslands,
+              totalIslands,
+              "Building script islands:"
+            );
+            const errorMsg =
+              error instanceof Error ? error.message : String(error);
+            logWithBadge(
+              `Failed to build ${island.baseName}: ${errorMsg}`,
+              "error"
+            );
+            return { island, error, success: false };
+          });
+
+        buildPromises.push(promise);
+      }
+
+      results.push(...(await Promise.all(buildPromises)));
+
+      const successCount = results.filter((r) => r.success).length;
+      const failCount = results.filter((r) => !r.success).length;
+
+      if (failCount > 0) {
+        logWithBadge(
+          `${successCount}/${totalIslands} islands built successfully, ${failCount} failed`,
+          "warning"
+        );
+      } else {
+        logWithBadge(
+          `${successCount} script islands built successfully`,
+          "success"
+        );
+      }
     }
 
-    await Promise.allSettled(buildPromises);
-
     // 3. Build the server
-    console.log("Building server...");
+    logWithBadge("Building server...", "info");
     const serverEntryFile = "server.ts";
     const serverEntryPath = path.join(process.cwd(), "src", serverEntryFile);
 
-    await build({
-      mode: "production",
-      configFile: false,
-      envDir: serverRoot,
-      envPrefix: CONSTANTS.env.prefix.key,
-      plugins: [preact()],
-      build: {
-        minify: true,
-        outDir: path.join(serverRoot, "dist"),
-        emptyOutDir: false,
-        ssr: true,
-        rollupOptions: {
-          input: serverEntryPath,
-          output: {
-            format: "esm",
-            entryFileNames: "server.js",
+    // Create a Vite plugin to transform the server file
+    const serverTransformPlugin = createServerTransformPlugin(
+      serverRoot,
+      "production"
+    );
+
+    // Create a spinner for server build
+    logWithBadge("Compiling server...", "info");
+
+    // Build the server with Vite
+    try {
+      await build({
+        mode: "production",
+        configFile: false,
+        envDir: serverRoot,
+        envPrefix: CONSTANTS.env.prefix.key,
+        plugins: [serverTransformPlugin, preact()],
+        logLevel: "silent", // Suppress Vite logs
+        build: {
+          minify: true,
+          outDir: path.join(serverRoot, "dist"),
+          emptyOutDir: false,
+          ssr: true,
+          rollupOptions: {
+            input: serverEntryPath,
+            output: {
+              format: "esm",
+              entryFileNames: "server.js",
+            },
           },
         },
-      },
-    });
+      });
 
-    console.log("AssembleJS production build completed successfully!");
-  } catch (error) {
-    console.error("Build failed:", error);
+      logWithBadge("Server built successfully", "success");
+    } catch (error: unknown) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      logWithBadge(`Server build failed: ${errorMsg}`, "error");
+      throw error;
+    }
+
+    // Calculate build time
+    const endTime = Date.now();
+    const buildTimeSeconds = ((endTime - startTime) / 1000).toFixed(2);
+
+    // Print build summary
+    printHeaderBox("Build Summary");
+
+    logWithBadge(
+      `AssembleJS production build completed in ${buildTimeSeconds}s`,
+      "success"
+    );
+  } catch (error: unknown) {
+    printHeaderBox("Build Failed", chalk.red);
+
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    logWithBadge(errorMsg, "error");
+
+    if (error instanceof Error && error.stack) {
+      console.error(chalk.gray(error.stack.split("\n").slice(1).join("\n")));
+    }
+
     process.exit(1);
   }
 }

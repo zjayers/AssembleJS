@@ -228,7 +228,6 @@ describe("buildComponentViews", () => {
     expect(parse).toHaveBeenCalledWith(expect.any(String));
   });
 
-
   it("should handle all script and link attributes correctly", async () => {
     // Mock complex HTML parsing result with the proper type cast
     const parseAsMock = parse as any;

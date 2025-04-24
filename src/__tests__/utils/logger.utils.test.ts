@@ -203,7 +203,6 @@ describe("logger.utils", () => {
       );
     });
 
-
     it("should provide convenience methods for all log levels", () => {
       // Arrange
       (envUtils.getEnv as jest.Mock).mockImplementation(() => "ALL");

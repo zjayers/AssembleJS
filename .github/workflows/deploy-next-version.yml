@@ -198,46 +198,73 @@ jobs:
           ECR_REPOSITORY_BASE="assemblejs-testbed"
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
           
-          cat > Dockerfile.template << 'EOF'
-          FROM node:20-alpine
-          
-          WORKDIR /app
-          
-          COPY package*.json ./
-          COPY dist/ ./dist/
-          
-          ENV NODE_ENV=production
-          ENV PORT=3000
-          
-          EXPOSE 3000
-          
-          CMD ["node", "dist/server.js"]
-          EOF
-          
           cd testbed
           for project_dir in assemblejs-*/; do
             project_name="${project_dir%/}"
             
             if [ -d "$project_dir/dist" ]; then
-              echo "Packaging $project_name for deployment"
+              echo "---------------------------------------------"
+              echo "📦 Packaging $project_name for deployment"
+              
+              # Move into project directory
               cd "$project_name"
               
-              cp ../../Dockerfile.template Dockerfile
+              # Verify Dockerfile exists
+              if [ ! -f "Dockerfile" ]; then
+                echo "⚠️ Dockerfile not found in $project_name, using shared template"
+                # Check if shared Dockerfile exists
+                if [ -f "../../../.github/docker/Dockerfile.testbed" ]; then
+                  cp "../../../.github/docker/Dockerfile.testbed" "./Dockerfile"
+                else
+                  echo "⚠️ Shared Dockerfile not found, creating default"
+                  cat > Dockerfile << 'EOF'
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install asmbl@next
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN npm run build
+
+# Expose port
+EXPOSE 3000
+
+# Start the application
+CMD ["node", "dist/server.js"]
+EOF
+                fi
+              fi
               
+              # Create ECR repository if it doesn't exist
               aws ecr describe-repositories --repository-names "$ECR_REPOSITORY_BASE/$project_name" || \
                 aws ecr create-repository --repository-name "$ECR_REPOSITORY_BASE/$project_name"
               
+              # Build and push Docker image
               IMAGE_TAG="$ECR_REGISTRY/$ECR_REPOSITORY_BASE/$project_name:next-$TIMESTAMP"
               IMAGE_TAG_LATEST="$ECR_REGISTRY/$ECR_REPOSITORY_BASE/$project_name:next-latest"
               
+              echo "🔨 Building Docker image for $project_name"
               docker build -t "$IMAGE_TAG" -t "$IMAGE_TAG_LATEST" .
+              
+              echo "⬆️ Pushing Docker image for $project_name"
               docker push "$IMAGE_TAG"
               docker push "$IMAGE_TAG_LATEST"
               
+              echo "✅ Successfully deployed $project_name to ECR"
+              
+              # Move back to testbed directory
               cd ..
             else
-              echo "No dist directory found for $project_name, skipping"
+              echo "⚠️ No dist directory found for $project_name, skipping"
             fi
           done
           
-          echo "All testbed projects successfully packaged and deployed to ECR"
+          echo "🚀 All testbed projects successfully packaged and deployed to ECR"

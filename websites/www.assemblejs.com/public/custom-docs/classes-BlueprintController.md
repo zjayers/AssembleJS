@@ -106,7 +106,7 @@ register(app: Assembly): void {
 
 #### Defined in
 
-[src/server/abstract/blueprint.controller.ts:116](https://github.com/zjayers/AssembleJS/blob/14bff3e/src/server/abstract/blueprint.controller.ts#L116)
+[src/server/abstract/blueprint.controller.ts:116](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/blueprint.controller.ts#L116)
 
 ___
 
@@ -154,7 +154,7 @@ The service instance of the requested type
 
 #### Defined in
 
-[src/server/abstract/blueprint.controller.ts:60](https://github.com/zjayers/AssembleJS/blob/14bff3e/src/server/abstract/blueprint.controller.ts#L60)
+[src/server/abstract/blueprint.controller.ts:60](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/blueprint.controller.ts#L60)
 
 ___
 
@@ -198,7 +198,7 @@ True if the service is registered, false otherwise
 
 #### Defined in
 
-[src/server/abstract/blueprint.controller.ts:85](https://github.com/zjayers/AssembleJS/blob/14bff3e/src/server/abstract/blueprint.controller.ts#L85)
+[src/server/abstract/blueprint.controller.ts:85](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/blueprint.controller.ts#L85)
 
 ## Constructors
 
@@ -222,7 +222,7 @@ Loggable.constructor
 
 #### Defined in
 
-[src/server/abstract/loggable.ts:19](https://github.com/zjayers/AssembleJS/blob/14bff3e/src/server/abstract/loggable.ts#L19)
+[src/server/abstract/loggable.ts:19](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/loggable.ts#L19)
 
 ## Properties
 
@@ -236,4 +236,4 @@ Loggable.log
 
 #### Defined in
 
-[src/server/abstract/loggable.ts:11](https://github.com/zjayers/AssembleJS/blob/14bff3e/src/server/abstract/loggable.ts#L11)
+[src/server/abstract/loggable.ts:11](https://github.com/zjayers/AssembleJS/blob/d2354de/src/server/abstract/loggable.ts#L11)

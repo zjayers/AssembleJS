@@ -49,7 +49,7 @@
     "lib/**/*"
   ],
   "scripts": {
-    "bootstrap": "npm install && run-p install:*",
+    "bootstrap": "npm install && npm run install:website && npm pack && npm run install:testbed",
     "prepack": "npm run build",
     "install:website": "cd websites/www.assemblejs.com && npm install --ignore-scripts",
     "install:testbed": "run-s testbed:install",

@@ -1,32 +1,8 @@
-import viteDevServer from 'vavite/vite-dev-server';
-import vaviteHttpServer from 'vavite/http-dev-server';
 import { createBlueprintServer } from "asmbl";
 
-/**
- * AssembleJS Server Configuration
- * 
- * This is the main entry point for the Permissions cookbook example.
- * It creates a server with components that demonstrate permission systems and role-based access control.
- * 
- * @author Zachariah Ayers
- */
+// AssembleJS Server Configuration
 void createBlueprintServer({
-  // Server root URL (using import.meta.url for ESM compatibility)
-  serverRoot: import.meta.url,
-  
-  // HTTP and development server configuration
-  httpServer: vaviteHttpServer,
-  devServer: viteDevServer,
-  
-  // Application manifest - register all your components here
   manifest: {
-    // Components are registered here
-    components: [],
-    
-    // Controllers are registered here (automatically added by generator)
-    // controllers: [],
-    
-    // Services are registered here (automatically added by generator)
-    // services: []
+    components: []
   }
-});
+})
