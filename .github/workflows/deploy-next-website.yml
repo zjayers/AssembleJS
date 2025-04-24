@@ -39,7 +39,7 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
       
       - name: Install main package dependencies
-        run: npm ci --ignore-scripts
+        run: npm ci --include=dev
       
       - name: Build everything
         run: npm run build
