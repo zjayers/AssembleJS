@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import DocsSidebar from '../components/docs/DocsSidebar';
 import DocsContent from '../components/docs/DocsContent';
 import { Helmet } from 'react-helmet';
-import { useLocation, useParams, Routes, Route, Navigate } from 'react-router-dom';
+import { useLocation, Routes, Route, Navigate } from 'react-router-dom';
 import './DocsPage.css';
 
 const DocsPage = () => {
@@ -11,7 +11,7 @@ const DocsPage = () => {
   const [readTime, setReadTime] = useState('1 min read');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
-  
+
   // Effect to build table of contents from DOM headings
   useEffect(() => {
     const buildToc = () => {
@@ -21,14 +21,14 @@ const DocsPage = () => {
           console.log('Document not ready yet, skipping TOC building');
           return;
         }
-        
+
         // Find all headings in the documentation content
         const mainContent = document.querySelector('.docs-content');
         if (!mainContent) return;
-        
+
         const headings = mainContent.querySelectorAll('h1, h2, h3') || [];
         if (!headings.length) return;
-        
+
         // Build TOC from headings
         const toc = Array.from(headings).map(heading => ({
           level: parseInt(heading.tagName.charAt(1)),
@@ -36,15 +36,15 @@ const DocsPage = () => {
           slug: heading.id || '', // Ensure we handle null ids gracefully
           element: heading // Keep reference to the original heading element
         }));
-        
+
         // Calculate approximate read time
         const text = mainContent.textContent || '';
         const wordCount = text.trim().split(/\s+/).length;
         const minutes = Math.max(1, Math.ceil(wordCount / 200));
-        
+
         setTocItems(toc);
         setReadTime(`${minutes} min read`);
-        
+
         // Check if there's a hash in the URL and highlight the corresponding TOC item
         const hash = window.location.hash;
         if (hash) {
@@ -54,7 +54,7 @@ const DocsPage = () => {
           // Highlight the first TOC item by default
           highlightTocItem(toc[0].slug);
         }
-        
+
         // Add copy buttons to code blocks if the function exists
         if (typeof window.addCopyButtonsToCodeBlocks === 'function') {
           window.addCopyButtonsToCodeBlocks();
@@ -68,31 +68,31 @@ const DocsPage = () => {
                 console.log('Document not ready yet, skipping button addition');
                 return;
               }
-              
+
               const codeBlocks = document.querySelectorAll('pre') || [];
               console.log('Found', codeBlocks.length, 'code blocks');
-              
+
               if (!codeBlocks.length) return;
-              
+
               codeBlocks.forEach(codeBlock => {
                 if (!codeBlock) return;
                 // Skip if already has copy button
                 if (codeBlock.querySelector('.copy-button')) return;
-              
+
                 // Create button element
                 const copyButton = document.createElement('button');
                 copyButton.className = 'copy-button';
                 copyButton.setAttribute('aria-label', 'Copy code to clipboard');
                 copyButton.textContent = '';  // Keep empty, will be provided by CSS
-                
+
                 // Make sure code block has position relative
                 codeBlock.style.position = 'relative';
-                
+
                 // Add click event
                 copyButton.addEventListener('click', () => {
                   const code = codeBlock.querySelector('code');
                   if (!code) return;
-                  
+
                   // Copy to clipboard
                   navigator.clipboard.writeText(code.textContent || '')
                     .then(() => {
@@ -100,7 +100,7 @@ const DocsPage = () => {
                       copyButton.classList.remove('error');
                       // Add copied class
                       copyButton.classList.add('copied');
-                      
+
                       setTimeout(() => {
                         copyButton.classList.remove('copied');
                       }, 2000);
@@ -111,13 +111,13 @@ const DocsPage = () => {
                       copyButton.classList.remove('copied');
                       // Add error class
                       copyButton.classList.add('error');
-                      
+
                       setTimeout(() => {
                         copyButton.classList.remove('error');
                       }, 2000);
                     });
                 });
-                
+
                 // Append button to code block
                 codeBlock.appendChild(copyButton);
               });
@@ -125,19 +125,19 @@ const DocsPage = () => {
               console.error('Error adding copy buttons:', error);
             }
           };
-          
+
           // Add buttons now and after a delay, but only if the component is still mounted
           const cleanup = [];
           // Run immediately
           addCopyButtons();
-          
+
           // Schedule future runs with safe cleanup
           const timer1 = setTimeout(addCopyButtons, 500);
           cleanup.push(timer1);
-          
+
           const timer2 = setTimeout(addCopyButtons, 1000);
           cleanup.push(timer2);
-          
+
           // Add function to clean up timers
           return () => {
             cleanup.forEach(timerId => clearTimeout(timerId));
@@ -147,12 +147,12 @@ const DocsPage = () => {
         console.error('Error in buildToc function:', error);
       }
     };
-    
+
     // Function to highlight TOC item
     const highlightTocItem = (headingId) => {
       try {
         if (!document || !document.body || !headingId) return;
-        
+
         // Find the toc item and update active state
         const tocElement = document.querySelector(`.toc-item a[href="#${headingId}"]`);
         if (tocElement) {
@@ -161,7 +161,7 @@ const DocsPage = () => {
           tocItems.forEach(el => {
             if (el) el.classList.remove('active');
           });
-          
+
           // Add active class to current item
           tocElement.parentElement.classList.add('active');
         }
@@ -169,10 +169,10 @@ const DocsPage = () => {
         console.error('Error highlighting TOC item:', error);
       }
     };
-    
+
     // Wait for content to load before building TOC (reduced timeout)
     const timer = setTimeout(buildToc, 750);
-    
+
     // Listen for heading in view events from DocsContent
     const handleHeadingInView = (event) => {
       try {
@@ -183,12 +183,12 @@ const DocsPage = () => {
         console.error('Error handling heading in view event:', error);
       }
     };
-    
+
     document.addEventListener('headingInView', handleHeadingInView);
-    
+
     // Add docs-page class to body
     document.body.classList.add('docs-page');
-    
+
     // Add marked.js and highlight.js scripts if they don't exist
     if (!window.marked) {
       const markedScript = document.createElement('script');
@@ -196,7 +196,7 @@ const DocsPage = () => {
       markedScript.async = true;
       document.head.appendChild(markedScript);
     }
-    
+
     if (!window.hljs) {
       // Load highlight.js as an ES module
       const script = document.createElement('script');
@@ -206,24 +206,24 @@ const DocsPage = () => {
         window.hljs = hljs;
       `;
       document.head.appendChild(script);
-      
+
       // Load appropriate highlight.js theme based on site theme
       const isDarkTheme = document.body.getAttribute('data-theme') !== 'light';
       const themeName = isDarkTheme ? 'atom-one-dark' : 'atom-one-light';
-      
+
       const highlightStyles = document.createElement('link');
       highlightStyles.id = 'highlight-theme-css';
       highlightStyles.rel = 'stylesheet';
       highlightStyles.href = `https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/${themeName}.min.css`;
-      
+
       // Remove any existing highlight theme
       const existingTheme = document.getElementById('highlight-theme-css');
       if (existingTheme) {
         existingTheme.remove();
       }
-      
+
       document.head.appendChild(highlightStyles);
-      
+
       // Listen for theme changes to update highlight.js theme
       const observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
@@ -231,32 +231,32 @@ const DocsPage = () => {
             const isDark = document.body.getAttribute('data-theme') !== 'light';
             const newThemeName = isDark ? 'atom-one-dark' : 'atom-one-light';
             const themeLink = document.getElementById('highlight-theme-css');
-            
+
             if (themeLink) {
               themeLink.href = `https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/${newThemeName}.min.css`;
             }
           }
         });
       });
-      
+
       observer.observe(document.body, { attributes: true });
     }
-    
+
     return () => {
       clearTimeout(timer);
       document.body.classList.remove('docs-page');
       document.removeEventListener('headingInView', handleHeadingInView);
     };
   }, [location.pathname]);
-  
+
   // Determine current page section for page title
   const getPageTitle = () => {
     const path = location.pathname.replace('/docs/', '');
-    
+
     if (!path || path === '' || path === 'index') {
       return 'Documentation';
     }
-    
+
     // Convert path to readable title
     const pathParts = path.split('/');
     const lastPart = pathParts[pathParts.length - 1];
@@ -264,43 +264,39 @@ const DocsPage = () => {
       .split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
-      
+
     return `${title} | AssembleJS Docs`;
   };
-  
+
   // Toggle mobile sidebar
   const toggleSidebar = () => {
     setSidebarOpen(prev => !prev);
   };
-  
+
   // Close sidebar when clicking outside on mobile
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(e.target) && 
-          !e.target.classList.contains('docs-sidebar-mobile-toggle')) {
+      if (sidebarRef.current && !sidebarRef.current.contains(e.target) &&
+        !e.target.classList.contains('docs-sidebar-mobile-toggle')) {
         setSidebarOpen(false);
       }
     };
-    
+
     if (sidebarOpen) {
       document.body.classList.add('sidebar-open');
       document.addEventListener('mousedown', handleClickOutside);
     } else {
       document.body.classList.remove('sidebar-open');
     }
-    
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
       document.body.classList.remove('sidebar-open');
     };
   }, [sidebarOpen]);
 
-  // Get path parameter if we're on a nested route
-  const params = useParams();
-  const docPath = params.path || '';
-  
   // Current route path parameter is used for conditional rendering below
-  
+
   return (
     <>
       <Helmet>
@@ -328,30 +324,30 @@ const DocsPage = () => {
                 <ul className="toc-list">
                   {tocItems.length > 0 ? (
                     tocItems.map((item, index) => (
-                      <li 
-                        key={index} 
+                      <li
+                        key={index}
                         className={`toc-item toc-level-${item.level}`}
                       >
-                        <a 
+                        <a
                           href={`#${item.slug}`}
                           onClick={(e) => {
                             e.preventDefault();
-                            
+
                             // Simply use regular hash navigation, but prevent default
                             // This allows the browser to handle the navigation
                             const targetId = item.slug;
                             const element = document.getElementById(targetId);
-                            
+
                             if (element) {
                               // Scroll to element with offset for header
                               window.scrollTo({
                                 top: element.offsetTop - 120, // Match the offset in DocsContent.js
                                 behavior: 'smooth'
                               });
-                              
+
                               // Update URL hash
                               window.location.hash = targetId;
-                              
+
                               // Update active class manually
                               document.querySelectorAll('.toc-item').forEach(el => {
                                 el.classList.remove('active');
@@ -398,10 +394,10 @@ const DocsPage = () => {
           </div>
         </aside>
       </div>
-      
+
       {/* Mobile sidebar toggle button */}
-      <button 
-        className="docs-sidebar-mobile-toggle" 
+      <button
+        className="docs-sidebar-mobile-toggle"
         onClick={toggleSidebar}
         aria-label="Toggle navigation menu"
         aria-expanded={sidebarOpen}
@@ -414,10 +410,10 @@ const DocsPage = () => {
           )}
         </svg>
       </button>
-      
+
       {/* Overlay for mobile sidebar */}
       {sidebarOpen && (
-        <div 
+        <div
           className="sidebar-overlay active"
           onClick={() => setSidebarOpen(false)}
           aria-hidden="true"
