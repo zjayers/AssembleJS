@@ -112,7 +112,7 @@ jobs:
   # Deploy website to S3 next bucket
   deploy-website:
     name: Deploy Next Website
-    needs: publish-package
+    needs: [build, publish-package]
     runs-on: ubuntu-latest
     environment: staging
     permissions:
@@ -137,6 +137,7 @@ jobs:
             websites/www.assemblejs.com/build/
             testbed/*/dist/
             docs/
+            *.tgz
           key: ${{ env.cache-key }}
           fail-on-cache-miss: true
       
@@ -159,7 +160,7 @@ jobs:
   # Package and upload testbed projects as container images
   deploy-testbed:
     name: Deploy Testbed Projects
-    needs: publish-package
+    needs: [build, publish-package]
     runs-on: ubuntu-latest
     environment: staging
     permissions:
@@ -185,6 +186,7 @@ jobs:
             websites/www.assemblejs.com/build/
             testbed/*/dist/
             docs/
+            *.tgz
           key: ${{ env.cache-key }}
           fail-on-cache-miss: true
       
