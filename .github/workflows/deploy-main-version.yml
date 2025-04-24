@@ -44,7 +44,11 @@ jobs:
         run: cd websites/www.assemblejs.com && npm ci
       
       - name: Build and pack main package
-        run: npm pack
+        run: |
+          # Run npm pack and capture the filename
+          PACKAGE_TGZ=$(npm pack | tail -n 1)
+          echo "Generated package: $PACKAGE_TGZ"
+          echo "PACKAGE_TGZ=$PACKAGE_TGZ" >> $GITHUB_ENV
       
       - name: Cache build artifacts
         uses: actions/cache/save@v4
@@ -90,8 +94,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm publish *.tgz --tag latest
-          echo "Published package to npm with tag: latest"
+          npm publish "$PACKAGE_TGZ" --tag latest
+          echo "Published package $PACKAGE_TGZ to npm with tag: latest"
   
   # Deploy website to S3 production bucket
   deploy-website:

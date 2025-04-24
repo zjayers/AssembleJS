@@ -44,7 +44,11 @@ jobs:
         run: cd websites/www.assemblejs.com && npm ci
       
       - name: Build and pack main package
-        run: npm pack
+        run: |
+          # Run npm pack and capture the filename
+          PACKAGE_TGZ=$(npm pack | tail -n 1)
+          echo "Generated package: $PACKAGE_TGZ"
+          echo "PACKAGE_TGZ=$PACKAGE_TGZ" >> $GITHUB_ENV
       
       - name: Install Testbed dependencies
         run: npm run testbed:install
@@ -98,8 +102,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm publish *.tgz --tag next
-          echo "Published package to npm with tag: next"
+          npm publish "$PACKAGE_TGZ" --tag next
+          echo "Published package $PACKAGE_TGZ to npm with tag: next"
   
   # Deploy website to S3 next bucket
   deploy-website:
