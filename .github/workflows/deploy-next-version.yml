@@ -40,6 +40,9 @@ jobs:
       - name: Install dependencies
         run: npm ci --include=dev
       
+      - name: Install website dependencies
+        run: cd websites/www.assemblejs.com && npm ci
+      
       - name: Build main package
         run: npm run build
       
