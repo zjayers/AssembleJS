@@ -25,7 +25,7 @@
     "Utilities", 
     "*"
   ],
-  "readme": "DOCUMENTATION.md",
+  "readme": "README.md",
   "disableSources": false,
   "theme": "markdown",
   "hideBreadcrumbs": true,

@@ -50,10 +50,6 @@
 
 - `AssembleJS` is a modern micro-frontend framework designed for building distributed, component-based UIs. It manages the compiling, bundling, and serving of UI blueprints and components in a distributed style that enables teams to work independently while creating a cohesive user experience. For the majority of cases, it should not be implemented directly, but instead generated using the `asmbl` npm package.
 
-### Architecture
-
-For a detailed explanation of the AssembleJS architecture, please see the [DOCUMENTATION.md](DOCUMENTATION.md) file. This document explains the system design, component interactions, and technical implementation details with comprehensive diagrams.
-
 ### Why Choose AssembleJS?
 
 AssembleJS takes a unique approach to UI architecture that addresses common challenges faced by development teams:
@@ -191,8 +187,6 @@ npx asm-build
 npx asm-serve
 ```
 
-For a comprehensive guide to all CLI commands and options, see the [CLI Guide section in the documentation](./DOCUMENTATION.md#cli-guide).
-
 ---
 
 ## Enterprise Tool Ecosystem
@@ -211,8 +205,6 @@ redline
 redline --fix
 ```
 
-For more information, see the [REDLINE section in the documentation](./DOCUMENTATION.md#redline-code-quality-tool).
-
 ### SPECSHEET - Performance Analysis
 
 SPECSHEET analyzes your application's performance, providing actionable insights to optimize speed, accessibility, and user experience.
@@ -230,8 +222,6 @@ RIVET simplifies deployment with platform-specific configurations for Docker, AW
 # Interactive deployment setup
 rivet
 ```
-
-For more information, see the [RIVET section in the documentation](./DOCUMENTATION.md#rivet-deployment-system).
 
 ---
 
@@ -324,12 +314,6 @@ AssembleJS is an open-source project developed and maintained by Zachariah Ayers
 If you'd like to support the project, you can do so through:
 
 - **[GitHub Sponsors](https://github.com/sponsors/zjayers)**: Direct support through GitHub's sponsorship program
-
----
-
-## Developing Locally
-
-- Want to contribute to AssembleJS? Have a look at our [Contributing Guide](./CONTRIBUTING.md) and the [Development Roadmap](./DOCUMENTATION.md#development-roadmap).
 
 ---
 

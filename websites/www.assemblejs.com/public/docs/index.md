@@ -1249,7 +1249,6 @@ Absolutely. AssembleJS is designed for production use in commercial environments
 #### Where can I get help if I'm stuck?
 
 For help with AssembleJS:
-- Check the [documentation](./DOCUMENTATION.md)
 - Look through the [examples](https://github.com/zjayers/assemblejs/tree/next/examples)
 - Open an issue on the [GitHub repository](https://github.com/zjayers/assemblejs/issues)
 - Contact the creator, Zachariah Ayers, via the official channels
