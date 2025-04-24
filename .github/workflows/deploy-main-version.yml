@@ -104,7 +104,7 @@ jobs:
   # Deploy website to S3 production bucket
   deploy-website:
     name: Deploy Main Website
-    needs: publish-package
+    needs: [build, publish-package]
     runs-on: ubuntu-latest
     environment: production
     permissions:
@@ -128,6 +128,7 @@ jobs:
             lib/
             websites/www.assemblejs.com/build/
             docs/
+            *.tgz
           key: ${{ env.cache-key }}
           fail-on-cache-miss: true
       

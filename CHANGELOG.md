@@ -1,3 +1,19 @@
+## <small>0.0.13 (2025-04-24)</small>
+
+* 0.0.13 ([3e8f74f](https://github.com/zjayers/assemblejs/commit/3e8f74f))
+* chore: deploy testing ([5f4c615](https://github.com/zjayers/assemblejs/commit/5f4c615))
+* chore: deploy testing ([8ca28c0](https://github.com/zjayers/assemblejs/commit/8ca28c0))
+* chore: deploy testing ([3e8df1a](https://github.com/zjayers/assemblejs/commit/3e8df1a))
+* chore: deploy testing ([43b5db4](https://github.com/zjayers/assemblejs/commit/43b5db4))
+* chore: deploy testing ([b23914a](https://github.com/zjayers/assemblejs/commit/b23914a))
+* chore: deploy testing ([40c270a](https://github.com/zjayers/assemblejs/commit/40c270a))
+* chore: deploy testing ([bd22bac](https://github.com/zjayers/assemblejs/commit/bd22bac))
+* chore: deploy testing ([fcb7955](https://github.com/zjayers/assemblejs/commit/fcb7955))
+* chore: deploy testing ([21b7980](https://github.com/zjayers/assemblejs/commit/21b7980))
+* chore(release): update patch version ([6078a81](https://github.com/zjayers/assemblejs/commit/6078a81))
+
+
+
 ## <small>0.0.12 (2025-04-24)</small>
 
 * 0.0.12 ([3127844](https://github.com/zjayers/assemblejs/commit/3127844))

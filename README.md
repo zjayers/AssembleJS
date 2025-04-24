@@ -11,8 +11,6 @@
 
 ---
 
-<!-- TOC -->
-
 ## Index
 
 - [Index](#index)
