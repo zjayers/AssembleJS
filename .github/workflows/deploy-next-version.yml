@@ -15,7 +15,7 @@ permissions:
   contents: read
   packages: write
 
-# Define reusable cache key
+# Define reusable cache key and outputs
 env:
   cache-key: build-artifacts-${{ github.sha }}
 
@@ -24,6 +24,8 @@ jobs:
   build:
     name: Build Next Version
     runs-on: ubuntu-latest
+    outputs:
+      package_tgz: ${{ steps.pack.outputs.package_tgz }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,11 +46,12 @@ jobs:
         run: cd websites/www.assemblejs.com && npm ci
       
       - name: Build and pack main package
+        id: pack
         run: |
           # Run npm pack and capture the filename
           PACKAGE_TGZ=$(npm pack | tail -n 1)
           echo "Generated package: $PACKAGE_TGZ"
-          echo "PACKAGE_TGZ=$PACKAGE_TGZ" >> $GITHUB_ENV
+          echo "package_tgz=$PACKAGE_TGZ" >> $GITHUB_OUTPUT
       
       - name: Install Testbed dependencies
         run: npm run testbed:install
@@ -102,8 +105,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm publish "$PACKAGE_TGZ" --tag next
-          echo "Published package $PACKAGE_TGZ to npm with tag: next"
+          echo "Publishing package: ${{ needs.build.outputs.package_tgz }}"
+          npm publish "${{ needs.build.outputs.package_tgz }}" --tag next
+          echo "Published package to npm with tag: next"
   
   # Deploy website to S3 next bucket
   deploy-website:
