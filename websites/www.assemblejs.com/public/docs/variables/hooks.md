@@ -22,4 +22,4 @@
 
 #### Defined in
 
-[src/index.ts:50](https://github.com/zjayers/AssembleJS/blob/e3653e0/src/index.ts#L50)
+[src/index.ts:50](https://github.com/zjayers/AssembleJS/blob/3539104/src/index.ts#L50)

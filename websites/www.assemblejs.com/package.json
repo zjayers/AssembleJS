@@ -22,15 +22,15 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "prestart": "cp -r src/docs public/",
     "start": "react-scripts start",
-    "build": "react-scripts build && cp -r src/docs build/",
+    "build": "node ./scripts/copy-docs.js && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "cp build/index.html build/404.html && echo 'Website built and ready for deployment'",
     "lint": "eslint --max-warnings=0 src",
-    "build:ci": "CI=true npm run build"
+    "build:ci": "CI=true npm run build",
+    "copy-docs": "node ./scripts/copy-docs.js"
   },
   "eslintConfig": {
     "extends": [

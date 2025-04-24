@@ -1,5 +1,5 @@
 /* Documentation Page Main Styles
- * Contains variables and main layout for the documentation pages
+ * Simplified grid-based layout with three distinct columns
  */
 
 /* CSS Variables for Theming */
@@ -7,146 +7,264 @@
   /* Typography */
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   --font-mono: "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  
+
   /* Colors - Light Theme */
-  --primary-color: #3b82f6; /* Blue */
+  --primary-color: #3b82f6;
+  /* Blue */
   --primary-color-light: rgba(59, 130, 246, 0.1);
   --primary-color-dark: #2563eb;
-  --success-color: #10b981;
-  --warning-color: #f59e0b;
-  --error-color: #ef4444;
-  
+
   --bg-color: #ffffff;
   --surface-color: #f9fafb;
   --surface-color-alt: #f3f4f6;
   --surface-color-hover: #f1f5f9;
-  
+
   --text-color: #1f2937;
   --text-muted: #6b7280;
-  --placeholder-color: #9ca3af;
   --heading-color: #111827;
-  
+
   --border-color: #e5e7eb;
   --border-color-light: #f3f4f6;
-  --border-color-hover: #d1d5db;
-  
-  /* Sidebar */
-  --sidebar-bg: #ffffff;
-  --section-heading-color: #111827;
-  --section-hover-bg: #f3f4f6;
-  --nav-link-color: #4b5563;
-  --nav-link-hover-color: #1f2937;
-  --nav-link-hover-bg: #f3f4f6;
-  --nav-link-active-bg: #ebf5ff;
-  
-  /* Code */
-  --code-bg: var(--code-block-bg, #f8fafc);
-  --code-text: var(--code-block-text, #334155);
-  --inline-code-bg: var(--inline-code-block-bg, #f1f5f9);
-  --inline-code-text: var(--inline-code-block-text, #0f172a);
-  --code-button-bg: var(--code-block-button-bg, rgba(255, 255, 255, 0.9));
-  --code-button-text: var(--code-block-button-text, #64748b);
-  --code-button-hover-bg: var(--code-block-button-hover-bg, #e2e8f0);
-  --code-button-hover-text: var(--code-block-button-hover-text, #334155);
-  
-  /* Other UI Elements */
-  --scrollbar-track: #f1f5f9;
-  --scrollbar-thumb: #cbd5e1;
-  --input-bg: #ffffff;
-  --blockquote-bg: #f8fafc;
-  --blockquote-text: #334155;
-  --version-badge-bg: #f3f4f6;
-  --error-bg: #fef2f2;
-  --error-text: #b91c1c;
 }
 
-/* Dark Theme is handled by the site-wide theme */
+/* Dark Theme Variables */
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --surface-color: #1e1e1e;
+  --surface-color-alt: #2a2a2a;
+  --surface-color-hover: #333333;
+
+  --text-color: #e5e7eb;
+  --text-muted: #9ca3af;
+  --heading-color: #f3f4f6;
+
+  --border-color: #333333;
+  --border-color-light: #444444;
+}
 
 /* Base Styles */
 body.docs-page {
-  background-color: var(--surface-color);
+  background-color: var(--bg, var(--dark-bg, #0f172a));
   color: var(--text-color);
   font-family: var(--font-sans);
-  line-height: 1.5;
-  min-height: 100vh;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: auto; /* Enable page-wide scrolling */
 }
 
-body.sidebar-open {
-  overflow: hidden;
+[data-theme="light"] body.docs-page {
+  background-color: var(--light-bg, #f8fafc);
 }
 
-/* Main docs container - 3-column grid layout */
+/* Main docs container - 3-column grid layout with zero gap */
 .docs-container {
   display: grid;
-  grid-template-columns: 280px minmax(0, 1fr) 240px; /* Fixed width sidebars, flexible content */
+  grid-template-columns: 280px 1fr 280px;
+  /* Match TOC width with sidebar width */
+  grid-template-rows: 1fr;
   grid-template-areas: "sidebar content toc";
   width: 100%;
-  min-height: calc(100vh - 60px); /* Minimum height */
+  min-height: calc(100vh - 60px);
+  /* Account for header height */
+  border-top: 1px solid var(--border-color);
+  padding: 0;
+  gap: 0;
+  /* Explicitly set grid gap to zero */
+  position: relative;
+  /* For positioning children */
+}
+
+[data-theme="light"] .docs-container {
+  border-top: 1px solid var(--light-border, #cbd5e1);
+}
+
+/* Sidebar (Left Column) */
+.docs-sidebar {
+  grid-area: sidebar;
+  background-color: var(--bg, var(--dark-bg, #0f172a));
+  border-right: 1px solid var(--border-color);
   margin: 0;
   padding: 0;
-  gap: 0; /* No gap between columns */
-  position: relative;
-  overflow-x: hidden; /* Prevent horizontal overflow */
-  overflow-y: visible; /* Allow vertical content to flow naturally */
-  background-color: var(--bg-color); /* Fix variable name */
-  border-top: 1px solid var(--border-color); /* Add a subtle top border */
+  /* Stickiness and overflow are now handled in DocsSidebar.css */
 }
 
-/* Import Component Styles */
-@import url('../components/docs/DocsSidebar.css');
-@import url('../components/docs/DocsContent.css');
-@import url('../components/docs/DocumentationLoader.css');
+[data-theme="light"] .docs-sidebar {
+  background-color: var(--light-bg, #f8fafc);
+  border-right: 1px solid var(--light-border, #cbd5e1);
+}
 
-/* Responsive Styles for Documentation Grid */
+/* Main Content Area (Middle Column) */
+.docs-content-wrapper {
+  grid-area: content;
+  background-color: var(--bg, var(--dark-bg, #0f172a));
+  min-height: calc(100vh - 60px);
+  overflow-y: auto;
+  padding: 0;
+}
+
+[data-theme="light"] .docs-content-wrapper {
+  background-color: var(--light-bg, #f8fafc);
+}
+
+/* Table of Contents (Right Column) */
+.docs-toc {
+  width: 280px;
+  position: sticky;
+  overflow-y: auto;
+  grid-column: 3;
+  align-self: start;
+}
+
+[data-theme="light"] .docs-toc {
+  background-color: var(--light-bg, #f8fafc);
+}
+
+/* TOC Container styling */
+.toc-container {
+  position: sticky;
+  top: 0;
+  padding-right: 0.5rem;
+}
+
+/* TOC Header styling */
+.toc-header {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color-light);
+}
+
+.toc-header h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: var(--heading-color);
+}
+
+.read-time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+/* TOC List styling */
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-item {
+  margin: 0.25rem 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
+.toc-item a {
+  display: block;
+  padding: 0.25rem 0;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.toc-item a:hover {
+  color: var(--primary-color);
+}
+
+.toc-item.active a {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+/* TOC Level indentation */
+.toc-level-1 {
+  font-weight: 500;
+}
+
+.toc-level-2 {
+  padding-left: 1rem;
+}
+
+.toc-level-3 {
+  padding-left: 2rem;
+  font-size: 0.85rem;
+}
+
+/* Edit page link styling */
+.docs-actions {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color-light);
+}
+
+.edit-page-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.5rem 0;
+  transition: color 0.2s ease;
+}
+
+.edit-page-link:hover {
+  color: var(--primary-color);
+}
+
+.edit-page-link svg {
+  flex-shrink: 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 1400px) {
+  .docs-container {
+    grid-template-columns: 280px 1fr 280px;
+  }
+}
+
 @media (max-width: 1200px) {
   .docs-container {
-    grid-template-columns: 250px 1fr 0;
+    grid-template-columns: 280px 1fr 0;
     grid-template-areas: "sidebar content content";
   }
-  
+
   .docs-toc {
-    display: none; /* Hide TOC on smaller screens */
+    display: none;
   }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 768px) {
   .docs-container {
     grid-template-columns: 1fr;
     grid-template-areas: "content";
   }
-  
+
   .docs-sidebar {
-    display: block; /* Ensure it's always in the DOM */
+    display: none;
+  }
+
+  /* Mobile sidebar */
+  .docs-sidebar.mobile-active {
+    display: block;
     position: fixed;
     top: 60px;
     left: 0;
-    bottom: 0;
     width: 280px;
-    max-width: 85vw;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
-    z-index: 999;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    background-color: var(--bg-color);
-    border-right: 1px solid var(--border-color);
+    height: calc(100vh - 60px);
+    z-index: 1000;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   }
-  
-  /* Show sidebar when active */
-  .docs-sidebar.mobile-active {
-    transform: translateX(0);
-  }
-  
-  /* Add mobile sidebar toggle button */
+
+  /* Mobile toggle button */
   .docs-sidebar-mobile-toggle {
     display: flex;
     position: fixed;
     bottom: 1.5rem;
     right: 1.5rem;
-    z-index: 1000;
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 50%;
@@ -154,18 +272,12 @@ body.sidebar-open {
     color: white;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     border: none;
-    transition: all 0.2s ease;
+    cursor: pointer;
   }
-  
-  .docs-sidebar-mobile-toggle:hover,
-  .docs-sidebar-mobile-toggle:focus {
-    background-color: var(--primary-color-dark);
-    transform: scale(1.05);
-  }
-  
+
   /* Overlay for mobile sidebar */
   .sidebar-overlay {
     position: fixed;
@@ -174,27 +286,11 @@ body.sidebar-open {
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 998;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-  }
-  
-  .sidebar-overlay.active {
-    opacity: 1;
-    visibility: visible;
+    z-index: 999;
   }
 }
 
-/* Print Styles */
-@media print {
-  .docs-container,
-  .docs-sidebar,
-  .docs-content,
-  .docs-toc {
-    display: block;
-    height: auto;
-    overflow: visible;
-    position: static;
-  }
-}
+/* Import Component Styles */
+@import url('../components/docs/DocsSidebar.css');
+@import url('../components/docs/DocsContent.css');
+@import url('../components/docs/DocumentationLoader.css');

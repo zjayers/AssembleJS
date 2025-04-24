@@ -69,7 +69,7 @@ const DocumentationLoader = ({ path }) => {
         setError(null);
       } catch (err) {
         // Error loading documentation
-        setError(`Failed to load documentation content for "${path}". The page may not exist or there could be a server issue.`);
+        setError(`Failed to load documentation content for "${path}". The page may not exist or there could be a server issue. Details: ${err.message}`);
       } finally {
         setIsLoading(false);
       }
@@ -82,10 +82,27 @@ const DocumentationLoader = ({ path }) => {
   useEffect(() => {
     if (!isLoading && content && contentRef.current && window.marked) {
       const addCodeBlockActions = () => {
-        const codeBlocks = contentRef.current.querySelectorAll('pre');
-        
-        codeBlocks.forEach(codeBlock => {
-          if (codeBlock.querySelector('.code-block-actions')) return;
+        try {
+          // Safety check to prevent errors when component is unmounting or ref is null
+          if (!contentRef || !contentRef.current) {
+            console.log('Content ref is not available, skipping code block actions');
+            return;
+          }
+          
+          // Look for both direct pre elements and code-block-wrappers
+          const codeBlocks = contentRef.current.querySelectorAll('pre, .code-block-wrapper pre') || [];
+          
+          console.log('Found code blocks:', codeBlocks.length); // Debug logging
+          
+          if (!codeBlocks.length) return;
+          
+          codeBlocks.forEach(codeBlock => {
+            if (!codeBlock) return;
+            
+            try {
+              // Skip if already has actions
+              if (codeBlock.querySelector('.code-block-actions') || 
+                  (codeBlock.parentElement && codeBlock.parentElement.querySelector('.code-block-actions'))) return;
           
           // Handle npm install blocks specially
           const codeElement = codeBlock.querySelector('code');
@@ -102,53 +119,66 @@ const DocumentationLoader = ({ path }) => {
           const actionsContainer = document.createElement('div');
           actionsContainer.className = 'code-block-actions';
           
-          // Add copy button
+          // Add copy button (no inner content - will be provided by CSS)
           const copyButton = document.createElement('button');
           copyButton.className = 'copy-button';
           copyButton.setAttribute('aria-label', 'Copy code to clipboard');
-          copyButton.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-            </svg>
-          `;
+          copyButton.setAttribute('title', 'Copy to clipboard');
           
           // Add copy functionality
           copyButton.addEventListener('click', () => {
             const code = codeBlock.querySelector('code');
             if (!code) return;
             
+            // Log the content being copied for debugging
+            console.log('Copying code: ', code.textContent.substring(0, 50) + '...');
+            
             navigator.clipboard.writeText(code.textContent || '')
               .then(() => {
+                console.log('Copy successful'); // Debug logging
+                // Remove error class if it exists
+                copyButton.classList.remove('error');
+                // Add copied class
                 copyButton.classList.add('copied');
-                copyButton.innerHTML = `
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                `;
                 
                 setTimeout(() => {
                   copyButton.classList.remove('copied');
-                  copyButton.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                    </svg>
-                  `;
                 }, 2000);
               })
               .catch(err => {
-                // Handle clipboard copy error
+                console.error('Copy failed:', err); // Error logging
+                // Remove copied class if it exists
+                copyButton.classList.remove('copied');
+                // Add error class
+                copyButton.classList.add('error');
+                
+                setTimeout(() => {
+                  copyButton.classList.remove('error');
+                }, 2000);
               });
           });
           
           actionsContainer.appendChild(copyButton);
-          codeBlock.appendChild(actionsContainer);
-        });
+          
+          // For code blocks inside .code-block-wrapper, append to wrapper instead
+          const targetElement = codeBlock.closest('.code-block-wrapper') || codeBlock;
+          targetElement.appendChild(actionsContainer);
+          
+          // Add a class to the code block to show it has actions
+          targetElement.classList.add('has-actions');
+            } catch (err) {
+              console.error('Error processing code block:', err);
+            }
+          });
+        } catch (error) {
+          console.error('Error adding code block actions:', error);
+        }
       };
       
-      // Wait for the content to be fully rendered before adding code block actions
+      // Try multiple times to add code block actions, in case of race conditions
       setTimeout(addCodeBlockActions, 200);
+      setTimeout(addCodeBlockActions, 500);
+      setTimeout(addCodeBlockActions, 1000);
       
       // Apply syntax highlighting if Highlight.js is available
       if (window.hljs) {
@@ -156,10 +186,12 @@ const DocumentationLoader = ({ path }) => {
         setTimeout(() => {
           try {
             window.hljs.highlightAll();
+            // Try adding buttons again after highlighting
+            setTimeout(addCodeBlockActions, 100);
           } catch (e) {
-            // Error applying syntax highlighting
+            console.error('Error applying syntax highlighting:', e);
           }
-        }, 500);
+        }, 300);
       }
     }
   }, [isLoading, content]);
@@ -176,8 +208,38 @@ const DocumentationLoader = ({ path }) => {
       // Make sure code is a string
       code = String(code || '');
       
-      // Store the raw code for the copy functionality
-      const escapedCode = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      // Conditionally escape the code based on language
+      let escapedCode;
+      
+      // First, check for language indicators in the code block itself
+      const firstLine = (code || '').split('\n')[0] || '';
+      const hasLanguageOverride = firstLine.match(/^(html|jsx|tsx|vue|svelte|react|preact|handlebars|ejs|pug|nunjucks)$/i);
+      
+      // Use the override if found, otherwise use the provided language
+      const effectiveLanguage = hasLanguageOverride ? 
+        firstLine.toLowerCase() : 
+        (language || '').toLowerCase();
+      
+      // Remove the language override line if it exists
+      if (hasLanguageOverride) {
+        code = code.substring(firstLine.length + 1);
+      }
+      
+      // Don't escape HTML in these languages - they need to render properly with tags
+      if (effectiveLanguage === 'html' || effectiveLanguage === 'xml' || 
+          effectiveLanguage === 'svg' || effectiveLanguage === 'markup' || 
+          effectiveLanguage === 'script' || effectiveLanguage === 'jsx' || 
+          effectiveLanguage === 'tsx' || effectiveLanguage === 'vue' || 
+          effectiveLanguage === 'svelte' || effectiveLanguage === 'react' || 
+          effectiveLanguage === 'preact' || effectiveLanguage === 'handlebars' || 
+          effectiveLanguage === 'ejs' || effectiveLanguage === 'pug' || 
+          effectiveLanguage === 'nunjucks') {
+        // For HTML-like languages and UI frameworks, keep original tags
+        escapedCode = code;
+      } else {
+        // For other languages, escape HTML to prevent rendering
+        escapedCode = code.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
       let highlighted = escapedCode;
       let validLang = false;
       
@@ -188,17 +250,21 @@ const DocumentationLoader = ({ path }) => {
           
           // Apply highlighting if the language is valid
           if (validLang) {
-            const result = window.hljs.highlight(code, { language });
+            // Use escapedCode for highlighting to ensure HTML is properly displayed
+            const result = window.hljs.highlight(escapedCode, { language });
             if (result && result.value) {
               highlighted = result.value;
             }
           } else if (window.hljs.highlightAuto) {
             // Fallback to auto-detection if available
-            const result = window.hljs.highlightAuto(code);
+            const result = window.hljs.highlightAuto(escapedCode);
             if (result && result.value) {
               highlighted = result.value;
             }
           }
+        } else {
+          // If no language specified or hljs not available, ensure code is escaped
+          highlighted = escapedCode;
         }
       } catch (e) {
         console.error('Error highlighting code:', e);
@@ -206,8 +272,59 @@ const DocumentationLoader = ({ path }) => {
         highlighted = escapedCode;
       }
       
-      // Add language label to code blocks
-      const langLabel = validLang ? `<div class="code-lang">${language}</div>` : '';
+      // Check for HTML, XML, or UI framework content and ensure proper language is set
+      if (!validLang) {
+        let detectedLanguage = '';
+        
+        // Try to detect the language from content if not already valid
+        if (code.includes('<template>') && code.includes('<script>')) {
+          detectedLanguage = 'vue';
+        } else if (code.includes('<script>') && code.includes('export default') && !code.includes('import React')) {
+          detectedLanguage = 'svelte';
+        } else if (code.includes('className=') || code.includes('export function') || code.includes('render()')) {
+          detectedLanguage = 'jsx';
+        } else if (code.includes('<%') && code.includes('%>')) {
+          detectedLanguage = 'ejs';
+        } else if (code.includes('{{') && code.includes('}}') && (code.includes('{{#each') || code.includes('{{#if'))) {
+          detectedLanguage = 'handlebars';
+        } else if (code.includes('{%') && code.includes('%}')) {
+          detectedLanguage = 'nunjucks';
+        } else if (code.includes('<html>') || code.includes('<!DOCTYPE') || code.match(/<\w+>[\s\S]*?<\/\w+>/)) {
+          detectedLanguage = 'html';
+        }
+        
+        // Use detected language or fallback to html for markup-like content
+        if (detectedLanguage) {
+          // Use the detected language or fallback to HTML if not supported by highlighter
+          const langToUse = window.hljs && window.hljs.getLanguage && 
+                           window.hljs.getLanguage(detectedLanguage) ? detectedLanguage : 'html';
+          
+          try {
+            const result = window.hljs.highlight(escapedCode, { language: langToUse });
+            if (result && result.value) {
+              highlighted = result.value;
+              language = langToUse; // Update language for the label
+              validLang = true;
+            }
+          } catch (e) {
+            console.error('Error highlighting with detected language:', e);
+            // Fallback to basic HTML highlighting
+            try {
+              const result = window.hljs.highlight(escapedCode, { language: 'html' });
+              if (result && result.value) {
+                highlighted = result.value;
+                language = 'html';
+                validLang = true;
+              }
+            } catch (err) {
+              // Final fallback - just use the escaped code
+            }
+          }
+        }
+      }
+      
+      // Add language label to code blocks with language-specific class (lowercase for consistency)
+      const langLabel = language ? `<div class="code-lang code-lang-${language.toLowerCase()}">${language.toLowerCase()}</div>` : '';
       
       // Check if this is an npm install block (ensuring code is a string)
       const trimmedCode = String(code).trim();
@@ -217,9 +334,17 @@ const DocumentationLoader = ({ path }) => {
       
       const npmClass = isNpmInstall ? 'npm-install-block' : '';
       
+      // Add a copy button directly in the rendered HTML
+      const copyButton = `
+        <div class="code-block-actions">
+          <button class="copy-button" aria-label="Copy code to clipboard" title="Copy to clipboard"></button>
+        </div>
+      `;
+      
       return `<div class="code-block-wrapper ${npmClass}">
                 ${langLabel}
-                <pre><code class="hljs language-${validLang ? language : 'plaintext'}">${highlighted}</code></pre>
+                ${copyButton}
+                <pre><code class="hljs language-${language || 'plaintext'}">${highlighted}</code></pre>
               </div>`;
     };
     
@@ -285,18 +410,19 @@ const DocumentationLoader = ({ path }) => {
     );
   }
   
-  // Get title from first heading in content
+  // Get title from first heading in content - but don't render it, 
+  // as the markdown already contains the h1 title
   const getTitleFromContent = () => {
     if (!content) return null;
     const match = content.match(/^# (.+)$/m);
     return match ? match[1] : null;
   };
   
-  const title = getTitleFromContent();
+  // We still get the title for metadata purposes but don't render it
+  getTitleFromContent();
   
   return (
     <div className="documentation-loader loaded" ref={contentRef}>
-      {title && <h1 className="documentation-title">{title}</h1>}
       <div className="documentation-content" dangerouslySetInnerHTML={renderMarkdown()} />
     </div>
   );

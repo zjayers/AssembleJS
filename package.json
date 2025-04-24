@@ -87,7 +87,7 @@
     "copy:tsconfig": "shx mkdir -p ./lib/bundler/recommended && shx cp ./src/bundler/recommended/tsconfig.recommended.json ./lib/bundler/recommended/",
     "copy:config": "shx mkdir -p ./lib/config && shx cp ./src/config/*.js ./lib/config/",
     "copy:scripts": "shx mkdir -p ./lib/scripts && shx cp ./src/scripts/*.js ./lib/scripts/",
-    "copy:docs-to-website": "shx mkdir -p ./websites/www.assemblejs.com/src/docs && shx cp -r ./docs/* ./websites/www.assemblejs.com/src/docs/ 2>/dev/null || true",
+    "copy:docs-to-website": "shx mkdir -p ./websites/www.assemblejs.com/src/docs && shx cp -r ./docs/* ./websites/www.assemblejs.com/public/docs/ 2>/dev/null || true",
     "generate:module-graph": "depcruise --config .dependency-cruiser.cjs src -T dot src | dot -T svg | depcruise-wrap-stream-in-html > ./reports/dependencygraph.html",
     "clean:tgz": "rimraf asmbl-*.tgz",
     "clean:lib": "rimraf lib tsconfig.tsbuildinfo",

@@ -3,17 +3,26 @@ import { useParams, useNavigate } from 'react-router-dom';
 import DocumentationLoader from './DocumentationLoader';
 
 const DocsContent = () => {
-  const { path } = useParams();
+  const { path, '*': remainingPath } = useParams();
   const navigate = useNavigate();
   const contentRef = useRef(null);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackType, setFeedbackType] = useState(null);
+  
+  // Combine path segments for complete path
+  const fullPath = useMemo(() => {
+    if (!path) return '';
+    return remainingPath ? `${path}/${remainingPath}` : path;
+  }, [path, remainingPath]);
+  
   // Redirect to index if no path
   useEffect(() => {
-    if (!path) {
+    if (!fullPath) {
       navigate('/docs/index', { replace: true });
     }
     
     // Path will be used for navigation logic
-  }, [path, navigate]);
+  }, [fullPath, navigate]);
   
   // Handle anchor link clicks for smooth scrolling
   useEffect(() => {
@@ -135,7 +144,7 @@ const DocsContent = () => {
     }, 750); // Reduced timeout for faster content loading
     
     return () => clearTimeout(timer);
-  }, [path]);
+  }, [fullPath]);
   
   // Update page title when content changes
   useEffect(() => {
@@ -152,13 +161,14 @@ const DocsContent = () => {
   
   // Check if the current page is an API reference page
   const isApiPage = useMemo(() => {
-    if (!path) return false;
-    return path.startsWith('classes/') || 
-           path.startsWith('interfaces/') || 
-           path.startsWith('types/') || 
-           path.startsWith('functions/') || 
-           path.startsWith('variables/');
-  }, [path]);
+    if (!fullPath) return false;
+    return fullPath.startsWith('classes/') || 
+           fullPath.startsWith('interfaces/') || 
+           fullPath.startsWith('types/') || 
+           fullPath.startsWith('functions/') || 
+           fullPath.startsWith('variables/') ||
+           fullPath.startsWith('api/');
+  }, [fullPath]);
   
   // Loading state flag for UI
   const [isLoading, setIsLoading] = useState(true);
@@ -171,7 +181,7 @@ const DocsContent = () => {
       setIsLoading(false);
     }, 1000);
     return () => clearTimeout(timer);
-  }, [path]);
+  }, [fullPath]);
   
   return (
     <div className="docs-content-wrapper">
@@ -184,42 +194,64 @@ const DocsContent = () => {
               </div>
             )}
           </div>
-          <DocumentationLoader path={path} />
+          <DocumentationLoader path={fullPath} />
         </div>
         
         {!isLoading && (
           <div className="docs-footer">
             <div className="docs-feedback">
               <p>Was this page helpful?</p>
-              <div className="feedback-buttons">
-                <button aria-label="This documentation was helpful">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
-                  </svg>
-                  Yes
-                </button>
-                <button aria-label="This documentation was not helpful">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
-                  </svg>
-                  No
-                </button>
-              </div>
+              {!feedbackSubmitted ? (
+                <div className="feedback-buttons">
+                  <button 
+                    onClick={() => {
+                      setFeedbackSubmitted(true);
+                      setFeedbackType('positive');
+                      // Here you would typically send the feedback to your backend
+                      setTimeout(() => setFeedbackSubmitted(false), 3000);
+                    }} 
+                    aria-label="This documentation was helpful"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path>
+                    </svg>
+                    Yes
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setFeedbackSubmitted(true);
+                      setFeedbackType('negative');
+                      // Here you would typically send the feedback to your backend
+                      setTimeout(() => setFeedbackSubmitted(false), 3000);
+                    }} 
+                    aria-label="This documentation was not helpful"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"></path>
+                    </svg>
+                    No
+                  </button>
+                </div>
+              ) : (
+                <div className="feedback-thank-you">
+                  <p>Thank you for your feedback!</p>
+                </div>
+              )}
             </div>
             
             <div className="docs-navigation">
-              <a className="prev-next-link prev" href="/docs/index">
+              <button className="nav-button prev" onClick={() => navigate('/docs/index')}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="15 18 9 12 15 6"></polyline>
                 </svg>
                 Previous
-              </a>
-              <a className="prev-next-link next" href="/docs/quick-start">
+              </button>
+              <button className="nav-button next" onClick={() => navigate('/docs/quick-start')}>
                 Next
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
-              </a>
+              </button>
             </div>
           </div>
         )}
