@@ -74,7 +74,7 @@ The singleton instance of the client registry
 
 #### Defined in
 
-[src/browser/client/blueprint.client.ts:56](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.client.ts#L56)
+[src/browser/client/blueprint.client.ts:56](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.client.ts#L56)
 
 ___
 
@@ -125,4 +125,4 @@ BlueprintClient.registerComponentCodeBehind(NavBarComponent);
 
 #### Defined in
 
-[src/browser/client/blueprint.client.ts:92](https://github.com/zjayers/AssembleJS/blob/d2354de/src/browser/client/blueprint.client.ts#L92)
+[src/browser/client/blueprint.client.ts:92](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/browser/client/blueprint.client.ts#L92)

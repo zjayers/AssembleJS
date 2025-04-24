@@ -42,13 +42,13 @@ jobs:
       
       - name: Install website dependencies
         run: cd websites/www.assemblejs.com && npm ci
-
-      - name: Install Testbed dependencies
-        run: npm run install:testbed
       
       - name: Build main package
-        run: npm run build
+        run: npm pack
       
+      - name: Install Testbed dependencies
+        run: npm run testbed:install
+
       - name: Build testbed projects
         run: npm run testbed:build
       

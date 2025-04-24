@@ -4,4 +4,4 @@
 
 #### Defined in
 
-[src/types/blueprint.simple.types.ts:58](https://github.com/zjayers/AssembleJS/blob/d2354de/src/types/blueprint.simple.types.ts#L58)
+[src/types/blueprint.simple.types.ts:58](https://github.com/zjayers/AssembleJS/blob/b7f8979/src/types/blueprint.simple.types.ts#L58)
