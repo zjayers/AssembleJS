@@ -316,7 +316,7 @@ const DocsPage = () => {
         <aside className="docs-toc" aria-labelledby="toc-heading">
           <div className="toc-container">
             <div className="toc-header">
-              <h3 id="toc-heading">On this page</h3>
+              <h4 id="toc-heading">On this page</h4>
               <span className="read-time">{readTime}</span>
             </div>
             {location.pathname !== "/docs" && (
