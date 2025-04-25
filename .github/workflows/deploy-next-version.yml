@@ -227,11 +227,11 @@ jobs:
               # Verify Dockerfile exists
               if [ ! -f "Dockerfile" ]; then
                 echo "⚠️ Dockerfile not found in $project_name, using shared template"
-                # Check if shared Dockerfile exists
-                if [ -f "../../../.github/docker/Dockerfile.testbed" ]; then
-                  cp "../../../.github/docker/Dockerfile.testbed" "./Dockerfile"
+                # Check if shared Dockerfile exists in testbed directory
+                if [ -f "../Dockerfile.testbed" ]; then
+                  cp "../Dockerfile.testbed" "./Dockerfile"
                 else
-                  echo "::error::Shared Dockerfile template not found at .github/docker/Dockerfile.testbed"
+                  echo "::error::Shared Dockerfile template not found at ../Dockerfile.testbed"
                   echo "::error::Please create the Dockerfile template before deploying"
                   exit 1
                 fi
