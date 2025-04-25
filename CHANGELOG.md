@@ -1,3 +1,11 @@
+## <small>0.0.14 (2025-04-25)</small>
+
+* 0.0.14 ([ebeb13e](https://github.com/zjayers/assemblejs/commit/ebeb13e))
+* chore: deploy testing ([1e3171a](https://github.com/zjayers/assemblejs/commit/1e3171a))
+* chore(release): update patch version ([5690e69](https://github.com/zjayers/assemblejs/commit/5690e69))
+
+
+
 ## <small>0.0.13 (2025-04-24)</small>
 
 * 0.0.13 ([3e8f74f](https://github.com/zjayers/assemblejs/commit/3e8f74f))
