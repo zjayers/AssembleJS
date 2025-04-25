@@ -1,0 +1,57 @@
+/* Sidebar styles */
+.sidebar {
+  width: 175px; /* Reduced from 280px to about 5/8 the size */
+  height: 100%;
+  background-color: var(--color-sidebar-bg);
+  overflow-y: auto;
+  transition: width 0.3s ease;
+  border-right: 1px solid var(--color-border);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.collapsed {
+  width: 50px;
+}
+
+.sidebar-toggle {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 175px; /* Match the sidebar width */
+  height: 40px;
+  background: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease, width 0.3s ease;
+  z-index: 10;
+}
+
+.sidebar.collapsed .sidebar-toggle {
+  width: 50px;
+}
+
+.sidebar-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-toggle i,
+.sidebar-toggle img,
+.sidebar-toggle svg {
+  color: var(--color-sidebar-toggle);
+  font-size: 14px;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.sidebar.collapsed .sidebar-toggle i,
+.sidebar.collapsed .sidebar-toggle img,
+.sidebar.collapsed .sidebar-toggle svg {
+  transform: rotate(180deg);
+}

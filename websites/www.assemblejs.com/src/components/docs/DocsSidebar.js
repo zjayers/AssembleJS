@@ -4,7 +4,6 @@ import { NavLink, useLocation } from 'react-router-dom';
 const DocsSidebar = forwardRef(({ className = '' }, ref) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedSections, setExpandedSections] = useState({});
-  const [showMobileSidebar, setShowMobileSidebar] = useState(false);
   const location = useLocation();
   const localSidebarRef = useRef(null);
 
@@ -121,6 +120,16 @@ const DocsSidebar = forwardRef(({ className = '' }, ref) => {
       ]
     },
     {
+      title: 'A.R.L.O.',
+      items: [
+        { name: 'Introduction to A.R.L.O.', path: 'arlo/introduction' },
+        { name: 'Getting Started with A.R.L.O.', path: 'arlo/getting-started' },
+        { name: 'A.R.L.O. Architecture', path: 'arlo/architecture' },
+        { name: 'A.R.L.O. Workflow', path: 'arlo/workflow' },
+        { name: 'A.R.L.O. Agents', path: 'arlo/agents' },
+      ]
+    },
+    {
       title: 'Help & Resources',
       items: [
         { name: 'Troubleshooting', path: 'troubleshooting' },
@@ -152,61 +161,7 @@ const DocsSidebar = forwardRef(({ className = '' }, ref) => {
     setExpandedSections(initialExpandedSections);
   }, [location.pathname, docsStructure]);
 
-  // Reset mobile sidebar visibility on navigation
-  useEffect(() => {
-    setShowMobileSidebar(false);
-  }, [location.pathname]);
-
-  // Close sidebar with escape key
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && showMobileSidebar) {
-        setShowMobileSidebar(false);
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [showMobileSidebar]);
-
-  // Trap focus inside mobile sidebar when open
-  useEffect(() => {
-    if (showMobileSidebar && sidebarRef.current) {
-      // Find all focusable elements in sidebar
-      const focusableElements = sidebarRef.current.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      const handleTabKey = (e) => {
-        if (e.key === 'Tab') {
-          if (e.shiftKey) {
-            // If shift + tab and on first element, move to last element
-            if (document.activeElement === firstElement) {
-              e.preventDefault();
-              lastElement.focus();
-            }
-          } else {
-            // If tab and on last element, move to first element
-            if (document.activeElement === lastElement) {
-              e.preventDefault();
-              firstElement.focus();
-            }
-          }
-        }
-      };
-
-      // Focus the first element when opened
-      if (firstElement) {
-        setTimeout(() => firstElement.focus(), 100);
-      }
-
-      document.addEventListener('keydown', handleTabKey);
-      return () => document.removeEventListener('keydown', handleTabKey);
-    }
-  }, [showMobileSidebar, sidebarRef]);
+  // Mobile functionality removed
 
   // Filter items based on search term
   const filteredStructure = docsStructure.map(section => {
@@ -234,179 +189,131 @@ const DocsSidebar = forwardRef(({ className = '' }, ref) => {
   const searchId = "docs-search";
 
   return (
-    <>
-      <div className="docs-sidebar-mobile-toggle">
-        <button
-          onClick={() => setShowMobileSidebar(!showMobileSidebar)}
-          aria-expanded={showMobileSidebar}
-          aria-controls={sidebarId}
-        >
-          {showMobileSidebar ? 'Hide Menu' : 'Show Documentation Menu'}
-        </button>
-      </div>
-
-      <aside
-        id={sidebarId}
-        className={`docs-sidebar ${showMobileSidebar ? 'mobile-visible' : ''} ${className}`}
-        ref={sidebarRef}
-        aria-label="Documentation navigation"
-      >
-        <div className="sidebar-inner">
-          {/* Close button for mobile - only shown when sidebar is visible */}
-          {showMobileSidebar && (
+    <aside
+      id={sidebarId}
+      className={`docs-sidebar ${className}`}
+      ref={sidebarRef}
+      aria-label="Documentation navigation"
+    >
+      <div className="sidebar-inner">
+        <div className="docs-search" role="search">
+          <label htmlFor={searchId} className="sr-only">Search documentation</label>
+          <svg
+            className="search-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            id={searchId}
+            type="text"
+            placeholder="Search Documentation"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            aria-label="Search documentation"
+          />
+          {searchTerm && (
             <button
-              className="close-sidebar-button"
-              onClick={() => setShowMobileSidebar(false)}
-              aria-label="Close documentation menu"
+              className="clear-search"
+              onClick={() => setSearchTerm("")}
+              aria-label="Clear search"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-              <span className="sr-only">Close</span>
+              <span aria-hidden="true">×</span>
+              <span className="sr-only">Clear search</span>
             </button>
           )}
-
-          <div className="docs-search" role="search">
-            <label htmlFor={searchId} className="sr-only">Search documentation</label>
-            <svg
-              className="search-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input
-              id={searchId}
-              type="text"
-              placeholder="Search Documentation"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              aria-label="Search documentation"
-            />
-            {searchTerm && (
-              <button
-                className="clear-search"
-                onClick={() => setSearchTerm("")}
-                aria-label="Clear search"
-              >
-                <span aria-hidden="true">×</span>
-                <span className="sr-only">Clear search</span>
-              </button>
-            )}
-          </div>
-
-          <nav className="docs-nav" aria-label="Documentation sections">
-            {filteredStructure.map((section, sectionIndex) => {
-              const isExpanded = expandedSections[sectionIndex] || searchTerm !== "";
-              const sectionId = `section-${section.title.toLowerCase().replace(/\s+/g, '-')}`;
-              const headingId = `heading-${sectionId}`;
-              const contentId = `content-${sectionId}`;
-
-              return (
-                <div className="docs-nav-section" key={sectionIndex}>
-                  <h3
-                    id={headingId}
-                    className={isExpanded ? "expanded" : ""}
-                    onClick={() => toggleSection(sectionIndex)}
-                    aria-expanded={isExpanded}
-                    aria-controls={contentId}
-                    tabIndex="0" // Make heading keyboard-focusable
-                    role="button"
-                    onKeyDown={(e) => {
-                      // Toggle on Enter or Space
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        toggleSection(sectionIndex);
-                      }
-                    }}
-                  >
-                    <div className="section-header">
-                      <span className="section-title">{section.title}</span>
-                    </div>
-                    <svg
-                      className="expand-icon"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <polyline points={isExpanded ? "18 15 12 9 6 15" : "6 9 12 15 18 9"}></polyline>
-                    </svg>
-                  </h3>
-                  <div
-                    id={contentId}
-                    className={isExpanded ? "doc-section-content expanded" : "doc-section-content"}
-                    aria-labelledby={headingId}
-                    hidden={!isExpanded}
-                  >
-                    {isExpanded && (
-                      <ul>
-                        {section.items.map((item, itemIndex) => {
-                          const currentPath = location.pathname.replace('/docs/', '');
-                          // Handle empty path as 'index'
-                          const normalizedCurrentPath = currentPath === '' ? 'index' : currentPath;
-                          const isActive = normalizedCurrentPath === item.path ||
-                            normalizedCurrentPath.startsWith(item.path + '/');
-
-                          return (
-                            <li key={itemIndex}>
-                              <NavLink
-                                to={`/docs/${item.path}`}
-                                className={({ isActive: navActive }) => navActive ? 'active' : ''}
-                                aria-current={isActive ? 'page' : undefined}
-                              >
-                                {item.name}
-                              </NavLink>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </nav>
         </div>
-      </aside>
 
-      {/* Overlay for mobile sidebar */}
-      {showMobileSidebar && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setShowMobileSidebar(false)}
-          aria-hidden="true"
-          tabIndex="-1"
-        />
-      )}
-    </>
+        <nav className="docs-nav" aria-label="Documentation sections">
+          {filteredStructure.map((section, sectionIndex) => {
+            const isExpanded = expandedSections[sectionIndex] || searchTerm !== "";
+            const sectionId = `section-${section.title.toLowerCase().replace(/\s+/g, '-')}`;
+            const headingId = `heading-${sectionId}`;
+            const contentId = `content-${sectionId}`;
+
+            return (
+              <div className="docs-nav-section" key={sectionIndex}>
+                <h3
+                  id={headingId}
+                  className={isExpanded ? "expanded" : ""}
+                  onClick={() => toggleSection(sectionIndex)}
+                  aria-expanded={isExpanded}
+                  aria-controls={contentId}
+                  tabIndex="0" // Make heading keyboard-focusable
+                  role="button"
+                  onKeyDown={(e) => {
+                    // Toggle on Enter or Space
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      toggleSection(sectionIndex);
+                    }
+                  }}
+                >
+                  <div className="section-header">
+                    <span className="section-title">{section.title}</span>
+                  </div>
+                  <svg
+                    className="expand-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <polyline points={isExpanded ? "18 15 12 9 6 15" : "6 9 12 15 18 9"}></polyline>
+                  </svg>
+                </h3>
+                <div
+                  id={contentId}
+                  className={isExpanded ? "doc-section-content expanded" : "doc-section-content"}
+                  aria-labelledby={headingId}
+                  hidden={!isExpanded}
+                >
+                  {isExpanded && (
+                    <ul>
+                      {section.items.map((item, itemIndex) => {
+                        const currentPath = location.pathname.replace('/docs/', '');
+                        // Handle empty path as 'index'
+                        const normalizedCurrentPath = currentPath === '' ? 'index' : currentPath;
+                        const isActive = normalizedCurrentPath === item.path ||
+                          normalizedCurrentPath.startsWith(item.path + '/');
+
+                        return (
+                          <li key={itemIndex}>
+                            <NavLink
+                              to={`/docs/${item.path}`}
+                              className={({ isActive: navActive }) => navActive ? 'active' : ''}
+                              aria-current={isActive ? 'page' : undefined}
+                            >
+                              {item.name}
+                            </NavLink>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </nav>
+      </div>
+    </aside>
   );
 });
 

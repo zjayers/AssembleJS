@@ -145,3 +145,11 @@ build
 
 # Local development files
 CLAUDE.md
+
+# ARLO AI Agent System - only exclude environment-specific files
+.arlo/.venv/
+.arlo/__pycache__/
+.arlo/**/__pycache__/
+.arlo/.env
+.arlo/logs/*.log
+.arlo/tmp/

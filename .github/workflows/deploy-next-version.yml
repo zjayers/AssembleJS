@@ -274,3 +274,23 @@ jobs:
           wait
           
           echo "🚀 All testbed projects successfully built and pushed to ECR in parallel"
+
+  # Create GitHub release for next version
+  create-release:
+    name: Create GitHub Release
+    needs: [publish-package]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get Package Version
+        id: package_version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      - name: Create Next Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ steps.package_version.outputs.version }}-next
+          name: "AssemblyJS v${{ steps.package_version.outputs.version }}-next (Preview)"
+          prerelease: true
+          generateReleaseNotes: true

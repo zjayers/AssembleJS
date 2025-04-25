@@ -1,0 +1,90 @@
+<div class="kb-search-container">
+    <div class="kb-search-header">
+        <div class="kb-search-title">Search Knowledge Base</div>
+        <div class="kb-search-actions">
+            <button id="kb-advanced-search-toggle" class="icon-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                Filters
+            </button>
+        </div>
+    </div>
+    <div class="kb-search-body">
+        <div class="kb-search-form">
+            <div class="kb-search-main">
+                <select id="kb-collection-select">
+                    <option value="">All Collections</option>
+                    <option value="agent_Admin">Admin</option>
+                    <option value="agent_Browser">Browser</option>
+                    <option value="agent_Types">Types</option>
+                    <option value="agent_Utils">Utils</option>
+                    <option value="agent_Server">Server</option>
+                    <option value="agent_Docs">Docs</option>
+                    <option value="framework">Framework</option>
+                    <option value="patterns">Design Patterns</option>
+                    <option value="examples">Examples</option>
+                </select>
+                <div class="kb-search-input-container">
+                    <input type="text" id="kb-search-input" placeholder="Search for components, hooks, patterns...">
+                    <svg class="kb-search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </div>
+                <button id="kb-search-btn" class="primary-button">Search</button>
+            </div>
+            
+            <div class="kb-advanced-filters" id="kb-advanced-filters">
+                <div class="kb-filter-row">
+                    <div class="kb-filter-group">
+                        <label for="kb-filter-type">Content Type</label>
+                        <select id="kb-filter-type">
+                            <option value="">All Types</option>
+                            <option value="document">Documentation</option>
+                            <option value="code">Code Snippets</option>
+                            <option value="api">API Reference</option>
+                            <option value="pattern">Design Patterns</option>
+                            <option value="example">Examples</option>
+                        </select>
+                    </div>
+                    <div class="kb-filter-group">
+                        <label for="kb-filter-date">Date Added</label>
+                        <select id="kb-filter-date">
+                            <option value="">Any Time</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="year">This Year</option>
+                        </select>
+                    </div>
+                    <div class="kb-filter-group">
+                        <label for="kb-results-count">Results</label>
+                        <select id="kb-results-count">
+                            <option value="5">5 results</option>
+                            <option value="10" selected>10 results</option>
+                            <option value="20">20 results</option>
+                            <option value="50">50 results</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="kb-filter-row">
+                    <div class="kb-filter-group kb-filter-tags">
+                        <label>Tags</label>
+                        <div class="kb-selected-tags">
+                            <span class="kb-selected-tag">components<button class="kb-tag-remove">×</button></span>
+                            <span class="kb-selected-tag">hooks<button class="kb-tag-remove">×</button></span>
+                            <input type="text" id="kb-tag-input" placeholder="Add tag...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Filters Pills -->
+        <div class="kb-quick-filters">
+            <div class="kb-filter-pill active">All</div>
+            <div class="kb-filter-pill">Components</div>
+            <div class="kb-filter-pill">Hooks</div>
+            <div class="kb-filter-pill">State Management</div>
+            <div class="kb-filter-pill">Routing</div>
+            <div class="kb-filter-pill">Styling</div>
+        </div>
+    </div>
+</div>

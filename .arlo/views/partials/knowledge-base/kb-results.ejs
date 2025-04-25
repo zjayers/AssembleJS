@@ -1,0 +1,112 @@
+<div class="kb-results">
+    <div class="kb-results-header">
+        <div class="kb-results-title">Search Results</div>
+        <div class="kb-results-meta">
+            <span id="kb-results-count-display">0 results</span>
+            <div class="kb-results-sorting">
+                <label for="kb-sort-order">Sort by:</label>
+                <select id="kb-sort-order">
+                    <option value="relevance">Relevance</option>
+                    <option value="date-desc">Newest First</option>
+                    <option value="date-asc">Oldest First</option>
+                    <option value="title">Title (A-Z)</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="kb-results-body" id="kb-results-container">
+        <!-- Default empty state -->
+        <div class="kb-empty-results">
+            <div class="empty-state">
+                <div class="empty-state-icon">🔍</div>
+                <div class="empty-state-text">Search for knowledge to see results here.</div>
+                <div class="empty-state-help">Try searching for components, hooks, patterns, or specific features.</div>
+            </div>
+        </div>
+        
+        <!-- Sample results (would normally be populated via JavaScript) -->
+        <div class="kb-search-results-list" style="display:none;">
+            <!-- Result Item 1 -->
+            <div class="kb-result-item">
+                <div class="kb-result-header">
+                    <div class="kb-result-title">Component Lifecycle Events</div>
+                    <div class="kb-result-score">96%</div>
+                </div>
+                <div class="kb-result-preview">
+                    AssembleJS components follow a specific lifecycle pattern with several key events that you can hook into. The main lifecycle events are: mounted, updated, beforeUnmount, and unmounted...
+                </div>
+                <div class="kb-result-footer">
+                    <div class="kb-result-meta">
+                        <span class="kb-result-source" style="background-color: rgba(33, 150, 243, 0.1); color: #2196F3;">Browser Agent</span>
+                        <span class="kb-result-date">Updated 2 days ago</span>
+                    </div>
+                    <div class="kb-result-tags">
+                        <span class="kb-tag">components</span>
+                        <span class="kb-tag">lifecycle</span>
+                        <span class="kb-tag">hooks</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Result Item 2 -->
+            <div class="kb-result-item">
+                <div class="kb-result-header">
+                    <div class="kb-result-title">State Management Best Practices</div>
+                    <div class="kb-result-score">92%</div>
+                </div>
+                <div class="kb-result-preview">
+                    For effective state management in AssembleJS, consider these guidelines: 1) Minimize state, 2) Use immutable patterns, 3) Employ reactive primitives for shared state, 4) Leverage context for theme and global config...
+                </div>
+                <div class="kb-result-footer">
+                    <div class="kb-result-meta">
+                        <span class="kb-result-source" style="background-color: rgba(156, 39, 176, 0.1); color: #9C27B0;">Utils Agent</span>
+                        <span class="kb-result-date">Updated yesterday</span>
+                    </div>
+                    <div class="kb-result-tags">
+                        <span class="kb-tag">state</span>
+                        <span class="kb-tag">patterns</span>
+                        <span class="kb-tag">best-practices</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Result Item 3 -->
+            <div class="kb-result-item">
+                <div class="kb-result-header">
+                    <div class="kb-result-title">Optimizing Render Performance</div>
+                    <div class="kb-result-score">89%</div>
+                </div>
+                <div class="kb-result-preview">
+                    To optimize rendering performance in AssembleJS: 1) Memoize expensive calculations, 2) Use virtualization for long lists, 3) Implement shouldUpdate hooks, 4) Avoid unnecessary re-renders by structuring state properly...
+                </div>
+                <div class="kb-result-footer">
+                    <div class="kb-result-meta">
+                        <span class="kb-result-source" style="background-color: rgba(255, 152, 0, 0.1); color: #FF9800;">Analyzer Agent</span>
+                        <span class="kb-result-date">Updated 3 days ago</span>
+                    </div>
+                    <div class="kb-result-tags">
+                        <span class="kb-tag">performance</span>
+                        <span class="kb-tag">rendering</span>
+                        <span class="kb-tag">optimization</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pagination -->
+    <div class="kb-results-pagination">
+        <button class="kb-pagination-prev" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Previous
+        </button>
+        <div class="kb-pagination-pages">
+            <span class="kb-pagination-current">Page 1</span>
+            <span class="kb-pagination-total">of 1</span>
+        </div>
+        <button class="kb-pagination-next" disabled>
+            Next
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+/* View container styles */
+.view-container {
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  background-color: var(--color-bg);
+}
+
+.view-container.active-view {
+  display: flex;
+}
+
+.view-tabs {
+  display: flex;
+  background-color: var(--color-tab-bg);
+  border-bottom: 1px solid var(--color-border);
+  height: 40px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.view-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.view-tab {
+  padding: 0 15px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  white-space: nowrap;
+  color: var(--color-text-secondary);
+  border-right: 1px solid var(--color-border);
+  transition: background-color 0.2s ease;
+}
+
+.view-tab:hover {
+  background-color: var(--color-tab-hover);
+}
+
+.view-tab.active {
+  background-color: var(--color-tab-active);
+  color: var(--color-text);
+  font-weight: 500;
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.view-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  position: relative;
+}

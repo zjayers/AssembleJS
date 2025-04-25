@@ -1,0 +1,158 @@
+/* Spinning Hexagons Logo */
+.header h1 {
+  font-size: 26px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: flex-start;
+}
+
+.logo-icon {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  perspective: 200px;
+  transform-style: preserve-3d;
+  perspective-origin: center center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  user-select: none;
+  cursor: pointer;
+}
+
+.orbit-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: rotate-container 20s linear infinite;
+  transform: rotateY(0deg) rotateX(10deg);
+}
+
+@keyframes rotate-container {
+  0% {
+    transform: rotateY(0deg) rotateX(10deg);
+  }
+  100% {
+    transform: rotateY(360deg) rotateX(10deg);
+  }
+}
+
+.logo-block {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  opacity: 0.85;
+  backface-visibility: visible;
+  transform-style: preserve-3d;
+  top: 50%;
+  left: 50%;
+  box-shadow: inset 0 -2px 2px rgba(0, 0, 0, 0.2),
+  inset 0 2px 2px rgba(255, 255, 255, 0.2),
+  0 0 5px rgba(0, 0, 0, 0.3);
+  clip-path: polygon(
+      50% 0%,
+      100% 25%,
+      100% 75%,
+      50% 100%,
+      0% 75%,
+      0% 25%
+  );
+}
+
+/* Six differently colored blocks */
+.block-1 {
+  background: linear-gradient(135deg, #ff7e33 0%, #ff5a00 100%);
+  animation: orbit-1 12s linear infinite;
+  transform: translateX(-15px);
+}
+
+.block-2 {
+  background: linear-gradient(135deg, #5f8bfa 0%, #2b67f8 100%);
+  animation: orbit-2 11s linear infinite;
+  transform: translateY(-15px);
+}
+
+.block-3 {
+  background: linear-gradient(135deg, #7fce64 0%, #62b245 100%);
+  animation: orbit-3 14s linear infinite;
+  transform: translateX(15px);
+}
+
+.block-4 {
+  background: linear-gradient(135deg, #fee873 0%, #fee440 100%);
+  animation: orbit-4 10s linear infinite;
+  transform: translateY(15px);
+}
+
+.block-5 {
+  background: linear-gradient(135deg, #b17dec 0%, #9b5de5 100%);
+  animation: orbit-5 13s linear infinite;
+  transform: translateZ(-15px);
+}
+
+.block-6 {
+  background: linear-gradient(135deg, #33cdff 0%, #00bbf9 100%);
+  animation: orbit-6 15s linear infinite;
+  transform: translateZ(15px);
+}
+
+/* Individual orbit animations */
+@keyframes orbit-1 {
+  0% { transform: rotateZ(0deg) translateX(15px); }
+  100% { transform: rotateZ(360deg) translateX(15px); }
+}
+
+@keyframes orbit-2 {
+  0% { transform: rotateZ(60deg) translateX(15px); }
+  100% { transform: rotateZ(420deg) translateX(15px); }
+}
+
+@keyframes orbit-3 {
+  0% { transform: rotateZ(120deg) translateX(15px); }
+  100% { transform: rotateZ(480deg) translateX(15px); }
+}
+
+@keyframes orbit-4 {
+  0% { transform: rotateZ(180deg) translateX(15px); }
+  100% { transform: rotateZ(540deg) translateX(15px); }
+}
+
+@keyframes orbit-5 {
+  0% { transform: rotateZ(240deg) translateX(15px); }
+  100% { transform: rotateZ(600deg) translateX(15px); }
+}
+
+@keyframes orbit-6 {
+  0% { transform: rotateZ(300deg) translateX(15px); }
+  100% { transform: rotateZ(660deg) translateX(15px); }
+}
+
+.logo-text {
+  font-weight: 900;
+  color: rgba(30, 30, 30, 0.85);
+  letter-spacing: 3px;
+  font-size: 1.4em;
+  font-family: "DM Mono", "Space Mono", "Roboto Mono", monospace;
+  text-transform: uppercase;
+  transform: scaleX(1.2) translateY(2px);
+  transform-origin: left center;
+  margin-left: 4px;
+  padding-top: 4px;
+}
+
+.logo-text-span {
+  font-size: 12px;
+}
+
+/* Dark theme header */
+:root:not(.light-theme) .logo-text {
+  color: rgba(220, 220, 220, 0.85);
+}

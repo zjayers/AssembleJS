@@ -6,15 +6,17 @@
 .docs-sidebar {
   background-color: #0f172a;
   font-size: 0.875rem;
-  width: 100%;
-  position: sticky;
-  top: 60px;
-  /* Header height */
-  height: calc(100vh - 60px);
+  position: fixed;
+  top: 64px;
+  /* Header height + margin */
+  /* Account for margins */
   overflow: hidden;
   border-right: 1px solid rgba(30, 41, 59, 0.5);
   display: flex;
   flex-direction: column;
+  margin: 4px;
+  border-radius: 0px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 [data-theme="light"] .docs-sidebar {
@@ -28,6 +30,8 @@
   flex-direction: column;
   padding: 0;
   overflow-y: auto;
+  border-radius: 8px;
+  /* Match parent border-radius */
 }
 
 /* Search area */
@@ -272,21 +276,4 @@
 
 /* Footer removed */
 
-/* Mobile styles */
-@media (max-width: 768px) {
-  .docs-sidebar {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    width: 280px;
-    height: calc(100vh - 60px);
-    z-index: 1000;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
-  }
-
-  .docs-sidebar.mobile-visible {
-    transform: translateX(0);
-  }
-}
+/* Mobile styles removed */

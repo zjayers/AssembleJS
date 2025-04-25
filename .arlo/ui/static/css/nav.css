@@ -1,0 +1,56 @@
+/* Navigation styles */
+.nav-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.nav-item {
+  width: 100%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  white-space: nowrap;
+  padding: 12px 15px;
+  margin: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-item.active {
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 0;
+  color: var(--color-accent);
+}
+
+.nav-icon {
+  min-width: 20px;
+  margin-right: 12px;
+}
+
+.nav-text {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .nav-text {
+  opacity: 0;
+  width: 0;
+  display: none;
+}
+
+/* Light theme specific styles */
+:root.light-theme .nav-item:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+:root.light-theme .nav-item.active {
+  background: rgba(9, 105, 218, 0.05);
+}

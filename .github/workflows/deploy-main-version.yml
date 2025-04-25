@@ -44,11 +44,31 @@ jobs:
           # Use dist-tag to promote from next to latest
           npm dist-tag add asmbl@$VERSION latest
           echo "Promoted version $VERSION to latest tag"
+
+  # Create GitHub release for production version
+  create-release:
+    name: Create GitHub Release
+    needs: [promote-package]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get Package Version
+        id: package_version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      - name: Create Production Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ steps.package_version.outputs.version }}
+          name: "AssemblyJS v${{ steps.package_version.outputs.version }}"
+          prerelease: false
+          generateReleaseNotes: true
   
   # Copy website from next to production bucket
   deploy-website:
     name: Deploy Main Website
-    needs: promote-package
+    needs: [promote-package, create-release]
     runs-on: ubuntu-latest
     environment: production
     permissions:

@@ -1,0 +1,76 @@
+<div class="task-form">
+    <div class="task-form-header">
+        <span>Submit New Task</span>
+        <div class="task-form-toggle" id="advanced-toggle">
+            <span>Advanced Options</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+    </div>
+    <div class="task-form-body">
+        <form id="task-form">
+            <textarea id="task-description" placeholder="Describe the changes or tasks you want A.R.L.O. to execute. Be specific about what part of the framework to modify and what the desired outcome should be."></textarea>
+            
+            <div class="advanced-options" id="advanced-options">
+                <div class="option-row">
+                    <div class="option-group">
+                        <label for="task-priority">Priority</label>
+                        <select id="task-priority">
+                            <option value="normal">Normal</option>
+                            <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label for="task-area">Code Area</label>
+                        <select id="task-area">
+                            <option value="any">Any / Auto-detect</option>
+                            <option value="client">Client-side</option>
+                            <option value="server">Server-side</option>
+                            <option value="utils">Utilities</option>
+                            <option value="docs">Documentation</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="option-row">
+                    <div class="option-group">
+                        <label for="task-agents">Primary Agent</label>
+                        <select id="task-agents">
+                            <option value="auto">Auto-assign</option>
+                            <option value="admin">Admin</option>
+                            <option value="analyzer">Analyzer</option>
+                            <option value="browser">Browser</option>
+                            <option value="bundler">Bundler</option>
+                            <option value="deployment">Deployment</option>
+                            <option value="design">Design</option>
+                            <option value="documentation">Documentation</option>
+                            <option value="i18n">i18n</option>
+                            <option value="qre">QRE</option>
+                            <option value="review">Review</option>
+                            <option value="testing">Testing</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label for="task-mode">Execution Mode</label>
+                        <select id="task-mode">
+                            <option value="autonomous">Autonomous</option>
+                            <option value="assisted">Human-Assisted</option>
+                            <option value="planning">Planning Only</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="option-row">
+                    <div class="option-group full-width">
+                        <label for="task-reference">Reference Files/URLs (Optional)</label>
+                        <input type="text" id="task-reference" placeholder="Enter comma-separated file paths or URLs">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit">Submit Task</button>
+            </div>
+        </form>
+    </div>
+</div>

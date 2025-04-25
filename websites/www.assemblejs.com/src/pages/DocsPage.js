@@ -9,7 +9,7 @@ const DocsPage = () => {
   const location = useLocation();
   const [tocItems, setTocItems] = useState([]);
   const [readTime, setReadTime] = useState('1 min read');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  // Mobile sidebar state removed
   const sidebarRef = useRef(null);
 
   // Effect to build table of contents from DOM headings
@@ -268,32 +268,7 @@ const DocsPage = () => {
     return `${title} | AssembleJS Docs`;
   };
 
-  // Toggle mobile sidebar
-  const toggleSidebar = () => {
-    setSidebarOpen(prev => !prev);
-  };
-
-  // Close sidebar when clicking outside on mobile
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(e.target) &&
-        !e.target.classList.contains('docs-sidebar-mobile-toggle')) {
-        setSidebarOpen(false);
-      }
-    };
-
-    if (sidebarOpen) {
-      document.body.classList.add('sidebar-open');
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.body.classList.remove('sidebar-open');
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-      document.body.classList.remove('sidebar-open');
-    };
-  }, [sidebarOpen]);
+  // Mobile toggle functionality removed
 
   // Current route path parameter is used for conditional rendering below
 
@@ -305,7 +280,7 @@ const DocsPage = () => {
         <meta name="keywords" content="assemblejs, documentation, api, reference, micro-frontend, components, blueprints, islands architecture" />
       </Helmet>
       <div className="docs-container" role="main">
-        <DocsSidebar ref={sidebarRef} className={sidebarOpen ? 'mobile-active' : ''} />
+        <DocsSidebar ref={sidebarRef} />
         <Routes>
           <Route path="/" element={<Navigate to="/docs/index" replace />} />
           {/* Capture the entire path including nested segments */}
@@ -394,31 +369,6 @@ const DocsPage = () => {
           </div>
         </aside>
       </div>
-
-      {/* Mobile sidebar toggle button */}
-      <button
-        className="docs-sidebar-mobile-toggle"
-        onClick={toggleSidebar}
-        aria-label="Toggle navigation menu"
-        aria-expanded={sidebarOpen}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          {sidebarOpen ? (
-            <path d="M18 6L6 18M6 6l12 12" /> // X icon when open
-          ) : (
-            <path d="M4 6h16M4 12h16M4 18h16" /> // Menu icon when closed
-          )}
-        </svg>
-      </button>
-
-      {/* Overlay for mobile sidebar */}
-      {sidebarOpen && (
-        <div
-          className="sidebar-overlay active"
-          onClick={() => setSidebarOpen(false)}
-          aria-hidden="true"
-        />
-      )}
     </>
   );
 };

@@ -1,0 +1,74 @@
+<!-- Knowledge Tab -->
+<div class="agent-tab-content" id="knowledge-tab">
+    <div class="knowledge-header">
+        <h4>Agent Knowledge Base</h4>
+        <div class="knowledge-controls">
+            <button class="secondary-button" id="import-knowledge">Import</button>
+            <button class="secondary-button" id="export-knowledge">Export</button>
+        </div>
+    </div>
+
+    <div class="knowledge-editor">
+        <div class="editor-toolbar">
+            <div class="editor-section">
+                <select id="knowledge-section">
+                    <option value="system">System Instructions</option>
+                    <option value="domain">Domain Knowledge</option>
+                    <option value="patterns">Code Patterns</option>
+                    <option value="examples">Example Interactions</option>
+                </select>
+            </div>
+            <div class="editor-actions">
+                <button class="icon-button" title="Undo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"></path><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path></svg>
+                </button>
+                <button class="icon-button" title="Redo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"></path><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="editor-container">
+            <textarea id="knowledge-content" class="code-editor">You are the Admin Agent for the ARLO (AssemblyJS Repository Logic Orchestrator) system.
+
+## Primary Responsibilities
+- Project coordination and workflow orchestration
+- Direct communication with human supervisors
+- Task prioritization and assignment to specialist agents
+- Plan development and approval workflow
+- Progress tracking and reporting
+- Feature branch creation via Git agent
+- PR creation and review coordination
+
+## Key Behaviors
+- Methodical and detail-oriented
+- Clear and concise communication
+- Excellent project management
+- Process-driven with focus on quality
+- Seeks clarification when requirements are unclear
+- Proactively suggests improvements to requirements
+- Ensures all specialist actions are properly tracked
+
+## Technical Knowledge
+- Full understanding of AssemblyJS codebase structure
+- Git workflow expertise
+- CI/CD pipeline awareness
+- Project management principles
+- Code review best practices
+
+## Interaction Guidelines
+- Always begin by clearly understanding requirements
+- Clarify ambiguities with specific questions
+- Present execution plans in clear, structured format
+- Regularly provide status updates
+- Notify of blocking issues immediately
+- Confirm completion with links to relevant resources
+- Maintain a professional tone in all communications</textarea>
+        </div>
+
+        <div class="editor-footer">
+            <button class="secondary-button" id="revert-knowledge">Revert Changes</button>
+            <button id="save-knowledge">Save Knowledge Base</button>
+        </div>
+    </div>
+</div>

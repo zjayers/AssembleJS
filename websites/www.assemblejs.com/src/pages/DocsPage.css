@@ -82,10 +82,12 @@ body.docs-page {
 .docs-sidebar {
   grid-area: sidebar;
   background-color: var(--bg, var(--dark-bg, #0f172a));
-  border-right: 1px solid var(--border-color);
+  /* Border handled in DocsSidebar.css */
   margin: 0;
   padding: 0;
-  /* Stickiness and overflow are now handled in DocsSidebar.css */
+  /* Sidebar container now acts as a placeholder since the sidebar itself is fixed position */
+  /* This ensures the layout doesn't collapse */
+  min-height: calc(100vh - 60px);
 }
 
 [data-theme="light"] .docs-sidebar {
@@ -108,11 +110,16 @@ body.docs-page {
 
 /* Table of Contents (Right Column) */
 .docs-toc {
-  width: 280px;
-  position: sticky;
+  width: calc(280px - 8px);
+  position: fixed;
+  /* Header height + margin */
+  /* Account for margins */
+  top: 50px;
   overflow-y: auto;
   grid-column: 3;
-  align-self: start;
+  border-radius: 0 !important;
+  background-color: var(--bg, var(--dark-bg, #0f172a));
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 [data-theme="light"] .docs-toc {
@@ -121,9 +128,8 @@ body.docs-page {
 
 /* TOC Container styling */
 .toc-container {
-  position: sticky;
-  top: 0;
-  padding-right: 0.5rem;
+  padding: 1rem;
+  border-radius: 0 !important;
 }
 
 /* TOC Header styling */
@@ -243,51 +249,7 @@ body.docs-page {
     grid-template-areas: "content";
   }
 
-  .docs-sidebar {
-    display: none;
-  }
-
-  /* Mobile sidebar */
-  .docs-sidebar.mobile-active {
-    display: block;
-    position: fixed;
-    top: 60px;
-    left: 0;
-    width: 280px;
-    height: calc(100vh - 60px);
-    z-index: 1000;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Mobile toggle button */
-  .docs-sidebar-mobile-toggle {
-    display: flex;
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    background-color: var(--primary-color);
-    color: white;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    border: none;
-    cursor: pointer;
-  }
-
-  /* Overlay for mobile sidebar */
-  .sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-  }
+  /* No hiding of sidebar on mobile - we're removing the mobile toggle functionality */
 }
 
 /* Import Component Styles */

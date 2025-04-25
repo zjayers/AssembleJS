@@ -1,0 +1,17 @@
+{
+  "name": "arlo",
+  "version": "0.1.0",
+  "description": "AssembleJS Repository Logic Orchestrator - AI agent system",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js --ext js,ejs,css --ignore node_modules/ --watch api/ --watch ui/ --watch views/ --watch server.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "uuid": "^9.0.0"
+  },
+  "author": "AssembleJS Team",
+  "license": "MIT"
+}

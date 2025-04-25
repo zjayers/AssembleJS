@@ -1,0 +1,73 @@
+<!-- Logs Tab -->
+<div class="agent-tab-content" id="logs-tab">
+    <div class="logs-header">
+        <h4>Agent Activity Logs</h4>
+        <div class="logs-controls">
+            <div class="log-level-filter">
+                <select id="log-level">
+                    <option value="all">All Levels</option>
+                    <option value="info">Info</option>
+                    <option value="warning">Warning</option>
+                    <option value="error">Error</option>
+                </select>
+            </div>
+            <div class="log-date-filter">
+                <input type="date" id="log-date">
+            </div>
+            <button class="refresh-logs-btn" id="refresh-logs">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+                Refresh Logs
+            </button>
+        </div>
+    </div>
+
+    <div class="agent-logs">
+        <div class="log-viewer">
+            <div class="log-line">
+                <span class="log-time">[2024-04-25 10:15:22]</span>
+                <span class="log-level info">INFO</span>
+                <span class="log-content">Agent initialized with system instructions</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[2024-04-25 10:15:45]</span>
+                <span class="log-level info">INFO</span>
+                <span class="log-content">Vector database connection established</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[2024-04-25 10:16:30]</span>
+                <span class="log-level info">INFO</span>
+                <span class="log-content">Task received: "Update responsive styling for mobile components"</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[2024-04-25 10:17:05]</span>
+                <span class="log-level info">INFO</span>
+                <span class="log-content">Consulting with Design and Browser agents for implementation approach</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[2024-04-25 10:20:15]</span>
+                <span class="log-level warning">WARNING</span>
+                <span class="log-content">Design agent has limited context for mobile-specific styles</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[2024-04-25 10:21:30]</span>
+                <span class="log-level info">INFO</span>
+                <span class="log-content">Requesting additional specification from supervisor</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[2024-04-25 10:25:45]</span>
+                <span class="log-level info">INFO</span>
+                <span class="log-content">Additional requirements received</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[2024-04-25 10:26:10]</span>
+                <span class="log-level info">INFO</span>
+                <span class="log-content">Assigning task to Design agent as primary, Browser agent as secondary</span>
+            </div>
+            <div class="log-line">
+                <span class="log-time">[2024-04-25 10:30:22]</span>
+                <span class="log-level info">INFO</span>
+                <span class="log-content">Execution plan created and submitted for approval</span>
+            </div>
+        </div>
+    </div>
+</div>

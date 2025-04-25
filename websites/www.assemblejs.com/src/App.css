@@ -795,7 +795,7 @@ a[href="#main-content"] {
 /* Documentation styles */
 .docs-container {
   display: grid;
-  grid-template-columns: 249px 1fr;
+  grid-template-columns: 249px 1fr 249px;
   gap: 0;
   max-width: 1280px;
   margin: 0 auto;
@@ -1044,8 +1044,9 @@ a[href="#main-content"] {
 
 /* Table of contents */
 .docs-toc {
-  width: 250px;
-  position: sticky;
+  width: auto;
+  height: 95vh;
+  position: fixed;
   overflow-y: auto;
   grid-column: 3;
   align-self: start;
@@ -1054,12 +1055,14 @@ a[href="#main-content"] {
 }
 
 .toc-container {
+  width: 250px;
   background-color: var(--surface);
   border-radius: 0.75rem;
   padding: 1.5rem;
   border: 1px solid var(--border);
   border-left: 0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 999;
 }
 
 [data-theme="light"] .toc-container {

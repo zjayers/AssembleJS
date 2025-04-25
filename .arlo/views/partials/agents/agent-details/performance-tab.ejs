@@ -1,0 +1,114 @@
+<!-- Performance Tab -->
+<div class="agent-tab-content" id="performance-tab">
+    <div class="performance-header">
+        <h4>Performance Metrics</h4>
+        <div class="performance-timeframe">
+            <select id="performance-period">
+                <option value="day">Last 24 Hours</option>
+                <option value="week">Last Week</option>
+                <option value="month">Last Month</option>
+                <option value="all">All Time</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-title">Tasks Completed</div>
+            <div class="metric-value">174</div>
+            <div class="metric-trend positive">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                <span>+12%</span>
+            </div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Avg. Response Time</div>
+            <div class="metric-value">1.8s</div>
+            <div class="metric-trend positive">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+                <span>-0.3s</span>
+            </div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Token Usage</div>
+            <div class="metric-value">1.2M</div>
+            <div class="metric-trend negative">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+                <span>+8%</span>
+            </div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-title">Success Rate</div>
+            <div class="metric-value">96.4%</div>
+            <div class="metric-trend positive">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                <span>+1.2%</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="performance-charts">
+        <div class="chart-container">
+            <h5>Activity Timeline</h5>
+            <div class="chart-placeholder">
+                <div class="activity-chart">
+                    <!-- Simple activity chart visualization -->
+                    <div class="chart-bars">
+                        <div class="chart-day">
+                            <div class="chart-label">Mon</div>
+                            <div class="chart-bar" style="height: 60%;"></div>
+                        </div>
+                        <div class="chart-day">
+                            <div class="chart-label">Tue</div>
+                            <div class="chart-bar" style="height: 40%;"></div>
+                        </div>
+                        <div class="chart-day">
+                            <div class="chart-label">Wed</div>
+                            <div class="chart-bar" style="height: 75%;"></div>
+                        </div>
+                        <div class="chart-day">
+                            <div class="chart-label">Thu</div>
+                            <div class="chart-bar" style="height: 85%;"></div>
+                        </div>
+                        <div class="chart-day">
+                            <div class="chart-label">Fri</div>
+                            <div class="chart-bar" style="height: 90%;"></div>
+                        </div>
+                        <div class="chart-day">
+                            <div class="chart-label">Sat</div>
+                            <div class="chart-bar" style="height: 30%;"></div>
+                        </div>
+                        <div class="chart-day">
+                            <div class="chart-label">Sun</div>
+                            <div class="chart-bar" style="height: 25%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <h5>Collaboration Network</h5>
+            <div class="chart-placeholder">
+                <div class="network-chart">
+                    <!-- Simple network visualization -->
+                    <div class="network-node central" style="left: 50%; top: 50%;">
+                        <span>Admin</span>
+                    </div>
+                    <div class="network-node" style="left: 30%; top: 30%;">
+                        <span>Design</span>
+                    </div>
+                    <div class="network-node" style="left: 70%; top: 30%;">
+                        <span>Browser</span>
+                    </div>
+                    <div class="network-node" style="left: 30%; top: 70%;">
+                        <span>Git</span>
+                    </div>
+                    <div class="network-node" style="left: 70%; top: 70%;">
+                        <span>Validator</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

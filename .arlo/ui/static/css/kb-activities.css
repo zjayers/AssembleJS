@@ -1,0 +1,131 @@
+/* Knowledge Base Activities Styles */
+.kb-section {
+    margin-bottom: 30px;
+}
+
+.kb-section h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.activities-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 12px;
+    transition: transform 0.2s ease;
+}
+
+.activity-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.activity-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.7);
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    align-items: center;
+}
+
+.activity-agent {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.activity-time {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+}
+
+.activity-description {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Agent-specific activity background colors */
+.activity-icon.docs-agent { background: #FFEB3B; }
+.activity-icon.browser-agent { background: #2196F3; }
+.activity-icon.server-agent { background: #00BCD4; }
+.activity-icon.types-agent { background: #E91E63; }
+.activity-icon.utils-agent { background: #9C27B0; }
+.activity-icon.developer-agent { background: #3F51B5; }
+.activity-icon.generator-agent { background: #8BC34A; }
+.activity-icon.bundler-agent { background: #FF5722; }
+.activity-icon.config-agent { background: #CDDC39; }
+.activity-icon.validator-agent { background: #673AB7; }
+.activity-icon.analyzer-agent { background: #FF9800; }
+
+/* Settings styles */
+.kb-settings-section {
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.kb-settings-section h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.setting-group {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.setting-group:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.setting-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.setting-group input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.setting-description {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-left: 20px;
+}

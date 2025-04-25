@@ -1,0 +1,116 @@
+/* Pipeline view */
+.pipeline-view {
+    margin-top: 20px;
+}
+
+.pipeline-steps {
+    display: flex;
+    margin-bottom: 24px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.pipeline-step {
+    width: 180px;
+    min-width: 180px;
+    margin-right: 16px;
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.pipeline-step:last-child {
+    margin-right: 0;
+}
+
+.pipeline-step-header {
+    padding: 12px;
+    border-bottom: 1px solid var(--color-border);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.pipeline-step-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.pipeline-step-body {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding-left: 26px;
+}
+
+.pipeline-step-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.pipeline-step-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pipeline-step-content {
+    flex: 1;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+
+.pipeline-step-time {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    margin-top: 8px;
+}
+
+.pipeline-progress {
+    height: 4px;
+    background-color: rgba(88, 166, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.pipeline-progress-bar {
+    height: 100%;
+    background-color: var(--color-progress-bar);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Agent pipeline */
+.agent-pipeline {
+    padding: 16px;
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .pipeline-steps {
+        flex-direction: column;
+    }
+
+    .pipeline-step {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 16px;
+    }
+}

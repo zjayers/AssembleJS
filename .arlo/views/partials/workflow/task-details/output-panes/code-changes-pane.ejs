@@ -1,0 +1,45 @@
+<div class="output-pane" id="code-changes-pane" style="display: none;">
+    <div class="file-changes">
+        <div class="file-change">
+            <div class="file-change-header">
+                <span class="file-path">src/components/Header/Header.css</span>
+                <span class="change-stat">+15, -3</span>
+            </div>
+            <div class="file-diff">
+                <pre><code>@@ -45,6 +45,21 @@
+  .header-container {
+    display: flex;
+    justify-content: space-between;
++   flex-wrap: wrap;
+  }
+  
++ /* Responsive styles */
++ @media (max-width: 768px) {
++   .header-container {
++     padding: 10px;
++   }
++ }
++ 
++ @media (max-width: 480px) {
++   .header-container {
++     flex-direction: column;
++     align-items: center;
++   }
++ }
++
+  .header-logo {
+    /* existing styles */</code></pre>
+            </div>
+        </div>
+        
+        <div class="file-change">
+            <div class="file-change-header">
+                <span class="file-path">src/components/Navigation/Navigation.jsx</span>
+                <span class="change-stat">+25, -8</span>
+            </div>
+            <div class="file-diff">
+                <pre><code>// Changes in progress...</code></pre>
+            </div>
+        </div>
+    </div>
+</div>

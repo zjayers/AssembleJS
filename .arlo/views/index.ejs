@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('partials/head') %>
+</head>
+<body>
+    <div class="app-container">
+        <%- include('partials/header') %>
+        
+        <div class="main-content">
+            <%- include('partials/sidebar') %>
+            
+            <main class="content">
+                <%- include('partials/workflow-view') %>
+                <%- include('partials/knowledge-base-view') %>
+                <%- include('partials/agents-view') %>
+            </main>
+        </div>
+    </div>
+    
+    <%- include('partials/scripts') %>
+</body>
+</html>

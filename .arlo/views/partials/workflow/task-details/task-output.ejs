@@ -1,0 +1,16 @@
+<div class="task-output">
+    <div class="output-header">
+        <h3>Execution Logs</h3>
+        <div class="output-tabs">
+            <div class="output-tab active" data-tab="logs">Logs</div>
+            <div class="output-tab" data-tab="code-changes">Code Changes</div>
+            <div class="output-tab" data-tab="pr">Pull Request</div>
+        </div>
+    </div>
+    
+    <div class="output-content">
+        <%- include('output-panes/logs-pane') %>
+        <%- include('output-panes/code-changes-pane') %>
+        <%- include('output-panes/pr-pane') %>
+    </div>
+</div>

@@ -1,0 +1,291 @@
+<div class="kb-document-editor">
+    <div class="kb-editor-header">
+        <div class="kb-editor-title">
+            <h3>Knowledge Document</h3>
+            <div class="kb-editor-subtitle">View or edit detailed knowledge</div>
+        </div>
+        <div class="kb-editor-actions">
+            <button id="kb-document-edit-toggle" class="secondary-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                Edit Document
+            </button>
+            <button id="kb-document-related" class="secondary-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                Find Related
+            </button>
+            <button id="kb-document-export" class="secondary-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Export
+            </button>
+        </div>
+    </div>
+    
+    <div class="kb-editor-content">
+        <!-- Document Display/View Mode -->
+        <div class="kb-document-view" id="kb-document-view">
+            <div class="kb-document-header">
+                <h2 class="kb-document-title">Component Lifecycle Events</h2>
+                <div class="kb-document-meta">
+                    <span class="kb-document-source" style="background-color: rgba(33, 150, 243, 0.1); color: #2196F3;">Browser Agent</span>
+                    <span class="kb-document-date">Last Updated: April 23, 2023</span>
+                </div>
+                <div class="kb-document-tags">
+                    <span class="kb-tag">components</span>
+                    <span class="kb-tag">lifecycle</span>
+                    <span class="kb-tag">hooks</span>
+                </div>
+            </div>
+            
+            <div class="kb-document-body">
+                <h3>Overview</h3>
+                <p>AssembleJS components follow a specific lifecycle pattern with several key events that you can hook into. Understanding these events is crucial for managing side effects, optimizing performance, and ensuring proper cleanup.</p>
+                
+                <h3>Lifecycle Events</h3>
+                <div class="kb-document-section">
+                    <h4>1. Mounted</h4>
+                    <p>Called after the component has been mounted to the DOM. This is the ideal place to perform DOM interactions, fetch data, or set up event listeners.</p>
+                    
+                    <div class="kb-code-block">
+                        <pre><code>const MyComponent = defineComponent({
+  setup() {
+    onMounted(() => {
+      console.log('Component is mounted');
+      fetchData();
+    });
+  }
+});</code></pre>
+                    </div>
+                </div>
+                
+                <div class="kb-document-section">
+                    <h4>2. Updated</h4>
+                    <p>Called after a component's reactive state has changed and the DOM has been updated. Useful for post-update operations.</p>
+                    
+                    <div class="kb-code-block">
+                        <pre><code>const MyComponent = defineComponent({
+  setup() {
+    onUpdated(() => {
+      console.log('Component was updated');
+    });
+  }
+});</code></pre>
+                    </div>
+                </div>
+                
+                <div class="kb-document-section">
+                    <h4>3. Before Unmount</h4>
+                    <p>Called right before a component is about to be unmounted and destroyed. Perfect for cleanup operations.</p>
+                    
+                    <div class="kb-code-block">
+                        <pre><code>const MyComponent = defineComponent({
+  setup() {
+    onBeforeUnmount(() => {
+      console.log('Component will unmount soon');
+      clearEventListeners();
+    });
+  }
+});</code></pre>
+                    </div>
+                </div>
+                
+                <div class="kb-document-section">
+                    <h4>4. Unmounted</h4>
+                    <p>Called after the component has been unmounted. The component instance is still available but the DOM element is gone.</p>
+                    
+                    <div class="kb-code-block">
+                        <pre><code>const MyComponent = defineComponent({
+  setup() {
+    onUnmounted(() => {
+      console.log('Component is unmounted');
+    });
+  }
+});</code></pre>
+                    </div>
+                </div>
+                
+                <h3>Best Practices</h3>
+                <ul class="kb-document-list">
+                    <li>Always clean up subscriptions, timers, and event listeners in <code>onBeforeUnmount</code> hooks</li>
+                    <li>Avoid expensive operations in the <code>updated</code> hook</li>
+                    <li>Use state synchronization patterns when components need to react to their own lifecycle events</li>
+                    <li>Consider extracting reusable lifecycle logic into composable functions</li>
+                </ul>
+                
+                <div class="kb-document-related">
+                    <h3>Related Knowledge</h3>
+                    <div class="kb-related-items">
+                        <a href="#" class="kb-related-item">
+                            <div class="kb-related-title">Component Composition</div>
+                            <div class="kb-related-similarity">85% similar</div>
+                        </a>
+                        <a href="#" class="kb-related-item">
+                            <div class="kb-related-title">Event Handling</div>
+                            <div class="kb-related-similarity">72% similar</div>
+                        </a>
+                        <a href="#" class="kb-related-item">
+                            <div class="kb-related-title">Performance Optimization</div>
+                            <div class="kb-related-similarity">68% similar</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Document Edit Mode (hidden by default) -->
+        <div class="kb-editor-form" id="kb-document-edit-form" style="display:none;">
+            <div class="kb-form-header">
+                <h3>Edit Knowledge Document</h3>
+            </div>
+            
+            <div class="kb-form-body">
+                <div class="kb-form-row">
+                    <div class="kb-form-group">
+                        <label for="kb-document-collection">Collection</label>
+                        <select id="kb-document-collection">
+                            <option value="agent_Browser" selected>Browser Agent</option>
+                            <option value="agent_Admin">Admin Agent</option>
+                            <option value="agent_Types">Types Agent</option>
+                            <option value="agent_Utils">Utils Agent</option>
+                            <option value="agent_Server">Server Agent</option>
+                            <option value="agent_Docs">Docs Agent</option>
+                            <option value="framework">Framework</option>
+                            <option value="patterns">Design Patterns</option>
+                            <option value="examples">Examples</option>
+                        </select>
+                    </div>
+                    
+                    <div class="kb-form-group">
+                        <label for="kb-document-type">Document Type</label>
+                        <select id="kb-document-type">
+                            <option value="documentation" selected>Documentation</option>
+                            <option value="code">Code Snippet</option>
+                            <option value="api">API Reference</option>
+                            <option value="pattern">Design Pattern</option>
+                            <option value="example">Example</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="kb-form-group">
+                    <label for="kb-document-title">Title</label>
+                    <input type="text" id="kb-document-title" value="Component Lifecycle Events" placeholder="Enter a descriptive title">
+                </div>
+                
+                <div class="kb-form-group">
+                    <label for="kb-document-tags">Tags</label>
+                    <div class="kb-input-tags">
+                        <span class="kb-input-tag">components<button class="kb-tag-remove">×</button></span>
+                        <span class="kb-input-tag">lifecycle<button class="kb-tag-remove">×</button></span>
+                        <span class="kb-input-tag">hooks<button class="kb-tag-remove">×</button></span>
+                        <input type="text" id="kb-document-tags-input" placeholder="Add tag...">
+                    </div>
+                </div>
+                
+                <div class="kb-form-group">
+                    <label for="kb-document-content">Content (Markdown)</label>
+                    <div class="kb-editor-toolbar">
+                        <button class="kb-toolbar-button" title="Bold"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path></svg></button>
+                        <button class="kb-toolbar-button" title="Italic"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="4" x2="10" y2="4"></line><line x1="14" y1="20" x2="5" y2="20"></line><line x1="15" y1="4" x2="9" y2="20"></line></svg></button>
+                        <button class="kb-toolbar-button" title="Header"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h12"></path><path d="M6 6h12"></path><path d="M6 18h12"></path></svg></button>
+                        <button class="kb-toolbar-button" title="Code Block"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></button>
+                        <button class="kb-toolbar-button" title="List"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg></button>
+                        <button class="kb-toolbar-button" title="Link"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button>
+                    </div>
+                    <textarea id="kb-document-content" class="kb-markdown-editor" placeholder="Write your content in Markdown format...">
+# Overview
+AssembleJS components follow a specific lifecycle pattern with several key events that you can hook into. Understanding these events is crucial for managing side effects, optimizing performance, and ensuring proper cleanup.
+
+# Lifecycle Events
+
+## 1. Mounted
+Called after the component has been mounted to the DOM. This is the ideal place to perform DOM interactions, fetch data, or set up event listeners.
+
+```js
+const MyComponent = defineComponent({
+  setup() {
+    onMounted(() => {
+      console.log('Component is mounted');
+      fetchData();
+    });
+  }
+});
+```
+
+## 2. Updated
+Called after a component's reactive state has changed and the DOM has been updated. Useful for post-update operations.
+
+```js
+const MyComponent = defineComponent({
+  setup() {
+    onUpdated(() => {
+      console.log('Component was updated');
+    });
+  }
+});
+```
+
+## 3. Before Unmount
+Called right before a component is about to be unmounted and destroyed. Perfect for cleanup operations.
+
+```js
+const MyComponent = defineComponent({
+  setup() {
+    onBeforeUnmount(() => {
+      console.log('Component will unmount soon');
+      clearEventListeners();
+    });
+  }
+});
+```
+
+## 4. Unmounted
+Called after the component has been unmounted. The component instance is still available but the DOM element is gone.
+
+```js
+const MyComponent = defineComponent({
+  setup() {
+    onUnmounted(() => {
+      console.log('Component is unmounted');
+    });
+  }
+});
+```
+
+# Best Practices
+
+* Always clean up subscriptions, timers, and event listeners in `onBeforeUnmount` hooks
+* Avoid expensive operations in the `updated` hook
+* Use state synchronization patterns when components need to react to their own lifecycle events
+* Consider extracting reusable lifecycle logic into composable functions</textarea>
+                </div>
+                
+                <div class="kb-form-group">
+                    <label for="kb-document-metadata">Advanced Metadata (Optional)</label>
+                    <div class="kb-metadata-toggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        <span>Show Metadata Editor</span>
+                    </div>
+                    <textarea id="kb-document-metadata" class="kb-metadata-editor" style="display:none" placeholder='{"type": "documentation", "author": "Browser Agent", "tags": ["components", "lifecycle", "hooks"]}'>
+{
+  "type": "documentation",
+  "author": "Browser Agent",
+  "tags": ["components", "lifecycle", "hooks"],
+  "version": "1.2",
+  "related": [
+    "component-composition",
+    "event-handling",
+    "performance-optimization"
+  ],
+  "format": "markdown",
+  "lastUpdated": "2023-04-23T14:32:10Z"
+}</textarea>
+                </div>
+            </div>
+            
+            <div class="kb-form-actions">
+                <button id="kb-document-cancel" class="secondary-button">Cancel</button>
+                <button id="kb-document-save" class="primary-button">Save Document</button>
+            </div>
+        </div>
+    </div>
+</div>

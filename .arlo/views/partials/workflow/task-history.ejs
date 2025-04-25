@@ -1,0 +1,86 @@
+<div class="task-history">
+    <div class="task-history-header">
+        <span>Task History</span>
+        <div class="history-actions">
+            <div class="search-container">
+                <input type="text" id="history-search" placeholder="Search tasks...">
+                <button class="icon-button" id="history-search-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+            </div>
+            <div class="filter-container">
+                <select id="history-filter">
+                    <option value="all">All Statuses</option>
+                    <option value="completed">Completed</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="queued">Queued</option>
+                    <option value="failed">Failed</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="task-history-body" id="task-history-body">
+        <div class="empty-state">
+            <div class="empty-state-icon">📋</div>
+            <div class="empty-state-text">No tasks yet. Submit a task to see it here.</div>
+        </div>
+        
+        <!-- Sample task items (hidden by default, will be shown once tasks exist) -->
+        <div class="task-items" style="display: none;">
+            <div class="task-item" data-id="task-001" data-status="completed">
+                <div class="task-status">
+                    <div class="task-status-icon task-status-success"></div>
+                </div>
+                <div class="task-info">
+                    <div class="task-title">Refactor authentication module to support OAuth 2.0</div>
+                    <div class="task-meta">
+                        <span class="task-time">Completed 2h ago</span>
+                        <span class="task-agent">Admin Agent</span>
+                    </div>
+                </div>
+                <div class="task-actions">
+                    <button class="view-task">View</button>
+                </div>
+            </div>
+            
+            <div class="task-item" data-id="task-002" data-status="in-progress">
+                <div class="task-status">
+                    <div class="task-status-icon task-status-pending"></div>
+                </div>
+                <div class="task-info">
+                    <div class="task-title">Implement responsive design for mobile components</div>
+                    <div class="task-meta">
+                        <span class="task-time">Started 45m ago</span>
+                        <span class="task-agent">Design Agent</span>
+                    </div>
+                </div>
+                <div class="task-actions">
+                    <button class="view-task">View</button>
+                </div>
+            </div>
+            
+            <div class="task-item" data-id="task-003" data-status="queued">
+                <div class="task-status">
+                    <div class="task-status-icon task-status-queued"></div>
+                </div>
+                <div class="task-info">
+                    <div class="task-title">Add Spanish language translations for component text</div>
+                    <div class="task-meta">
+                        <span class="task-time">Queued 10m ago</span>
+                        <span class="task-agent">i18n Agent</span>
+                    </div>
+                </div>
+                <div class="task-actions">
+                    <button class="view-task">View</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="task-history-footer">
+        <div class="pagination">
+            <button class="pagination-button" disabled>Previous</button>
+            <span class="pagination-info">Page 1 of 1</span>
+            <button class="pagination-button" disabled>Next</button>
+        </div>
+    </div>
+</div>
