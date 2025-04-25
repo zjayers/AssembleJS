@@ -27,7 +27,7 @@ import {
  * BlueprintClient.registerComponentCodeBehind(MyComponent);
  * ```
  *
- * @category (Client)
+ * @category Client
  * @author Zachariah Ayers
  */
 export class BlueprintClient {

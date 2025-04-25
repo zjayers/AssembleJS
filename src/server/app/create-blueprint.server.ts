@@ -80,7 +80,7 @@ import { ServiceContainer } from "./service-container";
 export async function createBlueprintServer(
   userOpts: BlueprintServerOptions
 ): Promise<Assembly> {
-  const rootPath: string = fileURLToPath(new URL(userOpts.serverRoot));
+  const rootPath: string = fileURLToPath(new URL(userOpts.serverRoot!));
   ASSEMBLEJS.setRoot(rootPath);
 
   // Get HTTP Server Pointers
@@ -114,7 +114,7 @@ export async function createBlueprintServer(
           }
         : undefined,
     },
-    disableRequestLogging: !ASSEMBLEJS.enableRequestLogging ?? true,
+    disableRequestLogging: !ASSEMBLEJS.enableRequestLogging,
     ignoreTrailingSlash: false,
     serverFactory: httpServer
       ? (handler) => {

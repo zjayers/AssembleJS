@@ -2,8 +2,8 @@
  * Event Queue
  * @description An Event queue is a simple array that adds new events to the beginning and trims old events from the end.
  * @description Members may be 'enqueued' to the queue, viewed, and dequeued
- * @category (Eventing)
- * @author Zach Ayers
+ * @category Eventing
+ * @author Zachariah Ayers
  * @internal
  */
 export interface IEventQueue {
@@ -22,7 +22,7 @@ export interface IEventQueue {
    * Add an item to the Queue
    * @description Items are added at the end of the Queue
    * @typeParam {P} payload - The payload to add to the storage array.
-   * @returnss {void}
+   * @returns {void}
    * @example
    * ```typescript
    * // Create a new event queue for string types and add a payload to the Queue
@@ -34,7 +34,7 @@ export interface IEventQueue {
   /**
    * Remove an item from the queue
    * @description Items are removed from the beginning of the storage array.
-   * @returnss { P | undefined} - The generic member at the first position in the queue.
+   * @returns {P | undefined} - The generic member at the first position in the queue.
    * @example
    * ```typescript
    * // Create a new event queue that intakes a generic type of string.
@@ -52,7 +52,7 @@ export interface IEventQueue {
   /**
    * View the next (newest) item in the queue
    * @description Peeking will view the first item in the storage array.
-   * @returnss { P | undefined} - The generic member at the first position in the queue.queue.
+   * @returns {P | undefined} - The generic member at the first position in the queue.
    * @example
    * ```typescript
    * // Create a new event queue that intakes a generic type of string.
@@ -70,7 +70,7 @@ export interface IEventQueue {
   /**
    * When the storage array reaches the defined maxQueueLength, dequeue the oldest item in the queue.
    * @description Trimming will first check the length of the storage array. If the length is grater than maxQueueLength, the first item in the array will be removed.
-   * @returnss {void}
+   * @returns {void}
    * @example
    * ```typescript
    * // Create a new event queue that intakes a generic type of string.
@@ -94,7 +94,7 @@ export interface IEventQueue {
 /**
  * @see IEventQueue
  * @internal
- * @category (Eventing)
+ * @category Eventing
  */
 export class EventQueue implements IEventQueue {
   public maxQueueLength: number;

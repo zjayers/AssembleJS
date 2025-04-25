@@ -1,0 +1,68 @@
+name: promote_next_to_main
+
+on:
+  workflow_dispatch:
+    inputs:
+      merge_message:
+        description: 'Merge commit message'
+        required: true
+        default: 'chore: promote next to main'
+        type: string
+
+jobs:
+  promote:
+    name: Promote to Main
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Use deploy key for git operations to bypass branch protection
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+      
+      - name: Start SSH Agent and Set Git Configuration
+        run: |
+          # Start SSH agent
+          eval "$(ssh-agent -s)"
+          # Make sure private key has correct permissions
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          # Verify that the agent is running
+          echo "SSH Agent PID: $SSH_AGENT_PID"
+          
+          # Set Git identity
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          
+          # Ensure we use SSH for GitHub authentication
+          git remote set-url origin git@github.com:zjayers/assemblejs.git
+          # Verify the remote
+          git remote -v
+      
+      - name: Fetch all branches
+        run: git fetch --all
+      
+      - name: Checkout main branch
+        run: git checkout main
+      
+      - name: Merge next into main
+        run: |
+          # Create a merge commit with custom message
+          git merge --no-ff origin/next -m "${{ github.event.inputs.merge_message }}"
+          
+          # Debug info
+          echo "Current branch: $(git branch --show-current)"
+          echo "Current commit: $(git rev-parse HEAD)"
+          
+          # Push the merge to main using SSH URL explicitly
+          git push git@github.com:zjayers/assemblejs.git main
+        
+      - name: Summarize
+        run: |
+          echo "Successfully merged next branch into main!"
+          echo "Merge commit: $(git rev-parse HEAD)"

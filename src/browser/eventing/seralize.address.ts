@@ -5,8 +5,8 @@ import type { EventAddress } from "./event.address";
  * Serialize the channel and topic of an Event so it may be used as a key identifier in a Map
  * @param {Event<any>} event - The event whose channel and topic need to be serialized.
  * @return {string} - The channel and topic in the format of '<channel>:<topic>'
- * @category (Eventing)
- * @author Zach Ayers
+ * @category Eventing
+ * @author Zachariah Ayers
  * @internal
  * @example
  * ```typescript
@@ -29,8 +29,8 @@ export function serializeEventAddress(event: BlueprintEvent<any>): string {
  * Serialize the channel and topic of an EventAddress so it may be used as a key identifier in a Map
  * @param {EventAddress} address - The event address whose channel and topic need to be serialized.
  * @return {string} - The channel and topic in the format of '<channel>:<topic>'
- * @category (Eventing)
- * @author Zach Ayers
+ * @category Eventing
+ * @author Zachariah Ayers
  * @internal
  * @example
  * ```typescript

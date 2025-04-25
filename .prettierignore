@@ -31,6 +31,7 @@ lib/
 dist/
 coverage/
 .nyc_output/
+docs/
 
 # Misc
 .DS_Store

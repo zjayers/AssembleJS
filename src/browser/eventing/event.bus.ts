@@ -8,15 +8,21 @@ import { CONSTANTS } from "../../constants/blueprint.constants";
 
 /**
  * AssembleJS View Event Adapter
- * @author Zach Ayers*/
+ * @description Interface for sending events from views to different components in the system.
+ * @author Zachariah Ayers
+ * @category Eventing
+ * @public
+ */
 export interface ViewEventAdapter {
   /**
    * Send an event to the global channel and topic for 'COMPONENTS'.
    * @description - Only the top level Blueprint will receive this message.
+   * @template Payload - The type of the payload
+   * @template Response - The type of the expected response
    * @param {Payload} payload - The payload to send with the event.
    * @param {string} topic - The topic to send the event to.
    * @returns {BlueprintEvent<Response>} - The event that was sent.
-   * @author Zach Ayers
+   * @author Zachariah Ayers
    */
   toComponents<Payload, Response>(
     payload: Payload,
@@ -26,10 +32,12 @@ export interface ViewEventAdapter {
   /**
    * Send an event to the global channel and topic for 'BLUEPRINTS'.
    * @description - Only the top level Blueprint will receive this message.
+   * @template Payload - The type of the payload
+   * @template Response - The type of the expected response
    * @param {Payload} payload - The payload to send with the event.
    * @param {string} topic - The topic to send the event to.
    * @returns {BlueprintEvent<Response>} - The event that was sent.
-   * @author Zach Ayers
+   * @author Zachariah Ayers
    */
   toBlueprint<Payload, Response>(
     payload: Payload,
@@ -39,10 +47,12 @@ export interface ViewEventAdapter {
   /**
    * Send an event to the global channel and topic.
    * @description - ALL Blueprints and Components will receive this message.
+   * @template Payload - The type of the payload
+   * @template Response - The type of the expected response
    * @param {Payload} payload - The payload to send.
    * @param {string} topic - The topic to send the payload to.
    * @returns {BlueprintEvent<Response>} - The event that was sent. Responses should be handled through callbacks or additional events.
-   * @author Zach Ayers
+   * @author Zachariah Ayers
    */
   toAll<Payload, Response>(
     payload: Payload,
@@ -51,9 +61,9 @@ export interface ViewEventAdapter {
 }
 
 /**
- * Event Listener declaration for us by the EventManager / EventEmitter to register / un-register events.
- * @category (Eventing)
- * @author Zach Ayers
+ * Event Listener declaration for use by the EventManager / EventEmitter to register / un-register events.
+ * @category Eventing
+ * @author Zachariah Ayers
  * @internal
  * @example
  * ```typescript
@@ -83,8 +93,8 @@ export type EventListener<P = unknown> = (
  * Event Bus
  * @description An Event bus makes use of an EventSink, EvenEmitter, and EventQueue to pass events using the global window object.
  * @description Event addresses may be published or subscribed to - to pass payloads between front end services.
- * @category (Eventing)
- * @author Zach Ayers
+ * @category Eventing
+ * @author Zachariah Ayers
  * @public
  */
 export interface IEventBus extends ViewEventAdapter {
@@ -100,7 +110,7 @@ export interface IEventBus extends ViewEventAdapter {
 
   /**
    * View the next (newest) item in a channel:topic associated queue
-   * @author Zach Ayers
+   * @author Zachariah Ayers
    * @example
    *
    * ```typescript
@@ -122,8 +132,8 @@ export interface IEventBus extends ViewEventAdapter {
   /**
    * Add a new item to the channel:topic associated queue
    * @description New event payloads will be added to the end of the queue.
-   * @author Zach Ayers
-   * @returnss {Event} The published event.
+   * @author Zachariah Ayers
+   * @returns {BlueprintEvent<P>} The published event.
    * @example
    *
    * ```typescript
@@ -142,8 +152,8 @@ export interface IEventBus extends ViewEventAdapter {
   /**
    * Subscribe to an EventAddress
    * and perform an action when a payload is received on that channel:topic.
-   * @author Zach Ayers
-   * @returnss {void}
+   * @author Zachariah Ayers
+   * @returns {void}
    * @example
    *
    * ```typescript
@@ -167,8 +177,8 @@ export interface IEventBus extends ViewEventAdapter {
 
   /**
    * Unsubscribe from an EventAddress
-   * @author Zach Ayers
-   * @returnss {void}
+   * @author Zachariah Ayers
+   * @returns {void}
    * @example
    *
    * ```typescript
@@ -196,7 +206,7 @@ export interface IEventBus extends ViewEventAdapter {
 /**
  * @see IEventBus
  * @public
- * @category (Eventing)
+ * @category Eventing
  */
 export class EventBus implements IEventBus {
   public eventEmitter: EventEmitter;
@@ -271,6 +281,7 @@ export class EventBus implements IEventBus {
    * EventBus Constructor
    * Initializing an event bus will ensure there is an EventManager on the global window object.
    * Once an EventManager is created, the EventSink and EventEmitter will be referenced by this class.
+   * @author Zachariah Ayers
    */
   constructor() {
     const { eventEmitter, eventSink } = getEventManager();
@@ -279,7 +290,15 @@ export class EventBus implements IEventBus {
   }
 }
 
-/** @inheritDoc */
+/**
+ * Publish an event to the specified address with the given payload
+ * @template P - Payload type
+ * @template R - Response type
+ * @param {EventAddress} address - The event address to publish to
+ * @param {P} payload - The payload to send with the event
+ * @return {BlueprintEvent<R>} The published event
+ * @author Zachariah Ayers
+ */
 function publish<P, R>(address: EventAddress, payload: P): BlueprintEvent<R> {
   const eventManager = getEventManager();
   const event = { ...address, payload };
@@ -288,7 +307,14 @@ function publish<P, R>(address: EventAddress, payload: P): BlueprintEvent<R> {
   return event as unknown as BlueprintEvent<R>;
 }
 
-/** @inheritDoc */
+/**
+ * Subscribe to events at the specified address
+ * @template P - Payload type
+ * @param {EventAddress} address - The event address to subscribe to
+ * @param {EventListener<P>} listener - The listener function to call when events are received
+ * @return {void}
+ * @author Zachariah Ayers
+ */
 function subscribe<P>(address: EventAddress, listener: EventListener<P>): void {
   getEventManager().eventEmitter.on(serializeAddress(address), listener);
 }
@@ -297,7 +323,9 @@ function subscribe<P>(address: EventAddress, listener: EventListener<P>): void {
  * Functional Eventing Interface
  * @description - Use this to access the AssembleJS eventing system outside an AssembleJS View.
  * @type {{Partial<IEventBus>}}
- * @author Zach Ayers
+ * @author Zachariah Ayers
+ * @category Eventing
+ * @public
  */
 export const events: Pick<
   IEventBus,
@@ -352,8 +380,10 @@ export const events: Pick<
   /**
    * Specialized Message listener hook.
    * @description When using outside a Blueprint - this hook will allow you to subscribe to the global channels.
-   * @param {EventListener} listener - The event listener function to register
+   * @template P - The payload type
+   * @param {EventListener<P>} listener - The event listener function to register
    * @return {Function} - A cleanup function that unsubscribes all listeners to prevent memory leaks
+   * @author Zachariah Ayers
    */
   useOnMessageListener<P>(listener: EventListener<P>): () => void {
     const addresses = [

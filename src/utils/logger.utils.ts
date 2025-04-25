@@ -7,9 +7,12 @@ import { getEnv } from "./env.utils";
 
 /**
  * Get the Logger ENV for a given class.
- * @description - This will be read from 'ASSEMBLEJS_LOG_LEVEL_<CLASS_NAME>'
+ * @description This will be read from 'ASSEMBLEJS_LOG_LEVEL_<CLASS_NAME>'
  * @param {string} className - The class name to get the logger ENV for.
- * @return {string} - The logger ENV for the given class.
+ * @return {string|undefined} The logger ENV for the given class.
+ * @author Zachariah Ayers
+ * @category Utils
+ * @private
  */
 function getClassLogLevel(className: string) {
   try {
@@ -36,7 +39,9 @@ function getClassLogLevel(className: string) {
  *
  * The `ALL` or `OFF` options are only for configuration.
  *
- * @author Zach Ayers
+ * @author Zachariah Ayers
+ * @category Utils
+ * @public
  */
 export enum ConsoleLogLevel {
   /** `STATUS` logging. */

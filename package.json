@@ -1,6 +1,6 @@
 {
   "name": "asmbl",
-  "version": "0.0.1-4",
+  "version": "0.0.14",
   "description": "A modern micro-frontend framework for building distributed component-based UIs",
   "keywords": [
     "Micro-Frontends",
@@ -49,20 +49,23 @@
     "lib/**/*"
   ],
   "scripts": {
+    "bootstrap": "npm install && npm run install:website && npm pack && npm run install:testbed",
     "prepack": "npm run build",
-    "changelog": "auto-changelog",
+    "install:website": "cd websites/www.assemblejs.com && npm install --ignore-scripts",
+    "install:testbed": "run-s testbed:install",
     "commit": "cz",
     "docs": "typedoc --options typedoc.json",
     "docs:serve": "serve -l 8899 -s ./docs",
     "docs:deploy": "npm run docs && touch ./docs/.nojekyll",
     "docs:styled": "npm run docs && npm run docs:serve",
-    "build": "run-s build:ts build:client copy:templates copy:assets copy:developer copy:panel-files copy:designer-files copy:error-pages copy:typedoc-theme copy:tsconfig copy:config copy:scripts docs copy:docs-to-website",
+    "build": "run-s build:ts build:client copy:templates copy:assets copy:developer copy:panel-files copy:designer-files copy:error-pages copy:typedoc-theme copy:tsconfig copy:config copy:scripts docs copy:docs-to-website build:website",
     "build:dry": "tsc --build --dry",
     "build:ts": "npm run clean && tsc --build --verbose && npm run build:ts-add-js-extension",
     "build:ts:debug": "npm run clean && tsc --build --verbose",
     "build:ts-add-js-extension": "ts-add-js-extension add --dir=lib --showchanges=false",
     "build:ts-add-js-extension:debug": "ts-add-js-extension add --dir=lib --showchanges=true",
     "build:client": "vite build --mode production",
+    "build:website": "cd websites/www.assemblejs.com && npm run build",
     "check": "tsc --noEmit",
     "clean": "run-s clean:*",
     "generate": "run-p generate:*",
@@ -86,7 +89,7 @@
     "copy:tsconfig": "shx mkdir -p ./lib/bundler/recommended && shx cp ./src/bundler/recommended/tsconfig.recommended.json ./lib/bundler/recommended/",
     "copy:config": "shx mkdir -p ./lib/config && shx cp ./src/config/*.js ./lib/config/",
     "copy:scripts": "shx mkdir -p ./lib/scripts && shx cp ./src/scripts/*.js ./lib/scripts/",
-    "copy:docs-to-website": "shx mkdir -p ./websites/assemblejs/src/docs && shx cp -r ./docs/* ./websites/assemblejs/src/docs/ 2>/dev/null || true",
+    "copy:docs-to-website": "shx mkdir -p ./websites/www.assemblejs.com/src/docs && shx cp -r ./docs/* ./websites/www.assemblejs.com/public/docs/ 2>/dev/null || true",
     "generate:module-graph": "depcruise --config .dependency-cruiser.cjs src -T dot src | dot -T svg | depcruise-wrap-stream-in-html > ./reports/dependencygraph.html",
     "clean:tgz": "rimraf asmbl-*.tgz",
     "clean:lib": "rimraf lib tsconfig.tsbuildinfo",
@@ -99,7 +102,8 @@
     "lint:modules": "depcruise --config .dependency-cruiser.cjs src",
     "lint:deps": "npx depcheck",
     "lint:types": "npx typesync",
-    "lint": "run-s lint:sort lint:pretty lint:fix lint:modules",
+    "lint:website": "cd websites/www.assemblejs.com && npm run lint",
+    "lint": "run-s lint:sort lint:pretty lint:fix lint:modules lint:website",
     "update:check": "npx npm-check-updates",
     "update:major": "npm run update:check -- -u",
     "update:minor": "npm run update:check -- --target minor -u",
@@ -109,7 +113,15 @@
     "reboot": "npm run clean && npm pack && run-s reboot:*",
     "reboot:global": "npm i -g ./asmbl-$npm_package_version.tgz --no-cache --check-files --no-warnings --quiet --loglevel=error",
     "git:update": "git add . && git commit -m \"chore: update\" && git push",
-    "git:update:force": "git add . && git commit -m \"chore: update\" && git push --force"
+    "git:update:force": "git add . && git commit -m \"chore: update\" && git push --force",
+    "publish:npm": "npm publish",
+    "publish:npm:next": "npm publish --tag next",
+    "testbed:install": "node testbed/scripts/install-all.js",
+    "testbed:build": "node testbed/scripts/build-all.js",
+    "version:patch": "HUSKY=0 npm version patch && HUSKY=0 npm run generate:changelog && git add CHANGELOG.md && git commit -m \"chore(release): update patch version\" --no-verify",
+    "version:minor": "HUSKY=0 npm version minor && HUSKY=0 npm run generate:changelog && git add CHANGELOG.md && git commit -m \"chore(release): update minor version\" --no-verify",
+    "version:major": "HUSKY=0 npm version major && HUSKY=0 npm run generate:changelog && git add CHANGELOG.md --no-verify && git commit -m \"chore(release): update major version\" --no-verify",
+    "generate:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
   },
   "husky": {
     "hooks": {
@@ -219,8 +231,8 @@
     "@types/yargs": "17.0.10",
     "@typescript-eslint/eslint-plugin": "5.29.0",
     "@typescript-eslint/parser": "5.29.0",
-    "auto-changelog": "^2.4.0",
     "concurrently": "^7.3.0",
+    "conventional-changelog-cli": "^4.1.0",
     "cz-conventional-changelog": "^3.3.0",
     "dependency-cruiser": "^11.10.0",
     "eslint": "8.18.0",
@@ -248,12 +260,6 @@
     "typedoc-plugin-markdown": "^3.13.4",
     "typedoc-plugin-merge-modules": "^4.0.1",
     "typedoc-plugin-mermaid": "^1.9.0"
-  },
-  "auto-changelog": {
-    "output": "CHANGELOG.md",
-    "unreleased": true,
-    "commitLimit": false,
-    "sortCommits": "date-desc"
   },
   "readme": "README.md"
 }

@@ -40,6 +40,9 @@ export interface ICache<T> {
 
 /**
  * In-memory cache implementation with expiration
+ * @author Zachariah Ayers
+ * @category (Utils)
+ * @public
  */
 export class MemoryCache<T> implements ICache<T> {
   private cache: Map<string, CacheItem<T>> = new Map();
@@ -61,8 +64,10 @@ export class MemoryCache<T> implements ICache<T> {
 
   /**
    * Get a value from the cache
-   * @param key Cache key
-   * @return The cached value or undefined if not found or expired
+   * @param {string} key - Cache key
+   * @returns {T | undefined} The cached value or undefined if not found or expired
+   * @public
+   * @author Zachariah Ayers
    */
   public get(key: string): T | undefined {
     const item = this.cache.get(key);
@@ -82,9 +87,13 @@ export class MemoryCache<T> implements ICache<T> {
 
   /**
    * Set a value in the cache
-   * @param key Cache key
-   * @param value Value to cache
-   * @param options Optional cache options for this item
+   * @param {string} key - Cache key
+   * @param {T} value - Value to cache
+   * @param {object} [options] - Optional cache options for this item
+   * @param {number} [options.maxAge] - Custom TTL for this item in milliseconds
+   * @returns {void}
+   * @public
+   * @author Zachariah Ayers
    */
   public set(key: string, value: T, options?: { maxAge?: number }): void {
     const maxAge = options?.maxAge ?? this.options.maxAge;
@@ -95,8 +104,10 @@ export class MemoryCache<T> implements ICache<T> {
 
   /**
    * Check if a key exists in the cache and is not expired
-   * @param key Cache key
-   * @return True if the key exists and is not expired
+   * @param {string} key - Cache key
+   * @returns {boolean} True if the key exists and is not expired
+   * @public
+   * @author Zachariah Ayers
    */
   public has(key: string): boolean {
     const item = this.cache.get(key);
@@ -115,8 +126,10 @@ export class MemoryCache<T> implements ICache<T> {
 
   /**
    * Delete a key from the cache
-   * @param key Cache key
-   * @return True if the key was deleted, false if it didn't exist
+   * @param {string} key - Cache key
+   * @returns {boolean} True if the key was deleted, false if it didn't exist
+   * @public
+   * @author Zachariah Ayers
    */
   public delete(key: string): boolean {
     return this.cache.delete(key);
@@ -124,6 +137,9 @@ export class MemoryCache<T> implements ICache<T> {
 
   /**
    * Clear all items from the cache
+   * @returns {void}
+   * @public
+   * @author Zachariah Ayers
    */
   public clear(): void {
     this.cache.clear();
@@ -131,7 +147,9 @@ export class MemoryCache<T> implements ICache<T> {
 
   /**
    * Get the number of items in the cache
-   * @return Number of items in the cache
+   * @returns {number} Number of items in the cache
+   * @public
+   * @author Zachariah Ayers
    */
   public size(): number {
     return this.cache.size;
@@ -139,7 +157,9 @@ export class MemoryCache<T> implements ICache<T> {
 
   /**
    * Get all keys in the cache
-   * @return Array of cache keys
+   * @returns {string[]} Array of cache keys
+   * @public
+   * @author Zachariah Ayers
    */
   public keys(): string[] {
     return Array.from(this.cache.keys());
@@ -147,6 +167,9 @@ export class MemoryCache<T> implements ICache<T> {
 
   /**
    * Start the automatic cleanup timer
+   * @returns {void}
+   * @private
+   * @author Zachariah Ayers
    */
   private startCleanupTimer(): void {
     if (this.cleanupTimer) {
@@ -160,6 +183,9 @@ export class MemoryCache<T> implements ICache<T> {
 
   /**
    * Stop the automatic cleanup timer
+   * @returns {void}
+   * @public
+   * @author Zachariah Ayers
    */
   public stopCleanupTimer(): void {
     if (this.cleanupTimer) {
@@ -170,6 +196,9 @@ export class MemoryCache<T> implements ICache<T> {
 
   /**
    * Clean up expired items from the cache
+   * @returns {void}
+   * @public
+   * @author Zachariah Ayers
    */
   public cleanup(): void {
     const now = Date.now();
@@ -189,6 +218,9 @@ export class MemoryCache<T> implements ICache<T> {
 
   /**
    * Free resources used by the cache
+   * @returns {void}
+   * @public
+   * @author Zachariah Ayers
    */
   public dispose(): void {
     this.stopCleanupTimer();
@@ -201,12 +233,19 @@ export class MemoryCache<T> implements ICache<T> {
 
 /**
  * Factory for creating cache instances
+ * @author Zachariah Ayers
+ * @category (Utils)
+ * @public
  */
 export class CacheFactory {
   /**
    * Create an in-memory cache
-   * @param options Cache options
-   * @return A new memory cache instance
+   * @template T - The type of values stored in the cache
+   * @param {CacheOptions} [options] - Cache options
+   * @returns {ICache<T>} A new memory cache instance
+   * @static
+   * @public
+   * @author Zachariah Ayers
    */
   public static createMemoryCache<T>(options?: CacheOptions): ICache<T> {
     return new MemoryCache<T>(options);
@@ -221,7 +260,11 @@ const globalCache = CacheFactory.createMemoryCache();
 
 /**
  * Get the global cache instance
- * @return The global cache instance
+ * @template T - The type of values to be stored in the cache
+ * @returns {ICache<T>} The global cache instance
+ * @author Zachariah Ayers
+ * @category (Utils)
+ * @public
  */
 export function getGlobalCache<T>(): ICache<T> {
   return globalCache as unknown as ICache<T>;
@@ -230,8 +273,12 @@ export function getGlobalCache<T>(): ICache<T> {
 /**
  * Create a namespace-specific cache instance from the global cache
  * This allows for better organization and prevents key collisions
- * @param namespace The namespace for this cache
- * @return A namespaced cache API
+ * @template T - The type of values to be stored in the cache
+ * @param {string} namespace - The namespace for this cache
+ * @returns {ICache<T>} A namespaced cache API
+ * @author Zachariah Ayers
+ * @category (Utils)
+ * @public
  */
 export function createNamespacedCache<T>(namespace: string): ICache<T> {
   return {
@@ -278,8 +325,12 @@ export function createNamespacedCache<T>(namespace: string): ICache<T> {
 
 /**
  * Create a typed wrapper around a cache for specific data types
- * @param cache The cache instance to wrap
- * @return Typed cache API
+ * @template T - The type to cast the cache values to
+ * @param {ICache<unknown>} cache - The cache instance to wrap
+ * @returns {ICache<T>} Typed cache API
+ * @author Zachariah Ayers
+ * @category (Utils)
+ * @public
  */
 export function createTypedCache<T>(cache: ICache<unknown>): ICache<T> {
   return cache as unknown as ICache<T>;
@@ -287,9 +338,14 @@ export function createTypedCache<T>(cache: ICache<unknown>): ICache<T> {
 
 /**
  * Cache decorator for class methods
- * @param cacheNamespace The namespace for the cache
- * @param keyGenerator Function to generate cache keys from method arguments
- * @param options Cache options
+ * @param {string} cacheNamespace - The namespace for the cache
+ * @param {(...args: unknown[]) => string} [keyGenerator] - Function to generate cache keys from method arguments
+ * @param {object} [options] - Cache options
+ * @param {number} [options.maxAge] - TTL for cached items in milliseconds
+ * @returns {MethodDecorator} The method decorator
+ * @author Zachariah Ayers
+ * @category (Utils)
+ * @public
  */
 export function Cached(
   cacheNamespace: string,
@@ -334,6 +390,11 @@ export function Cached(
 /**
  * HTTP response cache middleware
  * This can be attached to Fastify routes to cache responses
+ * @param {CacheOptions} [options] - Cache options
+ * @returns {Function} Middleware function for Fastify
+ * @author Zachariah Ayers
+ * @category (Utils)
+ * @public
  */
 export function createHttpCacheMiddleware(options?: CacheOptions) {
   const cache = CacheFactory.createMemoryCache<{

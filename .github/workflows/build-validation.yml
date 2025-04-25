@@ -1,0 +1,90 @@
+name: validate_build
+
+on:
+  # Only run via workflow_call
+  workflow_call:
+    outputs:
+      build-success:
+        description: "Indicates if build passed"
+        value: ${{ jobs.build.outputs.build-success }}
+      build-cache-key:
+        description: "The build cache key to use in subsequent jobs"
+        value: ${{ jobs.build.outputs.build-cache-key }}
+  
+  # Allow manual triggering for debugging
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      build-success: ${{ steps.build-validation.outputs.success }}
+      build-cache-key: ${{ steps.build-cache.outputs.cache-key }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          
+      # Define the cache key once to ensure consistency
+      - name: Generate cache key
+        id: cache-key-gen
+        run: echo "key=build-${{ runner.os }}-$(sha256sum package-lock.json | awk '{print $1}')-${{ github.sha }}" >> $GITHUB_OUTPUT
+      
+      # Cache the node_modules and build output
+      - name: Cache Dependencies and Build
+        id: cache-build
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            websites/www.assemblejs.com/node_modules
+            lib
+          key: ${{ steps.cache-key-gen.outputs.key }}
+          restore-keys: |
+            build-${{ runner.os }}-
+      
+      # Install dependencies only if cache miss
+      - name: Install dependencies
+        if: steps.cache-build.outputs.cache-hit != 'true'
+        run: npm ci --include=dev
+      
+      # Install website dependencies if cache miss
+      - name: Install website dependencies
+        if: steps.cache-build.outputs.cache-hit != 'true'
+        run: cd websites/www.assemblejs.com && npm ci
+      
+      # Build project
+      - name: Build project
+        id: build-validation
+        continue-on-error: true
+        run: |
+          # Run build and capture output
+          if npm run build; then
+            echo "Build succeeded!"
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "Build failed!"
+            echo "success=false" >> $GITHUB_OUTPUT
+            exit 1  # This will make the step fail but the job continues due to continue-on-error
+          fi
+      
+      # Save cache key for later jobs
+      - name: Set build cache outputs
+        id: build-cache
+        run: echo "cache-key=${{ steps.cache-key-gen.outputs.key }}" >> $GITHUB_OUTPUT
+          
+      - name: Check build result
+        if: steps.build-validation.outputs.success != 'true'
+        run: |
+          echo "::error::Build failed! Please fix the build errors before merging."
+          exit 1  # This will fail the job

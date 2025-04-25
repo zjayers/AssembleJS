@@ -52,6 +52,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+/node_modules
 
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
@@ -102,6 +103,7 @@ out
 .nuxt
 dist
 lib
+build
 
 # Gatsby files
 .cache/
@@ -140,3 +142,6 @@ lib
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Local development files
+CLAUDE.md

@@ -1,0 +1,79 @@
+name: revalidate_pr
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to revalidate'
+        required: true
+        type: string
+
+jobs:
+  revalidate:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Get PR information
+        id: pr_info
+        uses: actions/github-script@v6
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ github.event.inputs.pr_number }}
+            });
+            
+            return {
+              head_ref: pr.data.head.ref,
+              head_sha: pr.data.head.sha,
+              base_ref: pr.data.base.ref,
+              number: pr.data.number
+            };
+      
+      - name: Add comment to PR
+        uses: actions/github-script@v6
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          script: |
+            const prInfo = ${{ steps.pr_info.outputs.result }};
+            
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prInfo.number,
+              body: `🔄 **Revalidating PR checks**
+              
+              Base branch: \`${prInfo.base_ref}\`
+              Head branch: \`${prInfo.head_ref}\`
+              
+              This will trigger a refresh of all PR checks.`
+            });
+            
+            // Create an empty commit status to trigger a rerun of checks
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: prInfo.head_sha,
+              state: 'pending',
+              context: 'Revalidation trigger',
+              description: 'Triggering revalidation of all PR checks'
+            });
+            
+            // Set to success after a short delay
+            setTimeout(async () => {
+              await github.rest.repos.createCommitStatus({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                sha: prInfo.head_sha,
+                state: 'success',
+                context: 'Revalidation trigger',
+                description: 'All PR checks should be rerunning now'
+              });
+            }, 5000);
