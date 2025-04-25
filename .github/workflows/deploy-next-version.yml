@@ -148,8 +148,6 @@ jobs:
           aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
           role-session-name: GithubActionsSession
           role-duration-seconds: 900
-          mask-aws-account-id: 'no'
-          output-credentials: true
       
       - name: Deploy to S3 next bucket
         run: |
@@ -197,8 +195,6 @@ jobs:
           aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
           role-session-name: GithubActionsSession
           role-duration-seconds: 900
-          mask-aws-account-id: 'no'
-          output-credentials: true
       
       - name: Login to Amazon ECR
         id: login-ecr
@@ -213,50 +209,68 @@ jobs:
           ECR_REPOSITORY_BASE="assemblejs-testbed"
           TIMESTAMP=$(date +%Y%m%d%H%M%S)
           
+          # Create a list of projects with dist directories for parallel processing
           cd testbed
+          PROJECTS_TO_BUILD=()
           for project_dir in assemblejs-*/; do
             project_name="${project_dir%/}"
-            
             if [ -d "$project_dir/dist" ]; then
-              echo "---------------------------------------------"
-              echo "📦 Packaging $project_name for deployment"
+              PROJECTS_TO_BUILD+=("$project_name")
               
-              # Move into project directory
-              cd "$project_name"
-              
-              # Always use the shared Dockerfile template
-              echo "Using shared Dockerfile template for $project_name"
-              if [ -f "../Dockerfile.testbed" ]; then
-                cp "../Dockerfile.testbed" "./Dockerfile"
+              # Set up Dockerfile in advance
+              if [ -f "Dockerfile.testbed" ]; then
+                cp "Dockerfile.testbed" "$project_name/Dockerfile"
               else
-                echo "::error::Shared Dockerfile template not found at ../Dockerfile.testbed"
-                echo "::error::Please create the Dockerfile template before deploying"
+                echo "::error::Shared Dockerfile template not found at Dockerfile.testbed"
                 exit 1
               fi
               
-              # Create ECR repository if it doesn't exist (suppress all output)
+              # Create ECR repository if it doesn't exist (all in parallel)
               echo "Checking/creating ECR repository: $ECR_REPOSITORY_BASE/$project_name"
               aws ecr describe-repositories --repository-names "$ECR_REPOSITORY_BASE/$project_name" > /dev/null 2>&1 || \
-                aws ecr create-repository --repository-name "$ECR_REPOSITORY_BASE/$project_name" > /dev/null 2>&1
-              
-              # Build and push Docker image
-              IMAGE_TAG="$ECR_REGISTRY/$ECR_REPOSITORY_BASE/$project_name:next-$TIMESTAMP"
-              IMAGE_TAG_LATEST="$ECR_REGISTRY/$ECR_REPOSITORY_BASE/$project_name:next-latest"
-              
-              echo "🔨 Building Docker image for $project_name"
-              docker build -t "$IMAGE_TAG" -t "$IMAGE_TAG_LATEST" .
-              
-              echo "⬆️ Pushing Docker image for $project_name"
-              docker push "$IMAGE_TAG"
-              docker push "$IMAGE_TAG_LATEST"
-              
-              echo "✅ Successfully deployed $project_name to ECR"
-              
-              # Move back to testbed directory
-              cd ..
+                aws ecr create-repository --repository-name "$ECR_REPOSITORY_BASE/$project_name" > /dev/null 2>&1 &
             else
               echo "⚠️ No dist directory found for $project_name, skipping"
             fi
           done
           
-          echo "🚀 All testbed projects successfully packaged and deployed to ECR"
+          # Wait for all repository creation tasks to complete
+          wait
+          
+          # Use buildx for parallel builds with caching
+          echo "Found ${#PROJECTS_TO_BUILD[@]} projects to build and deploy"
+          
+          # Start all builds in parallel with buildx
+          for project_name in "${PROJECTS_TO_BUILD[@]}"; do
+            echo "---------------------------------------------"
+            echo "📦 Packaging $project_name for deployment"
+            
+            IMAGE_TAG="$ECR_REGISTRY/$ECR_REPOSITORY_BASE/$project_name:next-$TIMESTAMP"
+            IMAGE_TAG_LATEST="$ECR_REGISTRY/$ECR_REPOSITORY_BASE/$project_name:next-latest"
+            
+            # Use buildx with parallel processing and caching
+            echo "🔨 Building and pushing Docker image for $project_name"
+            docker buildx build \
+              --platform linux/amd64 \
+              --cache-from type=registry,ref="$IMAGE_TAG_LATEST" \
+              --cache-to type=inline \
+              --push \
+              -t "$IMAGE_TAG" \
+              -t "$IMAGE_TAG_LATEST" \
+              -f "$project_name/Dockerfile" \
+              "$project_name" &
+            
+            # Limit parallel jobs to avoid overwhelming the runner
+            # Wait if we have 3 or more jobs running
+            JOBS_RUNNING=$(jobs -p | wc -l)
+            if [ $JOBS_RUNNING -ge 3 ]; then
+              echo "Waiting for a build job to finish before starting more..."
+              wait -n
+            fi
+          done
+          
+          # Wait for all remaining builds to complete
+          echo "Waiting for all remaining builds to complete..."
+          wait
+          
+          echo "🚀 All testbed projects successfully built and pushed to ECR in parallel"

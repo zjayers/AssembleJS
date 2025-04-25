@@ -13,13 +13,13 @@
     "Distributed",
     "UI"
   ],
-  "homepage": "https://github.com/zjayers/assemblejs",
+  "homepage": "https://assemblejs.com",
   "bugs": "https://github.com/zjayers/assemblejs/issues",
   "repository": {
     "type": "git",
     "url": "https://github.com/zjayers/assemblejs.git",
     "description": "AssembleJS Framework Repository",
-    "homepage": "https://github.com/zjayers/assemblejs",
+    "homepage": "https://assemblejs.com",
     "name": "assemblejs",
     "owner": "zjayers",
     "private": "false"
