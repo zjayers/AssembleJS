@@ -1,5 +1,267 @@
 <div class="kb-content">
-    <%- include('kb-search-container') %>
-    <%- include('kb-document-editor') %>
-    <%- include('kb-results') %>
+    <!-- View panel - visible by default -->
+    <div id="view-knowledge-panel" class="kb-panel active-panel">
+        <!-- Tab navigation for view types -->
+        <div class="kb-view-tabs">
+            <button id="search-view-tab" class="kb-view-tab active">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Search
+            </button>
+            <button id="network-view-tab" class="kb-view-tab">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                Connections
+            </button>
+            <button id="collections-view-tab" class="kb-view-tab">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                Collections
+            </button>
+        </div>
+        
+        <!-- Search view (default) -->
+        <div id="kb-search-view-panel" class="kb-view-panel active-panel">
+            <%- include('kb-search-container') %>
+            <%- include('kb-results') %>
+        </div>
+        
+        <!-- Network view (connections) -->
+        <div id="kb-network-view-panel" class="kb-view-panel">
+            <%- include('kb-network-visualization') %>
+        </div>
+        
+        <!-- Collections view -->
+        <div id="kb-collections-view-panel" class="kb-view-panel">
+            <div class="kb-collections-header">
+                <h3>Knowledge Collections</h3>
+                <button id="create-collection-btn" class="primary-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    New Collection
+                </button>
+            </div>
+            <div id="kb-collections-content" class="kb-collections-content">
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Loading collections...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit panel - hidden by default -->
+    <div id="add-knowledge-panel" class="kb-panel">
+        <%- include('kb-document-editor') %>
+    </div>
+    
+    <!-- Validator panel - hidden by default -->
+    <div id="validate-knowledge-panel" class="kb-panel">
+        <%- include('kb-document-validator') %>
+    </div>
 </div>
+
+<style>
+    .kb-panel {
+        display: none;
+    }
+    
+    .active-panel {
+        display: block;
+    }
+    
+    .kb-actions {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .kb-action-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: none;
+        border: none;
+        border-radius: 4px;
+        text-align: left;
+        color: var(--text-color);
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+    
+    .kb-action-button:hover {
+        background-color: var(--hover-bg);
+    }
+    
+    .kb-action-button.active {
+        background-color: var(--selection-bg);
+        color: var(--primary-color);
+    }
+    
+    .kb-action-button.active svg {
+        color: var(--primary-color);
+    }
+    
+    /* View tabs styling */
+    .kb-view-tabs {
+        display: flex;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--border-color);
+        padding-left: 10px;
+    }
+    
+    .kb-view-tab {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 18px;
+        background: none;
+        border: none;
+        border-bottom: 2px solid transparent;
+        font-weight: 500;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .kb-view-tab:hover {
+        background-color: var(--hover-bg);
+        color: var(--primary-color);
+    }
+    
+    .kb-view-tab.active {
+        border-bottom: 2px solid var(--primary-color);
+        color: var(--primary-color);
+    }
+    
+    .kb-view-panel {
+        display: none;
+        padding: 0 10px;
+    }
+    
+    .kb-view-panel.active-panel {
+        display: block;
+    }
+    
+    /* Collections content styling */
+    .kb-collections-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .kb-collections-content {
+        border-radius: 6px;
+        min-height: 300px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Action buttons
+        const viewBtn = document.getElementById('view-knowledge-btn');
+        const addBtn = document.getElementById('add-knowledge-btn');
+        const validateBtn = document.getElementById('validate-knowledge-btn');
+        
+        // Panels
+        const viewPanel = document.getElementById('view-knowledge-panel');
+        const addPanel = document.getElementById('add-knowledge-panel');
+        const validatePanel = document.getElementById('validate-knowledge-panel');
+        
+        // Set up tab switching
+        if (viewBtn && addBtn && validateBtn) {
+            // View knowledge
+            viewBtn.addEventListener('click', () => {
+                // Update active button
+                viewBtn.classList.add('active');
+                addBtn.classList.remove('active');
+                validateBtn.classList.remove('active');
+                
+                // Show view panel, hide others
+                viewPanel.classList.add('active-panel');
+                addPanel.classList.remove('active-panel');
+                validatePanel.classList.remove('active-panel');
+            });
+            
+            // Add knowledge
+            addBtn.addEventListener('click', () => {
+                // Update active button
+                viewBtn.classList.remove('active');
+                addBtn.classList.add('active');
+                validateBtn.classList.remove('active');
+                
+                // Show add panel, hide others
+                viewPanel.classList.remove('active-panel');
+                addPanel.classList.add('active-panel');
+                validatePanel.classList.remove('active-panel');
+            });
+            
+            // Validate document
+            validateBtn.addEventListener('click', () => {
+                // Update active button
+                viewBtn.classList.remove('active');
+                addBtn.classList.remove('active');
+                validateBtn.classList.add('active');
+                
+                // Show validate panel, hide others
+                viewPanel.classList.remove('active-panel');
+                addPanel.classList.remove('active-panel');
+                validatePanel.classList.add('active-panel');
+            });
+        }
+        
+        // View tab switching
+        const searchViewTab = document.getElementById('search-view-tab');
+        const networkViewTab = document.getElementById('network-view-tab');
+        const collectionsViewTab = document.getElementById('collections-view-tab');
+        
+        const searchViewPanel = document.getElementById('kb-search-view-panel');
+        const networkViewPanel = document.getElementById('kb-network-view-panel');
+        const collectionsViewPanel = document.getElementById('kb-collections-view-panel');
+        
+        if (searchViewTab && networkViewTab && collectionsViewTab) {
+            // Search view tab
+            searchViewTab.addEventListener('click', () => {
+                searchViewTab.classList.add('active');
+                networkViewTab.classList.remove('active');
+                collectionsViewTab.classList.remove('active');
+                
+                searchViewPanel.classList.add('active-panel');
+                networkViewPanel.classList.remove('active-panel');
+                collectionsViewPanel.classList.remove('active-panel');
+            });
+            
+            // Network view tab
+            networkViewTab.addEventListener('click', () => {
+                searchViewTab.classList.remove('active');
+                networkViewTab.classList.add('active');
+                collectionsViewTab.classList.remove('active');
+                
+                searchViewPanel.classList.remove('active-panel');
+                networkViewPanel.classList.add('active-panel');
+                collectionsViewPanel.classList.remove('active-panel');
+                
+                // Initialize the network visualization if needed
+                if (typeof initKnowledgeNetwork === 'function') {
+                    initKnowledgeNetwork();
+                }
+            });
+            
+            // Collections view tab
+            collectionsViewTab.addEventListener('click', () => {
+                searchViewTab.classList.remove('active');
+                networkViewTab.classList.remove('active');
+                collectionsViewTab.classList.add('active');
+                
+                searchViewPanel.classList.remove('active-panel');
+                networkViewPanel.classList.remove('active-panel');
+                collectionsViewPanel.classList.add('active-panel');
+                
+                // Load collections if needed
+                if (typeof loadCollections === 'function') {
+                    loadCollections();
+                }
+            });
+        }
+    });
+</script>

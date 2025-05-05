@@ -1,12 +1,12 @@
 // Initialize the Connections view
 function initConnectionsView() {
-    console.log('Connections view initialized');
-    
-    const connectionsView = document.getElementById('connections-view');
-    if (!connectionsView) return;
-    
-    // Render initial connections view
-    connectionsView.innerHTML = `
+  console.log("Connections view initialized");
+
+  const connectionsView = document.getElementById("connections-view");
+  if (!connectionsView) return;
+
+  // Render initial connections view
+  connectionsView.innerHTML = `
         <div class="connections-header">
             <h2>System Connections</h2>
             <button id="add-connection-btn" class="primary-button">
@@ -139,26 +139,26 @@ function initConnectionsView() {
             </table>
         </div>
     `;
-    
-    // Add event listener for add connection button
-    const addConnectionBtn = connectionsView.querySelector('#add-connection-btn');
-    const addConnectionCard = connectionsView.querySelector('.add-connection');
-    
-    if (addConnectionBtn) {
-        addConnectionBtn.addEventListener('click', showAddConnectionModal);
-    }
-    
-    if (addConnectionCard) {
-        addConnectionCard.addEventListener('click', showAddConnectionModal);
-    }
+
+  // Add event listener for add connection button
+  const addConnectionBtn = connectionsView.querySelector("#add-connection-btn");
+  const addConnectionCard = connectionsView.querySelector(".add-connection");
+
+  if (addConnectionBtn) {
+    addConnectionBtn.addEventListener("click", showAddConnectionModal);
+  }
+
+  if (addConnectionCard) {
+    addConnectionCard.addEventListener("click", showAddConnectionModal);
+  }
 }
 
 // Show modal to add a new connection
 function showAddConnectionModal() {
-    // Create modal element
-    const modal = document.createElement('div');
-    modal.className = 'modal';
-    modal.innerHTML = `
+  // Create modal element
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Add New Connection</h3>
@@ -256,96 +256,96 @@ function showAddConnectionModal() {
             </div>
         </div>
     `;
-    
-    // Add the modal to the document
-    document.body.appendChild(modal);
-    
-    // Handle connection type selection
-    const connectionTypes = modal.querySelectorAll('.connection-type-item');
-    const configDivs = modal.querySelectorAll('.connection-config');
-    
-    connectionTypes.forEach(item => {
-        item.addEventListener('click', () => {
-            // Update selection
-            connectionTypes.forEach(t => t.classList.remove('selected'));
-            item.classList.add('selected');
-            
-            // Show corresponding config
-            const type = item.getAttribute('data-type');
-            configDivs.forEach(div => {
-                div.style.display = 'none';
-            });
-            
-            const configDiv = modal.querySelector(`#${type}-config`);
-            if (configDiv) {
-                configDiv.style.display = 'block';
-            }
-        });
+
+  // Add the modal to the document
+  document.body.appendChild(modal);
+
+  // Handle connection type selection
+  const connectionTypes = modal.querySelectorAll(".connection-type-item");
+  const configDivs = modal.querySelectorAll(".connection-config");
+
+  connectionTypes.forEach((item) => {
+    item.addEventListener("click", () => {
+      // Update selection
+      connectionTypes.forEach((t) => t.classList.remove("selected"));
+      item.classList.add("selected");
+
+      // Show corresponding config
+      const type = item.getAttribute("data-type");
+      configDivs.forEach((div) => {
+        div.style.display = "none";
+      });
+
+      const configDiv = modal.querySelector(`#${type}-config`);
+      if (configDiv) {
+        configDiv.style.display = "block";
+      }
     });
-    
-    // Add event listeners
-    const closeBtn = modal.querySelector('.modal-close-btn');
-    const cancelBtn = modal.querySelector('.modal-cancel-btn');
-    
-    function closeModal() {
-        document.body.removeChild(modal);
+  });
+
+  // Add event listeners
+  const closeBtn = modal.querySelector(".modal-close-btn");
+  const cancelBtn = modal.querySelector(".modal-cancel-btn");
+
+  function closeModal() {
+    document.body.removeChild(modal);
+  }
+
+  closeBtn.addEventListener("click", closeModal);
+  cancelBtn.addEventListener("click", closeModal);
+
+  // Handle outside click
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      closeModal();
     }
-    
-    closeBtn.addEventListener('click', closeModal);
-    cancelBtn.addEventListener('click', closeModal);
-    
-    // Handle outside click
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-    
-    // Handle add connection
-    const addBtn = modal.querySelector('#add-connection-confirm-btn');
-    addBtn.addEventListener('click', () => {
-        const selectedType = modal.querySelector('.connection-type-item.selected');
-        if (!selectedType) return;
-        
-        const type = selectedType.getAttribute('data-type');
-        
-        // In a real application, we would validate and save the connection
-        // For this demo, we'll just close the modal and show a notification
-        
-        // Create notification
-        const notification = document.createElement('div');
-        notification.className = 'notification success';
-        notification.innerHTML = `
+  });
+
+  // Handle add connection
+  const addBtn = modal.querySelector("#add-connection-confirm-btn");
+  addBtn.addEventListener("click", () => {
+    const selectedType = modal.querySelector(".connection-type-item.selected");
+    if (!selectedType) return;
+
+    const type = selectedType.getAttribute("data-type");
+
+    // In a real application, we would validate and save the connection
+    // For this demo, we'll just close the modal and show a notification
+
+    // Create notification
+    const notification = document.createElement("div");
+    notification.className = "notification success";
+    notification.innerHTML = `
             <div class="notification-content">
                 <div class="notification-title">Connection Added</div>
                 <div class="notification-message">Successfully added new ${type} connection</div>
             </div>
             <button class="notification-close">&times;</button>
         `;
-        
-        // Add to document
-        document.body.appendChild(notification);
-        
-        // Remove after delay
-        setTimeout(() => {
-            if (document.body.contains(notification)) {
-                document.body.removeChild(notification);
-            }
-        }, 5000);
-        
-        // Add close button functionality
-        const notifCloseBtn = notification.querySelector('.notification-close');
-        if (notifCloseBtn) {
-            notifCloseBtn.addEventListener('click', () => {
-                if (document.body.contains(notification)) {
-                    document.body.removeChild(notification);
-                }
-            });
+
+    // Add to document
+    document.body.appendChild(notification);
+
+    // Remove after delay
+    setTimeout(() => {
+      if (document.body.contains(notification)) {
+        document.body.removeChild(notification);
+      }
+    }, 5000);
+
+    // Add close button functionality
+    const notifCloseBtn = notification.querySelector(".notification-close");
+    if (notifCloseBtn) {
+      notifCloseBtn.addEventListener("click", () => {
+        if (document.body.contains(notification)) {
+          document.body.removeChild(notification);
         }
-        
-        // Close modal
-        closeModal();
-    });
+      });
+    }
+
+    // Close modal
+    closeModal();
+  });
 }
 
 export { initConnectionsView };

@@ -3,7 +3,7 @@
  * Handles tasks and admin-specific operations
  */
 
-const tasksController = require('./tasksController');
+const tasksController = require("./tasksController");
 
 // Process a new task - delegates to the tasks controller
 const processTask = (req, res) => {
@@ -11,5 +11,5 @@ const processTask = (req, res) => {
 };
 
 module.exports = {
-  processTask
+  processTask,
 };

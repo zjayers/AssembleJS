@@ -3,7 +3,11 @@
  * Handles task creation, retrieval, and updates
  */
 
-const tasksDB = require('../models/tasksDB');
+const tasksDB = require("../models/tasksDB");
+const fileDB = require("../models/fileDB");
+const taskExecutionService = require("../services/taskExecutionService");
+const enhancedTaskExecutionService = require("../services/enhancedTaskExecutionService");
+const eventService = require("../services/eventService");
 
 // Get all tasks
 const getAllTasks = async (req, res) => {
@@ -11,11 +15,11 @@ const getAllTasks = async (req, res) => {
     const tasks = await tasksDB.getAllTasks();
     res.json(tasks);
   } catch (error) {
-    console.error('Error getting tasks:', error);
+    console.error("Error getting tasks:", error);
     res.status(500).json({
       success: false,
-      message: 'Error retrieving tasks',
-      error: error.message
+      message: "Error retrieving tasks",
+      error: error.message,
     });
   }
 };
@@ -25,21 +29,21 @@ const getTaskById = async (req, res) => {
   try {
     const { id } = req.params;
     const task = await tasksDB.getTaskById(id);
-    
+
     if (!task) {
       return res.status(404).json({
         success: false,
-        message: `Task with ID ${id} not found`
+        message: `Task with ID ${id} not found`,
       });
     }
-    
+
     res.json(task);
   } catch (error) {
     console.error(`Error getting task ${req.params.id}:`, error);
     res.status(500).json({
       success: false,
-      message: 'Error retrieving task',
-      error: error.message
+      message: "Error retrieving task",
+      error: error.message,
     });
   }
 };
@@ -47,35 +51,60 @@ const getTaskById = async (req, res) => {
 // Create a new task
 const createTask = async (req, res) => {
   try {
-    const { task_description } = req.body;
-    
+    const { task_description, task_title, use_enhanced = true, create_pr = false } = req.body;
+
     if (!task_description) {
       return res.status(400).json({
         success: false,
-        message: 'Task description is required'
+        message: "Task description is required",
       });
     }
-    
+
     // Create the task
     const task = await tasksDB.createTask({
-      description: task_description
+      title: task_title || 'Task Implementation',
+      description: task_description,
+      create_pr: !!create_pr
     });
+
+    // Emit task created event
+    eventService.emitTaskUpdate(
+      task.id,
+      eventService.EVENT_TYPES.TASK_CREATED,
+      { task }
+    );
+
+    // Choose which service to use based on configuration
+    const executionService = use_enhanced ? enhancedTaskExecutionService : taskExecutionService;
     
-    // Start the pipeline simulation
-    startTaskPipeline(task.id);
-    
+    // Start the task execution
+    executionService.startTaskExecution(task.id).catch((error) => {
+      console.error(
+        `Error in task execution pipeline for task ${task.id}:`,
+        error
+      );
+      
+      // Emit task failed event
+      eventService.emitTaskUpdate(
+        task.id,
+        eventService.EVENT_TYPES.TASK_FAILED,
+        { error: error.message }
+      );
+    });
+
     res.json({
       success: true,
-      message: 'Task created successfully',
+      message: "Task created successfully",
       task_id: task.id,
-      response: 'Task received and being processed by the Admin agent.'
+      mode: use_enhanced ? "enhanced" : "standard",
+      response: `Task received and being processed by the ${use_enhanced ? "Enhanced" : "Standard"} execution pipeline.`,
     });
   } catch (error) {
-    console.error('Error creating task:', error);
+    console.error("Error creating task:", error);
     res.status(500).json({
       success: false,
-      message: 'Error creating task',
-      error: error.message
+      message: "Error creating task",
+      error: error.message,
     });
   }
 };
@@ -85,20 +114,20 @@ const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
-    
+
     const updatedTask = await tasksDB.updateTask(id, updateData);
-    
+
     res.json({
       success: true,
-      message: 'Task updated successfully',
-      task: updatedTask
+      message: "Task updated successfully",
+      task: updatedTask,
     });
   } catch (error) {
     console.error(`Error updating task ${req.params.id}:`, error);
     res.status(500).json({
       success: false,
-      message: 'Error updating task',
-      error: error.message
+      message: "Error updating task",
+      error: error.message,
     });
   }
 };
@@ -108,27 +137,34 @@ const addTaskLog = async (req, res) => {
   try {
     const { id } = req.params;
     const { log } = req.body;
-    
+
     if (!log) {
       return res.status(400).json({
         success: false,
-        message: 'Log message is required'
+        message: "Log message is required",
       });
     }
-    
+
     const updatedTask = await tasksDB.addTaskLog(id, log);
-    
+
+    // Emit task log added event
+    eventService.emitTaskUpdate(
+      id,
+      eventService.EVENT_TYPES.TASK_LOG_ADDED,
+      { task: updatedTask, log }
+    );
+
     res.json({
       success: true,
-      message: 'Log added successfully',
-      task: updatedTask
+      message: "Log added successfully",
+      task: updatedTask,
     });
   } catch (error) {
     console.error(`Error adding log to task ${req.params.id}:`, error);
     res.status(500).json({
       success: false,
-      message: 'Error adding log to task',
-      error: error.message
+      message: "Error adding log to task",
+      error: error.message,
     });
   }
 };
@@ -138,27 +174,49 @@ const updateTaskStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, response } = req.body;
-    
+
     if (!status) {
       return res.status(400).json({
         success: false,
-        message: 'Status is required'
+        message: "Status is required",
       });
     }
-    
+
     const updatedTask = await tasksDB.updateTaskStatus(id, status, response);
+
+    // Emit task status changed event
+    eventService.emitTaskUpdate(
+      id,
+      eventService.EVENT_TYPES.TASK_STATUS_CHANGED,
+      { task: updatedTask, status, response }
+    );
     
+    // If the status is completed or failed, emit the corresponding event
+    if (status === 'completed') {
+      eventService.emitTaskUpdate(
+        id,
+        eventService.EVENT_TYPES.TASK_COMPLETED,
+        { task: updatedTask }
+      );
+    } else if (status === 'failed') {
+      eventService.emitTaskUpdate(
+        id,
+        eventService.EVENT_TYPES.TASK_FAILED,
+        { task: updatedTask, error: response }
+      );
+    }
+
     res.json({
       success: true,
-      message: 'Task status updated successfully',
-      task: updatedTask
+      message: "Task status updated successfully",
+      task: updatedTask,
     });
   } catch (error) {
     console.error(`Error updating task status ${req.params.id}:`, error);
     res.status(500).json({
       success: false,
-      message: 'Error updating task status',
-      error: error.message
+      message: "Error updating task status",
+      error: error.message,
     });
   }
 };
@@ -167,167 +225,148 @@ const updateTaskStatus = async (req, res) => {
 const searchTasks = async (req, res) => {
   try {
     const { query, limit = 10 } = req.body;
-    
+
     if (!query) {
       return res.status(400).json({
         success: false,
-        message: 'Search query is required'
+        message: "Search query is required",
       });
     }
-    
+
     const results = await tasksDB.searchTasks(query, limit);
-    
+
     res.json(results);
   } catch (error) {
-    console.error('Error searching tasks:', error);
+    console.error("Error searching tasks:", error);
     res.status(500).json({
       success: false,
-      message: 'Error searching tasks',
-      error: error.message
+      message: "Error searching tasks",
+      error: error.message,
     });
   }
 };
 
-// Pipeline simulation
-const startTaskPipeline = async (taskId) => {
-  // Define a smooth rainbow color spectrum for agents
-  const agentColors = {
-    'Admin': '#F44336',       // Red
-    'Types': '#E91E63',       // Pink
-    'Utils': '#9C27B0',       // Purple
-    'Validator': '#673AB7',   // Deep Purple
-    'Developer': '#3F51B5',   // Indigo
-    'Browser': '#2196F3',     // Blue
-    'Version': '#03A9F4',     // Light Blue
-    'Server': '#00BCD4',      // Cyan
-    'Testbed': '#009688',     // Teal
-    'Pipeline': '#4CAF50',    // Green
-    'Generator': '#8BC34A',   // Light Green
-    'Config': '#CDDC39',      // Lime
-    'Docs': '#FFEB3B',        // Yellow
-    'Git': '#FFC107',         // Amber
-    'Analyzer': '#FF9800',    // Orange
-    'Bundler': '#FF5722'      // Deep Orange
-  };
+// Endpoint to get task execution status
+const getTaskExecutionStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const task = await tasksDB.getTaskById(id);
 
-  const pipelineSteps = [
-    { 
-      name: 'Admin Analysis', 
-      agent: 'Admin',
-      color: agentColors.Admin,
-      delay: 5000,
-      details: 'Analyzing task requirements...',
-      knowledge: taskId => `Task Analysis for task ${taskId}:\n\nThis task requires the following agents:\n- Config agent for environment setup\n- Developer agent for code implementation\n- Validator agent for testing\n- Git agent for PR creation`
-    },
-    { 
-      name: 'Planning', 
-      agent: 'Config',
-      color: agentColors.Config,
-      delay: 7000,
-      details: 'Determining specialist agents needed',
-      knowledge: taskId => `Task Plan for task ${taskId}:\n\n1. Analyze the requirements\n2. Prepare development environment\n3. Implement requested functionality\n4. Test the changes\n5. Create pull request`
-    },
-    { 
-      name: 'Execution', 
-      agent: 'Developer',
-      color: agentColors.Developer,
-      delay: 10000,
-      details: 'Code changes by specialist agents',
-      knowledge: taskId => `Code implementation notes for task ${taskId}:\n\nImplemented the following changes:\n- Updated UI components\n- Added vector database integration\n- Fixed styling issues\n- Added file upload capabilities`
-    },
-    { 
-      name: 'Validation', 
-      agent: 'Validator',
-      color: agentColors.Validator,
-      delay: 8000,
-      details: 'Testing and quality assurance',
-      knowledge: taskId => `Test results for task ${taskId}:\n\nAll tests passing:\n- Unit tests: 32 passed\n- Integration tests: 8 passed\n- E2E tests: 3 passed\n\nCode coverage: 94%`
-    },
-    { 
-      name: 'Git Operations', 
-      agent: 'Git',
-      color: agentColors.Git,
-      delay: 6000,
-      details: 'Creating PR and code review',
-      knowledge: taskId => `Pull request created for task ${taskId}:\n\nPR #123 - Knowledge Base UI and Vector DB Integration\n\nChanges:\n- Added Knowledge Base UI\n- Integrated ChromaDB\n- Added agent-specific collections\n- Improved styling`
-    }
-  ];
-
-  // Ensure task exists
-  const task = await tasksDB.getTaskById(taskId);
-  if (!task) {
-    console.error(`Cannot start pipeline: Task ${taskId} not found`);
-    return;
-  }
-
-  // Add pipeline initialized log
-  await tasksDB.addTaskLog(taskId, 'Pipeline initialized');
-  await tasksDB.addTaskLog(taskId, 'Admin agent analyzing task...');
-
-  // Process each step sequentially
-  let currentStep = 0;
-
-  const processStep = async () => {
-    if (currentStep >= pipelineSteps.length) {
-      // Pipeline complete
-      await tasksDB.updateTaskStatus(taskId, 'success', 
-        'Task completed successfully! PR created: https://github.com/example/repo/pull/123');
-      await tasksDB.addTaskLog(taskId, 'Pipeline completed successfully');
-      
-      // Add final knowledge to Git agent about task completion
-      await fileDB.addAgentKnowledge('Git', {
-        document: `Task ${taskId} completed successfully. PR #123 created for "${task.description}". Ready for review.`,
-        metadata: {
-          type: 'task_completion',
-          task_id: taskId,
-          timestamp: new Date().toISOString(),
-          pr_number: '123'
-        }
+    if (!task) {
+      return res.status(404).json({
+        success: false,
+        message: `Task with ID ${id} not found`,
       });
-      
-      await tasksDB.addTaskLog(taskId, 'Git agent recorded task completion');
-      return;
     }
 
-    const step = pipelineSteps[currentStep];
+    // Add agent color information for UI display
+    const agents = fileDB.agents;
     
-    // Process step (simulated delay)
-    setTimeout(async () => {
-      // Mark step as completed
-      await tasksDB.addTaskLog(taskId, `Completed step: ${step.name}`);
-      
-      // Add knowledge to agent's collection
+    // Get additional execution information for enhanced tasks
+    let executionInfo = {};
+    let executionService = null;
+    
+    // Determine which service to use based on task properties
+    // If use_enhanced is defined in the task, use that value
+    // Otherwise, check if create_pr is set (implies enhanced)
+    if (task.use_enhanced !== undefined) {
+      executionService = task.use_enhanced ? enhancedTaskExecutionService : taskExecutionService;
+    } else if (task.create_pr) {
+      executionService = enhancedTaskExecutionService;
+    } else {
+      executionService = taskExecutionService;
+    }
+    
+    // If task is being executed by the enhanced service, get git info
+    if (executionService === enhancedTaskExecutionService) {
       try {
-        await fileDB.addAgentKnowledge(step.agent, {
-          document: step.knowledge(taskId),
-          metadata: {
-            type: 'task_knowledge',
-            task_id: taskId,
-            step: step.name,
-            timestamp: new Date().toISOString()
-          }
-        });
-        
-        await tasksDB.addTaskLog(taskId, `${step.agent} agent added knowledge to its collection`);
-      } catch (error) {
-        console.error(`Error adding ${step.agent} agent knowledge:`, error);
-        await tasksDB.addTaskLog(taskId, `Error adding ${step.agent} agent knowledge: ${error.message}`);
+        const gitService = require('../services/gitService');
+        if (await gitService.isGitRepository()) {
+          executionInfo.git = {
+            isRepo: true,
+            branch: await gitService.getCurrentBranch(),
+            status: await gitService.getStatus()
+          };
+        } else {
+          executionInfo.git = { isRepo: false };
+        }
+      } catch (gitError) {
+        console.warn('Error getting git information:', gitError);
+        executionInfo.git = { error: gitError.message };
       }
-      
-      // Start next step
-      currentStep++;
-      if (currentStep < pipelineSteps.length) {
-        await tasksDB.addTaskLog(taskId, `Starting step: ${pipelineSteps[currentStep].name}`);
-        processStep();
-      } else {
-        // This will complete the pipeline
-        processStep();
-      }
-    }, step.delay);
-  };
+    }
 
-  // Start the pipeline
-  processStep();
+    res.json({
+      success: true,
+      task,
+      agents: agents.map((agent) => ({
+        name: agent,
+        color: executionService.getAgentColor(agent),
+      })),
+      executionMode: executionService === enhancedTaskExecutionService ? 'enhanced' : 'standard',
+      executionInfo
+    });
+  } catch (error) {
+    console.error(
+      `Error getting task execution status ${req.params.id}:`,
+      error
+    );
+    res.status(500).json({
+      success: false,
+      message: "Error retrieving task execution status",
+      error: error.message,
+    });
+  }
+};
+
+// Stream task updates in real-time using Server-Sent Events (SSE)
+const streamTaskUpdates = (req, res) => {
+  const { id } = req.params;
+  
+  // Set headers for SSE
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive'
+  });
+  
+  // Send initial connection established event
+  res.write(`data: ${JSON.stringify({ event: 'connected', taskId: id })}\n\n`);
+  
+  // Create event listener
+  const handleTaskEvent = (data) => {
+    res.write(`data: ${JSON.stringify(data)}\n\n`);
+  };
+  
+  // Subscribe to task updates
+  const unsubscribe = eventService.subscribeToTask(id, handleTaskEvent);
+  
+  // Handle client disconnect
+  req.on('close', () => {
+    unsubscribe();
+  });
+};
+
+// Get subscriber count for a task
+const getTaskSubscribers = async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const count = eventService.getSubscriberCount(id);
+    
+    res.json({
+      success: true,
+      taskId: id,
+      subscriberCount: count
+    });
+  } catch (error) {
+    console.error(`Error getting subscribers for task ${id}:`, error);
+    res.status(500).json({
+      success: false,
+      message: 'Error getting task subscribers',
+      error: error.message
+    });
+  }
 };
 
 module.exports = {
@@ -337,5 +376,8 @@ module.exports = {
   updateTask,
   addTaskLog,
   updateTaskStatus,
-  searchTasks
+  searchTasks,
+  getTaskExecutionStatus,
+  streamTaskUpdates,
+  getTaskSubscribers
 };

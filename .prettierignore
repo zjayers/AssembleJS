@@ -10,6 +10,7 @@
 *.ttf
 *.eot
 *.webmanifest
+*.ejs
 
 # Specific asset files
 src/assets/

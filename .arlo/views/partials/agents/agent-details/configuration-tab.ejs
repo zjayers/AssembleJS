@@ -1,63 +1,295 @@
 <!-- Configuration Tab -->
 <div class="agent-tab-content active" id="configuration-tab">
-    <div class="config-section">
-        <h4>Agent Settings</h4>
-        <div class="config-form">
-            <div class="config-group">
-                <label for="agent-model">Language Model</label>
-                <select id="agent-model">
-                    <option value="claude-3.5-sonnet">Claude 3.5 Sonnet</option>
-                    <option value="claude-3-opus">Claude 3 Opus</option>
-                    <option value="claude-3-sonnet">Claude 3 Sonnet</option>
-                    <option value="local-ollama">Local (Ollama)</option>
-                </select>
-            </div>
-            <div class="config-group">
-                <label for="agent-priority">Priority Level</label>
-                <select id="agent-priority">
-                    <option value="high">High</option>
-                    <option value="normal" selected>Normal</option>
-                    <option value="low">Low</option>
-                </select>
-            </div>
-            <div class="config-group">
-                <label for="agent-specialization">Specialization Area</label>
-                <input type="text" id="agent-specialization" value="Project coordinator and workflow orchestrator">
+    <div class="agent-config-container">
+        <div class="agent-config-header">
+            <h3>Agent Configuration</h3>
+            <div class="config-actions">
+                <button class="btn btn-sm btn-primary" id="save-agent-config">Save Changes</button>
+                <button class="btn btn-sm btn-outline-secondary" id="reset-agent-config">Reset Defaults</button>
             </div>
         </div>
-    </div>
 
-    <div class="config-section">
-        <h4>Advanced Parameters</h4>
-        <div class="config-form">
-            <div class="config-group">
-                <label for="agent-temperature">Temperature</label>
-                <div class="range-with-value">
-                    <input type="range" id="agent-temperature" min="0" max="1" step="0.01" value="0.7">
-                    <span class="range-value">0.7</span>
+        <!-- Main Configuration Options -->
+        <div class="config-section">
+            <h4>Agent Settings</h4>
+            <div class="config-form">
+                <div class="config-group">
+                    <label for="agent-name">Agent Name</label>
+                    <input type="text" id="agent-name" value="Admin" class="form-control">
                 </div>
-            </div>
-            <div class="config-group">
-                <label for="agent-context-window">Context Window (tokens)</label>
-                <input type="number" id="agent-context-window" value="100000" min="1000" step="1000">
-            </div>
-            <div class="config-group">
-                <div class="checkbox-control">
-                    <input type="checkbox" id="agent-system-access" checked>
-                    <label for="agent-system-access">System Access</label>
+                
+                <div class="config-group">
+                    <label for="agent-model">Language Model</label>
+                    <select id="agent-model" class="form-control">
+                        <option value="claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+                        <option value="claude-3-opus">Claude 3 Opus</option>
+                        <option value="claude-3-sonnet">Claude 3 Sonnet</option>
+                        <option value="local-ollama">Local (Ollama)</option>
+                    </select>
                 </div>
-            </div>
-            <div class="config-group">
-                <div class="checkbox-control">
-                    <input type="checkbox" id="agent-git-access" checked>
-                    <label for="agent-git-access">Git Repository Access</label>
+                
+                <div class="config-group">
+                    <label for="agent-role">Primary Role</label>
+                    <input type="text" id="agent-role" class="form-control" value="Project coordinator and workflow orchestrator">
+                </div>
+                
+                <div class="config-group">
+                    <label for="agent-specialization">Area of Specialization</label>
+                    <select id="agent-specialization" class="form-control">
+                        <option value="coordination" selected>Task Coordination</option>
+                        <option value="codebase">Codebase Management</option>
+                        <option value="documentation">Documentation</option>
+                        <option value="architecture">Architecture</option>
+                        <option value="infrastructure">Infrastructure</option>
+                        <option value="testing">Testing</option>
+                        <option value="performance">Performance</option>
+                    </select>
+                </div>
+                
+                <div class="config-group">
+                    <label for="agent-priority">Task Priority</label>
+                    <select id="agent-priority" class="form-control">
+                        <option value="high">High</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="low">Low</option>
+                    </select>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="config-buttons">
-        <button class="secondary-button" id="reset-agent-config">Reset to Default</button>
-        <button id="save-agent-config">Save Configuration</button>
+        
+        <!-- Model Parameters -->
+        <div class="config-section">
+            <h4>Model Parameters</h4>
+            <div class="config-form">
+                <div class="config-group">
+                    <label for="agent-temperature">Temperature</label>
+                    <div class="range-with-value">
+                        <input type="range" id="agent-temperature" min="0" max="1" step="0.01" value="0.7" class="form-control">
+                        <span class="range-value">0.7</span>
+                    </div>
+                </div>
+                
+                <div class="config-group">
+                    <label for="agent-context-window">Context Window (tokens)</label>
+                    <input type="number" id="agent-context-window" value="100000" min="1000" step="1000" class="form-control">
+                </div>
+                
+                <div class="config-group">
+                    <label for="reasoning-depth">Reasoning Depth</label>
+                    <select id="reasoning-depth" class="form-control">
+                        <option value="surface">Surface Level</option>
+                        <option value="standard" selected>Standard</option>
+                        <option value="deep">Deep Analysis</option>
+                        <option value="comprehensive">Comprehensive</option>
+                    </select>
+                </div>
+                
+                <div class="config-group">
+                    <label for="agent-verbosity">Verbosity Level</label>
+                    <select id="agent-verbosity" class="form-control">
+                        <option value="minimal">Minimal</option>
+                        <option value="standard" selected>Standard</option>
+                        <option value="detailed">Detailed</option>
+                        <option value="debug">Debug</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Access & Permissions -->
+        <div class="config-section">
+            <h4>Access & Permissions</h4>
+            <div class="config-form">
+                <div class="config-group">
+                    <div class="checkbox-control">
+                        <input type="checkbox" id="agent-system-access" checked>
+                        <label for="agent-system-access">System Access</label>
+                    </div>
+                </div>
+                
+                <div class="config-group">
+                    <div class="checkbox-control">
+                        <input type="checkbox" id="agent-git-access" checked>
+                        <label for="agent-git-access">Git Repository Access</label>
+                    </div>
+                </div>
+                
+                <div class="config-group">
+                    <div class="checkbox-control">
+                        <input type="checkbox" id="agent-file-write-access" checked>
+                        <label for="agent-file-write-access">File Write Access</label>
+                    </div>
+                </div>
+                
+                <div class="config-group">
+                    <div class="checkbox-control">
+                        <input type="checkbox" id="agent-api-access" checked>
+                        <label for="agent-api-access">External API Access</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Knowledge Configuration -->
+        <div class="config-section">
+            <h4>Knowledge Management</h4>
+            <div class="config-form">
+                <div class="config-group">
+                    <label for="agent-knowledge-sources">Knowledge Sources</label>
+                    <div class="input-tags-container">
+                        <div class="input-tags" id="knowledge-sources-tags">
+                            <span class="kb-input-tag">codebase<button class="kb-tag-remove">×</button></span>
+                            <span class="kb-input-tag">documentation<button class="kb-tag-remove">×</button></span>
+                            <span class="kb-input-tag">workflow<button class="kb-tag-remove">×</button></span>
+                            <input type="text" id="knowledge-sources-input" class="tag-input" placeholder="Add source...">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="config-group">
+                    <label for="knowledge-update-frequency">Knowledge Update Frequency</label>
+                    <select id="knowledge-update-frequency" class="form-control">
+                        <option value="realtime">Real-time</option>
+                        <option value="daily" selected>Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="manual">Manual Only</option>
+                    </select>
+                </div>
+                
+                <div class="config-group">
+                    <div class="checkbox-control">
+                        <input type="checkbox" id="auto-learn-from-tasks" checked>
+                        <label for="auto-learn-from-tasks">Automatically Learn from Task Executions</label>
+                    </div>
+                </div>
+                
+                <div class="config-group">
+                    <div class="checkbox-control">
+                        <input type="checkbox" id="enable-agent-memory" checked>
+                        <label for="enable-agent-memory">Enable Long-term Memory</label>
+                    </div>
+                </div>
+                
+                <div class="config-group">
+                    <label for="memory-retention">Memory Retention Period</label>
+                    <select id="memory-retention" class="form-control">
+                        <option value="session">Current Session Only</option>
+                        <option value="day">24 Hours</option>
+                        <option value="week" selected>1 Week</option>
+                        <option value="month">1 Month</option>
+                        <option value="permanent">Permanent</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Collaboration Settings -->
+        <div class="config-section">
+            <h4>Collaboration Settings</h4>
+            <div class="config-form">
+                <div class="config-group">
+                    <label>Collaborates With</label>
+                    <div class="collaboration-agents">
+                        <!-- These checkboxes will be populated dynamically -->
+                        <div class="collab-agent-item">
+                            <input type="checkbox" id="collab-server" class="collab-checkbox" checked>
+                            <label for="collab-server">Server</label>
+                        </div>
+                        <div class="collab-agent-item">
+                            <input type="checkbox" id="collab-browser" class="collab-checkbox" checked>
+                            <label for="collab-browser">Browser</label>
+                        </div>
+                        <div class="collab-agent-item">
+                            <input type="checkbox" id="collab-utils" class="collab-checkbox" checked>
+                            <label for="collab-utils">Utils</label>
+                        </div>
+                        <div class="collab-agent-item">
+                            <input type="checkbox" id="collab-validator" class="collab-checkbox" checked>
+                            <label for="collab-validator">Validator</label>
+                        </div>
+                        <div class="collab-agent-item">
+                            <input type="checkbox" id="collab-git" class="collab-checkbox" checked>
+                            <label for="collab-git">Git</label>
+                        </div>
+                        <div class="collab-agent-item">
+                            <input type="checkbox" id="collab-docs" class="collab-checkbox" checked>
+                            <label for="collab-docs">Docs</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="config-group">
+                    <label for="collaboration-mode">Collaboration Mode</label>
+                    <select id="collaboration-mode" class="form-control">
+                        <option value="proactive">Proactive</option>
+                        <option value="reactive" selected>Reactive</option>
+                        <option value="minimal">Minimal</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- System Prompt Editor -->
+        <div class="config-section">
+            <h4>System Prompt</h4>
+            <div class="config-form">
+                <div class="config-group">
+                    <label for="agent-system-prompt">AI System Prompt</label>
+                    <div class="prompt-editor-container">
+                        <textarea id="agent-system-prompt" class="form-control prompt-editor" rows="10" placeholder="Enter system prompt instructions for this agent..."></textarea>
+                    </div>
+                    <p class="form-help">Define how this agent should behave and what specialized knowledge it should have. Min 10 characters.</p>
+                </div>
+                <div class="prompt-actions">
+                    <button id="update-system-prompt" class="btn btn-primary">Update System Prompt</button>
+                    <button id="reset-system-prompt" class="btn btn-outline-secondary">Reset to Default</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Custom Attributes -->
+        <div class="config-section">
+            <h4 class="section-toggle">
+                Custom Attributes
+                <span class="toggle-icon">+</span>
+            </h4>
+            <div class="custom-attributes" style="display: none;">
+                <div class="attributes-list" id="custom-attributes-list">
+                    <!-- Custom attributes will be added here -->
+                    <div class="attribute-item">
+                        <div class="attribute-content">
+                            <div class="attribute-key">workflow_style</div>
+                            <div class="attribute-value">collaborative</div>
+                        </div>
+                        <div class="attribute-actions">
+                            <button class="delete-attribute-btn">×</button>
+                        </div>
+                    </div>
+                    <div class="attribute-item">
+                        <div class="attribute-content">
+                            <div class="attribute-key">leadership_mode</div>
+                            <div class="attribute-value">directive</div>
+                        </div>
+                        <div class="attribute-actions">
+                            <button class="delete-attribute-btn">×</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="add-attribute-form">
+                    <div class="config-group">
+                        <label for="attribute-key">Attribute Key</label>
+                        <input type="text" id="attribute-key" class="form-control" placeholder="e.g., codeReviewStyle">
+                    </div>
+                    
+                    <div class="config-group">
+                        <label for="attribute-value">Attribute Value</label>
+                        <input type="text" id="attribute-value" class="form-control" placeholder="e.g., thorough">
+                    </div>
+                    
+                    <button id="add-attribute-btn" class="btn btn-sm btn-outline-primary">Add Attribute</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

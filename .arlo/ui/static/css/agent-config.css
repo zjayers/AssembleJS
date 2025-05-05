@@ -118,7 +118,8 @@
 }
 
 .config-group input,
-.config-group select {
+.config-group select,
+.config-group textarea {
   padding: 8px 12px;
   border-radius: 4px;
   border: 1px solid var(--color-border);
@@ -253,4 +254,30 @@
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+}
+
+/* System Prompt Styles */
+.prompt-editor-container {
+  position: relative;
+  width: 100%;
+}
+
+.prompt-editor {
+  width: 100%;
+  min-height: 200px;
+  font-family: "Courier New", monospace;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.form-help {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin-top: 5px;
+}
+
+.prompt-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
 }

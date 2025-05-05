@@ -1,0 +1,116 @@
+<!-- Code Execution Panel -->
+<div class="panel code-execution-panel">
+  <div class="panel-header">
+    <h3>Code Execution</h3>
+    <div class="panel-controls">
+      <button class="btn btn-sm" id="code-analyzer-btn">
+        <i class="fas fa-search"></i> Analyze
+      </button>
+      <button class="btn btn-sm" id="code-commit-btn">
+        <i class="fas fa-save"></i> Commit
+      </button>
+      <button class="btn btn-sm" id="code-pr-btn">
+        <i class="fas fa-code-branch"></i> PR
+      </button>
+    </div>
+  </div>
+  
+  <div class="panel-body">
+    <!-- Code Analysis Section -->
+    <div class="code-analysis-section">
+      <div class="input-group mb-2">
+        <span class="input-group-text">Path</span>
+        <input type="text" class="form-control" id="code-path-input" placeholder="Path to analyze">
+        <button class="btn btn-outline-secondary" id="browse-path-btn">Browse</button>
+      </div>
+      
+      <div class="code-file-actions mb-3">
+        <button class="btn btn-sm btn-outline-primary" id="new-file-btn">New File</button>
+        <button class="btn btn-sm btn-outline-primary" id="edit-file-btn">Edit File</button>
+        <button class="btn btn-sm btn-outline-danger" id="delete-file-btn">Delete File</button>
+      </div>
+      
+      <div class="code-command-section mb-3">
+        <div class="input-group">
+          <span class="input-group-text">Command</span>
+          <input type="text" class="form-control" id="command-input" placeholder="Enter command">
+          <button class="btn btn-outline-secondary" id="run-command-btn">Run</button>
+        </div>
+        <small class="text-muted">Working directory: <span id="working-dir-display">/Users/zachariahayers/development/minimesh</span></small>
+      </div>
+    </div>
+    
+    <!-- Code Editor Section (hidden by default) -->
+    <div class="code-editor-section" style="display: none;">
+      <div class="d-flex justify-content-between mb-2">
+        <div class="file-path-display" id="editor-file-path">No file selected</div>
+        <div class="editor-actions">
+          <button class="btn btn-sm btn-primary" id="save-code-btn">Save</button>
+          <button class="btn btn-sm btn-secondary" id="cancel-edit-btn">Cancel</button>
+        </div>
+      </div>
+      <div class="code-editor-container">
+        <textarea id="code-editor" class="code-editor"></textarea>
+      </div>
+    </div>
+    
+    <!-- Command Output Section -->
+    <div class="command-output-section mt-3">
+      <div class="d-flex justify-content-between mb-1">
+        <h5>Output</h5>
+        <button class="btn btn-sm btn-outline-secondary" id="clear-output-btn">Clear</button>
+      </div>
+      <pre class="command-output" id="command-output">No output yet...</pre>
+    </div>
+    
+    <!-- Git Operations Section (hidden by default) -->
+    <div class="git-operations-section mt-3" style="display: none;">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Git Operations</h5>
+        </div>
+        <div class="card-body">
+          <!-- Commit Form -->
+          <div class="commit-form mb-3">
+            <label for="commit-message">Commit Message</label>
+            <input type="text" class="form-control mb-2" id="commit-message" placeholder="Enter commit message">
+            <div class="selected-files mb-2">
+              <div class="d-flex justify-content-between">
+                <label>Files to commit</label>
+                <button class="btn btn-sm btn-outline-secondary" id="refresh-files-btn">Refresh</button>
+              </div>
+              <div class="file-list-container">
+                <ul class="file-list" id="commit-file-list">
+                  <li class="text-muted">No files selected</li>
+                </ul>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="submit-commit-btn">Create Commit</button>
+          </div>
+          
+          <!-- PR Form -->
+          <div class="pr-form" style="display: none;">
+            <label for="pr-title">Pull Request Title</label>
+            <input type="text" class="form-control mb-2" id="pr-title" placeholder="Enter PR title">
+            
+            <label for="pr-description">Description</label>
+            <textarea class="form-control mb-2" id="pr-description" rows="3" placeholder="Enter PR description"></textarea>
+            
+            <div class="row mb-3">
+              <div class="col">
+                <label for="source-branch">Source Branch</label>
+                <input type="text" class="form-control" id="source-branch" placeholder="Source branch">
+              </div>
+              <div class="col">
+                <label for="target-branch">Target Branch</label>
+                <input type="text" class="form-control" id="target-branch" value="main" placeholder="Target branch">
+              </div>
+            </div>
+            
+            <button class="btn btn-primary" id="submit-pr-btn">Create Pull Request</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

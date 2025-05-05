@@ -12,14 +12,14 @@ const DocsSidebar = forwardRef(({ className = '' }, ref) => {
 
   // Define the documentation structure - comprehensive API documentation inspired by Vue/React
   const docsStructure = useMemo(() => [
-    {
-      title: 'Introduction',
-      items: [
-        { name: 'Getting Started', path: 'index' },
-        { name: 'Why AssembleJS', path: 'why-assemblejs' },
-        { name: 'Quick Start', path: 'quick-start' },
-      ]
-    },
+  {
+    title: 'Introduction',
+    items: [
+      { name: 'Getting Started', path: 'index' },
+      { name: 'Why AssembleJS', path: 'why-assemblejs' },
+      { name: 'Quick Start', path: 'quick-start' },
+    ]
+  },
     {
       title: 'Core Concepts',
       items: [
@@ -119,26 +119,26 @@ const DocsSidebar = forwardRef(({ className = '' }, ref) => {
         { name: 'Exports', path: 'variables-events' },
       ]
     },
-    {
-      title: 'A.R.L.O.',
-      items: [
-        { name: 'Introduction to A.R.L.O.', path: 'arlo/introduction' },
-        { name: 'Getting Started with A.R.L.O.', path: 'arlo/getting-started' },
-        { name: 'A.R.L.O. Architecture', path: 'arlo/architecture' },
-        { name: 'A.R.L.O. Workflow', path: 'arlo/workflow' },
-        { name: 'A.R.L.O. Agents', path: 'arlo/agents' },
-      ]
-    },
-    {
-      title: 'Help & Resources',
-      items: [
-        { name: 'Troubleshooting', path: 'troubleshooting' },
-        { name: 'Development Roadmap', path: 'development-roadmap' },
-        { name: 'Contributing', path: 'contributing-to-assemblejs' },
-        { name: 'FAQ', path: 'frequently-asked-questions' },
-        { name: 'Philosophy', path: 'the-assemblejs-philosophy' },
-      ]
-    }
+  {
+    title: 'A.R.L.O.',
+    items: [
+      { name: 'Introduction to A.R.L.O.', path: 'arlo/introduction' },
+      { name: 'Getting Started with A.R.L.O.', path: 'arlo/getting-started' },
+      { name: 'A.R.L.O. Architecture', path: 'arlo/architecture' },
+      { name: 'A.R.L.O. Workflow', path: 'arlo/workflow' },
+      { name: 'A.R.L.O. Agents', path: 'arlo/agents' },
+    ]
+  },
+  {
+    title: 'Help & Resources',
+    items: [
+      { name: 'Troubleshooting', path: 'troubleshooting' },
+      { name: 'Development Roadmap', path: 'development-roadmap' },
+      { name: 'Contributing', path: 'contributing-to-assemblejs' },
+      { name: 'FAQ', path: 'frequently-asked-questions' },
+      { name: 'Philosophy', path: 'the-assemblejs-philosophy' },
+    ]
+  }
   ], []);
 
   // Initially expand the section of the current page
@@ -146,35 +146,39 @@ const DocsSidebar = forwardRef(({ className = '' }, ref) => {
     const currentPath = location.pathname.replace('/docs/', '');
     // Handle empty path as 'index'
     const normalizedCurrentPath = currentPath === '' ? 'index' : currentPath;
-    const initialExpandedSections = {};
-
-    docsStructure.forEach((section, index) => {
-      const hasActiveItem = section.items.some(item =>
-        normalizedCurrentPath === item.path || normalizedCurrentPath.startsWith(item.path + '/')
-      );
-
-      if (hasActiveItem) {
-        initialExpandedSections[index] = true;
-      }
+    
+    setExpandedSections(prevExpandedSections => {
+      const newExpandedSections = {...prevExpandedSections};
+      
+      docsStructure.forEach((section, index) => {
+        const hasActiveItem = section.items.some(item =>
+          normalizedCurrentPath === item.path || normalizedCurrentPath.startsWith(item.path + '/')
+        );
+  
+        // Only add to expanded sections, never remove
+        if (hasActiveItem) {
+          newExpandedSections[index] = true;
+        }
+      });
+      
+      return newExpandedSections;
     });
-
-    setExpandedSections(initialExpandedSections);
   }, [location.pathname, docsStructure]);
 
   // Mobile functionality removed
 
   // Filter items based on search term
   const filteredStructure = docsStructure.map(section => {
-    const filteredItems = section.items.filter(item =>
+      const filteredItems = section.items.filter(item =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+      );
 
-    return {
-      ...section,
-      items: filteredItems,
-      hasMatches: filteredItems.length > 0
-    };
-  }).filter(section => searchTerm === "" || section.hasMatches);
+      return {
+        ...section,
+        items: filteredItems,
+        hasMatches: filteredItems.length > 0
+      };
+    }).filter(section => searchTerm === "" || section.hasMatches);
 
   // Toggle a section's expanded state
   const toggleSection = (index) => {
@@ -234,84 +238,84 @@ const DocsSidebar = forwardRef(({ className = '' }, ref) => {
           )}
         </div>
 
-        <nav className="docs-nav" aria-label="Documentation sections">
-          {filteredStructure.map((section, sectionIndex) => {
-            const isExpanded = expandedSections[sectionIndex] || searchTerm !== "";
-            const sectionId = `section-${section.title.toLowerCase().replace(/\s+/g, '-')}`;
-            const headingId = `heading-${sectionId}`;
-            const contentId = `content-${sectionId}`;
+          <nav className="docs-nav" aria-label="Documentation sections">
+            {filteredStructure.map((section, sectionIndex) => {
+              const isExpanded = expandedSections[sectionIndex] || searchTerm !== "";
+              const sectionId = `section-${section.title.toLowerCase().replace(/\s+/g, '-')}`;
+              const headingId = `heading-${sectionId}`;
+              const contentId = `content-${sectionId}`;
 
-            return (
-              <div className="docs-nav-section" key={sectionIndex}>
-                <h3
-                  id={headingId}
-                  className={isExpanded ? "expanded" : ""}
-                  onClick={() => toggleSection(sectionIndex)}
-                  aria-expanded={isExpanded}
-                  aria-controls={contentId}
-                  tabIndex="0" // Make heading keyboard-focusable
-                  role="button"
-                  onKeyDown={(e) => {
-                    // Toggle on Enter or Space
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      toggleSection(sectionIndex);
-                    }
-                  }}
-                >
-                  <div className="section-header">
-                    <span className="section-title">{section.title}</span>
-                  </div>
-                  <svg
-                    className="expand-icon"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
+              return (
+                <div className="docs-nav-section" key={sectionIndex}>
+                  <h3
+                    id={headingId}
+                    className={isExpanded ? "expanded" : ""}
+                    onClick={() => toggleSection(sectionIndex)}
+                    aria-expanded={isExpanded}
+                    aria-controls={contentId}
+                    tabIndex="0" // Make heading keyboard-focusable
+                    role="button"
+                    onKeyDown={(e) => {
+                      // Toggle on Enter or Space
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleSection(sectionIndex);
+                      }
+                    }}
                   >
-                    <polyline points={isExpanded ? "18 15 12 9 6 15" : "6 9 12 15 18 9"}></polyline>
-                  </svg>
-                </h3>
-                <div
-                  id={contentId}
-                  className={isExpanded ? "doc-section-content expanded" : "doc-section-content"}
-                  aria-labelledby={headingId}
-                  hidden={!isExpanded}
-                >
-                  {isExpanded && (
-                    <ul>
-                      {section.items.map((item, itemIndex) => {
-                        const currentPath = location.pathname.replace('/docs/', '');
-                        // Handle empty path as 'index'
-                        const normalizedCurrentPath = currentPath === '' ? 'index' : currentPath;
-                        const isActive = normalizedCurrentPath === item.path ||
-                          normalizedCurrentPath.startsWith(item.path + '/');
+                    <div className="section-header">
+                      <span className="section-title">{section.title}</span>
+                    </div>
+                    <svg
+                      className="expand-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <polyline points={isExpanded ? "18 15 12 9 6 15" : "6 9 12 15 18 9"}></polyline>
+                    </svg>
+                  </h3>
+                  <div
+                    id={contentId}
+                    className={isExpanded ? "doc-section-content expanded" : "doc-section-content"}
+                    aria-labelledby={headingId}
+                    hidden={!isExpanded}
+                  >
+                    {isExpanded && (
+                      <ul>
+                        {section.items.map((item, itemIndex) => {
+                          const currentPath = location.pathname.replace('/docs/', '');
+                          // Handle empty path as 'index'
+                          const normalizedCurrentPath = currentPath === '' ? 'index' : currentPath;
+                          const isActive = normalizedCurrentPath === item.path ||
+                            normalizedCurrentPath.startsWith(item.path + '/');
 
-                        return (
-                          <li key={itemIndex}>
-                            <NavLink
-                              to={`/docs/${item.path}`}
+                          return (
+                            <li key={itemIndex}>
+                              <NavLink
+                                to={`/docs/${item.path}`}
                               className={({ isActive: navActive }) => navActive ? 'active' : ''}
-                              aria-current={isActive ? 'page' : undefined}
-                            >
-                              {item.name}
-                            </NavLink>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  )}
+                                aria-current={isActive ? 'page' : undefined}
+                              >
+                                {item.name}
+                              </NavLink>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </nav>
+              );
+            })}
+          </nav>
       </div>
     </aside>
   );

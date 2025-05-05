@@ -55,16 +55,8 @@
   top: 50%;
   left: 50%;
   box-shadow: inset 0 -2px 2px rgba(0, 0, 0, 0.2),
-  inset 0 2px 2px rgba(255, 255, 255, 0.2),
-  0 0 5px rgba(0, 0, 0, 0.3);
-  clip-path: polygon(
-      50% 0%,
-      100% 25%,
-      100% 75%,
-      50% 100%,
-      0% 75%,
-      0% 25%
-  );
+    inset 0 2px 2px rgba(255, 255, 255, 0.2), 0 0 5px rgba(0, 0, 0, 0.3);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
 /* Six differently colored blocks */
@@ -106,33 +98,57 @@
 
 /* Individual orbit animations */
 @keyframes orbit-1 {
-  0% { transform: rotateZ(0deg) translateX(15px); }
-  100% { transform: rotateZ(360deg) translateX(15px); }
+  0% {
+    transform: rotateZ(0deg) translateX(15px);
+  }
+  100% {
+    transform: rotateZ(360deg) translateX(15px);
+  }
 }
 
 @keyframes orbit-2 {
-  0% { transform: rotateZ(60deg) translateX(15px); }
-  100% { transform: rotateZ(420deg) translateX(15px); }
+  0% {
+    transform: rotateZ(60deg) translateX(15px);
+  }
+  100% {
+    transform: rotateZ(420deg) translateX(15px);
+  }
 }
 
 @keyframes orbit-3 {
-  0% { transform: rotateZ(120deg) translateX(15px); }
-  100% { transform: rotateZ(480deg) translateX(15px); }
+  0% {
+    transform: rotateZ(120deg) translateX(15px);
+  }
+  100% {
+    transform: rotateZ(480deg) translateX(15px);
+  }
 }
 
 @keyframes orbit-4 {
-  0% { transform: rotateZ(180deg) translateX(15px); }
-  100% { transform: rotateZ(540deg) translateX(15px); }
+  0% {
+    transform: rotateZ(180deg) translateX(15px);
+  }
+  100% {
+    transform: rotateZ(540deg) translateX(15px);
+  }
 }
 
 @keyframes orbit-5 {
-  0% { transform: rotateZ(240deg) translateX(15px); }
-  100% { transform: rotateZ(600deg) translateX(15px); }
+  0% {
+    transform: rotateZ(240deg) translateX(15px);
+  }
+  100% {
+    transform: rotateZ(600deg) translateX(15px);
+  }
 }
 
 @keyframes orbit-6 {
-  0% { transform: rotateZ(300deg) translateX(15px); }
-  100% { transform: rotateZ(660deg) translateX(15px); }
+  0% {
+    transform: rotateZ(300deg) translateX(15px);
+  }
+  100% {
+    transform: rotateZ(660deg) translateX(15px);
+  }
 }
 
 .logo-text {

@@ -1,76 +1,98 @@
 /* Theme variables */
 :root {
-    /* Dark theme (default) */
-    --color-bg: #0d1117;
-    --color-header-bg: #161b22;
-    --color-sidebar-bg: #161b22;
-    --color-border: #30363d;
-    --color-text: #c9d1d9;
-    --color-text-secondary: #8b949e;
-    --color-button-bg: #238636;
-    --color-button-hover: #2ea043;
-    --color-input-bg: #0d1117;
-    --color-accent: #58a6ff;
-    --color-accent-hover: #79c0ff;
-    --color-card-bg: #161b22;
-    --color-tab-bg: #0d1117;
-    --color-tab-hover: #30363d;
-    --color-tab-active: #161b22;
-    --color-success: #238636;
-    --color-pending: #bf8700;
-    --color-failure: #da3633;
-    --color-progress-bar: #58a6ff;
-    --color-queued: #8b949e;
-    --color-running: #bf8700;
-    --color-completed: #238636;
-    --color-warning: #bf8700;
-    --color-sidebar-toggle: #ffffff;
-    --current-agent-color: #4CAF50;
-    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  /* Dark theme (default) */
+  --color-bg: #0d1117;
+  --color-header-bg: #161b22;
+  --color-sidebar-bg: #161b22;
+  --color-border: #30363d;
+  --color-text: #c9d1d9;
+  --color-text-secondary: #8b949e;
+  --color-button-bg: #238636;
+  --color-button-hover: #2ea043;
+  --color-input-bg: #0d1117;
+  --color-accent: #58a6ff;
+  --color-accent-hover: #79c0ff;
+  --color-card-bg: #161b22;
+  --color-tab-bg: #0d1117;
+  --color-tab-hover: #30363d;
+  --color-tab-active: #161b22;
+  --color-success: #238636;
+  --color-pending: #bf8700;
+  --color-failure: #da3633;
+  --color-progress-bar: #58a6ff;
+  --color-queued: #8b949e;
+  --color-running: #bf8700;
+  --color-completed: #238636;
+  --color-warning: #bf8700;
+  --color-sidebar-toggle: #ffffff;
+  --current-agent-color: #4caf50;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  
+  /* Real-time updates specific colors */
+  --color-button-primary-bg: #2ea043;
+  --color-button-primary-hover: #3cb371;
+  --color-button-primary-text: #ffffff;
+  --color-button-secondary-bg: #21262d;
+  --color-button-secondary-hover: #30363d;
+  --color-active: #58a6ff;
+  --color-active-border: #58a6ff;
+  --color-code-bg: #161b22;
+  --color-link: #58a6ff;
 
-    /* Agent Colors - Rainbow Spectrum */
-    --color-admin: #F44336;
-    --color-types: #E91E63;
-    --color-utils: #9C27B0;
-    --color-validator: #673AB7;
-    --color-developer: #3F51B5;
-    --color-browser: #2196F3;
-    --color-version: #03A9F4;
-    --color-server: #00BCD4;
-    --color-testbed: #009688;
-    --color-pipeline: #4CAF50;
-    --color-generator: #8BC34A;
-    --color-config: #CDDC39;
-    --color-docs: #FFEB3B;
-    --color-git: #FFC107;
-    --color-analyzer: #FF9800;
-    --color-bundler: #FF5722;
+  /* Agent Colors - Rainbow Spectrum */
+  --color-admin: #f44336;
+  --color-types: #e91e63;
+  --color-utils: #9c27b0;
+  --color-validator: #673ab7;
+  --color-developer: #3f51b5;
+  --color-browser: #2196f3;
+  --color-version: #03a9f4;
+  --color-server: #00bcd4;
+  --color-testbed: #009688;
+  --color-pipeline: #4caf50;
+  --color-generator: #8bc34a;
+  --color-config: #cddc39;
+  --color-docs: #ffeb3b;
+  --color-git: #ffc107;
+  --color-analyzer: #ff9800;
+  --color-bundler: #ff5722;
 }
 
 /* Light theme variables */
 :root.light-theme {
-    --color-bg: #f6f8fa;
-    --color-header-bg: #ffffff;
-    --color-sidebar-bg: #f6f8fa;
-    --color-border: #d0d7de;
-    --color-text: #24292f;
-    --color-text-secondary: #57606a;
-    --color-button-bg: #2da44e;
-    --color-button-hover: #2c974b;
-    --color-input-bg: #ffffff;
-    --color-accent: #0969da;
-    --color-accent-hover: #388bfd;
-    --color-card-bg: #ffffff;
-    --color-tab-bg: #f6f8fa;
-    --color-tab-hover: #eaeef2;
-    --color-tab-active: #ffffff;
-    --color-success: #2da44e;
-    --color-pending: #d4a72c;
-    --color-failure: #cf222e;
-    --color-progress-bar: #0969da;
-    --color-queued: #8c959f;
-    --color-running: #d4a72c;
-    --color-completed: #2da44e;
-    --color-warning: #d4a72c;
-    --color-sidebar-toggle: #24292f;
+  --color-bg: #f6f8fa;
+  --color-header-bg: #ffffff;
+  --color-sidebar-bg: #f6f8fa;
+  --color-border: #d0d7de;
+  --color-text: #24292f;
+  --color-text-secondary: #57606a;
+  --color-button-bg: #2da44e;
+  --color-button-hover: #2c974b;
+  --color-input-bg: #ffffff;
+  --color-accent: #0969da;
+  --color-accent-hover: #388bfd;
+  --color-card-bg: #ffffff;
+  --color-tab-bg: #f6f8fa;
+  --color-tab-hover: #eaeef2;
+  --color-tab-active: #ffffff;
+  --color-success: #2da44e;
+  --color-pending: #d4a72c;
+  --color-failure: #cf222e;
+  --color-progress-bar: #0969da;
+  --color-queued: #8c959f;
+  --color-running: #d4a72c;
+  --color-completed: #2da44e;
+  --color-warning: #d4a72c;
+  --color-sidebar-toggle: #24292f;
+  
+  /* Real-time updates specific colors for light theme */
+  --color-button-primary-bg: #2da44e;
+  --color-button-primary-hover: #2c974b; 
+  --color-button-primary-text: #ffffff;
+  --color-button-secondary-bg: #f6f8fa;
+  --color-button-secondary-hover: #eaeef2;
+  --color-active: #0969da;
+  --color-active-border: #0969da;
+  --color-code-bg: #f6f8fa;
+  --color-link: #0969da;
 }

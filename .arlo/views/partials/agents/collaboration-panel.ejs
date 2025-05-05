@@ -1,0 +1,824 @@
+<div class="collaboration-panel">
+  <div class="panel-header">
+    <h2>Agent Collaboration</h2>
+    <div class="view-controls">
+      <button id="collaboration-refresh" class="btn btn-icon" title="Refresh">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+      </button>
+      <div class="filters">
+        <select id="collaboration-filter" class="filter-select">
+          <option value="all">All Messages</option>
+          <option value="pending">Pending</option>
+          <option value="message">Messages</option>
+          <option value="question">Questions</option>
+          <option value="task_request">Task Requests</option>
+          <option value="knowledge_share">Knowledge Shares</option>
+          <option value="review_request">Review Requests</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="collaboration-container">
+    <!-- Sidebar for agents and teams -->
+    <div class="collaboration-sidebar">
+      <div class="sidebar-section">
+        <div class="section-header">
+          <h3>Recent Agents</h3>
+        </div>
+        <div class="agent-list" id="recent-collaborators">
+          <!-- Agent list will be populated by JavaScript -->
+          <div class="loading-placeholder">Loading collaborators...</div>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="section-header">
+          <h3>Teams</h3>
+          <button id="new-team-btn" class="btn btn-sm btn-secondary">New Team</button>
+        </div>
+        <div class="team-list" id="agent-teams">
+          <!-- Team list will be populated by JavaScript -->
+          <div class="loading-placeholder">Loading teams...</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main content area for collaboration messages -->
+    <div class="collaboration-content">
+      <div class="message-list" id="collaboration-messages">
+        <!-- Messages will be populated by JavaScript -->
+        <div class="empty-state">
+          <div class="empty-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><line x1="9" y1="10" x2="15" y2="10"></line></svg>
+          </div>
+          <h3>No collaborations yet</h3>
+          <p>Start a conversation with another agent or create a team to collaborate on tasks</p>
+        </div>
+      </div>
+      
+      <!-- New message form -->
+      <div class="message-composer">
+        <div class="message-recipient" id="message-recipient">
+          <span class="recipient-label">To:</span>
+          <span class="recipient-name">Select a recipient</span>
+        </div>
+        <div class="compose-actions">
+          <div class="message-type-selector">
+            <select id="message-type">
+              <option value="message">Message</option>
+              <option value="question">Question</option>
+              <option value="task_request">Task Request</option>
+              <option value="knowledge_share">Share Knowledge</option>
+              <option value="review_request">Request Review</option>
+            </select>
+          </div>
+          <div class="priority-selector">
+            <label for="message-priority">Priority:</label>
+            <select id="message-priority">
+              <option value="1">Very Low</option>
+              <option value="3">Low</option>
+              <option value="5" selected>Medium</option>
+              <option value="7">High</option>
+              <option value="10">Urgent</option>
+            </select>
+          </div>
+        </div>
+        <div class="message-input-wrapper">
+          <textarea id="message-content" placeholder="Type your message..."></textarea>
+        </div>
+        <div class="message-actions">
+          <button id="send-message" class="btn btn-primary" disabled>Send</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right sidebar for conversation details -->
+    <div class="collaboration-details" id="collaboration-details">
+      <div class="empty-state">
+        <p>Select a collaboration to view details</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- New Team Modal -->
+  <div class="modal" id="new-team-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Create New Team</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="new-team-form">
+          <div class="form-group">
+            <label for="team-name">Team Name</label>
+            <input type="text" id="team-name" required>
+          </div>
+          <div class="form-group">
+            <label for="team-description">Description</label>
+            <textarea id="team-description"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="team-members">Members</label>
+            <div class="team-members-list" id="team-members-selection">
+              <!-- Team members will be populated by JavaScript -->
+              <div class="loading-placeholder">Loading agents...</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="team-leader">Team Leader</label>
+            <select id="team-leader" disabled>
+              <option value="">Select a member first</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create Team</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Team Suggestion Modal -->
+  <div class="modal" id="team-suggestion-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Team Suggestion</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="task-type">Task Type</label>
+          <input type="text" id="task-type" required>
+        </div>
+        <div class="form-group">
+          <label for="required-skills">Required Skills</label>
+          <div class="skills-input-container">
+            <input type="text" id="skills-input" placeholder="Add skills and press Enter">
+            <div class="skills-list" id="required-skills"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="task-domain">Domain (optional)</label>
+          <input type="text" id="task-domain">
+        </div>
+        <div class="form-group">
+          <label for="task-complexity">Complexity (1-10)</label>
+          <input type="range" id="task-complexity" min="1" max="10" value="5">
+          <span id="complexity-value">5</span>
+        </div>
+        <div class="form-group">
+          <label for="task-urgency">Urgency (1-10)</label>
+          <input type="range" id="task-urgency" min="1" max="10" value="5">
+          <span id="urgency-value">5</span>
+        </div>
+        <div class="form-actions">
+          <button type="button" id="get-suggestion" class="btn btn-primary">Get Suggestion</button>
+        </div>
+        
+        <div id="suggestion-result" style="display: none;">
+          <h4>Suggested Team</h4>
+          <div class="suggested-team-members" id="suggested-team-members"></div>
+          <div class="form-actions">
+            <button type="button" id="create-suggested-team" class="btn btn-primary">Create This Team</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.collaboration-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.view-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.collaboration-container {
+  display: flex;
+  height: calc(100% - 60px); /* Adjust based on header height */
+  overflow: hidden;
+}
+
+.collaboration-sidebar {
+  width: 240px;
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  background: var(--sidebar-bg);
+}
+
+.sidebar-section {
+  padding: 12px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.agent-list, .team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.agent-item, .team-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.agent-item:hover, .team-item:hover {
+  background-color: var(--hover-bg);
+}
+
+.agent-item.active, .team-item.active {
+  background-color: var(--selected-bg);
+}
+
+.agent-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  margin-right: 10px;
+  color: white;
+}
+
+.team-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+  color: var(--primary-color);
+}
+
+.agent-info, .team-info {
+  flex: 1;
+  overflow: hidden;
+}
+
+.agent-name, .team-name {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agent-role, .team-members {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agent-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 6px;
+}
+
+.agent-status.active {
+  background-color: var(--success-color);
+}
+
+.agent-status.offline {
+  background-color: var(--text-muted);
+}
+
+.collaboration-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.message-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  color: var(--text-muted);
+  padding: 0 20px;
+}
+
+.empty-icon {
+  margin-bottom: 16px;
+  color: var(--border-color);
+}
+
+.empty-state h3 {
+  margin: 0 0 8px;
+  color: var(--text-color);
+}
+
+.empty-state p {
+  max-width: 300px;
+  margin: 0;
+}
+
+.message-item {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message-header {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.message-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  margin-right: 12px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.message-metadata {
+  flex: 1;
+}
+
+.message-sender {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.message-time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.message-badge {
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 8px;
+  text-transform: uppercase;
+}
+
+.message-badge.message {
+  background-color: rgba(var(--info-color-rgb), 0.1);
+  color: var(--info-color);
+}
+
+.message-badge.question {
+  background-color: rgba(var(--warning-color-rgb), 0.1);
+  color: var(--warning-color);
+}
+
+.message-badge.task_request {
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+  color: var(--primary-color);
+}
+
+.message-badge.knowledge_share {
+  background-color: rgba(var(--success-color-rgb), 0.1);
+  color: var(--success-color);
+}
+
+.message-badge.review_request {
+  background-color: rgba(var(--danger-color-rgb), 0.1);
+  color: var(--danger-color);
+}
+
+.message-priority {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.priority-indicator {
+  display: flex;
+  gap: 2px;
+}
+
+.priority-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: rgba(var(--warning-color-rgb), 0.3);
+}
+
+.priority-dot.active {
+  background-color: var(--warning-color);
+}
+
+.message-body {
+  padding-left: 48px;
+  margin-bottom: 10px;
+}
+
+.message-content {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  padding: 12px;
+  white-space: pre-wrap;
+}
+
+.message-actions {
+  display: flex;
+  gap: 8px;
+  padding-left: 48px;
+}
+
+.message-composer {
+  border-top: 1px solid var(--border-color);
+  padding: 12px 16px;
+  background-color: var(--bg-secondary);
+}
+
+.message-recipient {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.recipient-label {
+  font-weight: 500;
+  margin-right: 6px;
+}
+
+.recipient-name {
+  color: var(--primary-color);
+}
+
+.compose-actions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.message-input-wrapper {
+  margin-bottom: 10px;
+}
+
+#message-content {
+  width: 100%;
+  height: 100px;
+  resize: vertical;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.collaboration-details {
+  width: 280px;
+  border-left: 1px solid var(--border-color);
+  overflow-y: auto;
+  padding: 16px;
+  background: var(--sidebar-bg);
+}
+
+.detail-section {
+  margin-bottom: 20px;
+}
+
+.detail-section h4 {
+  font-size: 0.9rem;
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.detail-item {
+  margin-bottom: 10px;
+}
+
+.detail-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.detail-value {
+  font-size: 0.9rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.status-badge.pending {
+  background-color: rgba(var(--warning-color-rgb), 0.1);
+  color: var(--warning-color);
+}
+
+.status-badge.accepted {
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+  color: var(--primary-color);
+}
+
+.status-badge.completed {
+  background-color: rgba(var(--success-color-rgb), 0.1);
+  color: var(--success-color);
+}
+
+.status-badge.rejected {
+  background-color: rgba(var(--danger-color-rgb), 0.1);
+  color: var(--danger-color);
+}
+
+.response-list {
+  margin-top: 16px;
+}
+
+.response-item {
+  background-color: var(--card-bg);
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.response-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.response-agent {
+  font-weight: 500;
+}
+
+.response-time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.team-members-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.team-member-item {
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  border-radius: 4px;
+}
+
+.team-member-item:hover {
+  background-color: var(--hover-bg);
+}
+
+.team-member-checkbox {
+  margin-right: 10px;
+}
+
+.team-member-checkbox input {
+  margin: 0;
+}
+
+.skills-input-container {
+  margin-top: 4px;
+}
+
+#skills-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.skill-tag {
+  background-color: rgba(var(--primary-color-rgb), 0.1);
+  color: var(--primary-color);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.skill-tag-remove {
+  margin-left: 4px;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.skill-tag-remove:hover {
+  opacity: 1;
+}
+
+.suggested-team-members {
+  margin-top: 16px;
+}
+
+.suggested-member {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  background-color: var(--card-bg);
+  border-left: 3px solid transparent;
+}
+
+.suggested-member.leader {
+  border-left-color: var(--primary-color);
+}
+
+.member-score {
+  margin-left: auto;
+  background-color: rgba(var(--success-color-rgb), 0.1);
+  color: var(--success-color);
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+}
+
+.loading-placeholder {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: auto;
+}
+
+.modal-content {
+  background-color: var(--bg-color);
+  margin: 10% auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 500px;
+  max-width: 90%;
+  animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-muted);
+}
+
+.modal-close:hover {
+  color: var(--text-color);
+}
+
+.modal-body {
+  padding: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.form-group textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .collaboration-details {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .collaboration-sidebar {
+    display: none;
+  }
+  
+  .collaboration-container {
+    flex-direction: column;
+  }
+  
+  .message-composer {
+    position: sticky;
+    bottom: 0;
+  }
+}
+</style>

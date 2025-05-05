@@ -3,11 +3,11 @@
  * API routes for admin operations and task management
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const adminController = require('../controllers/adminController');
+const adminController = require("../controllers/adminController");
 
 // Process a new task
-router.post('/task', adminController.processTask);
+router.post("/task", adminController.processTask);
 
 module.exports = router;

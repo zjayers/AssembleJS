@@ -1,0 +1,395 @@
+<!-- Knowledge Document Validator -->
+<div class="kb-document-validator" id="knowledge-document-editor">
+  <div class="document-editor-header">
+    <h2>Knowledge Document Validator</h2>
+    <p class="editor-description">
+      Create, validate, and submit knowledge documents with proper metadata
+    </p>
+  </div>
+  
+  <div class="document-editor-container">
+    <div class="document-form-container">
+      <!-- Main Form -->
+      <form id="document-form" class="document-form">
+        <div class="form-group">
+          <label for="document-content">Document Content</label>
+          <textarea id="document-content" class="document-content" rows="15" placeholder="Enter document content in markdown format"></textarea>
+          <div class="markdown-toolbar">
+            <button type="button" class="toolbar-button" data-format="header">H2</button>
+            <button type="button" class="toolbar-button" data-format="bold">B</button>
+            <button type="button" class="toolbar-button" data-format="italic">I</button>
+            <button type="button" class="toolbar-button" data-format="code">Code</button>
+            <button type="button" class="toolbar-button" data-format="codeblock">Code Block</button>
+            <button type="button" class="toolbar-button" data-format="list">List</button>
+          </div>
+        </div>
+        
+        <!-- Document Collection -->
+        <div class="form-group">
+          <label for="document-collection">Collection</label>
+          <select id="document-collection" class="form-select">
+            <option value="framework_docs">Framework Documentation</option>
+            <option value="tutorials">Tutorials</option>
+            <option value="examples">Examples</option>
+            <option value="framework_api">API Reference</option>
+            <option value="agent_Admin">Admin Agent</option>
+            <option value="agent_Server">Server Agent</option>
+            <option value="agent_Browser">Browser Agent</option>
+          </select>
+        </div>
+        
+        <!-- Document Metadata -->
+        <div class="metadata-form" id="metadata-form">
+          <h3>Document Metadata</h3>
+          
+          <div class="form-group">
+            <label for="document-title" class="required-field">Title</label>
+            <input type="text" id="document-title" class="form-control" placeholder="Document title" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="document-type">Document Type</label>
+            <select id="document-type" class="form-select">
+              <option value="documentation">Documentation</option>
+              <option value="code-knowledge">Code Knowledge</option>
+              <option value="architecture">Architecture</option>
+              <option value="tutorial">Tutorial</option>
+              <option value="api-reference">API Reference</option>
+              <option value="best-practice">Best Practice</option>
+              <option value="pattern">Design Pattern</option>
+              <option value="task">Task</option>
+              <option value="system-knowledge">System Knowledge</option>
+              <option value="agent-reflection">Agent Reflection</option>
+              <option value="error-knowledge">Error Knowledge</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="document-tags">Tags</label>
+            <div class="tags-container" id="document-tags-container">
+              <!-- Tags will be added here -->
+            </div>
+            <div class="tag-input-container">
+              <input type="text" id="document-tag-input" class="form-control tag-input" placeholder="Add tag...">
+              <button type="button" id="add-tag-btn" class="btn btn-sm btn-primary">Add</button>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="document-source">Source</label>
+            <input type="text" id="document-source" class="form-control" placeholder="Document source">
+          </div>
+          
+          <div class="form-group">
+            <label for="document-author">Author</label>
+            <input type="text" id="document-author" class="form-control" placeholder="Document author">
+          </div>
+          
+          <div class="form-group">
+            <label for="document-filepath">File Path</label>
+            <input type="text" id="document-filepath" class="form-control" placeholder="Related file path">
+          </div>
+          
+          <div class="advanced-metadata-toggle">
+            <button type="button" class="toggle-btn" id="toggle-advanced-metadata">
+              Show Advanced Metadata
+            </button>
+          </div>
+          
+          <div class="advanced-metadata" id="advanced-metadata" style="display: none;">
+            <div class="form-group">
+              <label for="document-priority">Priority</label>
+              <select id="document-priority" class="form-select">
+                <option value="5">Very High</option>
+                <option value="4">High</option>
+                <option value="3" selected>Medium</option>
+                <option value="2">Low</option>
+                <option value="1">Very Low</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="document-status">Status</label>
+              <select id="document-status" class="form-select">
+                <option value="active" selected>Active</option>
+                <option value="draft">Draft</option>
+                <option value="archived">Archived</option>
+                <option value="deprecated">Deprecated</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="document-category">Category</label>
+              <input type="text" id="document-category" class="form-control" placeholder="Document category">
+            </div>
+            
+            <div class="form-group">
+              <label for="document-confidence">Confidence</label>
+              <input type="range" id="document-confidence" class="form-range" min="0" max="1" step="0.1" value="0.8">
+              <div class="range-value-display">
+                <span id="confidence-value">0.8</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Validation Actions -->
+        <div class="form-actions">
+          <button type="button" id="validate-document" class="btn btn-primary">Validate Document</button>
+          <button type="button" id="save-document" class="btn btn-success" disabled>Save Document</button>
+        </div>
+      </form>
+    </div>
+    
+    <!-- Validation Results -->
+    <div class="validation-results-container">
+      <h3>Validation Results</h3>
+      <div id="validation-results" class="validation-results">
+        <div class="no-validation">
+          <p>Document has not been validated yet.</p>
+          <p>Click "Validate Document" to check your document.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Knowledge Document Validation Styles -->
+<style>
+  .document-editor-container {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  .document-form-container {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .validation-results-container {
+    width: 40%;
+    min-width: 300px;
+    padding: 1rem;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+  }
+  
+  .document-content {
+    width: 100%;
+    min-height: 300px;
+    font-family: monospace;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+  }
+  
+  .markdown-toolbar {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+  }
+  
+  .toolbar-button {
+    background-color: var(--btn-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+  }
+  
+  .toolbar-button:hover {
+    background-color: var(--btn-hover-bg);
+  }
+  
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    min-height: 36px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .document-tag {
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
+  
+  .remove-tag {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    margin-left: 0.25rem;
+    cursor: pointer;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+  
+  .tag-input-container {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .required-field::after {
+    content: '*';
+    color: var(--danger-color);
+    margin-left: 0.25rem;
+  }
+  
+  .validation-success {
+    padding: 1rem;
+    background-color: rgba(var(--success-rgb), 0.1);
+    border: 1px solid var(--success-color);
+    border-radius: 4px;
+  }
+  
+  .validation-error {
+    padding: 1rem;
+    background-color: rgba(var(--danger-rgb), 0.1);
+    border: 1px solid var(--danger-color);
+    border-radius: 4px;
+  }
+  
+  .validation-errors-list {
+    color: var(--danger-color);
+  }
+  
+  .validation-content-summary, .validation-metadata-summary {
+    margin-top: 1rem;
+  }
+  
+  .no-validation {
+    color: var(--text-muted);
+    text-align: center;
+    padding: 2rem 0;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .save-success {
+    padding: 1rem;
+    background-color: rgba(var(--success-rgb), 0.1);
+    border: 1px solid var(--success-color);
+    border-radius: 4px;
+  }
+  
+  .save-error {
+    padding: 1rem;
+    background-color: rgba(var(--danger-rgb), 0.1);
+    border: 1px solid var(--danger-color);
+    border-radius: 4px;
+  }
+  
+  .range-value-display {
+    text-align: center;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+  }
+</style>
+
+<script>
+  // Setup advanced metadata toggle
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.getElementById('toggle-advanced-metadata');
+    const advancedMetadata = document.getElementById('advanced-metadata');
+    
+    if (toggleBtn && advancedMetadata) {
+      toggleBtn.addEventListener('click', () => {
+        const isVisible = advancedMetadata.style.display !== 'none';
+        advancedMetadata.style.display = isVisible ? 'none' : 'block';
+        toggleBtn.textContent = isVisible ? 'Show Advanced Metadata' : 'Hide Advanced Metadata';
+      });
+    }
+    
+    // Setup confidence slider
+    const confidenceSlider = document.getElementById('document-confidence');
+    const confidenceValue = document.getElementById('confidence-value');
+    
+    if (confidenceSlider && confidenceValue) {
+      confidenceSlider.addEventListener('input', () => {
+        confidenceValue.textContent = confidenceSlider.value;
+      });
+    }
+    
+    // Setup markdown toolbar
+    const toolbar = document.querySelectorAll('.toolbar-button');
+    const contentArea = document.getElementById('document-content');
+    
+    if (toolbar.length > 0 && contentArea) {
+      toolbar.forEach(button => {
+        button.addEventListener('click', () => {
+          const format = button.getAttribute('data-format');
+          const selectionStart = contentArea.selectionStart;
+          const selectionEnd = contentArea.selectionEnd;
+          const selectedText = contentArea.value.substring(selectionStart, selectionEnd);
+          
+          let formattedText = '';
+          let cursorPosition = 0;
+          
+          switch (format) {
+            case 'header':
+              formattedText = `## ${selectedText}`;
+              cursorPosition = selectedText ? formattedText.length : 3;
+              break;
+              
+            case 'bold':
+              formattedText = `**${selectedText}**`;
+              cursorPosition = selectedText ? formattedText.length : 2;
+              break;
+              
+            case 'italic':
+              formattedText = `*${selectedText}*`;
+              cursorPosition = selectedText ? formattedText.length : 1;
+              break;
+              
+            case 'code':
+              formattedText = `\`${selectedText}\``;
+              cursorPosition = selectedText ? formattedText.length : 1;
+              break;
+              
+            case 'codeblock':
+              formattedText = `\`\`\`\n${selectedText}\n\`\`\``;
+              cursorPosition = selectedText ? formattedText.length : 4;
+              break;
+              
+            case 'list':
+              if (selectedText.includes('\n')) {
+                formattedText = selectedText.split('\n').map(line => `- ${line}`).join('\n');
+              } else {
+                formattedText = `- ${selectedText}`;
+              }
+              cursorPosition = selectedText ? formattedText.length : 2;
+              break;
+          }
+          
+          const newContent = contentArea.value.substring(0, selectionStart) + 
+                             formattedText + 
+                             contentArea.value.substring(selectionEnd);
+          
+          contentArea.value = newContent;
+          
+          if (selectedText) {
+            contentArea.setSelectionRange(selectionStart + formattedText.length, selectionStart + formattedText.length);
+          } else {
+            contentArea.setSelectionRange(selectionStart + cursorPosition, selectionStart + cursorPosition);
+          }
+          
+          contentArea.focus();
+        });
+      });
+    }
+  });
+</script>

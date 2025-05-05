@@ -1,13 +1,24 @@
 // Knowledge Base Search Simulation
 export function setupKnowledgeBaseSearch() {
-  const kbSearchBtn = document.getElementById('kb-search-btn');
+  // Set up new document button
+  const newDocBtn = document.getElementById("kb-new-document");
+  if (newDocBtn) {
+    newDocBtn.addEventListener("click", () => {
+      // Create new document using the function from knowledgeDocument.js
+      if (window.createNewDocument) {
+        window.createNewDocument();
+      }
+    });
+  }
+
+  const kbSearchBtn = document.getElementById("kb-search-btn");
   if (kbSearchBtn) {
-    kbSearchBtn.addEventListener('click', () => {
-      const searchInput = document.getElementById('kb-search');
-      const resultsBody = document.querySelector('.kb-results-body');
-      
+    kbSearchBtn.addEventListener("click", () => {
+      const searchInput = document.getElementById("kb-search");
+      const resultsBody = document.querySelector(".kb-results-body");
+
       if (!searchInput || !resultsBody) return;
-      
+
       if (searchInput.value.trim()) {
         // Simulate search results
         resultsBody.innerHTML = `

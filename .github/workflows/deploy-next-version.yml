@@ -41,7 +41,7 @@ jobs:
       
       - name: Install dependencies
         run: npm ci --include=dev
-      
+        
       - name: Install website dependencies
         run: cd websites/www.assemblejs.com && npm ci
       
@@ -52,7 +52,7 @@ jobs:
           PACKAGE_TGZ=$(npm pack | tail -n 1)
           echo "Generated package: $PACKAGE_TGZ"
           echo "package_tgz=$PACKAGE_TGZ" >> $GITHUB_OUTPUT
-      
+        
       - name: Install Testbed dependencies
         run: npm run testbed:install
 
@@ -274,6 +274,78 @@ jobs:
           wait
           
           echo "🚀 All testbed projects successfully built and pushed to ECR in parallel"
+
+  # Deploy ARLO to ECR
+  deploy-arlo:
+    name: Deploy ARLO
+    needs: [build, publish-package]
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      
+      - name: Install ARLO dependencies
+        run: |
+          cd .arlo
+          npm ci --production
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+          role-session-name: GithubActionsSession
+          role-duration-seconds: 900
+      
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Deploy ARLO to ECR
+        run: |
+          ECR_REGISTRY="${{ steps.login-ecr.outputs.registry }}"
+          ECR_REPOSITORY="assemblejs-arlo"
+          TIMESTAMP=$(date +%Y%m%d%H%M%S)
+          
+          # Create ECR repository if it doesn't exist
+          echo "Checking/creating ECR repository: $ECR_REPOSITORY"
+          aws ecr describe-repositories --repository-names "$ECR_REPOSITORY" > /dev/null 2>&1 || \
+            aws ecr create-repository --repository-name "$ECR_REPOSITORY" > /dev/null 2>&1
+          
+          # Build image tags
+          IMAGE_TAG="$ECR_REGISTRY/$ECR_REPOSITORY:next-$TIMESTAMP"
+          IMAGE_TAG_LATEST="$ECR_REGISTRY/$ECR_REPOSITORY:next-latest"
+          
+          echo "📦 Packaging ARLO for deployment"
+          
+          # Build and push Docker image
+          echo "🔨 Building and pushing Docker image for ARLO"
+          docker buildx build \
+            --platform linux/amd64 \
+            --cache-from type=registry,ref="$IMAGE_TAG_LATEST" \
+            --cache-to type=inline \
+            --push \
+            -t "$IMAGE_TAG" \
+            -t "$IMAGE_TAG_LATEST" \
+            -f ".arlo/Dockerfile" \
+            ".arlo"
+          
+          echo "🚀 ARLO successfully built and pushed to ECR: $IMAGE_TAG"
 
   # Create GitHub release for next version
   create-release:

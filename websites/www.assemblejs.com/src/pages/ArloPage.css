@@ -1,0 +1,393 @@
+.arlo-page {
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--dark-bg, #0f172a);
+  padding: 6rem 0;
+}
+
+/* Circuit background pattern */
+.arlo-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(255, 90, 0, 0.03) 0%, transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(43, 103, 248, 0.03) 0%, transparent 25%),
+    linear-gradient(to right, rgba(25, 29, 43, 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(25, 29, 43, 0.5) 1px, transparent 1px);
+  background-size: 500px 500px, 500px 500px, 30px 30px, 30px 30px;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.arlo-page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232b67f8' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M0 20L20 0v5L5 20zm20 20v-5l15-15h5z'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+  z-index: 0;
+}
+
+.arlo-content {
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.arlo-main-content {
+  align-items: center;
+  width: 100%;
+  margin-top: 3rem;
+  justify-content: space-between;
+}
+
+.arlo-heading {
+  font-size: 4.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  line-height: 1.1;
+  position: relative;
+  letter-spacing: -0.02em;
+  background: linear-gradient(120deg, #ff5a00, #9b5de5, #2B67F8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+}
+
+.arlo-subheading {
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  color: var(--text-secondary);
+  max-width: 1200px;
+  text-wrap: nowrap;
+}
+
+.arlo-description {
+  font-size: 1.25rem;
+  margin-bottom: 3rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  position: relative;
+  font-weight: 500;
+  max-width: 800px;
+}
+
+.arlo-description::after {
+  content: "";
+  position: absolute;
+  bottom: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), #9b5de5, var(--secondary-color));
+  border-radius: 2px;
+}
+
+.arlo-info {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+  text-align: left;
+  max-width: 1200px;
+  margin-right: 100px;
+}
+
+.arlo-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  cursor: pointer;
+  background: linear-gradient(90deg, var(--primary-color), #9b5de5, var(--secondary-color));
+  color: white;
+  border: none;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.arlo-cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.7s ease;
+  z-index: -1;
+}
+
+.arlo-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 90, 0, 0.4);
+}
+
+.arlo-cta:hover::before {
+  left: 100%;
+}
+
+.arlo-cta svg {
+  margin-right: 0.75rem;
+}
+
+.arlo-visual {
+  position: relative;
+  z-index: 1;
+}
+
+.arlo-card {
+  background-color: var(--dark-code-bg);
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+  transition: all 0.5s ease;
+  animation: float 8s ease-in-out infinite;
+  max-width: 480px;
+  width: 100%;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: perspective(1000px) rotateY(-5deg) rotateX(2deg) translateY(0);
+  }
+  50% {
+    transform: perspective(1000px) rotateY(-4deg) rotateX(1deg) translateY(-10px);
+  }
+}
+
+.arlo-card:hover {
+  transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 25px rgba(43, 103, 248, 0.2);
+  animation-play-state: paused;
+}
+
+.arlo-card-header {
+  background: linear-gradient(45deg, #1a1a2e, #16213e);
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.arlo-card-title {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.arlo-card-title svg {
+  width: 24px;
+  height: 24px;
+}
+
+.arlo-card-dots {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.arlo-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.arlo-dot-red {
+  background-color: #ff5f56;
+}
+
+.arlo-dot-yellow {
+  background-color: #ffbd2e;
+}
+
+.arlo-dot-green {
+  background-color: #27c93f;
+}
+
+.arlo-card-content {
+  padding: 2rem;
+  color: var(--code-text);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.arlo-agent {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.arlo-agent:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: translateX(5px);
+}
+
+.arlo-agent-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.25rem;
+}
+
+.arlo-agent-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.25rem;
+}
+
+.arlo-agent-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: white;
+  text-align: left;
+}
+
+.arlo-agent-role {
+  font-size: 0.85rem;
+  text-align: left;
+  color: var(--text-secondary);
+}
+
+.admin-agent {
+  background: linear-gradient(135deg, var(--primary-color), #e53935);
+}
+
+.browser-agent {
+  background: linear-gradient(135deg, var(--secondary-color), #4285F4);
+}
+
+.server-agent {
+  background: linear-gradient(135deg, var(--tertiary-color), #34A853);
+}
+
+.docs-agent {
+  background: linear-gradient(135deg, var(--accent-color-1), #FBBC05);
+}
+
+.arlo-visual::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 10%;
+  width: 80%;
+  height: 30px;
+  background: radial-gradient(ellipse at center, rgba(43, 103, 248, 0.3) 0%, rgba(43, 103, 248, 0) 70%);
+  border-radius: 50%;
+  z-index: -1;
+  filter: blur(5px);
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .arlo-main-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .arlo-heading {
+    font-size: 3.5rem;
+  }
+  
+  .arlo-subheading {
+    font-size: 1.5rem;
+  }
+  
+  .arlo-description {
+    font-size: 1.1rem;
+  }
+  
+  .arlo-visual {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .arlo-card {
+    transform: none;
+    animation: none;
+    max-width: 450px;
+  }
+  
+  .arlo-card:hover {
+    transform: translateY(-5px);
+  }
+}
+
+@media (max-width: 480px) {
+  .arlo-page {
+    padding: 4rem 0;
+  }
+  
+  .arlo-heading {
+    font-size: 2.5rem;
+  }
+  
+  .arlo-subheading {
+    font-size: 1.25rem;
+  }
+  
+  .arlo-description {
+    font-size: 1rem;
+  }
+  
+  .arlo-card-content {
+    padding: 1.5rem;
+  }
+  
+  .arlo-cta {
+    padding: 0.85rem 1.5rem;
+    font-size: 1rem;
+    width: 100%;
+  }
+}

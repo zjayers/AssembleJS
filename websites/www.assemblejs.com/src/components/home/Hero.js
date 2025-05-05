@@ -54,8 +54,8 @@ const Hero = () => {
               <pre className="code-content">
                 <code className="code-block-content">
                   <div className="code-line"><span className="code-keyword">import</span> {'{' } createBlueprintServer {'}' } <span className="code-keyword">from</span> <span className="code-string">'asmbl'</span>;</div>
+                  <div className="code-line"></div>
                   <div className="code-line"><span className="code-function">createBlueprintServer</span>({'{'}</div>
-                  <div className="code-line">  serverRoot: <span className="code-string">import.meta.url</span>,</div>
                   <div className="code-line">  manifest: {'{'}</div>
                   <div className="code-line">    components: [</div>
                   <div className="code-line">      {'{'}</div>

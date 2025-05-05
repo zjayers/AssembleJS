@@ -1,0 +1,432 @@
+/* Knowledge Network Visualization Styles */
+
+/* Network container */
+.kb-network-visualization {
+  display: flex;
+  height: calc(100vh - 200px);
+  width: 100%;
+  position: relative;
+}
+
+/* Network graph container */
+.kb-network-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-width: 70%;
+  background-color: var(--color-bg-dark);
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+}
+
+/* Node container */
+.kb-node-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: move;
+}
+
+/* Network details panel */
+.kb-network-details {
+  width: 30%;
+  padding: 15px;
+  border-left: 1px solid var(--color-border);
+  overflow-y: auto;
+  background-color: var(--color-card-bg);
+  border-radius: 0 8px 8px 0;
+}
+
+/* Controls panel */
+.kb-network-controls {
+  display: flex;
+  padding: 15px;
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.kb-network-control-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.kb-network-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.kb-network-toolbar button {
+  padding: 6px 10px;
+  border-radius: 4px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.kb-network-toolbar button:hover {
+  background-color: var(--color-bg-light);
+}
+
+.kb-network-toolbar button svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Node styles */
+.kb-node {
+  position: absolute;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.kb-node:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+.kb-node.selected {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 3px var(--color-accent), 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+.kb-node.small {
+  width: 40px;
+  height: 40px;
+  font-size: 12px;
+}
+
+.kb-node.medium {
+  width: 60px;
+  height: 60px;
+  font-size: 14px;
+}
+
+.kb-node.large {
+  width: 80px;
+  height: 80px;
+  font-size: 16px;
+}
+
+.kb-node.central {
+  width: 100px;
+  height: 100px;
+  font-size: 18px;
+  background-color: var(--color-accent);
+  color: white;
+}
+
+.kb-node .node-label {
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--color-bg);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.2s ease;
+  opacity: 0;
+}
+
+.kb-node:hover .node-label,
+.kb-node.selected .node-label {
+  opacity: 1;
+}
+
+/* Node colors based on type */
+.kb-node.agent {
+  background-color: var(--color-bg-light);
+  border: 2px solid var(--agent-color, var(--color-accent));
+  color: var(--agent-color, var(--color-accent));
+}
+
+.kb-node.knowledge {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: var(--color-text);
+}
+
+.kb-node.document {
+  background-color: rgba(var(--rgb-accent), 0.1);
+  border: 2px solid rgba(var(--rgb-accent), 0.3);
+  color: var(--color-accent);
+}
+
+.kb-node.collection {
+  background-color: rgba(var(--rgb-success), 0.1);
+  border: 2px solid rgba(var(--rgb-success), 0.3);
+  color: var(--color-success);
+}
+
+.kb-node.task {
+  background-color: rgba(var(--rgb-warning), 0.1);
+  border: 2px solid rgba(var(--rgb-warning), 0.3);
+  color: var(--color-warning);
+}
+
+/* Connection lines */
+.kb-connections {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.kb-connection {
+  stroke-width: 2;
+  fill: none;
+  transition: opacity 0.3s ease;
+}
+
+.kb-connection.primary {
+  stroke: rgba(var(--rgb-accent), 0.6);
+  stroke-width: 2.5;
+}
+
+.kb-connection.secondary {
+  stroke: rgba(var(--rgb-text), 0.4);
+  stroke-width: 1.5;
+}
+
+.kb-connection.tertiary {
+  stroke: rgba(var(--rgb-text), 0.2);
+  stroke-width: 1;
+}
+
+/* Connection hover effect */
+.kb-connection:hover,
+.kb-connection.active {
+  stroke-width: 3;
+  opacity: 1 !important;
+  z-index: 20;
+}
+
+/* Network minimap */
+.kb-network-minimap {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  width: 150px;
+  height: 150px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.kb-minimap-viewport {
+  position: absolute;
+  border: 2px solid var(--color-accent);
+  background-color: rgba(var(--rgb-accent), 0.1);
+  cursor: move;
+}
+
+/* Zoom controls */
+.kb-zoom-controls {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 100;
+}
+
+.kb-zoom-controls button {
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
+  background-color: var(--color-card-bg);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.kb-zoom-controls button:hover {
+  background-color: var(--color-bg-light);
+}
+
+/* Network node details */
+.kb-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.kb-details-title {
+  padding-left: 10px;
+}
+
+.kb-details-title h3 {
+  margin: 0 0 5px 0;
+  font-size: 18px;
+}
+
+.kb-details-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.kb-details-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.kb-details-section {
+  margin-bottom: 20px;
+}
+
+.kb-details-section h4 {
+  margin: 0 0 10px 0;
+  font-size: 15px;
+  color: var(--color-text);
+}
+
+.kb-details-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.kb-details-list li {
+  margin-bottom: 8px;
+}
+
+.kb-details-item {
+  padding: 8px 10px;
+  background-color: var(--color-bg);
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.kb-details-item:hover {
+  background-color: var(--color-bg-light);
+}
+
+.kb-details-item-title {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.kb-details-item-meta {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+/* Stats grid */
+.kb-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.kb-stat-item {
+  padding: 10px;
+  background-color: var(--color-bg);
+  border-radius: 4px;
+  text-align: center;
+  border: 1px solid var(--color-border);
+}
+
+.kb-stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--color-accent);
+}
+
+.kb-stat-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* Network legend */
+.kb-network-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: var(--color-bg);
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+}
+
+.kb-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.kb-legend-marker {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* Layout engine-specific styles */
+.kb-layout-force .kb-node {
+  transition: transform 0.5s ease, left 0.5s ease, top 0.5s ease;
+}
+
+.kb-layout-circular .kb-node {
+  transition: transform 0.8s ease, left 0.8s ease, top 0.8s ease;
+}
+
+.kb-layout-hierarchical .kb-node {
+  transition: transform 0.8s ease, left 0.8s ease, top 0.8s ease;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .kb-network-visualization {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .kb-network-container {
+    min-width: 100%;
+    height: 70vh;
+  }
+
+  .kb-network-details {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--color-border);
+    border-radius: 0 0 8px 8px;
+  }
+}

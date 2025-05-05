@@ -1,58 +1,58 @@
 /* Main stylesheet for ARLO UI */
 
 /* Import variables first */
-@import 'css/variables.css';
+@import "css/variables.css";
 
 /* Base styles */
-@import 'css/base.css';
+@import "css/base.css";
 
 /* Layout components */
-@import 'css/layout.css';
+@import "css/layout.css";
 
 /* Header styles */
-@import 'css/header.css';
+@import "css/header.css";
 
 /* Sidebar styles */
-@import 'css/sidebar.css';
+@import "css/sidebar.css";
 
 /* Navigation styles */
-@import 'css/nav.css';
+@import "css/nav.css";
 
 /* Button styles */
-@import 'css/buttons.css';
+@import "css/buttons.css";
 
 /* View container styles */
-@import 'css/view-container.css';
+@import "css/view-container.css";
 
 /* Agent-related styles */
-@import 'css/agents.css';
+@import "css/agents.css";
 
 /* Agent configuration styles */
-@import 'css/agent-config.css';
+@import "css/agent-config.css";
 
 /* Task-related styles */
-@import 'css/tasks.css';
+@import "css/tasks.css";
 
 /* Pipeline styles */
-@import 'css/pipeline.css';
+@import "css/pipeline.css";
 
 /* Output and log styles */
-@import 'css/output.css';
+@import "css/output.css";
 
 /* Knowledge base styles */
-@import 'css/knowledge-base.css';
+@import "css/knowledge-base.css";
 
 /* Charts and visualization styles */
-@import 'css/charts.css';
+@import "css/charts.css";
 
 /* File management styles */
-@import 'css/file-management.css';
+@import "css/file-management.css";
 
 /* Logo styles */
-@import 'css/logo.css';
+@import "css/logo.css";
 
 /* Theme toggle styles */
-@import 'css/theme-toggle.css';
+@import "css/theme-toggle.css";
 
 /* Responsive styles */
-@import 'css/responsive.css';
+@import "css/responsive.css";

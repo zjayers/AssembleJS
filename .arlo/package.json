@@ -5,11 +5,23 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js --ext js,ejs,css --ignore node_modules/ --watch api/ --watch ui/ --watch views/ --watch server.js"
+    "dev": "nodemon server.js --ext js,ejs,css --ignore node_modules/ --watch api/ --watch ui/ --watch views/ --watch server.js",
+    "gather:knowledge": "node scripts/agent-knowledge-gather.js",
+    "init:knowledge": "node -e \"require('./api/models/fileDB').initDatabase().then(() => console.log('Database initialized'))\"",
+    "clear:knowledge": "rm -rf ./data/collections/* && npm run init:knowledge"
   },
   "dependencies": {
+    "@babel/parser": "^7.27.1",
+    "@babel/traverse": "^7.27.1",
+    "@babel/types": "^7.27.1",
+    "@octokit/rest": "^21.1.1",
+    "@typescript-eslint/parser": "^8.31.1",
+    "dotenv": "^16.3.1",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-rate-limit": "^7.1.4",
+    "simple-git": "^3.27.0",
+    "typescript": "^5.8.3",
     "uuid": "^9.0.0"
   },
   "author": "AssembleJS Team",

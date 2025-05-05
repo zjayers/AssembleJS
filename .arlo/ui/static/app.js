@@ -1,2 +1,2 @@
 // Import the modularized app
-import './js/app.js';
+import "./js/app.js";

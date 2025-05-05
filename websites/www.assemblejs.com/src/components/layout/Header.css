@@ -133,6 +133,23 @@
   color: var(--primary-color);
 }
 
+/* ARLO special styling */
+.main-nav a.arlo-link {
+  background: linear-gradient(90deg, #9b5de5, var(--secondary-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+  font-weight: 600;
+}
+
+.main-nav a.arlo-link:hover,
+.main-nav a.arlo-link.active {
+  background: linear-gradient(90deg, #b377ff, var(--accent-color-3));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
 /* Underline effect */
 .main-nav a::after {
   content: "";
@@ -143,6 +160,11 @@
   height: 2px;
   background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
   transition: width 0.3s ease;
+}
+
+/* ARLO link underline effect */
+.main-nav a.arlo-link::after {
+  background: linear-gradient(to right, #9b5de5, var(--secondary-color));
 }
 
 .main-nav a:hover::after,
@@ -352,6 +374,44 @@
 .mobile-menu nav a:hover,
 .mobile-menu nav a.active {
   color: var(--primary-color);
+}
+
+/* Mobile ARLO link special styling */
+.mobile-menu nav a.arlo-link {
+  background: linear-gradient(90deg, #9b5de5, var(--secondary-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+  font-weight: 600;
+}
+
+.mobile-menu nav a.arlo-link:hover,
+.mobile-menu nav a.arlo-link.active {
+  background: linear-gradient(90deg, #b377ff, var(--accent-color-3));
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Mobile ARLO link underline */
+.mobile-menu nav a.arlo-link {
+  position: relative;
+}
+
+.mobile-menu nav a.arlo-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0.5rem;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, #9b5de5, var(--secondary-color));
+  transition: width 0.3s ease;
+}
+
+.mobile-menu nav a.arlo-link:hover::after,
+.mobile-menu nav a.arlo-link.active::after {
+  width: 100%;
 }
 
 /* GitHub link in mobile menu */

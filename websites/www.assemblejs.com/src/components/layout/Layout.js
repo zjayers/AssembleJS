@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import './Layout.css';
@@ -16,6 +17,23 @@ const BackgroundShapes = () => (
 );
 
 const Layout = ({ children }) => {
+  const location = useLocation();
+  const isDocsPage = location.pathname.includes('/docs');
+  const isArloPage = location.pathname.includes('/arlo');
+  const isShowcasePage = location.pathname.includes('/showcase');
+  
+  // Ensure consistent background styling for all pages
+  useEffect(() => {
+    // Apply consistent background for all page types
+    document.body.style.backgroundColor = 'var(--bg)';
+    document.body.classList.toggle('docs-page', isDocsPage);
+    document.body.classList.toggle('showcase-page', isShowcasePage);
+    
+    return () => {
+      document.body.classList.remove('docs-page', 'arlo-page', 'showcase-page');
+    };
+  }, [isDocsPage, isArloPage, isShowcasePage]);
+  
   // Add parallax effect on mouse move - reduce motion for accessibility
   useEffect(() => {
     // Check for reduced motion preference
@@ -48,9 +66,9 @@ const Layout = ({ children }) => {
   }, []);
 
   return (
-    <div className="layout">
+    <div className={`layout ${isDocsPage ? 'docs-layout' : ''} ${isArloPage ? 'arlo-layout' : ''} ${isShowcasePage ? 'showcase-layout' : ''}`}>
       <BackgroundShapes />
-      <Header />
+      <Header isDocsPage={isDocsPage} />
       <main id="main-content" role="main">
         {children}
       </main>

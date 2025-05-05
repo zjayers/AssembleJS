@@ -1,1 +1,20 @@
+<!-- ARLO utilities and core namespace - Must be loaded as a non-module script first -->
+<script src="/static/arlo.js"></script>
+
+<!-- Core application -->
 <script type="module" src="/static/app.js"></script>
+<script type="module" src="/static/js/main.js"></script>
+
+<!-- Task execution and real-time updates -->
+<script type="module" src="/static/js/modules/taskUpdates.js"></script>
+<script type="module" src="/static/js/views/task.js"></script>
+
+<!-- Other view modules -->
+<script type="module" src="/static/js/views/code-executor-view.js"></script>
+<script type="module" src="/static/js/views/agentConfig.js"></script>
+<script type="module" src="/static/js/views/knowledgeValidator.js"></script>
+<script type="module" src="/static/js/modules/knowledgeNetwork.js"></script>
+
+<!-- External dependencies -->
+<!-- D3.js for network visualization -->
+<script src="https://d3js.org/d3.v7.min.js"></script>

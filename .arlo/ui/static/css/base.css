@@ -1,269 +1,271 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 /* Hide scrollbars everywhere by default (while maintaining scroll functionality) */
 ::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-    width: 0;
-    height: 0;
+  display: none; /* Chrome, Safari, Opera */
+  width: 0;
+  height: 0;
 }
 
 * {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-    background-color: var(--color-bg);
-    color: var(--color-text);
-    line-height: 1.5;
-    font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  font-size: 14px;
 }
 
 .app-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .main-content {
-    display: flex;
-    flex: 1;
+  display: flex;
+  flex: 1;
 }
 
 /* Basic form elements */
 textarea {
-    width: 100%;
-    min-height: 120px;
-    background-color: var(--color-input-bg);
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    padding: 12px;
-    color: var(--color-text);
-    font-family: inherit;
-    font-size: 14px;
-    resize: vertical;
-    margin-bottom: 16px;
+  width: 100%;
+  min-height: 120px;
+  background-color: var(--color-input-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 12px;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  margin-bottom: 16px;
 }
 
 textarea:focus {
-    outline: none;
-    border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
 }
 
 button {
-    background-color: var(--color-button-bg);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  background-color: var(--color-button-bg);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 button:hover {
-    background-color: var(--color-button-hover);
+  background-color: var(--color-button-hover);
 }
 
 .primary-button {
-    background-color: var(--color-button-bg);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    cursor: pointer;
+  background-color: var(--color-button-bg);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .primary-button:hover {
-    background-color: var(--color-button-hover);
+  background-color: var(--color-button-hover);
 }
 
 .secondary-button {
-    background-color: transparent;
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .secondary-button:hover {
-    background-color: rgba(140, 149, 159, 0.1);
+  background-color: rgba(140, 149, 159, 0.1);
 }
 
 .warning-button {
-    background-color: var(--color-failure);
+  background-color: var(--color-failure);
 }
 
 .warning-button:hover {
-    background-color: #e6423f;
+  background-color: #e6423f;
 }
 
 /* Loading Spinner */
 .spinner {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 1s ease-in-out infinite;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
 }
 
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Status badges and indicators */
 .status-badge {
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .status-badge.in-progress {
-    background-color: rgba(191, 135, 0, 0.2);
-    color: var(--color-pending);
+  background-color: rgba(191, 135, 0, 0.2);
+  color: var(--color-pending);
 }
 
 .status-badge.completed {
-    background-color: rgba(45, 164, 78, 0.2);
-    color: var(--color-success);
+  background-color: rgba(45, 164, 78, 0.2);
+  color: var(--color-success);
 }
 
 .status-badge.queued {
-    background-color: rgba(140, 149, 159, 0.2);
-    color: var(--color-text-secondary);
+  background-color: rgba(140, 149, 159, 0.2);
+  color: var(--color-text-secondary);
 }
 
 .status-badge.failed {
-    background-color: rgba(207, 34, 46, 0.2);
-    color: var(--color-failure);
+  background-color: rgba(207, 34, 46, 0.2);
+  color: var(--color-failure);
 }
 
 .status-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
 }
 
 .status-indicator.active {
-    background-color: var(--color-success);
-    box-shadow: 0 0 5px var(--color-success);
+  background-color: var(--color-success);
+  box-shadow: 0 0 5px var(--color-success);
 }
 
 .status-indicator {
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-    color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: var(--color-text-secondary);
 }
 
 .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: var(--color-success);
-    margin-right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-success);
+  margin-right: 6px;
 }
 
 /* Content containers */
 .content {
-    flex: 1;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    overflow: hidden; /* Prevents double scrollbars */
-    width: 100%;
+  flex: 1;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  overflow: hidden; /* Prevents double scrollbars */
+  width: 100%;
 }
 
 .view-container {
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .content-header {
-    margin-bottom: 24px;
+  margin-bottom: 24px;
 }
 
 .content-header h2 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 8px;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .content-description {
-    color: var(--color-text-secondary);
-    margin-bottom: 16px;
+  color: var(--color-text-secondary);
+  margin-bottom: 16px;
 }
 
 /* Empty state */
 .empty-state {
-    text-align: center;
-    padding: 40px 0;
-    color: var(--color-text-secondary);
+  text-align: center;
+  padding: 40px 0;
+  color: var(--color-text-secondary);
 }
 
 .empty-state-icon {
-    font-size: 24px;
-    margin-bottom: 16px;
+  font-size: 24px;
+  margin-bottom: 16px;
 }
 
 .empty-state-text {
-    max-width: 300px;
-    margin: 0 auto;
+  max-width: 300px;
+  margin: 0 auto;
 }
 
 /* Loading and error states */
-.loading-state, .error-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 0;
-    text-align: center;
+.loading-state,
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  text-align: center;
 }
 
 .loading-state .spinner {
-    margin-bottom: 16px;
-    width: 24px;
-    height: 24px;
-    border-width: 3px;
+  margin-bottom: 16px;
+  width: 24px;
+  height: 24px;
+  border-width: 3px;
 }
 
 .error-state-icon {
-    font-size: 24px;
-    margin-bottom: 16px;
-    color: var(--color-failure);
+  font-size: 24px;
+  margin-bottom: 16px;
+  color: var(--color-failure);
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-    .main-content {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--color-border);
-    }
+  .main-content {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
 }

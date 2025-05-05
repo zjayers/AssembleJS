@@ -176,6 +176,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: var(--theme-transition);
+  /* Ensure consistent background across all pages */
+  background-color: var(--bg) !important;
 }
 
 /* Removed background animations and floating shapes */
@@ -193,4 +195,31 @@ body, header, aside, footer, section, div, article, span, p, h1, h2, h3, h4, h5,
 /* Add parallax effect on mouse move */
 body {
   cursor: default;
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--primary-color), var(--secondary-color));
+  border-radius: 6px;
+  border: 3px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(var(--primary-color-dark), var(--secondary-color));
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-color) var(--bg);
 }

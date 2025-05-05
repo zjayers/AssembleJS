@@ -1,0 +1,540 @@
+<!-- Agent Brain Tab -->
+<div class="agent-tab-content" id="brain-tab">
+  <div class="agent-brain-container">
+    <!-- Brain Status Overview -->
+    <div class="brain-status-section">
+      <h3>Brain Status</h3>
+      <div class="brain-metrics">
+        <div class="metric-card">
+          <div class="metric-title">Knowledge Entities</div>
+          <div class="metric-value" id="entity-count">--</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">Memories</div>
+          <div class="metric-value" id="memory-count">--</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">Rules</div>
+          <div class="metric-value" id="rule-count">--</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">Tasks Completed</div>
+          <div class="metric-value" id="task-count">--</div>
+        </div>
+      </div>
+      <div class="success-rate-container">
+        <div class="success-rate-label">Success Rate</div>
+        <div class="success-rate-bar">
+          <div class="success-rate-progress" id="success-rate-progress" style="width: 0%"></div>
+        </div>
+        <div class="success-rate-value" id="success-rate-value">--</div>
+      </div>
+    </div>
+    
+    <!-- Brain Tabs Navigation -->
+    <div class="brain-tabs">
+      <button class="brain-tab active" data-tab="memories-panel">Memories</button>
+      <button class="brain-tab" data-tab="entities-panel">Entities</button>
+      <button class="brain-tab" data-tab="preferences-panel">Preferences</button>
+      <button class="brain-tab" data-tab="rules-panel">Rules</button>
+    </div>
+    
+    <!-- Brain Content Panels -->
+    <div class="brain-content">
+      <!-- Memories Panel -->
+      <div class="brain-panel active" id="memories-panel">
+        <div class="panel-header">
+          <h3>Agent Memories</h3>
+          <div class="panel-actions">
+            <select id="memory-type-filter" class="filter-select">
+              <option value="all">All Types</option>
+              <option value="entity">Entity</option>
+              <option value="decision">Decision</option>
+              <option value="observation">Observation</option>
+              <option value="relationship">Relationship</option>
+              <option value="preference">Preference</option>
+              <option value="meta">Meta</option>
+            </select>
+            <button id="refresh-memories" class="refresh-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="memories-container" id="memories-container">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading memories...</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Entities Panel -->
+      <div class="brain-panel" id="entities-panel">
+        <div class="panel-header">
+          <h3>Knowledge Entities</h3>
+          <div class="panel-actions">
+            <select id="entity-type-filter" class="filter-select">
+              <option value="all">All Types</option>
+              <option value="file">Files</option>
+              <option value="component">Components</option>
+              <option value="function">Functions</option>
+              <option value="class">Classes</option>
+              <option value="module">Modules</option>
+            </select>
+            <button id="refresh-entities" class="refresh-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="entities-container" id="entities-container">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading entities...</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Preferences Panel -->
+      <div class="brain-panel" id="preferences-panel">
+        <div class="panel-header">
+          <h3>Agent Preferences</h3>
+          <div class="panel-actions">
+            <button id="refresh-preferences" class="refresh-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="preferences-container" id="preferences-container">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading preferences...</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Rules Panel -->
+      <div class="brain-panel" id="rules-panel">
+        <div class="panel-header">
+          <h3>Decision Rules</h3>
+          <div class="panel-actions">
+            <button id="refresh-rules" class="refresh-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="rules-container" id="rules-container">
+          <div class="loading-state">
+            <div class="spinner"></div>
+            <p>Loading rules...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .agent-brain-container {
+    padding: 1rem 0;
+  }
+  
+  .brain-status-section {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .brain-status-section h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .brain-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .metric-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.75rem;
+    text-align: center;
+  }
+  
+  .metric-title {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  
+  .metric-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--heading-color);
+  }
+  
+  .success-rate-container {
+    margin-top: 1rem;
+  }
+  
+  .success-rate-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+  
+  .success-rate-bar {
+    height: 8px;
+    background-color: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+  }
+  
+  .success-rate-progress {
+    height: 100%;
+    background-color: var(--success-color);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+  
+  .success-rate-value {
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  
+  .brain-tabs {
+    display: flex;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .brain-tab {
+    background: none;
+    border: none;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+  
+  .brain-tab:hover {
+    color: var(--primary-color);
+  }
+  
+  .brain-tab.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+  }
+  
+  .brain-content {
+    position: relative;
+    min-height: 300px;
+  }
+  
+  .brain-panel {
+    display: none;
+    padding: 1rem;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+  }
+  
+  .brain-panel.active {
+    display: block;
+  }
+  
+  .panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .panel-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .panel-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .filter-select {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    font-size: 0.85rem;
+  }
+  
+  .refresh-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .refresh-button:hover {
+    background-color: var(--hover-bg);
+  }
+  
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 0;
+  }
+  
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  /* Memory Cards */
+  .memory-card {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .memory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: var(--card-header-bg);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .memory-title {
+    font-weight: 500;
+    flex: 1;
+  }
+  
+  .memory-type {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    margin-left: 0.5rem;
+  }
+  
+  .memory-type.entity {
+    background-color: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
+  }
+  
+  .memory-type.decision {
+    background-color: rgba(156, 39, 176, 0.1);
+    color: #9c27b0;
+  }
+  
+  .memory-type.observation {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+  }
+  
+  .memory-type.relationship {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+  }
+  
+  .memory-type.preference {
+    background-color: rgba(233, 30, 99, 0.1);
+    color: #e91e63;
+  }
+  
+  .memory-type.meta {
+    background-color: rgba(158, 158, 158, 0.1);
+    color: #9e9e9e;
+  }
+  
+  .memory-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .memory-timestamp {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  
+  .memory-importance {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  
+  .memory-content {
+    padding: 1rem;
+    background-color: var(--card-bg);
+  }
+  
+  .memory-content-text {
+    white-space: pre-wrap;
+  }
+  
+  /* Entity Cards */
+  .entity-card {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .entity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: var(--card-header-bg);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .entity-name {
+    font-weight: 500;
+    flex: 1;
+  }
+  
+  .entity-type {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    background-color: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
+  }
+  
+  .entity-content {
+    padding: 1rem;
+    background-color: var(--card-bg);
+  }
+  
+  .entity-properties {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1rem;
+  }
+  
+  .entity-property-label {
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  
+  .entity-property-value {
+    word-break: break-word;
+  }
+  
+  /* Preferences */
+  .preference-category {
+    margin-bottom: 1.5rem;
+  }
+  
+  .preference-category-title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.375rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .preference-items {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1rem;
+  }
+  
+  .preference-key {
+    font-weight: 500;
+  }
+  
+  .preference-value {
+    word-break: break-word;
+  }
+  
+  /* Rules */
+  .rule-card {
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .rule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: var(--card-header-bg);
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .rule-id {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  
+  .rule-priority {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    background-color: rgba(255, 152, 0, 0.1);
+    color: #ff9800;
+  }
+  
+  .rule-content {
+    padding: 1rem;
+    background-color: var(--card-bg);
+  }
+  
+  .rule-section {
+    margin-bottom: 0.75rem;
+  }
+  
+  .rule-section-title {
+    font-weight: 500;
+    margin-bottom: 0.375rem;
+  }
+  
+  .rule-code {
+    font-family: monospace;
+    font-size: 0.85rem;
+    padding: 0.5rem;
+    background-color: var(--code-bg);
+    border-radius: 3px;
+    white-space: pre-wrap;
+  }
+</style>

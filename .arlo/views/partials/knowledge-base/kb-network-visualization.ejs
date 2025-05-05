@@ -1,0 +1,159 @@
+<div class="kb-network-container">
+    <!-- Network controls panel -->
+    <div class="kb-network-controls">
+        <div class="kb-network-control-group">
+            <label for="kb-filter-connections">View:</label>
+            <select id="kb-filter-connections" class="kb-select">
+                <option value="all">All Connections</option>
+                <option value="agents">Between Agents</option>
+                <option value="knowledge">Knowledge by Type</option>
+                <option value="documents">Document Relationships</option>
+            </select>
+        </div>
+        
+        <div class="kb-network-control-group">
+            <label for="kb-layout-type">Layout:</label>
+            <select id="kb-layout-type" class="kb-select">
+                <option value="force">Force-Directed</option>
+                <option value="circular">Circular</option>
+                <option value="hierarchical">Hierarchical</option>
+                <option value="radial">Radial</option>
+            </select>
+        </div>
+        
+        <div class="kb-network-control-group">
+            <label for="kb-central-node">Central Node:</label>
+            <select id="kb-central-node" class="kb-select">
+                <option value="knowledge">Knowledge Hub</option>
+                <option value="arlo">ARLO</option>
+                <option value="admin">Admin</option>
+                <option value="browser">Browser</option>
+                <option value="server">Server</option>
+                <option value="utils">Utils</option>
+                <option value="types">Types</option>
+            </select>
+        </div>
+        
+        <div class="kb-network-toolbar">
+            <button id="kb-refresh-network" title="Refresh Network">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 4v6h-6"></path>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                </svg>
+            </button>
+            <button id="kb-export-network" title="Export as PNG">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+            </button>
+            <button id="kb-fullscreen-network" title="Toggle Fullscreen">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Knowledge network visualization -->
+    <div class="kb-network-visualization">
+        <div id="kb-network-graph" class="kb-network-graph-container">
+            <!-- D3.js visualization will be rendered here -->
+            <div class="kb-node-container">
+                <!-- SVG container for connections -->
+                <svg class="kb-connections" width="100%" height="100%">
+                    <defs>
+                        <marker id="arrow-primary" markerWidth="10" markerHeight="7" 
+                                refX="10" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="var(--color-accent)" />
+                        </marker>
+                        <marker id="arrow-secondary" markerWidth="10" markerHeight="7" 
+                                refX="10" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="var(--color-text-secondary)" />
+                        </marker>
+                        <marker id="arrow-tertiary" markerWidth="10" markerHeight="7" 
+                                refX="10" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="rgba(var(--rgb-text), 0.2)" />
+                        </marker>
+                    </defs>
+                    <!-- Connections will be drawn here dynamically -->
+                </svg>
+            </div>
+            
+            <!-- Zoom controls -->
+            <div class="kb-zoom-controls">
+                <button id="kb-zoom-in" title="Zoom In">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="11" y1="8" x2="11" y2="14"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                </button>
+                <button id="kb-zoom-out" title="Zoom Out">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                </button>
+                <button id="kb-zoom-reset" title="Reset Zoom">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M8 12h8"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Minimap -->
+            <div class="kb-network-minimap">
+                <div class="kb-minimap-viewport"></div>
+            </div>
+        </div>
+        
+        <!-- Network details panel -->
+        <div id="kb-network-details" class="kb-network-details">
+            <div class="empty-state">
+                <div class="empty-state-icon">🔍</div>
+                <div class="empty-state-text">Select a node to view details</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Network legend -->
+    <div class="kb-network-legend">
+        <div class="kb-legend-item">
+            <div class="kb-legend-marker" style="background-color: var(--color-accent);"></div>
+            <span>Central Node</span>
+        </div>
+        <div class="kb-legend-item">
+            <div class="kb-legend-marker" style="background-color: var(--color-bg-light); border: 2px solid #F44336;"></div>
+            <span>Agent</span>
+        </div>
+        <div class="kb-legend-item">
+            <div class="kb-legend-marker" style="background-color: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.3);"></div>
+            <span>Knowledge</span>
+        </div>
+        <div class="kb-legend-item">
+            <div class="kb-legend-marker" style="background-color: rgba(var(--rgb-success), 0.1); border: 2px solid rgba(var(--rgb-success), 0.3);"></div>
+            <span>Collection</span>
+        </div>
+        <div class="kb-legend-item">
+            <div class="kb-legend-marker" style="background-color: rgba(var(--rgb-warning), 0.1); border: 2px solid rgba(var(--rgb-warning), 0.3);"></div>
+            <span>Task</span>
+        </div>
+    </div>
+</div>
+
+<!-- Ensure we include D3.js for proper visualization -->
+<script>
+    // Check if D3.js is already loaded
+    if (typeof d3 === 'undefined') {
+        // Add D3.js script if not already loaded
+        const script = document.createElement('script');
+        script.src = 'https://d3js.org/d3.v7.min.js';
+        script.async = true;
+        document.head.appendChild(script);
+    }
+</script>

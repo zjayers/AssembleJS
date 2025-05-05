@@ -1,18 +1,29 @@
 # Getting Started with A.R.L.O.
 
-This guide will help you set up and begin using A.R.L.O. (AssembleJS Repository Logic Orchestrator) in your AssembleJS development workflow. A.R.L.O.'s specialist agents provide valuable assistance for various aspects of framework development.
+This guide will help you set up and begin using A.R.L.O. (AssembleJS Repository Logic Orchestrator), an advanced AI agent system designed for AssembleJS framework development and maintenance. A.R.L.O.'s team of specialized agents work together to analyze, plan, and implement tasks across the codebase.
+
+## System Overview
+
+A.R.L.O. is an internal development system for the AssembleJS framework that uses:
+
+- A team of 16+ specialized AI agents with domain-specific knowledge
+- A web interface for task submission and monitoring
+- File-based JSON storage for knowledge and tasks
+- A structured workflow with approval gates
+- Comprehensive error handling and validation
 
 ## Prerequisites
 
-Before using A.R.L.O., ensure you have:
+Before setting up A.R.L.O., ensure you have:
 
 - A local clone of the AssembleJS repository
-- Node.js (v14 or higher)
+- Node.js (v16 or higher)
 - npm or yarn
+- Git credentials (for creating PRs if enabled)
 
 ## Installation
 
-A.R.L.O. is integrated directly into the AssembleJS repository. To set up A.R.L.O.:
+A.R.L.O. is integrated into the AssembleJS repository in the `.arlo` directory:
 
 1. Navigate to your AssembleJS repository root:
 
@@ -20,105 +31,170 @@ A.R.L.O. is integrated directly into the AssembleJS repository. To set up A.R.L.
 cd path/to/your/assemblejs/repo
 ```
 
-2. Install dependencies:
+2. Install the dependencies:
 
 ```bash
+cd .arlo
 npm install
 ```
 
 3. Start the A.R.L.O. server:
 
 ```bash
-cd .arlo
 npm run dev
 ```
 
-This will start the A.R.L.O. server, typically at http://localhost:8000.
+This will start the A.R.L.O. server on http://localhost:3030 by default.
 
 ## Accessing the A.R.L.O. Interface
 
-After starting the server, you can access the web interface by opening your browser and navigating to:
+Open your browser and navigate to:
 
 ```
-http://localhost:8000
+http://localhost:3030
 ```
 
-The interface provides several views:
+The interface provides several key sections:
 
-- **Workflow**: Submit and monitor tasks
-- **Agents**: View agent profiles and expertise
-- **Knowledge Base**: Search and browse the collective knowledge
-- **Collections**: Manage knowledge collections
+- **Dashboard**: Overview of all current tasks and system health
+- **Tasks**: Submit and monitor tasks with detailed progress tracking
+- **Agents**: View agent profiles, expertise, and knowledge collections
+- **Knowledge Base**: Search across all agent knowledge
+- **Settings**: Configure system parameters and agent behavior
 
-## Your First Task with A.R.L.O.
+## Submitting Your First Task
 
-Let's submit a simple task to A.R.L.O. to verify it's working correctly:
+To submit a task to A.R.L.O.:
 
-1. Navigate to the Workflow view in the web interface
-2. In the task input field, enter a description like "Explain the blueprint registration process in AssembleJS"
-3. Click "Submit Task"
-4. A.R.L.O. will analyze the request and process it through the pipeline:
-   - Admin agent will analyze the task
-   - Appropriate specialist agents will be assigned
-   - The task will move through the execution pipeline
-   - You'll receive a detailed response when completed
+1. Click the "New Task" button on the Dashboard or Tasks page
+2. Enter a detailed task description, for example:
+   ```
+   Implement caching for blueprint renderer to improve performance
+   ```
+3. Select priority level (optional)
+4. Add any relevant tags or context
+5. Click "Submit Task"
 
-## Understanding the Pipeline
+## Task Execution Process
 
-When you submit a task, it goes through a structured pipeline:
+Your task will progress through these stages:
 
-1. **Admin Analysis**: Initial evaluation of requirements
-2. **Planning**: Creating an execution strategy
-3. **Execution**: Implementation by specialist agents
-4. **Validation**: Quality checks and testing
-5. **Git Operations**: Repository changes if needed
+1. **Submitted**: Task is created and queued for processing
+2. **Analyzing**: Admin agent analyzes the task requirements
+   - Reviews the task description
+   - Identifies required specialist agents
+   - Evaluates complexity and approach
+   - Asks clarifying questions if needed
 
-You can track the progress of your task in real-time on the task details page.
+3. **Planning**: A detailed execution plan is created
+   - Step-by-step implementation approach
+   - Required resources and dependencies
+   - Team of specialist agents assigned
+   - Approval request sent to supervisor
 
-## Working with Knowledge Collections
+4. **Executing**: After plan approval, implementation begins
+   - Git agent creates a feature branch
+   - Specialist agents implement changes
+   - Progress is logged in detail
+   - Code changes are tracked
 
-A.R.L.O. stores knowledge in collections, with each agent having its own collection. You can explore these through the Collections view:
+5. **Validating**: Changes undergo quality assessment
+   - Tests are run and verified
+   - Code quality is evaluated
+   - Performance is measured
+   - Documentation is updated
 
-- Browse agent collections to see their specialized knowledge
-- Search across collections for specific information
-- Add new knowledge to help agents learn
-- Create custom collections for specific domains
+6. **Completed**: Task is finalized with pull request
+   - Git agent creates PR with changes
+   - PR link is provided for review
+   - Task details are archived
 
-## API Endpoints
+You can monitor the live progress of your task on the Task Detail page, including:
+- Current status and completion percentage
+- Agent activity log with timestamps
+- Detailed progress visualization
+- File changes and test results
 
-For programmatic access, A.R.L.O. offers a RESTful API:
+## Working with Agent Knowledge
 
-- `/api/collections` - Manage knowledge collections
-- `/api/agent` - Interact with specific agents
-- `/api/tasks` - Submit and manage tasks
-- `/api/admin` - System-wide operations
+A.R.L.O. maintains knowledge collections for each specialist agent:
 
-## Agent Capabilities
+- **Browser Agent**: Frontend architecture, client-side rendering, component design
+- **Server Agent**: Backend architecture, API design, server-side rendering
+- **Utils Agent**: Utility functions, common patterns, reusable operations
+- **Types Agent**: Type definitions, interface design, API typing
 
-Each agent in A.R.L.O. specializes in a specific domain:
+You can:
+- Browse knowledge collections in the Knowledge Base
+- Search across all collections
+- View code examples and patterns
+- See agent decision-making processes
 
-- **Admin**: Workflow coordination
-- **Browser**: Frontend architecture
-- **Server**: Backend implementation
-- **Utils**: Utility functions
-- ...and many more
+## Using the API
 
-You can learn more about each agent in the [A.R.L.O. Agents](arlo/agents) documentation.
+A.R.L.O. provides a comprehensive RESTful API:
 
-## Best Practices for Working with A.R.L.O.
+### Collections API
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/collections` | GET | Get all collections |
+| `/api/collections/:name` | GET | Get a specific collection |
+| `/api/collections/:name/documents` | GET | Get documents in collection |
+| `/api/collections/:name/query` | POST | Query a collection |
+
+### Agent API
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/agent` | GET | Get all agents |
+| `/api/agent/:name` | GET | Get a specific agent |
+| `/api/agent/:name/knowledge` | GET | Get agent knowledge |
+| `/api/agent/:name/query` | POST | Query agent knowledge |
+
+### Tasks API
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/tasks` | GET | Get all tasks |
+| `/api/tasks/:id` | GET | Get a specific task |
+| `/api/tasks` | POST | Create a new task |
+| `/api/tasks/:id/execute` | POST | Execute a task |
+
+## Best Practices
 
 To get the most out of A.R.L.O.:
 
-1. **Be specific** in your task descriptions
-2. **Provide context** when referencing code or features
-3. **Review changes** before implementing them
-4. **Give feedback** to help agents improve
-5. **Start small** before delegating complex tasks
+1. **Be specific and detailed** in your task descriptions
+2. **Provide clear context** about affected components
+3. **Respond promptly** to clarification questions
+4. **Review execution plans** carefully before approval
+5. **Check implementation details** during execution
+6. **Test changes thoroughly** after completion
+
+## A.R.L.O. Agent Team
+
+A.R.L.O.'s specialized agents include:
+
+| Agent | Expertise Area | Code Responsibility |
+|-------|----------------|---------------------|
+| Admin | Coordination | Project-wide coordination |
+| Analyzer | Performance | `/src/analyzer/` |
+| Browser | Frontend | `/src/browser/` |
+| Bundler | Build System | `/src/bundler/` |
+| Server | Backend | `/src/server/` |
+| Types | Type System | `/src/types/` |
+| Utils | Utilities | `/src/utils/` |
+| Git | Version Control | Repository management |
+
+Each agent has specialized knowledge of their domain and contributes to collaborative task execution.
 
 ## Next Steps
 
-Now that you have A.R.L.O. up and running, explore these resources to learn more:
+Now that you understand the basics of A.R.L.O., explore these detailed resources:
 
-- [A.R.L.O. Architecture](arlo/architecture) - Understand how A.R.L.O. is structured
-- [A.R.L.O. Workflow](arlo/workflow) - Learn about the task execution flow
-- [A.R.L.O. Agents](arlo/agents) - Details on all specialist agents
+- [A.R.L.O. Architecture](arlo/architecture) - Detailed system design and API documentation
+- [A.R.L.O. Workflow](arlo/workflow) - In-depth task execution process
+- [A.R.L.O. Agents](arlo/agents) - Comprehensive agent capabilities and examples
+
+A.R.L.O. is continuously improving, with new features being added regularly to enhance AssembleJS development workflows.

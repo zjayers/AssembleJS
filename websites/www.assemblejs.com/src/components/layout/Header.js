@@ -111,6 +111,11 @@ const Header = () => {
                   Showcase
                 </NavLink>
               </li>
+              <li>
+                <NavLink to="/arlo" className={({isActive}) => isActive ? 'active arlo-link' : 'arlo-link'}>
+                  A.R.L.O.
+                </NavLink>
+              </li>
             </ul>
           </nav>
 
@@ -205,6 +210,15 @@ const Header = () => {
                   className={({isActive}) => isActive ? 'active' : ''}
                 >
                   Showcase
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                  to="/arlo" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={({isActive}) => isActive ? 'active arlo-link' : 'arlo-link'}
+                >
+                  A.R.L.O.
                 </NavLink>
               </li>
               <li className="mobile-github-item">

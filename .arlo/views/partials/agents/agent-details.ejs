@@ -4,6 +4,8 @@
     <div class="agent-tabs">
         <div class="agent-tab active" data-tab="configuration">Configuration</div>
         <div class="agent-tab" data-tab="knowledge">Knowledge</div>
+        <div class="agent-tab" data-tab="brain">Brain</div>
+        <div class="agent-tab" data-tab="collaboration">Collaboration</div>
         <div class="agent-tab" data-tab="logs">Logs</div>
         <div class="agent-tab" data-tab="performance">Performance</div>
     </div>
@@ -11,6 +13,8 @@
     <div class="agent-content">
         <%- include('agent-details/configuration-tab') %>
         <%- include('agent-details/knowledge-tab') %>
+        <%- include('agent-details/brain-tab') %>
+        <%- include('collaboration-panel') %>
         <%- include('agent-details/logs-tab') %>
         <%- include('agent-details/performance-tab') %>
     </div>
